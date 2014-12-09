@@ -14,8 +14,10 @@
   "author": "Jim Lloyd <jim.lloyd@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "assert": "^1.1.2",
+    "assert-plus": "^0.1.5",
     "gremlin-v3": "0.0.7",
-    "lodash": "^2.4.1"
+    "immutable": "^3.3.0",
+    "lodash": "^2.4.1",
+    "mkdirp": "^0.5.0"
   }
 }
