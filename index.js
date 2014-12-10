@@ -14,6 +14,9 @@ var Class = java.import('java.lang.Class');
 var Promise = require("bluebird");
 Promise.longStackTraces();
 
+var classes = {};
+var methodsDefinitions = {};
+
 function loadClass(className) {
   return java.getClassLoader().loadClassSync(className);
 }
@@ -114,7 +117,7 @@ function processClass(className, work) {
   return classMap;
 }
 
-function locateMethodDefinitions(className, classes, work, methodsDefinitions) {
+function locateMethodDefinitions(className, work) {
   assert.object(methodsDefinitions);
 
   assert.ok(className in classes);
@@ -124,7 +127,7 @@ function locateMethodDefinitions(className, classes, work, methodsDefinitions) {
   _.forEach(classMap.interfaces, function (intf) {
     if (!work.alreadyDone(intf)) {
       assert.ok(intf in classes, 'Unknown interface:' + intf);
-      locateMethodDefinitions(intf, classes, work, methodsDefinitions);
+      locateMethodDefinitions(intf, work);
     }
   });
 
@@ -148,7 +151,6 @@ function locateMethodDefinitions(className, classes, work, methodsDefinitions) {
 }
 
 function loadAllClasses() {
-  var classes = {};
   var work = new Work();
   work.addTodo('java.lang.Object');
   work.addTodo('com.tinkerpop.gremlin.structure.Graph');
@@ -158,22 +160,17 @@ function loadAllClasses() {
     work.setDone(className);
     classes[className] = processClass(className, work);
   }
-  return classes;
 }
 
-function mapMethodDefinitions(classes) {
-  var methodsDefinitions = {};
-
+function mapMethodDefinitions() {
   var work = new Work(_.keys(classes));
   while (!work.isDone()) {
     var className = work.next();
-    locateMethodDefinitions(className, classes, work, methodsDefinitions);
+    locateMethodDefinitions(className, work);
   }
-
-  return methodsDefinitions;
 }
 
-function writeTxts(classes) {
+function writeTxts() {
   _.forOwn(classes, function (classMap, className) {
     fs.writeFileSync('out/txt/' + classMap.shortName + '.txt', JSON.stringify(classMap, null, '  '));
   });
@@ -277,15 +274,12 @@ function writeClassLib(classMap) {
     .then(function () { return end(); });
 }
 
-function writeLib(classes) {
+function writeLib() {
   return Promise.all(_.keys(classes))
     .each(function (className) {
       return writeClassLib(classes[className]);
     });
 }
-
-var classes;
-var methodsDefinitions;
 
 function main() {
 
@@ -293,11 +287,11 @@ function main() {
   mkdirp.sync('out/lib');
   mkdirp.sync('out/test');
 
-  classes = loadAllClasses();
-  methodsDefinitions = mapMethodDefinitions(classes);
+  loadAllClasses();
+  mapMethodDefinitions();
 
-  writeTxts(classes);
-  writeLib(classes).done();
+  writeTxts();
+  writeLib().done();
 }
 
 main();
