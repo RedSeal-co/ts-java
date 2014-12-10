@@ -4,7 +4,6 @@ var _ = require('lodash');
 var assert = require('assert-plus');
 var fs = require('fs');
 var Gremlin = require('gremlin-v3');
-var here = require('here').here;
 var mkdirp = require('mkdirp');
 var Work = require('./lib/work.js');
 
@@ -181,30 +180,36 @@ function writeTxts(classes) {
   });
 }
 
-function writeJsHeader(write, className, classMap) {
-  var firstLines = here(/*
-// ${name}.js
-
-'use strict';
-
-*/);
-
-  var imports = here(/*
-
-var ${name} = require('./${name}.js');
-*/);
-
-  var constructor = here(/*
-
-
-function ${name}(_jThis) {
-  if (!(this instanceof ${name})) {
-    return new ${name}(_jThis);
+function Block(lines, extra) {
+  extra = _.isNumber(extra) ? extra : 2;
+  function Extra() {
+    var s = '';
+    for (var i=0; i<extra; ++i)
+      s = s + '\n';
+    return s;
   }
-  this.jThis = _jThis;
+  return lines.join('\n') + Extra();
 }
 
-*/);
+function writeJsHeader(write, className, classMap) {
+  var firstLines = Block([
+    "// ${name}.js'",
+    "",
+    "'use strict';"
+  ]);
+
+  var imports = Block([
+    "var ${name} = require('./${name}.js');"
+  ], 1);
+
+  var constructor = Block([
+    "function ${name}(_jThis) {",
+    "  if (!(this instanceof ${name})) {",
+    "    return new ${name}(_jThis);",
+    "  }",
+    "  this.jThis = _jThis;",
+    "}"
+  ]);
 
   return write(_.template(firstLines, { name: className }), 'utf8')
     .then(function () {
@@ -223,27 +228,23 @@ function ${name}(_jThis) {
 }
 
 function writeOneDefinedMethod(write, className, method) {
-  var text = here
-(/*
+  var text = Block([
+    "// ${signature}",
+    "${clazz}.prototype.${method} = function() {",
+    "};"
+  ]);
 
-// ${signature}
-${clazz}.prototype.${method} = function() {
-};
-
-*/);
   var methodName = method.name;
   var signature = method.signature;
   return write(_.template(text, { clazz: className, method: methodName, signature: signature }), 'utf8');
 }
 
 function writeOneInheritedMethod(write, className, method) {
-  var text = here
-(/*
+  var text = Block([
+    "// ${signature}",
+    "${clazz}.prototype.${method} = ${defining}.prototype.${method};"
+  ]);
 
-// ${signature}
-${clazz}.prototype.${method} = ${defining}.prototype.${method};
-
-*/);
   var methodName = method.name;
   var signature = method.signature;
   var defining = classes[methodsDefinitions[signature]].shortName + 'Wrapper';
