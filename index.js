@@ -4,6 +4,7 @@ var _ = require('lodash');
 var assert = require('assert-plus');
 var fs = require('fs');
 var Gremlin = require('gremlin-v3');
+var Immutable = require('immutable');
 var mkdirp = require('mkdirp');
 var Work = require('./lib/work.js');
 
@@ -156,6 +157,31 @@ function loadAllClasses() {
   }
 }
 
+function interfacesClosure(className, work) {
+  assert.ok(!work.alreadyDone(className));
+  var transitiveClosure = Immutable.Set(classes[className].interfaces);
+
+  _.forEach(classes[className].interfaces, function (intf) {
+    if (!work.alreadyDone(intf))
+      interfacesClosure(intf, work);
+    assert.ok(work.alreadyDone(intf));
+    transitiveClosure = transitiveClosure.union(classes[intf].interfaces);
+  });
+
+  console.log('For class %s, before %j, after %j:', className, classes[className].interfaces, transitiveClosure);
+  classes[className].interfaces = transitiveClosure.toArray();
+  work.setDone(className);
+}
+
+function transitiveClosureInterfaces() {
+  var work = new Work(_.keys(classes));
+
+  while (!work.isDone()) {
+    var className = work.next();
+    interfacesClosure(className, work);
+  }
+}
+
 function mapMethodDefinitions() {
   var work = new Work(_.keys(classes));
   while (!work.isDone()) {
@@ -282,6 +308,9 @@ function main() {
   mkdirp.sync('out/test');
 
   loadAllClasses();
+
+  transitiveClosureInterfaces();
+
   mapMethodDefinitions();
 
   writeTxts();
