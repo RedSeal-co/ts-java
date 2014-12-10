@@ -102,14 +102,8 @@ function locateMethodDefinitions(className, classes, work) {
   work.setDone(className);
 }
 
-function main() {
-
-  mkdirp.sync('out/txt');
-  mkdirp.sync('out/lib');
-  mkdirp.sync('out/test');
-
+function loadAllClasses() {
   var classes = {};
-
   var work = new Work();
   work.addTodo('com.tinkerpop.gremlin.structure.Graph');
 
@@ -118,7 +112,10 @@ function main() {
     work.setDone(className);
     classes[className] = processClass(className, work);
   }
+  return classes;
+}
 
+function hackTraversalInterfaces(classes) {
   // HACK: in TP3, some *Traversal classes are not declared to implement Traversal,
   // e.g. ElementTraversal. I believe we will want to treat these classes as if they
   // actually do implement that interface.
@@ -127,19 +124,28 @@ function main() {
     if (className.match(/(\w+)Traversal$/)) {
       if (_.indexOf(classMap.interfaces, baseTraversal) === -1) {
         classMap.interfaces.push(baseTraversal);
-        console.log('Added %s to interfaces of %s', baseTraversal, className);
       }
     }
   });
+}
 
-  var newWork = new Work(work.getDone());
-
-  locateMethodDefinitions('com.tinkerpop.gremlin.process.Traversal', classes, newWork);
-  while (!newWork.isDone()) {
-    var className = newWork.next();
-    locateMethodDefinitions(className, classes, newWork);
+function mapMethodDefinitions(classes) {
+  var work = new Work(_.keys(classes));
+  while (!work.isDone()) {
+    var className = work.next();
+    locateMethodDefinitions(className, classes, work);
   }
+}
 
+function main() {
+
+  mkdirp.sync('out/txt');
+  mkdirp.sync('out/lib');
+  mkdirp.sync('out/test');
+
+  var classes = loadAllClasses();
+  hackTraversalInterfaces(classes);
+  mapMethodDefinitions(classes);
 }
 
 main();
