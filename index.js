@@ -4,8 +4,8 @@ var _ = require('lodash');
 var assert = require('assert-plus');
 var fs = require('fs');
 var Gremlin = require('gremlin-v3');
-var Immutable = require('immutable');
 var mkdirp = require('mkdirp');
+var Work = require('./lib/work.js');
 
 var gremlin = new Gremlin();
 var java = gremlin.java;
@@ -21,20 +21,23 @@ function shortClassName(className) {
   return m[1];
 }
 
-var done = Immutable.Set();
-var todo = Immutable.Set([
-  'com.tinkerpop.gremlin.structure.Graph'
-]);
-
 //   'com.tinkerpop.gremlin.process.graph.GraphTraversal',
 //   'com.tinkerpop.gremlin.process.graph.ElementTraversal',
 //   'com.tinkerpop.gremlin.structure.Vertex',
 //   'com.tinkerpop.gremlin.structure.Edge',
 //   'com.tinkerpop.gremlin.process.Traversal$SideEffects'
 
-var classes = {};
+// The set of packages and classes we are interested in. We ignore others.
+var whiteList = [
+  /^com\.tinkerpop\.gremlin/,
+  /^java\.util\.Iterator/
+];
 
-function mapMethod(method) {
+function inWhiteList(className) {
+  return _.find(whiteList, function (ns) { return className.match(ns); });
+}
+
+function mapMethod(method, work) {
   var methodMap = {
     name: method.getNameSync(),
     declared: method.getDeclaringClassSync().getNameSync(),
@@ -45,10 +48,11 @@ function mapMethod(method) {
     string: method.toStringSync(),
   };
 
+  methodMap.signature = methodMap.name + ':[' + methodMap.params.join() + ']';
+
   function addIfNotQueued(className) {
-    if (className.match(/^com.tinkerpop.gremlin/)) {
-      if (!done.has(className) && !todo.has(className))
-        todo = todo.add(className);
+    if (inWhiteList(className)) {
+      work.addTodo(className);
     }
   }
 
@@ -58,31 +62,44 @@ function mapMethod(method) {
   return methodMap;
 }
 
-function mapClass(className) {
+function mapClass(className, work) {
   var clazz = loadClass(className);
   assert.strictEqual(clazz.getNameSync(), className);
 
   var shortName = shortClassName(className);
-  var methods = _.map(clazz.getMethodsSync(), mapMethod);
+  var methods = _.map(clazz.getMethodsSync(), function (m) { return mapMethod(m, work); });
+
+  var interfaces = _.map(clazz.getInterfacesSync(), function (intf) { return intf.getNameSync(); });
 
   var classMap = {
     fullName: className,
     shortName: shortName,
+    interfaces: interfaces,
     methods: methods
   };
 
   return classMap;
 }
 
-function processClass(className) {
-  var classMap = mapClass(className);
-  var methods = classMap.methods;
-  var shortName = classMap.shortName;
+function processClass(className, work) {
+  var classMap = mapClass(className, work);
+  fs.writeFileSync('out/txt/' + classMap.shortName + '.txt', JSON.stringify(classMap, null, '  '));
+  return classMap;
+}
 
-  var definedMethods = _.filter(methods, function (m) { return m.declared === className; });
-  var inheritedMethods = _.filter(methods, function (m) { return m.declared !== className; });
-  fs.writeFileSync('out/txt/' + shortName + '.defined.txt', JSON.stringify(definedMethods, null, '  '));
-  fs.writeFileSync('out/txt/' + shortName + '.inherited.txt', JSON.stringify(inheritedMethods, null, '  '));
+function locateMethodDefinitions(className, classes, work) {
+  assert.ok(className in classes);
+  var classMap = classes[className];
+  assert.strictEqual(className, classMap.fullName);
+
+  _.forEach(classMap.interfaces, function (intf) {
+    if (!work.alreadyDone(intf) && intf in classes) {
+      locateMethodDefinitions(intf, classes, work);
+    }
+  });
+
+  console.log(className);
+  work.setDone(className);
 }
 
 function main() {
@@ -91,14 +108,38 @@ function main() {
   mkdirp.sync('out/lib');
   mkdirp.sync('out/test');
 
-  while (todo.size > 0) {
-    var className = todo.first();
-    todo = todo.remove(className);
-    done = done.add(className);
-    processClass(className);
+  var classes = {};
+
+  var work = new Work();
+  work.addTodo('com.tinkerpop.gremlin.structure.Graph');
+
+  while (!work.isDone()) {
+    var className = work.next();
+    work.setDone(className);
+    classes[className] = processClass(className, work);
   }
 
-  console.log(done);
+  // HACK: in TP3, some *Traversal classes are not declared to implement Traversal,
+  // e.g. ElementTraversal. I believe we will want to treat these classes as if they
+  // actually do implement that interface.
+  var baseTraversal = 'com.tinkerpop.gremlin.process.Traversal';
+  _.forOwn(classes, function (classMap, className) {
+    if (className.match(/(\w+)Traversal$/)) {
+      if (_.indexOf(classMap.interfaces, baseTraversal) === -1) {
+        classMap.interfaces.push(baseTraversal);
+        console.log('Added %s to interfaces of %s', baseTraversal, className);
+      }
+    }
+  });
+
+  var newWork = new Work(work.getDone());
+
+  locateMethodDefinitions('com.tinkerpop.gremlin.process.Traversal', classes, newWork);
+  while (!newWork.isDone()) {
+    var className = newWork.next();
+    locateMethodDefinitions(className, classes, newWork);
+  }
+
 }
 
 main();
