@@ -182,50 +182,92 @@ function writeTxts(classes) {
 }
 
 function writeJsHeader(write, className, classMap) {
-  var header = here(/*
-    // ${name}.js
+  var firstLines = here(/*
+// ${name}.js
 
-    'use strict';
+'use strict';
 
-    function ${name}(_jThis) {
-      if (!(this instanceof ${name})) {
-        return new ${name}(_jThis);
-      }
-      this.jThis = _jThis;
-    }
+*/);
 
-  */).unindent();
+  var imports = here(/*
 
-  return write(_.template(header, { name: className }), 'utf8');
+var ${name} = require('./${name}.js');
+*/);
+
+  var constructor = here(/*
+
+
+function ${name}(_jThis) {
+  if (!(this instanceof ${name})) {
+    return new ${name}(_jThis);
+  }
+  this.jThis = _jThis;
 }
 
-function writeOneJsMethod(write, className, method) {
-  var text = here(/*
-    // ${signature}
-    ${clazz}.prototype.${method} = function() {
-    };
+*/);
 
-  */).unindent();
+  return write(_.template(firstLines, { name: className }), 'utf8')
+    .then(function () {
+      return Promise.all(classMap.interfaces)
+        .each(function (intf) {
+          if (intf in classes) {
+            var interfaceMap = classes[intf];
+            var interfaceName = interfaceMap.shortName + 'Wrapper';
+            return write(_.template(imports, { name: interfaceName }), 'utf8');
+          }
+        });
+    })
+    .then(function () {
+      return write(_.template(constructor, { name: className }), 'utf8');
+    });
+}
+
+function writeOneDefinedMethod(write, className, method) {
+  var text = here
+(/*
+
+// ${signature}
+${clazz}.prototype.${method} = function() {
+};
+
+*/);
   var methodName = method.name;
   var signature = method.signature;
   return write(_.template(text, { clazz: className, method: methodName, signature: signature }), 'utf8');
 }
 
+function writeOneInheritedMethod(write, className, method) {
+  var text = here
+(/*
+
+// ${signature}
+${clazz}.prototype.${method} = ${defining}.prototype.${method};
+
+*/);
+  var methodName = method.name;
+  var signature = method.signature;
+  var defining = classes[methodsDefinitions[signature]].shortName + 'Wrapper';
+  return write(_.template(text, { clazz: className, method: methodName, signature: signature, defining: defining }), 'utf8');
+}
+
 function writeJsMethods(write, className, classMap) {
   return Promise.all(classMap.methods)
     .each(function (method) {
-      return writeOneJsMethod(write, className, method);
+      if (method.definedHere)
+        return writeOneDefinedMethod(write, className, method);
+      else
+        return writeOneInheritedMethod(write, className, method);
     });
 }
 
 function writeClassLib(classMap) {
-  var fileName = 'out/lib/' + classMap.shortName + '.js';
+  var className = classMap.shortName + 'Wrapper';
+  var fileName = 'out/lib/' + className + '.js';
 
   var stream = fs.createWriteStream(fileName);
   var write = Promise.promisify(stream.write, stream);
   var end = Promise.promisify(stream.end, stream);
 
-  var className = classMap.shortName + 'Wrapper';
   return writeJsHeader(write, className, classMap)
     .then(function () { return writeJsMethods(write, className, classMap); })
     .then(function () { return end(); });
@@ -238,15 +280,18 @@ function writeLib(classes) {
     });
 }
 
+var classes;
+var methodsDefinitions;
+
 function main() {
 
   mkdirp.sync('out/txt');
   mkdirp.sync('out/lib');
   mkdirp.sync('out/test');
 
-  var classes = loadAllClasses();
+  classes = loadAllClasses();
   hackTraversalInterfaces(classes);
-  var methodsDefinitions = mapMethodDefinitions(classes);
+  methodsDefinitions = mapMethodDefinitions(classes);
 
   writeTxts(classes);
   writeLib(classes).done();
