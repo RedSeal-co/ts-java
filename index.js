@@ -111,12 +111,6 @@ function mapClass(className, work) {
   return classMap;
 }
 
-function processClass(className, work) {
-  var classMap = mapClass(className, work);
-  fs.writeFileSync('out/txt/' + classMap.shortName + '.txt', JSON.stringify(classMap, null, '  '));
-  return classMap;
-}
-
 function locateMethodDefinitions(className, work) {
   assert.object(methodsDefinitions);
 
@@ -158,7 +152,7 @@ function loadAllClasses() {
   while (!work.isDone()) {
     var className = work.next();
     work.setDone(className);
-    classes[className] = processClass(className, work);
+    classes[className] = mapClass(className, work);
   }
 }
 
