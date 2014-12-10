@@ -35,6 +35,12 @@ function inWhiteList(className) {
   return _.find(whiteList, function (ns) { return className.match(ns); });
 }
 
+function addIfNotQueued(className, work) {
+  if (inWhiteList(className)) {
+    work.addTodo(className);
+  }
+}
+
 function mapMethod(method, work) {
   var methodMap = {
     name: method.getNameSync(),
@@ -60,15 +66,8 @@ function mapMethod(method, work) {
     methodMap.signature = methodMap.name + '(' + methodMap.params.join() + varArgs + ')';
   }
 
-
-  function addIfNotQueued(className) {
-    if (inWhiteList(className)) {
-      work.addTodo(className);
-    }
-  }
-
-  addIfNotQueued(methodMap.declared);
-  addIfNotQueued(methodMap.returns);
+  addIfNotQueued(methodMap.declared, work);
+  addIfNotQueued(methodMap.returns, work);
 
   return methodMap;
 }
@@ -81,10 +80,23 @@ function mapClass(className, work) {
   var methods = _.map(clazz.getMethodsSync(), function (m) { return mapMethod(m, work); });
 
   var interfaces = _.map(clazz.getInterfacesSync(), function (intf) { return intf.getNameSync(); });
+  interfaces = _.filter(interfaces, function (intf) { return inWhiteList(intf); });
+
+  // HACK: in TP3, some *Traversal classes are not declared to implement Traversal,
+  // e.g. ElementTraversal. I believe we will want to treat these classes as if they
+  // actually do implement that interface.
+  if (className.match(/(\w+)Traversal$/)) {
+    var baseTraversal = 'com.tinkerpop.gremlin.process.Traversal';
+    if (_.indexOf(interfaces, baseTraversal) === -1) {
+      interfaces.push(baseTraversal);
+    }
+  }
 
   var javaLangObject = 'java.lang.Object';
-  if (className !== javaLangObject)
+  if (interfaces.length === 0 && className !== javaLangObject)
     interfaces.push(javaLangObject);
+
+  _.forEach(interfaces, function (intf) { addIfNotQueued(intf, work); });
 
   var classMap = {
     fullName: className,
@@ -110,7 +122,8 @@ function locateMethodDefinitions(className, classes, work, methodsDefinitions) {
   assert.strictEqual(className, classMap.fullName);
 
   _.forEach(classMap.interfaces, function (intf) {
-    if (!work.alreadyDone(intf) && intf in classes) {
+    if (!work.alreadyDone(intf)) {
+      assert.ok(intf in classes, 'Unknown interface:' + intf);
       locateMethodDefinitions(intf, classes, work, methodsDefinitions);
     }
   });
@@ -148,20 +161,6 @@ function loadAllClasses() {
   return classes;
 }
 
-function hackTraversalInterfaces(classes) {
-  // HACK: in TP3, some *Traversal classes are not declared to implement Traversal,
-  // e.g. ElementTraversal. I believe we will want to treat these classes as if they
-  // actually do implement that interface.
-  var baseTraversal = 'com.tinkerpop.gremlin.process.Traversal';
-  _.forOwn(classes, function (classMap, className) {
-    if (className.match(/(\w+)Traversal$/)) {
-      if (_.indexOf(classMap.interfaces, baseTraversal) === -1) {
-        classMap.interfaces.push(baseTraversal);
-      }
-    }
-  });
-}
-
 function mapMethodDefinitions(classes) {
   var methodsDefinitions = {};
 
@@ -191,16 +190,27 @@ function Block(lines, extra) {
   return lines.join('\n') + Extra();
 }
 
+function writeRequiredInterfaces(write, classMap) {
+  var imports = Block([
+    "var ${name} = require('./${name}.js');"
+  ], 1);
+
+  return Promise.all(classMap.interfaces)
+    .each(function (intf) {
+      assert.ok(intf in classes, 'Unknown interface:' + intf);
+      var interfaceMap = classes[intf];
+      var interfaceName = interfaceMap.shortName + 'Wrapper';
+      return write(_.template(imports, { name: interfaceName }));
+    })
+    .then(function () { return write('\n'); });
+}
+
 function writeJsHeader(write, className, classMap) {
   var firstLines = Block([
     "// ${name}.js'",
     "",
     "'use strict';"
   ]);
-
-  var imports = Block([
-    "var ${name} = require('./${name}.js');"
-  ], 1);
 
   var constructor = Block([
     "function ${name}(_jThis) {",
@@ -211,19 +221,12 @@ function writeJsHeader(write, className, classMap) {
     "}"
   ]);
 
-  return write(_.template(firstLines, { name: className }), 'utf8')
+  return write(_.template(firstLines, { name: className }))
     .then(function () {
-      return Promise.all(classMap.interfaces)
-        .each(function (intf) {
-          if (intf in classes) {
-            var interfaceMap = classes[intf];
-            var interfaceName = interfaceMap.shortName + 'Wrapper';
-            return write(_.template(imports, { name: interfaceName }), 'utf8');
-          }
-        });
+      return writeRequiredInterfaces(write, classMap);
     })
     .then(function () {
-      return write(_.template(constructor, { name: className }), 'utf8');
+      return write(_.template(constructor, { name: className }));
     });
 }
 
@@ -236,7 +239,7 @@ function writeOneDefinedMethod(write, className, method) {
 
   var methodName = method.name;
   var signature = method.signature;
-  return write(_.template(text, { clazz: className, method: methodName, signature: signature }), 'utf8');
+  return write(_.template(text, { clazz: className, method: methodName, signature: signature }));
 }
 
 function writeOneInheritedMethod(write, className, method) {
@@ -248,7 +251,7 @@ function writeOneInheritedMethod(write, className, method) {
   var methodName = method.name;
   var signature = method.signature;
   var defining = classes[methodsDefinitions[signature]].shortName + 'Wrapper';
-  return write(_.template(text, { clazz: className, method: methodName, signature: signature, defining: defining }), 'utf8');
+  return write(_.template(text, { clazz: className, method: methodName, signature: signature, defining: defining }));
 }
 
 function writeJsMethods(write, className, classMap) {
@@ -291,7 +294,6 @@ function main() {
   mkdirp.sync('out/test');
 
   classes = loadAllClasses();
-  hackTraversalInterfaces(classes);
   methodsDefinitions = mapMethodDefinitions(classes);
 
   writeTxts(classes);
