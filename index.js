@@ -4,12 +4,16 @@ var _ = require('lodash');
 var assert = require('assert-plus');
 var fs = require('fs');
 var Gremlin = require('gremlin-v3');
+var here = require('here').here;
 var mkdirp = require('mkdirp');
 var Work = require('./lib/work.js');
 
 var gremlin = new Gremlin();
 var java = gremlin.java;
 var Class = java.import('java.lang.Class');
+
+var Promise = require("bluebird");
+Promise.longStackTraces();
 
 function loadClass(className) {
   return java.getClassLoader().loadClassSync(className);
@@ -21,16 +25,11 @@ function shortClassName(className) {
   return m[1];
 }
 
-//   'com.tinkerpop.gremlin.process.graph.GraphTraversal',
-//   'com.tinkerpop.gremlin.process.graph.ElementTraversal',
-//   'com.tinkerpop.gremlin.structure.Vertex',
-//   'com.tinkerpop.gremlin.structure.Edge',
-//   'com.tinkerpop.gremlin.process.Traversal$SideEffects'
-
 // The set of packages and classes we are interested in. We ignore others.
 var whiteList = [
   /^com\.tinkerpop\.gremlin/,
-  /^java\.util\.Iterator/
+  /^java\.util\.Iterator/,
+  /^java\.lang\.Object/
 ];
 
 function inWhiteList(className) {
@@ -48,7 +47,20 @@ function mapMethod(method, work) {
     string: method.toStringSync(),
   };
 
-  methodMap.signature = methodMap.name + ':[' + methodMap.params.join() + ']';
+  var varArgs = methodMap.isVarArgs ? '...' : '';
+  if (methodMap.isVarArgs) {
+    var last = _.last(methodMap.params);
+    var match = /\[L(.+);/.exec(last);
+    assert.ok(match);
+    var finalArg = match[1] + '...';
+    var params = methodMap.params.slice(0, -1);
+    params.push(finalArg);
+    methodMap.signature = methodMap.name + '(' + params.join() + ')';
+  }
+  else {
+    methodMap.signature = methodMap.name + '(' + methodMap.params.join() + varArgs + ')';
+  }
+
 
   function addIfNotQueued(className) {
     if (inWhiteList(className)) {
@@ -71,6 +83,10 @@ function mapClass(className, work) {
 
   var interfaces = _.map(clazz.getInterfacesSync(), function (intf) { return intf.getNameSync(); });
 
+  var javaLangObject = 'java.lang.Object';
+  if (className !== javaLangObject)
+    interfaces.push(javaLangObject);
+
   var classMap = {
     fullName: className,
     shortName: shortName,
@@ -87,15 +103,32 @@ function processClass(className, work) {
   return classMap;
 }
 
-function locateMethodDefinitions(className, classes, work) {
+function locateMethodDefinitions(className, classes, work, methodsDefinitions) {
+  assert.object(methodsDefinitions);
+
   assert.ok(className in classes);
   var classMap = classes[className];
   assert.strictEqual(className, classMap.fullName);
 
   _.forEach(classMap.interfaces, function (intf) {
     if (!work.alreadyDone(intf) && intf in classes) {
-      locateMethodDefinitions(intf, classes, work);
+      locateMethodDefinitions(intf, classes, work, methodsDefinitions);
     }
+  });
+
+  _.forEach(classMap.methods, function (method, index) {
+    assert.string(method.signature);
+    var definedHere = false;
+    if (!(method.signature in methodsDefinitions)) {
+      if (!(method.signature in classMap.interfaces)) {
+        definedHere = true;
+        methodsDefinitions[method.signature] = className;
+        if (method.declared !== className) {
+          console.log('Method %s located in %s but declared in %s', method.signature, className, method.declared);
+        }
+      }
+    }
+    classMap.methods[index].definedHere = definedHere;
   });
 
   console.log(className);
@@ -105,6 +138,7 @@ function locateMethodDefinitions(className, classes, work) {
 function loadAllClasses() {
   var classes = {};
   var work = new Work();
+  work.addTodo('java.lang.Object');
   work.addTodo('com.tinkerpop.gremlin.structure.Graph');
 
   while (!work.isDone()) {
@@ -130,11 +164,78 @@ function hackTraversalInterfaces(classes) {
 }
 
 function mapMethodDefinitions(classes) {
+  var methodsDefinitions = {};
+
   var work = new Work(_.keys(classes));
   while (!work.isDone()) {
     var className = work.next();
-    locateMethodDefinitions(className, classes, work);
+    locateMethodDefinitions(className, classes, work, methodsDefinitions);
   }
+
+  return methodsDefinitions;
+}
+
+function writeTxts(classes) {
+  _.forOwn(classes, function (classMap, className) {
+    fs.writeFileSync('out/txt/' + classMap.shortName + '.txt', JSON.stringify(classMap, null, '  '));
+  });
+}
+
+function writeJsHeader(write, className, classMap) {
+  var header = here(/*
+    // ${name}.js
+
+    'use strict';
+
+    function ${name}(_jThis) {
+      if (!(this instanceof ${name})) {
+        return new ${name}(_jThis);
+      }
+      this.jThis = _jThis;
+    }
+
+  */).unindent();
+
+  return write(_.template(header, { name: className }), 'utf8');
+}
+
+function writeOneJsMethod(write, className, method) {
+  var text = here(/*
+    // ${signature}
+    ${clazz}.prototype.${method} = function() {
+    };
+
+  */).unindent();
+  var methodName = method.name;
+  var signature = method.signature;
+  return write(_.template(text, { clazz: className, method: methodName, signature: signature }), 'utf8');
+}
+
+function writeJsMethods(write, className, classMap) {
+  return Promise.all(classMap.methods)
+    .each(function (method) {
+      return writeOneJsMethod(write, className, method);
+    });
+}
+
+function writeClassLib(classMap) {
+  var fileName = 'out/lib/' + classMap.shortName + '.js';
+
+  var stream = fs.createWriteStream(fileName);
+  var write = Promise.promisify(stream.write, stream);
+  var end = Promise.promisify(stream.end, stream);
+
+  var className = classMap.shortName + 'Wrapper';
+  return writeJsHeader(write, className, classMap)
+    .then(function () { return writeJsMethods(write, className, classMap); })
+    .then(function () { return end(); });
+}
+
+function writeLib(classes) {
+  return Promise.all(_.keys(classes))
+    .each(function (className) {
+      return writeClassLib(classes[className]);
+    });
 }
 
 function main() {
@@ -145,7 +246,10 @@ function main() {
 
   var classes = loadAllClasses();
   hackTraversalInterfaces(classes);
-  mapMethodDefinitions(classes);
+  var methodsDefinitions = mapMethodDefinitions(classes);
+
+  writeTxts(classes);
+  writeLib(classes).done();
 }
 
 main();
