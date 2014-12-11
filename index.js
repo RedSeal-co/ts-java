@@ -64,11 +64,12 @@ function mapMethod(method, work) {
     var finalArg = match[1] + '...';
     var params = methodMap.params.slice(0, -1);
     params.push(finalArg);
-    methodMap.signature = methodMap.name + '(' + params.join() + ')';
+    methodMap.signature = methodMap.name + '(' + params.join() + '): ' + methodMap.returns;
   }
   else {
-    methodMap.signature = methodMap.name + '(' + methodMap.params.join() + varArgs + ')';
+    methodMap.signature = methodMap.name + '(' + methodMap.params.join() + varArgs + '): ' + methodMap.returns;
   }
+
 
   addIfNotQueued(methodMap.declared, work);
   addIfNotQueued(methodMap.returns, work);
@@ -105,9 +106,19 @@ function mapClass(className, work) {
   var classMap = {
     fullName: className,
     shortName: shortName,
+    superClass: superClass,
     interfaces: interfaces,
     methods: methods
   };
+
+  var superClass = clazz.getSuperclassSync()
+  if (superClass) {
+    classMap.superClass = superClass.getNameSync();
+    console.log('Superclass of %s is %s', className, classMap.superClass);
+  }
+  else {
+    console.log('Class %s has no superclass', className);
+  }
 
   return classMap;
 }
@@ -157,19 +168,33 @@ function loadAllClasses() {
   }
 }
 
+function byDepth(a, b) {
+  var result = classes[a].depth - classes[b].depth;
+  if (result === 0) {
+    // for tiebreaker, arrange for java.* to sort before com.*
+    result = classes[b].fullName.localeCompare(classes[a].fullName);
+  }
+  return result;
+}
+
 function interfacesClosure(className, work) {
   assert.ok(!work.alreadyDone(className));
   var transitiveClosure = Immutable.Set(classes[className].interfaces);
 
+  var maxdepth = 0;
   _.forEach(classes[className].interfaces, function (intf) {
     if (!work.alreadyDone(intf))
       interfacesClosure(intf, work);
     assert.ok(work.alreadyDone(intf));
+    assert.number(classes[intf].depth);
+    if (maxdepth < classes[intf].depth)
+      maxdepth = classes[intf].depth;
     transitiveClosure = transitiveClosure.union(classes[intf].interfaces);
   });
 
-  console.log('For class %s, before %j, after %j:', className, classes[className].interfaces, transitiveClosure);
-  classes[className].interfaces = transitiveClosure.toArray();
+//   console.log('For class %s, before %j, after %j:', className, classes[className].interfaces, transitiveClosure);
+  classes[className].interfaces = transitiveClosure.toArray().sort(byDepth);
+  classes[className].depth = maxdepth+1;
   work.setDone(className);
 }
 
@@ -190,9 +215,9 @@ function mapMethodDefinitions() {
   }
 }
 
-function writeTxts() {
+function writeJsons() {
   _.forOwn(classes, function (classMap, className) {
-    fs.writeFileSync('out/txt/' + classMap.shortName + '.txt', JSON.stringify(classMap, null, '  '));
+    fs.writeFileSync('out/json/' + classMap.shortName + '.json', JSON.stringify(classMap, null, '  '));
   });
 }
 
@@ -303,7 +328,7 @@ function writeLib() {
 
 function main() {
 
-  mkdirp.sync('out/txt');
+  mkdirp.sync('out/json');
   mkdirp.sync('out/lib');
   mkdirp.sync('out/test');
 
@@ -313,7 +338,7 @@ function main() {
 
   mapMethodDefinitions();
 
-  writeTxts();
+  writeJsons();
   writeLib().done();
 }
 
