@@ -12,8 +12,8 @@ var gremlin = new Gremlin();
 var java = gremlin.java;
 var Class = java.import('java.lang.Class');
 
-var Promise = require("bluebird");
-Promise.longStackTraces();
+var BluePromise = require("bluebird");
+BluePromise.longStackTraces();
 
 var classes = {};
 var methodsDefinitions = {};
@@ -106,12 +106,11 @@ function mapClass(className, work) {
   var classMap = {
     fullName: className,
     shortName: shortName,
-    superClass: superClass,
     interfaces: interfaces,
     methods: methods
   };
 
-  var superClass = clazz.getSuperclassSync()
+  var superClass = clazz.getSuperclassSync();
   if (superClass) {
     classMap.superClass = superClass.getNameSync();
     console.log('Superclass of %s is %s', className, classMap.superClass);
@@ -221,23 +220,23 @@ function writeJsons() {
   });
 }
 
-function Block(lines, extra) {
+function block(lines, extra) {
   extra = _.isNumber(extra) ? extra : 2;
-  function Extra() {
+  function extraLines() {
     var s = '';
     for (var i=0; i<extra; ++i)
       s = s + '\n';
     return s;
   }
-  return lines.join('\n') + Extra();
+  return lines.join('\n') + extraLines();
 }
 
 function writeRequiredInterfaces(write, classMap) {
-  var imports = Block([
+  var imports = block([
     "var ${name} = require('./${name}.js');"
   ], 1);
 
-  return Promise.all(classMap.interfaces)
+  return BluePromise.all(classMap.interfaces)
     .each(function (intf) {
       assert.ok(intf in classes, 'Unknown interface:' + intf);
       var interfaceMap = classes[intf];
@@ -248,13 +247,13 @@ function writeRequiredInterfaces(write, classMap) {
 }
 
 function writeJsHeader(write, className, classMap) {
-  var firstLines = Block([
+  var firstLines = block([
     "// ${name}.js'",
     "",
     "'use strict';"
   ]);
 
-  var constructor = Block([
+  var constructor = block([
     "function ${name}(_jThis) {",
     "  if (!(this instanceof ${name})) {",
     "    return new ${name}(_jThis);",
@@ -273,7 +272,7 @@ function writeJsHeader(write, className, classMap) {
 }
 
 function writeOneDefinedMethod(write, className, method) {
-  var text = Block([
+  var text = block([
     "// ${signature}",
     "${clazz}.prototype.${method} = function() {",
     "};"
@@ -285,7 +284,7 @@ function writeOneDefinedMethod(write, className, method) {
 }
 
 function writeOneInheritedMethod(write, className, method) {
-  var text = Block([
+  var text = block([
     "// ${signature}",
     "${clazz}.prototype.${method} = ${defining}.prototype.${method};"
   ]);
@@ -301,7 +300,7 @@ function writeJsMethods(write, className, classMap) {
     return a.signature.localeCompare(b.signature);
   }
 
-  return Promise.all(classMap.methods.sort(bySignature))
+  return BluePromise.all(classMap.methods.sort(bySignature))
     .each(function (method) {
       if (method.definedHere)
         return writeOneDefinedMethod(write, className, method);
@@ -315,8 +314,8 @@ function writeClassLib(classMap) {
   var fileName = 'out/lib/' + className + '.js';
 
   var stream = fs.createWriteStream(fileName);
-  var write = Promise.promisify(stream.write, stream);
-  var end = Promise.promisify(stream.end, stream);
+  var write = BluePromise.promisify(stream.write, stream);
+  var end = BluePromise.promisify(stream.end, stream);
 
   return writeJsHeader(write, className, classMap)
     .then(function () { return writeJsMethods(write, className, classMap); })
@@ -324,7 +323,7 @@ function writeClassLib(classMap) {
 }
 
 function writeLib() {
-  return Promise.all(_.keys(classes))
+  return BluePromise.all(_.keys(classes))
     .each(function (className) {
       return writeClassLib(classes[className]);
     });

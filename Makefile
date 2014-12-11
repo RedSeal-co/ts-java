@@ -7,6 +7,9 @@ clean:
 	rm -f out/txt/*.txt out/lib/*.js
 
 lint:
+	node_modules/jshint/bin/jshint --verbose index.js lib
+
+lintOut:
 	node_modules/jshint/bin/jshint --verbose out/lib
 
 test:
