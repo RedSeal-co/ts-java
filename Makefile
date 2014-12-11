@@ -1,4 +1,4 @@
-.PHONY: clean
+.PHONY: clean test
 
 default:
 	node index.js
@@ -8,3 +8,6 @@ clean:
 
 lint:
 	node_modules/jshint/bin/jshint --verbose out/lib
+
+test:
+	node_modules/mocha/bin/mocha --reporter=spec --ui tdd
