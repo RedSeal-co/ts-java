@@ -12,5 +12,5 @@ lint:
 lintOut:
 	node_modules/jshint/bin/jshint --verbose out/lib
 
-test:
+test: lint
 	node_modules/mocha/bin/mocha --reporter=spec --ui tdd

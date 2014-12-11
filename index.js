@@ -10,7 +10,6 @@ var Work = require('./lib/work.js');
 
 var gremlin = new Gremlin();
 var java = gremlin.java;
-var Class = java.import('java.lang.Class');
 
 var BluePromise = require("bluebird");
 BluePromise.longStackTraces();
@@ -77,25 +76,19 @@ function mapMethod(method, work) {
   return methodMap;
 }
 
-function mapClass(className, work) {
-  var clazz = loadClass(className);
-  assert.strictEqual(clazz.getNameSync(), className);
-
-  var shortName = shortClassName(className);
-  var methods = _.map(clazz.getMethodsSync(), function (m) { return mapMethod(m, work); });
-
+function mapClassInterfaces(className, clazz, work) {
   var interfaces = _.map(clazz.getInterfacesSync(), function (intf) { return intf.getNameSync(); });
   interfaces = _.filter(interfaces, function (intf) { return inWhiteList(intf); });
 
-  // HACK: in TP3, some *Traversal classes are not declared to implement Traversal,
-  // e.g. ElementTraversal. I believe we will want to treat these classes as if they
-  // actually do implement that interface.
-  if (className.match(/(\w+)Traversal$/)) {
-    var baseTraversal = 'com.tinkerpop.gremlin.process.Traversal';
-    if (_.indexOf(interfaces, baseTraversal) === -1) {
-      interfaces.push(baseTraversal);
-    }
-  }
+// HACK: in TP3, some *Traversal classes are not declared to implement Traversal,
+// e.g. ElementTraversal. I believe we will want to treat these classes as if they
+// actually do implement that interface.
+//   if (className.match(/(\w+)Traversal$/)) {
+//     var baseTraversal = 'com.tinkerpop.gremlin.process.Traversal';
+//     if (_.indexOf(interfaces, baseTraversal) === -1) {
+//       interfaces.push(baseTraversal);
+//     }
+//   }
 
   var javaLangObject = 'java.lang.Object';
   if (interfaces.length === 0 && className !== javaLangObject)
@@ -103,21 +96,25 @@ function mapClass(className, work) {
 
   _.forEach(interfaces, function (intf) { addIfNotQueued(intf, work); });
 
+  return interfaces;
+}
+
+function mapClassMethods(className, clazz, work) {
+  return _.map(clazz.getMethodsSync(), function (m) { return mapMethod(m, work); });
+}
+
+function mapClass(className, work) {
+  var clazz = loadClass(className);
+
+  var interfaces = mapClassInterfaces(className, clazz, work);
+  var methods = mapClassMethods(className, clazz, work);
+
   var classMap = {
     fullName: className,
-    shortName: shortName,
+    shortName: shortClassName(className),
     interfaces: interfaces,
     methods: methods
   };
-
-  var superClass = clazz.getSuperclassSync();
-  if (superClass) {
-    classMap.superClass = superClass.getNameSync();
-    console.log('Superclass of %s is %s', className, classMap.superClass);
-  }
-  else {
-    console.log('Class %s has no superclass', className);
-  }
 
   return classMap;
 }
@@ -155,25 +152,14 @@ function locateMethodDefinitions(className, work) {
   work.setDone(className);
 }
 
-function loadAllClasses() {
-  var work = new Work();
-  work.addTodo('java.lang.Object');
-  work.addTodo('com.tinkerpop.gremlin.structure.Graph');
+function loadAllClasses(seedClasses) {
+  var work = new Work(seedClasses);
 
   while (!work.isDone()) {
     var className = work.next();
     work.setDone(className);
     classes[className] = mapClass(className, work);
   }
-}
-
-function byDepth(a, b) {
-  var result = classes[a].depth - classes[b].depth;
-  if (result === 0) {
-    // for tiebreaker, arrange for java.* to sort before com.*
-    result = classes[b].fullName.localeCompare(classes[a].fullName);
-  }
-  return result;
 }
 
 function interfacesClosure(className, work) {
@@ -190,6 +176,15 @@ function interfacesClosure(className, work) {
       maxdepth = classes[intf].depth;
     transitiveClosure = transitiveClosure.union(classes[intf].interfaces);
   });
+
+  function byDepth(a, b) {
+    var result = classes[a].depth - classes[b].depth;
+    if (result === 0) {
+      // for tiebreaker, arrange for java.* to sort before com.*
+      result = classes[b].fullName.localeCompare(classes[a].fullName);
+    }
+    return result;
+  }
 
 //   console.log('For class %s, before %j, after %j:', className, classes[className].interfaces, transitiveClosure);
   classes[className].interfaces = transitiveClosure.toArray().sort(byDepth);
@@ -335,7 +330,8 @@ function main() {
   mkdirp.sync('out/lib');
   mkdirp.sync('out/test');
 
-  loadAllClasses();
+  var seedClasses = ['java.lang.Object', 'com.tinkerpop.gremlin.structure.Graph'];
+  loadAllClasses(seedClasses);
 
   transitiveClosureInterfaces();
 

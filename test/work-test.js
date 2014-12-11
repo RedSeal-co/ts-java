@@ -23,12 +23,12 @@ describe('Work', function() {
   });
 
   describe('isDone', function() {
-    it('isDone should be true if no work', function(done) {
+    it('should return true when no work pending', function(done) {
       expect(work.isDone()).to.equal(true);
       done();
     });
 
-    it('isDone should be true if has pending work', function(done) {
+    it('should return false when work is pending', function(done) {
       work.addTodo('a');
       expect(work.isDone()).to.equal(false);
       done();
@@ -36,11 +36,11 @@ describe('Work', function() {
   });
 
   describe('setDone', function() {
-    it('throws an error when setDone on an unknown item', function(done) {
+    it('should throw an error when called with an unknown item', function(done) {
       expect(function () { work.setDone('a'); }).to.throw(Error);
       done();
     });
-    it('setDone on last pending item sets work all done', function(done) {
+    it('should change state to all done when called on last pending item', function(done) {
       expect(work.isDone()).to.equal(true);
       work.addTodo('a');
       expect(work.isDone()).to.equal(false);
@@ -48,7 +48,7 @@ describe('Work', function() {
       expect(work.isDone()).to.equal(true);
       done();
     });
-    it('setDone with other item pending leaves work not all done', function(done) {
+    it('should remain !isDone when called with other items still pending', function(done) {
       expect(work.isDone()).to.equal(true);
       work.addTodo('a');
       work.addTodo('b');
@@ -60,7 +60,7 @@ describe('Work', function() {
   });
 
   describe('addTodo', function() {
-    it('is a no-op to add a done item', function(done) {
+    it('should do nothing when adding a done item', function(done) {
       work.addTodo('a');
       work.setDone('a');
       expect(work.isDone()).to.be.ok;
@@ -71,18 +71,18 @@ describe('Work', function() {
   })
 
   describe('alreadyDone', function() {
-    it('alreadyDone should be false for an unknown item', function(done) {
+    it('should return false for an unknown item', function(done) {
       expect(work.alreadyDone('a')).to.be.not.ok;
       done();
     });
 
-    it('alreadyDone should be false for pending item', function(done) {
+    it('should return false for pending item', function(done) {
       work.addTodo('a');
       expect(work.alreadyDone('a')).to.be.not.ok;
       done();
     });
 
-    it('alreadyDone should be true for a done item', function(done) {
+    it('should return true for a done item', function(done) {
       work.addTodo('a');
       work.setDone('a');
       expect(work.alreadyDone('a')).to.be.ok;
@@ -91,20 +91,20 @@ describe('Work', function() {
   });
 
   describe('next', function() {
-    it('next should return undefined when no work pending', function(done) {
+    it('should return undefined when no work pending', function(done) {
       expect(work.isDone()).to.be.ok;
       expect(work.next()).to.be.undefined;
       done();
     });
 
-    it('next should return the one item when one item pending', function(done) {
+    it('should return the item when one item pending', function(done) {
       expect(work.isDone()).to.be.ok;
       work.addTodo('a');
       expect(work.next()).to.equal('a');
       done();
     });
 
-    it('while next setDone should deplete work queue', function(done) {
+    it('should deplete the work queue when called repeatedly in a next/setDone loop', function(done) {
       var todo = ['x', 'a', 'z', 'b'];
       var original = Immutable.Set(todo);
       work = new Work(todo);
