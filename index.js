@@ -297,7 +297,11 @@ function writeOneInheritedMethod(write, className, method) {
 }
 
 function writeJsMethods(write, className, classMap) {
-  return Promise.all(classMap.methods)
+  function bySignature(a, b) {
+    return a.signature.localeCompare(b.signature);
+  }
+
+  return Promise.all(classMap.methods.sort(bySignature))
     .each(function (method) {
       if (method.definedHere)
         return writeOneDefinedMethod(write, className, method);
