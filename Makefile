@@ -4,7 +4,7 @@ default:
 	node index.js
 
 clean:
-	rm -f out/txt/*.txt out/lib/*.js
+	rm -f out/lib/*.js out/json/*.json
 
 lint:
 	node_modules/jshint/bin/jshint --verbose index.js lib
