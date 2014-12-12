@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "chai": "^1.10.0",
+    "concat-stream": "^1.4.7",
     "jshint": "^2.5.10",
     "mocha": "^2.0.1"
   }
