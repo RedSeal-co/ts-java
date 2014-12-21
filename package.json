@@ -14,7 +14,6 @@
   "author": "Jim Lloyd <jim.lloyd@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "assert-plus": "^0.1.5",
     "bluebird": "^2.3.11",
     "gremlin-v3": "0.0.7",
     "immutable": "^3.3.0",

@@ -10,6 +10,18 @@
     },
     "chai/chai.d.ts": {
       "commit": "48b4cb54af76f02b33dccaa0fdd2ae97db7cdd1b"
+    },
+    "lodash/lodash.d.ts": {
+      "commit": "48b4cb54af76f02b33dccaa0fdd2ae97db7cdd1b"
+    },
+    "assert/assert.d.ts": {
+      "commit": "48b4cb54af76f02b33dccaa0fdd2ae97db7cdd1b"
+    },
+    "bluebird/bluebird.d.ts": {
+      "commit": "48b4cb54af76f02b33dccaa0fdd2ae97db7cdd1b"
+    },
+    "node/node.d.ts": {
+      "commit": "48b4cb54af76f02b33dccaa0fdd2ae97db7cdd1b"
     }
   }
 }
