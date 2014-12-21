@@ -24,11 +24,12 @@ TSC=./node_modules/.bin/tsc
 TSC_OPTS=--module commonjs --target ES5 --sourceMap
 
 compile: $(TS_OBJ)
-    echo "Typescript objects:", $(TS_OBJ)
 
 %.js: %.ts
 	$(TSC) $(TSC_OPTS) $<
 	stat $@ > /dev/null
+
+lib/classes-map.js : lib/gremlin-v3.d.ts
 
 clean: clean-obj clean-tsd clean-npm
 

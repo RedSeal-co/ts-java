@@ -320,8 +320,8 @@ describe('ClassesMap', function() {
     });
   });
 
-  describe('_locateMethodDefinitions', function() {
-    it('should locate all methods of java.util.Iterator', function(done) {
+  describe('_locateMethodOriginations', function() {
+    it('should locate all method originations of java.util.Iterator', function(done) {
       // setup
       classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
       var classes = classesMap.getClasses();
@@ -330,12 +330,12 @@ describe('ClassesMap', function() {
       var className = 'java.util.Iterator';
 
       // execute method under test
-      classesMap._locateMethodDefinitions(className, work);
+      classesMap._locateMethodOriginations(className, work);
 
       // validate results
       expect(work.getDone().toArray().sort()).to.deep.equal(['java.lang.Object', 'java.util.Iterator']);
-      var methodDefinitions = classesMap.getMethodDefinitions();
-      var expectedDefinitions = {
+      var methodOriginations = classesMap.getMethodOriginations();
+      var expectedOriginations = {
         'equals(java.lang.Object)': 'java.lang.Object',
         'forEachRemaining(java.util.function.Consumer)': 'java.util.Iterator',
         'getClass()': 'java.lang.Object',
@@ -350,28 +350,28 @@ describe('ClassesMap', function() {
         'wait(long,int)': 'java.lang.Object',
         'wait(long)': 'java.lang.Object'
       };
-      expect(methodDefinitions).to.deep.equal(expectedDefinitions);
+      expect(methodOriginations).to.deep.equal(expectedOriginations);
       done();
     });
   });
 
-  describe('mapMethodDefinitions', function() {
-    it('should map all method definitions', function(done) {
+  describe('mapMethodOriginations', function() {
+    it('should map all method originations', function(done) {
       // setup
       classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
       var classes = classesMap.getClasses();
 
       // execute method under test
-      var methodDefinitions = classesMap.mapMethodDefinitions();
+      var methodOriginations = classesMap.mapMethodOriginations();
 
       // validate results
 
       // expect a lot of unique method signatures
-      var uniqueSigatures = Immutable.Set(_.keys(methodDefinitions));
+      var uniqueSigatures = Immutable.Set(_.keys(methodOriginations));
       expect(uniqueSigatures.size).to.equal(365);
 
       // expect a smaller number defining class locations
-      var uniqueLocations = Immutable.Set(_.values(methodDefinitions));
+      var uniqueLocations = Immutable.Set(_.values(methodOriginations));
       expect(uniqueLocations.size).to.equal(29);
 
       // even less that the total number of classes, because a few only override methods.
