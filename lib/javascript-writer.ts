@@ -6,19 +6,19 @@
 
 import _ = require('lodash');
 import assert = require('assert');
-import BluePromise = require("bluebird");
+import BluePromise = require('bluebird');
 import fs = require('fs');
 import ClassesMap = require('./classes-map');
 
-interface FunctionReturningPromise<R> {
-  (any): BluePromise<R>;
+interface IFunctionReturningPromise<R> {
+  (x?: any): BluePromise<R>;
 }
 
-interface StreamFn {
-  (string): BluePromise<void>;
+interface IStreamFn {
+  (x: string): BluePromise<void>;
 }
 
-interface EndFn {
+interface IEndFn {
   (): BluePromise<void>;
 }
 
@@ -27,8 +27,8 @@ interface EndFn {
 // classesMap must be a fully initialized `ClassesMap` object, see ./classes-map.js.
 class JavascriptWriter {
 
-  private classes: ClassesMap.ClassDefinitionMap;
-  private methodOriginations: ClassesMap.MethodOriginationMap;
+  private classes: ClassesMap.IClassDefinitionMap;
+  private methodOriginations: ClassesMap.IMethodOriginationMap;
 
   constructor(classesMap: ClassesMap.ClassesMap) {
     this.classes = classesMap.getClasses();
@@ -37,17 +37,17 @@ class JavascriptWriter {
 
 
   // *writeRequiredInterfaces()*: write the require() statements for all required interfaces.
-  writeRequiredInterfaces(streamFn: StreamFn, className: string): BluePromise<void> {
+  writeRequiredInterfaces(streamFn: IStreamFn, className: string): BluePromise<void> {
     assert.ok(this.classes);
     var classMap = this.classes[className];
     assert.ok(classMap);
 
     var imports = this.block([
-      "var ${name} = require('./${name}.js');"
+      'var ${name} = require(\'./${name}.js\');'
     ], 1);
 
     return BluePromise.all(classMap.interfaces)
-      .each((intf) => {
+      .each((intf: string) => {
         assert.ok(intf in this.classes, 'Unknown interface:' + intf);
         var interfaceMap = this.classes[intf];
         var interfaceName = interfaceMap.shortName + 'Wrapper';
@@ -59,23 +59,23 @@ class JavascriptWriter {
 
   // *writeJsHeader(): write the 'header' of a library .js file for the given class.
   // The header includes a minimal doc comment, the necessary requires(), and the class constructor.
-  writeJsHeader(streamFn: StreamFn, className: string) {
+  writeJsHeader(streamFn: IStreamFn, className: string) {
     var classMap = this.classes[className];
     var jsClassName = classMap.shortName + 'Wrapper';
 
     var firstLines = this.block([
-      "// ${name}.js",
-      "",
-      "'use strict';"
+      '// ${name}.js',
+      '',
+      '\'use strict\';'
     ]);
 
     var constructor = this.block([
-      "function ${name}(_jThis) {",
-      "  if (!(this instanceof ${name})) {",
-      "    return new ${name}(_jThis);",
-      "  }",
-      "  this.jThis = _jThis;",
-      "}"
+      'function ${name}(_jThis) {',
+      '  if (!(this instanceof ${name})) {',
+      '    return new ${name}(_jThis);',
+      '  }',
+      '  this.jThis = _jThis;',
+      '}'
     ]);
 
     return streamFn(_.template(firstLines, { name: jsClassName }))
@@ -89,14 +89,14 @@ class JavascriptWriter {
 
 
   // *writeOneDefinedMethod(): write one method definition.
-  writeOneDefinedMethod(streamFn: StreamFn, className: string, method) {
+  writeOneDefinedMethod(streamFn: IStreamFn, className: string, method: ClassesMap.IMethodDefinition) {
     var classMap = this.classes[className];
     var jsClassName = classMap.shortName + 'Wrapper';
 
     var text = this.block([
-      "// ${signature}",
-      "${clazz}.prototype.${method} = function() {",
-      "};"
+      '// ${signature}',
+      '${clazz}.prototype.${method} = function() {',
+      '};'
     ]);
 
     var methodName = method.name;
@@ -106,13 +106,13 @@ class JavascriptWriter {
 
 
   // *writeOneInheritedMethod(): write the declaration of one method 'inherited' from another class.
-  writeOneInheritedMethod(streamFn: StreamFn, className: string, method) {
+  writeOneInheritedMethod(streamFn: IStreamFn, className: string, method: ClassesMap.IMethodDefinition) {
     var classMap = this.classes[className];
     var jsClassName = classMap.shortName + 'Wrapper';
 
     var text = this.block([
-      "// ${signature}",
-      "${clazz}.prototype.${method} = ${defining}.prototype.${method};"
+      '// ${signature}',
+      '${clazz}.prototype.${method} = ${defining}.prototype.${method};'
     ]);
 
     var methodName = method.name;
@@ -123,24 +123,25 @@ class JavascriptWriter {
 
 
   // *writeJsMethods(): write all method declarations for a class.
-  writeJsMethods(streamFn: StreamFn, className: string) {
-    function bySignature(a, b) {
+  writeJsMethods(streamFn: IStreamFn, className: string) {
+    function bySignature(a: ClassesMap.IMethodDefinition, b: ClassesMap.IMethodDefinition) {
       return a.signature.localeCompare(b.signature);
     }
 
     var classMap = this.classes[className];
     return BluePromise.all(classMap.methods.sort(bySignature))
-      .each((method) => {
-        if (method.definedHere)
+      .each((method: ClassesMap.IMethodDefinition) => {
+        if (method.definedHere) {
           return this.writeOneDefinedMethod(streamFn, className, method);
-        else
+        } else {
           return this.writeOneInheritedMethod(streamFn, className, method);
+        }
       });
   }
 
 
   // *streamLibraryClassFile(): stream a complete source file for a java wrapper class.
-  streamLibraryClassFile(className: string, streamFn: StreamFn, endFn: EndFn) {
+  streamLibraryClassFile(className: string, streamFn: IStreamFn, endFn: IEndFn) {
     return this.writeJsHeader(streamFn, className)
       .then(() => { return this.writeJsMethods(streamFn, className); })
       .then(() => { return endFn(); });
@@ -155,8 +156,8 @@ class JavascriptWriter {
     var filePath = 'out/lib/' + fileName + '.js';
 
     var stream = fs.createWriteStream(filePath);
-    var streamFn: StreamFn = <StreamFn> BluePromise.promisify(stream.write, stream);
-    var endFn: EndFn = <EndFn> BluePromise.promisify(stream.end, stream);
+    var streamFn: IStreamFn = <IStreamFn> BluePromise.promisify(stream.write, stream);
+    var endFn: IEndFn = <IEndFn> BluePromise.promisify(stream.end, stream);
 
     return this.streamLibraryClassFile(className, streamFn, endFn);
   }
@@ -172,7 +173,7 @@ class JavascriptWriter {
   // *getMethodVariants(): accessor method to return the an array of method definitions for all variants of methodName.
   getMethodVariants(className: string, methodName: string) {
     var methods = this.classes[className].methods;
-    return _.filter(methods, (method) => { return method.name === methodName; });
+    return _.filter(methods, (method: ClassesMap.IMethodDefinition) => { return method.name === methodName; });
   }
 
 
@@ -181,8 +182,9 @@ class JavascriptWriter {
     extra = _.isNumber(extra) ? extra : 2;
     function extraLines() {
       var s = '';
-      for (var i=0; i<extra; ++i)
+      for (var i = 0; i < extra; ++i) {
         s = s + '\n';
+      }
       return s;
     }
     return lines.join('\n') + extraLines();

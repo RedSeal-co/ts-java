@@ -3,7 +3,6 @@
 default: test
 
 lint:
-	echo "Typescript sources:" $(TS_SRC)
 	# ls $(TS_SRC) | xargs -n1 node_modules/tslint/bin/tslint --config tslint.json --file
 	# node_modules/jshint/bin/jshint --verbose index.js lib
 
