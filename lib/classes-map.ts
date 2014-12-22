@@ -11,20 +11,20 @@ import Immutable = require('immutable');
 import Work = require('./work');
 import Gremlin = require('gremlin-v3');
 
-interface Config {
+interface IConfig {
   whitelist?: Array<RegExp>;
   blacklist?: Array<RegExp>;
 }
 
-export interface MethodOriginationMap {
+export interface IMethodOriginationMap {
   [signature: string]: string;
 }
 
-// *MethodDefinition* is a javascript object used as a map { methodSignature: definingInterface }
+// *IMethodDefinition* is a javascript object used as a map { methodSignature: definingInterface }
 // Each *methodSignature* key is a string containing the signature of a method.
 // Each *definingInterface* value is a string containing the full class name where the method is first defined.
 // Example { 'equals(java.lang.Object): boolean' : 'java.lang.Object' }
-export interface MethodDefinition {
+export interface IMethodDefinition {
   name: string;
   declared: string;
   returns: string;
@@ -45,16 +45,16 @@ export interface MethodDefinition {
 //   interfaces: [ string ],   // an array of full names of interfacs this class inherits, e.g. [ 'java.lang.Object' ]
 //   methods: [ methodMaps ]   // an array of methodMap objects
 // }
-export interface ClassDefinition {
+export interface IClassDefinition {
   fullName: string;
   shortName: string;
   interfaces: Array<string>;
-  methods: Array<MethodDefinition>;
+  methods: Array<IMethodDefinition>;
   depth?: number;
 }
 
-export interface ClassDefinitionMap {
-  [index: string]: ClassDefinition;
+export interface IClassDefinitionMap {
+  [index: string]: IClassDefinition;
 }
 
 // ## ClassesMap
@@ -63,13 +63,13 @@ export interface ClassDefinitionMap {
 // and information about all methods implemented by the class (directly or indirectly via inheritance).
 export class ClassesMap {
 
-  config: Config;
+  config: IConfig;
   gremlin: Gremlin;
 
-  private classes: ClassDefinitionMap;
-  private methodOriginations: MethodOriginationMap;
+  private classes: IClassDefinitionMap;
+  private methodOriginations: IMethodOriginationMap;
 
-  constructor(_config: Config = {}) {
+  constructor(_config: IConfig = {}) {
     this.gremlin = new Gremlin();
 
     this.classes = {};
@@ -100,16 +100,17 @@ export class ClassesMap {
   // *inWhiteList()*: Return true for classes of iterest.
   inWhiteList(className: string): boolean {
     var result =
-      _.find(this.config.whitelist, function (ns) { return className.match(ns); }) !== undefined &&
-      _.find(this.config.blacklist, function (ns) { return className.match(ns); }) === undefined;
+      _.find(this.config.whitelist, (ns: RegExp) => { return className.match(ns); }) !== undefined &&
+      _.find(this.config.blacklist, (ns: RegExp) => { return className.match(ns); }) === undefined;
     return result;
   }
 
 
   // *shortClassName()*: Return the short class name given the full className (class path).
   shortClassName(className: string): string {
-    if (!this.inWhiteList(className))
+    if (!this.inWhiteList(className)) {
       throw new Error('shortClassName given bad classname:' + className);
+    }
     var m = className.match(/\.([\$\w]+)$/);
     return m[1];
   }
@@ -123,16 +124,17 @@ export class ClassesMap {
 
   // *mapClassInterfaces()*: Find the direct interfaces of className.
   // Note that we later compute the transitive closure of all inherited interfaces
-  mapClassInterfaces(className:string, clazz: Java.JavaClass, work: Work) : Array<string>{
+  mapClassInterfaces(className: string, clazz: Java.JavaClass, work: Work) : Array<string>{
     assert.strictEqual(clazz.getNameSync(), className);
-    var interfaces = _.map(clazz.getInterfacesSync(), (intf) => { return intf.getNameSync(); });
-    interfaces = _.filter(interfaces, function (intf) { return this.inWhiteList(intf); }, this);
+    var interfaces = _.map(clazz.getInterfacesSync(), (intf: Java.JavaClass) => { return intf.getNameSync(); });
+    interfaces = _.filter(interfaces, (intf: string) => { return this.inWhiteList(intf); });
 
     var javaLangObject = 'java.lang.Object';
-    if (interfaces.length === 0 && className !== javaLangObject)
+    if (interfaces.length === 0 && className !== javaLangObject) {
       interfaces.push(javaLangObject);
+    }
 
-    _.forEach(interfaces, function (intf) { work.addTodo(intf); }, this);
+    _.forEach(interfaces, (intf: string) => { work.addTodo(intf); });
 
     return interfaces;
   }
@@ -141,7 +143,7 @@ export class ClassesMap {
   // *methodSignature()*: return the signature of a method, i.e. a string unique to any method variant,
   // containing method name and types of parameters.
   // Note: Java does not consider the function return type to be part of the method signature.
-  methodSignature(methodMap: MethodDefinition): string {
+  methodSignature(methodMap: IMethodDefinition): string {
     var signature;
     var varArgs = methodMap.isVarArgs ? '...' : '';
     if (methodMap.isVarArgs) {
@@ -152,8 +154,7 @@ export class ClassesMap {
       var params = methodMap.params.slice(0, -1);
       params.push(finalArg);
       signature = methodMap.name + '(' + params.join() + ')';
-    }
-    else {
+    } else {
       signature = methodMap.name + '(' + methodMap.params.join() + varArgs + ')';
     }
     return signature;
@@ -161,20 +162,20 @@ export class ClassesMap {
 
 
   // *mapMethod()*: return a map of useful properties of a method.
-  mapMethod(method: Java.JavaMethod, work: Work): MethodDefinition {
-    var methodMap: MethodDefinition = {
+  mapMethod(method: Java.JavaMethod, work: Work): IMethodDefinition {
+    var methodMap: IMethodDefinition = {
       name: method.getNameSync(),
       declared: method.getDeclaringClassSync().getNameSync(),
       returns: method.getReturnTypeSync().getNameSync(),
-      params: _.map(method.getParameterTypesSync(), function (p) { return p.getNameSync(); }),
+      params: _.map(method.getParameterTypesSync(), function (p: Java.JavaClass) { return p.getNameSync(); }),
       isVarArgs: method.isVarArgsSync(),
       generic: method.toGenericStringSync(),
-      string: method.toStringSync(),
-    }
+      string: method.toStringSync()
+    };
 
     methodMap.signature = this.methodSignature(methodMap);
 
-    var addToTheToDoList = (canonicalTypeName) => {
+    var addToTheToDoList = (canonicalTypeName: string) => {
       // We expect various type names here, 4 general categories:
       // 1) primitive types such as int, long, char
       // 2) arrays of primitive types, such as int[]
@@ -182,15 +183,16 @@ export class ClassesMap {
       // 4) array-of-class names such as java.util.Iterator[]
       // We only add to the todo list for the last two, and only in the non-array form.
       var match = /(.*)\[\]/.exec(canonicalTypeName);
-      if (match)
+      if (match) {
         canonicalTypeName = match[1];
+      }
       if (this.inWhiteList(canonicalTypeName)) {
         if (!work.alreadyAdded(canonicalTypeName)) {
 //           console.log('Adding:', canonicalTypeName);
           work.addTodo(canonicalTypeName);
         }
       }
-    }
+    };
 
     addToTheToDoList(methodMap.declared);
     addToTheToDoList(methodMap.returns);
@@ -200,24 +202,24 @@ export class ClassesMap {
 
 
   // *mapClassMethods()*: return a methodMap array for the methods of a class
-  mapClassMethods(className: string, clazz: Java.JavaClass, work: Work): Array<MethodDefinition> {
-    return _.map(clazz.getMethodsSync(), function (m) { return this.mapMethod(m, work); }, this);
+  mapClassMethods(className: string, clazz: Java.JavaClass, work: Work): Array<IMethodDefinition> {
+    return _.map(clazz.getMethodsSync(), function (m: Java.JavaMethod) { return this.mapMethod(m, work); }, this);
   }
 
 
   // *mapClass()*: return a map of all useful properties of a class.
-  mapClass(className:string, work:Work): ClassDefinition {
+  mapClass(className: string, work: Work): IClassDefinition {
     var clazz: Java.JavaClass = this.loadClass(className);
 
     var interfaces = this.mapClassInterfaces(className, clazz, work);
     var methods  = this.mapClassMethods(className, clazz, work);
 
-    var classMap: ClassDefinition = {
+    var classMap: IClassDefinition = {
       fullName: className,
       shortName: this.shortClassName(className),
       interfaces: interfaces,
       methods: methods
-    }
+    };
 
     return classMap;
   }
@@ -238,7 +240,7 @@ export class ClassesMap {
 
 
   // *getClasses()*: return the map of all classes. Keys are classnames, values are classMaps.
-  getClasses(): ClassDefinitionMap {
+  getClasses(): IClassDefinitionMap {
     return this.classes;
   }
 
@@ -249,27 +251,29 @@ export class ClassesMap {
     var transitiveClosure = Immutable.Set(this.classes[className].interfaces);
 
     var maxdepth = 0;
-    _.forEach(this.classes[className].interfaces, (intf) => {
-      if (!work.alreadyDone(intf))
+    _.forEach(this.classes[className].interfaces, (intf: string) => {
+      if (!work.alreadyDone(intf)) {
         this._interfacesClosure(intf, work);
+      }
       assert.ok(work.alreadyDone(intf));
       assert.ok(typeof this.classes[intf].depth === 'number');
-      if (maxdepth < this.classes[intf].depth)
+      if (maxdepth < this.classes[intf].depth) {
         maxdepth = this.classes[intf].depth;
+      }
       transitiveClosure = transitiveClosure.union(this.classes[intf].interfaces);
     });
 
-    var byDepth = (a, b) => {
+    var byDepth = (a: string, b: string) => {
       var result = this.classes[a].depth - this.classes[b].depth;
       if (result === 0) {
         // for tiebreaker, arrange for java.* to sort before com.*
         result = this.classes[b].fullName.localeCompare(this.classes[a].fullName);
       }
       return result;
-    }
+    };
 
     this.classes[className].interfaces = transitiveClosure.toArray().sort(byDepth);
-    this.classes[className].depth = maxdepth+1;
+    this.classes[className].depth = maxdepth + 1;
     work.setDone(className);
   }
 
@@ -291,17 +295,17 @@ export class ClassesMap {
   // before it locates the methods of this class.
   _locateMethodOriginations(className: string, work: Work): void {
     assert.ok(className in this.classes);
-    var classMap: ClassDefinition = this.classes[className];
+    var classMap: IClassDefinition = this.classes[className];
     assert.strictEqual(className, classMap.fullName);
 
-    _.forEach(classMap.interfaces, (intf) => {
+    _.forEach(classMap.interfaces, (intf: string) => {
       if (!work.alreadyDone(intf)) {
         assert.ok(intf in this.classes, 'Unknown interface:' + intf);
         this._locateMethodOriginations(intf, work);
       }
     });
 
-    _.forEach(classMap.methods, (method, index) => {
+    _.forEach(classMap.methods, (method: IMethodDefinition, index: number) => {
       assert.ok(typeof method.signature === 'string');
       var definedHere = false;
       if (!(method.signature in this.methodOriginations)) {
@@ -321,7 +325,7 @@ export class ClassesMap {
 
 
   // *mapMethodOriginations()*: Create a map of all methods. Keys are method signatures, values are class names.
-  mapMethodOriginations(): MethodOriginationMap {
+  mapMethodOriginations(): IMethodOriginationMap {
     var work = new Work(_.keys(this.classes));
     while (!work.isDone()) {
       var className = work.next();
@@ -332,7 +336,7 @@ export class ClassesMap {
 
 
   // *getMethodOriginations()*: return the map of all original method definitions.
-  getMethodOriginations(): MethodOriginationMap {
+  getMethodOriginations(): IMethodOriginationMap {
     return this.methodOriginations;
   }
 
