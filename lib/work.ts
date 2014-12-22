@@ -21,8 +21,9 @@ class Work {
 
   // *addTodo(item)* adds item to the todo list, but only if the item is neither done nor pending.
   addTodo(item: string): void {
-    if (!this.alreadyDone(item))
+    if (!this.alreadyDone(item)) {
       this.todo = this.todo.add(item);    // since todo is a set, adding an existing item is a no-op.
+    }
   }
 
   // *setDone(item)* marks the item as done, but only if the item is a currently pending todo.
@@ -30,11 +31,11 @@ class Work {
   setDone(item: string): void {
     var pending = this.todo.has(item);
     var finished = this.done.has(item);
-    if (!pending && !finished)
+    if (!pending && !finished) {
       throw new Error('Unknown item of work');
-    else if (pending && finished)
+    } else if (pending && finished) {
       throw new Error('Work in inconsistent state!');
-    else if (pending) {
+    } else if (pending) {
       this.done = this.done.add(item);
       this.todo = this.todo.remove(item);
     }
