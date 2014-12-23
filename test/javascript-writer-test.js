@@ -14,7 +14,7 @@ BluePromise.longStackTraces();
 describe('JavascriptWriter', function() {
 
   var JavascriptWriter = require('../lib/javascript-writer.js');
-  var ClassesMap = require('../lib/classes-map.js');
+  var ClassesMap = require('../lib/classes-map.js').ClassesMap;
 
   var jsWriter;
 
@@ -201,11 +201,14 @@ describe('JavascriptWriter', function() {
   });
 
   describe('writeJsMethods', function() {
+    // Skipping this and calling it a TODO because the implementation doesn't yet write
+    // definitions for inherited methods. But all of this will be done differently
+    // using Typescript, so this test is just a placeholder.
     it.skip('TODO: should write expected lines for java.util.Iterator', function(done) {
       var className = 'java.util.Iterator';
       var runPromise = jsWriter.writeJsMethods(streamFn, className).then(endFn);
       var expectedData = [
-        "TODO: should also inlude methods inherited from Object!",
+        "TODO: should also include methods inherited from Object!",
         "// forEachRemaining(java.util.function.Consumer)",
         "IteratorWrapper.prototype.forEachRemaining = function() {",
         "};",

@@ -16,7 +16,7 @@ interface Config {
   blacklist?: Array<RegExp>;
 }
 
-interface MethodOriginationMap {
+export interface MethodOriginationMap {
   [signature: string]: string;
 }
 
@@ -24,7 +24,7 @@ interface MethodOriginationMap {
 // Each *methodSignature* key is a string containing the signature of a method.
 // Each *definingInterface* value is a string containing the full class name where the method is first defined.
 // Example { 'equals(java.lang.Object): boolean' : 'java.lang.Object' }
-interface MethodDefinition {
+export interface MethodDefinition {
   name: string;
   declared: string;
   returns: string;
@@ -45,7 +45,7 @@ interface MethodDefinition {
 //   interfaces: [ string ],   // an array of full names of interfacs this class inherits, e.g. [ 'java.lang.Object' ]
 //   methods: [ methodMaps ]   // an array of methodMap objects
 // }
-interface ClassDefinition {
+export interface ClassDefinition {
   fullName: string;
   shortName: string;
   interfaces: Array<string>;
@@ -53,7 +53,7 @@ interface ClassDefinition {
   depth?: number;
 }
 
-interface ClassDefinitionMap {
+export interface ClassDefinitionMap {
   [index: string]: ClassDefinition;
 }
 
@@ -61,7 +61,7 @@ interface ClassDefinitionMap {
 // ClassesMap is a map of a set of java classes/interfaces, containing information extracted via Java Reflection.
 // For each such class/interface, we extract the set of interfaces inherited/implemented by the class,
 // and information about all methods implemented by the class (directly or indirectly via inheritance).
-class ClassesMap {
+export class ClassesMap {
 
   config: Config;
   gremlin: Gremlin;
@@ -345,5 +345,3 @@ class ClassesMap {
   }
 
 }
-
-module.exports = ClassesMap;

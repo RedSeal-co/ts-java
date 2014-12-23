@@ -9,7 +9,7 @@ var _ = require('lodash');
 
 describe('ClassesMap', function() {
 
-  var ClassesMap = require('../lib/classes-map.js');
+  var ClassesMap = require('../lib/classes-map.js').ClassesMap;
   var Work = require('../lib/work.js');
 
   var classesMap;
