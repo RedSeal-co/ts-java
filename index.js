@@ -1,10 +1,11 @@
 'use strict';
 
 var _ = require('lodash');
-var assert = require('assert');
 var ClassesMap = require('./lib/classes-map.js');
-var JavascriptWriter = require('./lib/javascript-writer.js');
 var fs = require('fs');
+var glob = require('glob');
+var java = require('java');
+var JavascriptWriter = require('./lib/javascript-writer.js');
 var mkdirp = require('mkdirp');
 var Work = require('./lib/work.js');
 
@@ -31,8 +32,13 @@ function main() {
   mkdirp.sync('out/lib');
   mkdirp.sync('out/test');
 
+  var filenames = glob.sync('test/**/*.jar');
+  for (var j = 0; j < filenames.length; j++) {
+    java.classpath.push(filenames[j]);
+  }
+
   var seedClasses = ['com.tinkerpop.gremlin.structure.Graph'];
-  var classesMap = new ClassesMap.ClassesMap();
+  var classesMap = new ClassesMap.ClassesMap(java);
   classesMap.initialize(seedClasses);
 
   writeJsons(classesMap.getClasses());

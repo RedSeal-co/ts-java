@@ -20,20 +20,15 @@ declare module Java {
     loadClassSync(string): JavaClass;
   }
 
-  export interface Java {
+  export interface Instance {
+    classpath: Array<string>;
     callStaticMethodSync(className: string, methodName: string): any;
     getClassLoader(): JavaLoader;
   }
 
 }
 
-// declare function Gremlin(opts?: Object): Gremlin.Gremlin;
-
-declare module 'gremlin-v3' {
-  class Gremlin {
-    java: Java.Java;
-    new (opts?: Object);
-  }
-
-  export = Gremlin;
+declare module 'java' {
+  var java: Java.Instance;
+  export = java;
 }

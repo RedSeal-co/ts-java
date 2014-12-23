@@ -4,16 +4,18 @@
 ///<reference path='../typings/lodash/lodash.d.ts' />
 ///<reference path='../typings/mocha/mocha.d.ts'/>
 ///<reference path='../typings/node/node.d.ts'/>
-///<reference path='../lib/gremlin-v3.d.ts' />
+///<reference path='../lib/java.d.ts' />
+///<reference path='./glob.d.ts' />
 
 'use strict';
 
 import _ = require('lodash');
-import chai = require('chai');
-import Gremlin = require('gremlin-v3');
-import Immutable = require('immutable');
-import Work = require('../lib/work');
 import _ClassesMap = require('../lib/classes-map');
+import chai = require('chai');
+import glob = require('glob');
+import Immutable = require('immutable');
+import java = require('java');
+import Work = require('../lib/work');
 
 describe('ClassesMap', () => {
   var expect = chai.expect;
@@ -21,8 +23,15 @@ describe('ClassesMap', () => {
 
   var classesMap;
 
-  beforeEach(function() {
-    classesMap = new ClassesMap();
+  before(() => {
+    var filenames = glob.sync('test/**/*.jar');
+    for (var j = 0; j < filenames.length; j++) {
+      java.classpath.push(filenames[j]);
+    }
+  });
+
+  beforeEach(() => {
+    classesMap = new ClassesMap(java);
   });
 
   describe('initialize', () => {

@@ -1,7 +1,7 @@
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts' />
 /// <reference path="../typings/lodash/lodash.d.ts" />
 /// <reference path='../typings/node/node.d.ts' />
-/// <reference path='gremlin-v3.d.ts' />
+/// <reference path='./java.d.ts' />
 
 'use strict';
 
@@ -9,7 +9,6 @@ import _ = require('lodash');
 import assert = require('assert');
 import Immutable = require('immutable');
 import Work = require('./work');
-import Gremlin = require('gremlin-v3');
 
 interface IConfig {
   whitelist?: Array<RegExp>;
@@ -64,14 +63,13 @@ export interface IClassDefinitionMap {
 export class ClassesMap {
 
   config: IConfig;
-  gremlin: Gremlin;
 
+  private java: Java.Instance;
   private classes: IClassDefinitionMap;
   private methodOriginations: IMethodOriginationMap;
 
-  constructor(_config: IConfig = {}) {
-    this.gremlin = new Gremlin();
-
+  constructor(java: Java.Instance, _config: IConfig = {}) {
+    this.java = java;
     this.classes = {};
     this.methodOriginations = {};
 
@@ -118,7 +116,7 @@ export class ClassesMap {
 
   // *loadClass()*: load the class and return its Class object.
   loadClass(className: string): Java.JavaClass {
-    return this.gremlin.java.getClassLoader().loadClassSync(className);
+    return this.java.getClassLoader().loadClassSync(className);
   }
 
 

@@ -1,20 +1,24 @@
 // javascript-writer-test.ts
 ///<reference path='../lib/bluebird.d.ts' />
+///<reference path='../lib/java.d.ts' />
 ///<reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 ///<reference path='../typings/chai/chai.d.ts'/>
 ///<reference path='../typings/lodash/lodash.d.ts' />
 ///<reference path='../typings/mocha/mocha.d.ts'/>
 ///<reference path='../typings/node/node.d.ts'/>
+///<reference path='./glob.d.ts' />
 
 'use strict';
 
 import _ = require('lodash');
+import _ClassesMap = require('../lib/classes-map');
 import BluePromise = require('bluebird');
 import chai = require('chai');
-import Immutable = require('immutable');
 import concat = require('concat-stream');
+import glob = require('glob');
+import Immutable = require('immutable');
+import java = require('java');
 import JavascriptWriter = require('../lib/javascript-writer');
-import _ClassesMap = require('../lib/classes-map');
 
 BluePromise.longStackTraces();
 
@@ -26,7 +30,11 @@ describe('JavascriptWriter', () => {
   var jsWriter;
 
   before(() => {
-    var classesMap = new ClassesMap();
+    var filenames = glob.sync('test/**/*.jar');
+    for (var j = 0; j < filenames.length; j++) {
+      java.classpath.push(filenames[j]);
+    }
+    var classesMap = new ClassesMap(java);
     classesMap.initialize(['com.tinkerpop.gremlin.structure.Graph']);
     jsWriter = new JavascriptWriter(classesMap);
   });

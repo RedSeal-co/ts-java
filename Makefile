@@ -30,8 +30,6 @@ compile: $(TS_OBJ)
 	$(TSC) $(TSC_OPTS) $<
 	stat $@ > /dev/null
 
-lib/classes-map.js : lib/gremlin-v3.d.ts
-
 clean: clean-obj clean-tsd clean-npm clean-js-map
 
 clean-tsd:
