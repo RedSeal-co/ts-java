@@ -43,8 +43,8 @@ describe('ClassesMap', () => {
     it('should return false for invalid class names', (done: MochaDone) => {
       expect(classesMap.inWhiteList('')).to.equal(false);
       expect(classesMap.inWhiteList('com')).to.equal(false);
-//       expect(classesMap.inWhiteList('java.lang.Foo')).to.equal(false);
-//       expect(classesMap.inWhiteList('java.util.Iterators')).to.equal(false);
+      expect(classesMap.inWhiteList('java.lang.Foo')).to.equal(false);
+      expect(classesMap.inWhiteList('java.util.Iterators')).to.equal(false);
       expect(classesMap.inWhiteList('com.tinkerpop.gremlin')).to.equal(false);
       expect(classesMap.inWhiteList('com.tinkerpop.Gremlin.Foo')).to.equal(false);
       done();
@@ -61,7 +61,7 @@ describe('ClassesMap', () => {
     it('should throw exception for invalid class names', (done: MochaDone) => {
       expect(function () { classesMap.shortClassName(''); }).to.throw(Error);
       expect(function () { classesMap.shortClassName('com'); }).to.throw(Error);
-//       expect(function () { classesMap.shortClassName('java.lang.Foo'); }).to.throw(Error);
+      expect(function () { classesMap.shortClassName('java.lang.Foo'); }).to.throw(Error);
       done();
     });
   });
