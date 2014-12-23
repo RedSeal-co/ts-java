@@ -57,39 +57,34 @@ describe('JavascriptWriter', () => {
 
 
   describe('initialize', () => {
-    it('should initialize', (done: MochaDone) => {
+    it('should initialize', () => {
       expect(jsWriter).to.be.ok;
       expect(streamFn).to.be.a('function');
       expect(endFn).to.be.a('function');
-      done();
     });
-    it('should make usable streamFn and endFn', (done: MochaDone) => {
+    it('should make usable streamFn and endFn', () => {
       var expectedData = 'We write this data.';
       var runPromise = streamFn(expectedData).then(endFn);
-      BluePromise.all([runPromise, resultPromise])
+      return BluePromise.all([runPromise, resultPromise])
         .spread(function (ignore: any, data: string) {
           expect(data).to.equal(expectedData);
-          done();
-        })
-        .catch(done);
+        });
     });
   });
 
   describe('writeRequiredInterfaces', () => {
-    it('should write expected lines for java.util.Iterator', (done: MochaDone) => {
+    it('should write expected lines for java.util.Iterator', () => {
       var className = 'java.util.Iterator';
       var runPromise = jsWriter.writeRequiredInterfaces(streamFn, className).then(endFn);
       var expectedData = [
         'var ObjectWrapper = require(\'./ObjectWrapper.js\');',
         '', ''].join('\n');
-      BluePromise.all([runPromise, resultPromise])
+      return BluePromise.all([runPromise, resultPromise])
         .spread(function (ignore: any, data: string) {
           expect(data).to.equal(expectedData);
-          done();
-        })
-        .catch(done);
+        });
     });
-    it('should write expected lines for com.tinkerpop.gremlin.structure.Edge', (done: MochaDone) => {
+    it('should write expected lines for com.tinkerpop.gremlin.structure.Edge', () => {
       var className = 'com.tinkerpop.gremlin.structure.Edge';
       var runPromise = jsWriter.writeRequiredInterfaces(streamFn, className).then(endFn);
       var expectedData = [
@@ -98,17 +93,15 @@ describe('JavascriptWriter', () => {
         'var ElementTraversalWrapper = require(\'./ElementTraversalWrapper.js\');',
         'var EdgeTraversalWrapper = require(\'./EdgeTraversalWrapper.js\');',
         '', ''].join('\n');
-      BluePromise.all([runPromise, resultPromise])
+      return BluePromise.all([runPromise, resultPromise])
         .spread(function (ignore: any, data: string) {
           expect(data).to.equal(expectedData);
-          done();
-        })
-        .catch(done);
+        });
     });
   });
 
   describe('writeHeader', () => {
-    it('should write expected lines for java.util.Iterator', (done: MochaDone) => {
+    it('should write expected lines for java.util.Iterator', () => {
       var className = 'java.util.Iterator';
       var runPromise = jsWriter.writeJsHeader(streamFn, className).then(endFn);
       var expectedData = [
@@ -126,14 +119,12 @@ describe('JavascriptWriter', () => {
         '}',
         '',
         ''].join('\n');
-      BluePromise.all([runPromise, resultPromise])
+      return BluePromise.all([runPromise, resultPromise])
         .spread(function (ignore: any, data: string) {
           expect(data).to.equal(expectedData);
-          done();
-        })
-        .catch(done);
+        });
     });
-    it('should write expected lines for com.tinkerpop.gremlin.structure.Edge', (done: MochaDone) => {
+    it('should write expected lines for com.tinkerpop.gremlin.structure.Edge', () => {
       var className = 'com.tinkerpop.gremlin.structure.Edge';
       var runPromise = jsWriter.writeJsHeader(streamFn, className).then(endFn);
       var expectedData = [
@@ -155,17 +146,15 @@ describe('JavascriptWriter', () => {
         '',
         ''
         ].join('\n');
-      BluePromise.all([runPromise, resultPromise])
+      return BluePromise.all([runPromise, resultPromise])
         .spread(function (ignore: any, data: string) {
           expect(data).to.equal(expectedData);
-          done();
-        })
-        .catch(done);
+        });
     });
   });
 
   describe('writeOneDefinedMethod', () => {
-    it('should write expected lines for java.util.Iterator:next', (done: MochaDone) => {
+    it('should write expected lines for java.util.Iterator:next', () => {
       var className = 'java.util.Iterator';
       var methodName = 'next';
       var methodVariants = jsWriter.getMethodVariants(className, methodName);
@@ -177,17 +166,15 @@ describe('JavascriptWriter', () => {
         '};',
         '',
         ''].join('\n');
-      BluePromise.all([runPromise, resultPromise])
+      return BluePromise.all([runPromise, resultPromise])
         .spread(function (ignore: any, data: string) {
           expect(data).to.equal(expectedData);
-          done();
-        })
-        .catch(done);
+        });
     });
   });
 
   describe('writeOneInheritedMethod', () => {
-    it('should write expected lines for com.tinkerpop.gremlin.structure.Edge:addBothE', (done: MochaDone) => {
+    it('should write expected lines for com.tinkerpop.gremlin.structure.Edge:addBothE', () => {
       var className = 'com.tinkerpop.gremlin.structure.Edge';
       var methodName = 'addBothE';
       var methodVariants = jsWriter.getMethodVariants(className, methodName);
@@ -198,12 +185,10 @@ describe('JavascriptWriter', () => {
         'EdgeWrapper.prototype.addBothE = ElementTraversalWrapper.prototype.addBothE;',
         '',
         ''].join('\n');
-      BluePromise.all([runPromise, resultPromise])
+      return BluePromise.all([runPromise, resultPromise])
         .spread(function (ignore: any, data: string) {
           expect(data).to.equal(expectedData);
-          done();
-        })
-        .catch(done);
+        });
     });
   });
 
@@ -211,7 +196,7 @@ describe('JavascriptWriter', () => {
     // Skipping this and calling it a TODO because the implementation doesn't yet write
     // definitions for inherited methods. But all of this will be done differently
     // using Typescript, so this test is just a placeholder.
-    it.skip('TODO: should write expected lines for java.util.Iterator', (done: MochaDone) => {
+    it.skip('TODO: should write expected lines for java.util.Iterator', () => {
       var className = 'java.util.Iterator';
       var runPromise = jsWriter.writeJsMethods(streamFn, className).then(endFn);
       var expectedData = [
@@ -233,12 +218,10 @@ describe('JavascriptWriter', () => {
         '};',
         '',
         ''].join('\n');
-      BluePromise.all([runPromise, resultPromise])
+      return BluePromise.all([runPromise, resultPromise])
         .spread(function (ignore: any, data: string) {
           expect(data).to.equal(expectedData);
-          done();
-        })
-        .catch(done);
+        });
 
     });
   });

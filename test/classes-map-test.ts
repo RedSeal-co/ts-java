@@ -26,69 +26,61 @@ describe('ClassesMap', () => {
   });
 
   describe('initialize', () => {
-    it('should initialize', (done: MochaDone) => {
+    it('should initialize', () => {
       expect(classesMap).to.be.ok;
-      done();
     });
   });
 
   describe('inWhiteList', () => {
-    it('should return true for valid class names', (done: MochaDone) => {
+    it('should return true for valid class names', () => {
       expect(classesMap.inWhiteList('java.lang.Object')).to.equal(true);
       expect(classesMap.inWhiteList('java.util.Iterator')).to.equal(true);
       expect(classesMap.inWhiteList('com.tinkerpop.gremlin.')).to.equal(true);
       expect(classesMap.inWhiteList('com.tinkerpop.gremlin.Foo')).to.equal(true);
-      done();
     });
-    it('should return false for invalid class names', (done: MochaDone) => {
+    it('should return false for invalid class names', () => {
       expect(classesMap.inWhiteList('')).to.equal(false);
       expect(classesMap.inWhiteList('com')).to.equal(false);
       expect(classesMap.inWhiteList('java.lang.Foo')).to.equal(false);
       expect(classesMap.inWhiteList('java.util.Iterators')).to.equal(false);
       expect(classesMap.inWhiteList('com.tinkerpop.gremlin')).to.equal(false);
       expect(classesMap.inWhiteList('com.tinkerpop.Gremlin.Foo')).to.equal(false);
-      done();
     });
   });
 
   describe('shortClassName', () => {
-    it('should give expected results for valid class names', (done: MochaDone) => {
+    it('should give expected results for valid class names', () => {
       expect(classesMap.shortClassName('java.lang.Object')).to.equal('Object');
       expect(classesMap.shortClassName('java.util.Iterator')).to.equal('Iterator');
       expect(classesMap.shortClassName('com.tinkerpop.gremlin.Foo')).to.equal('Foo');
-      done();
     });
-    it('should throw exception for invalid class names', (done: MochaDone) => {
+    it('should throw exception for invalid class names', () => {
       expect(function () { classesMap.shortClassName(''); }).to.throw(Error);
       expect(function () { classesMap.shortClassName('com'); }).to.throw(Error);
       expect(function () { classesMap.shortClassName('java.lang.Foo'); }).to.throw(Error);
-      done();
     });
   });
 
   describe('loadClass', () => {
-    it('should return a valid Class object for a loadable class', (done: MochaDone) => {
+    it('should return a valid Class object for a loadable class', () => {
       var clazz = classesMap.loadClass('java.lang.Object');
       expect(clazz).to.be.ok;
       expect(clazz.getNameSync()).to.equal('java.lang.Object');
-      done();
     });
-    it('should fail for an invalid class name', (done: MochaDone) => {
+    it('should fail for an invalid class name', () => {
       expect(function () { classesMap.loadClass('net.lang.Object'); }).to.throw(/java.lang.ClassNotFoundException/);
-      done();
     });
   });
 
   describe('mapClassInterfaces', () => {
-    it('should find no interfaces for java.lang.Object', (done: MochaDone) => {
+    it('should find no interfaces for java.lang.Object', () => {
       var className = 'java.lang.Object';
       var work = new Work([className]);
       var clazz = classesMap.loadClass(className);
       var interfaces = classesMap.mapClassInterfaces(className, clazz, work);
       expect(interfaces).to.deep.equal([]);
-      done();
     });
-    it('should find one interface for java.util.Iterator', (done: MochaDone) => {
+    it('should find one interface for java.util.Iterator', () => {
       var className = 'java.util.Iterator';
       var work = new Work([className]);
       var clazz = classesMap.loadClass(className);
@@ -97,9 +89,8 @@ describe('ClassesMap', () => {
       expect(interfaces).to.deep.equal(expected);
       work.setDone(className);
       expect(work.getTodo().toArray()).to.deep.equal(expected);
-      done();
     });
-    it('should find the interfaces of com.tinkerpop.gremlin.structure.Edge', (done: MochaDone) => {
+    it('should find the interfaces of com.tinkerpop.gremlin.structure.Edge', () => {
       var className = 'com.tinkerpop.gremlin.structure.Edge';
       var work = new Work([className]);
       var clazz = classesMap.loadClass(className);
@@ -111,12 +102,11 @@ describe('ClassesMap', () => {
       expect(interfaces).to.deep.equal(expected);
       work.setDone(className);
       expect(work.getTodo().toArray().sort()).to.deep.equal(expected.sort());
-      done();
     });
   });
 
   describe('mapMethod', () => {
-    it('should map java.lang.Object:hashCode', (done: MochaDone) => {
+    it('should map java.lang.Object:hashCode', () => {
       var className = 'java.lang.Object';
       var work = new Work([className]);
       var clazz = classesMap.loadClass(className);
@@ -136,12 +126,11 @@ describe('ClassesMap', () => {
         signature: 'hashCode()'
       };
       expect(methodMap).to.deep.equal(expected);
-      done();
     });
   });
 
   describe('mapClassMethods', () => {
-    it('should load all methods of java.lang.Object', (done: MochaDone) => {
+    it('should load all methods of java.lang.Object', () => {
       var className = 'java.lang.Object';
       var work = new Work([className]);
       var clazz = classesMap.loadClass(className);
@@ -164,12 +153,11 @@ describe('ClassesMap', () => {
         'wait(long,int)'
       ];
       expect(signatures).to.deep.equal(expectedSignatures);
-      done();
     });
   });
 
   describe('mapClass', () => {
-    it('should map the properties of java.util.Iterator', (done: MochaDone) => {
+    it('should map the properties of java.util.Iterator', () => {
       var className = 'java.util.Iterator';
       var work = new Work([className]);
       var classMap = classesMap.mapClass(className, work);
@@ -186,12 +174,11 @@ describe('ClassesMap', () => {
         'remove()'
       ];
       expect(methodSignatures).to.deep.equal(expectedSignatures);
-      done();
     });
   });
 
   describe('loadAllClasses', () => {
-    it('should load all classes reachable from java.util.Iterator', (done: MochaDone) => {
+    it('should load all classes reachable from java.util.Iterator', () => {
       var work = classesMap.loadAllClasses(['java.util.Iterator']);
       expect(work.getDone().size).to.equal(4);
       var classes = classesMap.getClasses();
@@ -199,9 +186,8 @@ describe('ClassesMap', () => {
       var classNames = _.keys(classes).sort();
       expect(classNames).to.have.length(4);
       expect(classNames).to.deep.equal(['java.lang.CharSequence', 'java.lang.Object', 'java.lang.String', 'java.util.Iterator']);
-      done();
     });
-    it('should load all classes reachable from com.tinkerpop.gremlin.structure.Graph', (done: MochaDone) => {
+    it('should load all classes reachable from com.tinkerpop.gremlin.structure.Graph', () => {
       var work = classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
       var classes = classesMap.getClasses();
       expect(classes).to.be.an('object');
@@ -249,12 +235,11 @@ describe('ClassesMap', () => {
       ];
       expect(classNames).to.deep.equal(expectedClasses);
       expect(work.getDone().toArray().sort()).to.deep.equal(expectedClasses);
-      done();
     });
   });
 
   describe('_interfacesClosure', () => {
-    it('should compute the _interfacesClosure of java.util.Iterator', (done: MochaDone) => {
+    it('should compute the _interfacesClosure of java.util.Iterator', () => {
       // Set up the test
       classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
       var classes = classesMap.getClasses();
@@ -273,9 +258,8 @@ describe('ClassesMap', () => {
       var afterInterfaces = classes[className].interfaces;
       var expectedAfter = expectedBefore;
       expect(afterInterfaces).to.deep.equal(expectedAfter);
-      done();
     });
-    it('should compute the _interfacesClosure of com.tinkerpop.gremlin.structure.Edge', (done: MochaDone) => {
+    it('should compute the _interfacesClosure of com.tinkerpop.gremlin.structure.Edge', () => {
       // Set up the test
       classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
       var classes = classesMap.getClasses();
@@ -300,12 +284,11 @@ describe('ClassesMap', () => {
         'com.tinkerpop.gremlin.process.graph.EdgeTraversal'
       ];
       expect(afterInterfaces).to.deep.equal(expectedAfter);
-      done();
     });
   });
 
   describe('transitiveClosureInterfaces', () => {
-    it('should compute the _interfacesClosure for all classes', (done: MochaDone) => {
+    it('should compute the _interfacesClosure for all classes', () => {
       classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
       var classes = classesMap.getClasses();
       var allInterfacesBefore = _.pluck(classes, 'interfaces');
@@ -323,12 +306,11 @@ describe('ClassesMap', () => {
       for (var i = 0; i < beforeCounts.length; ++i) {
         expect(beforeCounts[i]).to.be.at.most(afterCounts[i]);
       }
-      done();
     });
   });
 
   describe('_locateMethodOriginations', () => {
-    it('should locate all method originations of java.util.Iterator', (done: MochaDone) => {
+    it('should locate all method originations of java.util.Iterator', () => {
       // setup
       classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
       var classes = classesMap.getClasses();
@@ -358,12 +340,11 @@ describe('ClassesMap', () => {
         'wait(long)': 'java.lang.Object'
       };
       expect(methodOriginations).to.deep.equal(expectedOriginations);
-      done();
     });
   });
 
   describe('mapMethodOriginations', () => {
-    it('should map all method originations', (done: MochaDone) => {
+    it('should map all method originations', () => {
       // setup
       classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
       var classes = classesMap.getClasses();
@@ -383,7 +364,6 @@ describe('ClassesMap', () => {
 
       // even less that the total number of classes, because a few only override methods.
       expect(uniqueLocations.size).to.be.below(_.keys(classes).length);
-      done();
     });
   });
 
