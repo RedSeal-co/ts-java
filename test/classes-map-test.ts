@@ -12,11 +12,12 @@ import _ = require('lodash');
 import chai = require('chai');
 import Gremlin = require('gremlin-v3');
 import Immutable = require('immutable');
+import Work = require('../lib/work');
+import _ClassesMap = require('../lib/classes-map');
 
 describe('ClassesMap', () => {
   var expect = chai.expect;
-  var ClassesMap = require('../lib/classes-map').ClassesMap;
-  var Work = require('../lib/work');
+  var ClassesMap = _ClassesMap.ClassesMap;
 
   var classesMap;
 

@@ -192,4 +192,4 @@ class JavascriptWriter {
 
 }
 
-module.exports = JavascriptWriter;
+export = JavascriptWriter;

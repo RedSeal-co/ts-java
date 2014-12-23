@@ -9,10 +9,11 @@
 var _ = require('lodash');
 var chai = require('chai');
 var Immutable = require('immutable');
+var Work = require('../lib/work');
+var _ClassesMap = require('../lib/classes-map');
 describe('ClassesMap', function () {
     var expect = chai.expect;
-    var ClassesMap = require('../lib/classes-map').ClassesMap;
-    var Work = require('../lib/work');
+    var ClassesMap = _ClassesMap.ClassesMap;
     var classesMap;
     beforeEach(function () {
         classesMap = new ClassesMap();
