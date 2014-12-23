@@ -1,4 +1,4 @@
-// javascript-writer-test.ts
+// typescript-writer-test.ts
 ///<reference path='../lib/bluebird.d.ts' />
 ///<reference path='../lib/glob.d.ts' />
 ///<reference path='../lib/java.d.ts' />
@@ -18,11 +18,11 @@ import concat = require('concat-stream');
 import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
-import JavascriptWriter = require('../lib/javascript-writer');
+import TypeScriptWriter = require('../lib/typescript-writer');
 
 BluePromise.longStackTraces();
 
-describe('JavascriptWriter', () => {
+describe('TypeScriptWriter', () => {
   var expect = chai.expect;
 
   var ClassesMap = _ClassesMap.ClassesMap;
@@ -36,7 +36,7 @@ describe('JavascriptWriter', () => {
     }
     var classesMap = new ClassesMap(java);
     classesMap.initialize(['com.tinkerpop.gremlin.structure.Graph']);
-    jsWriter = new JavascriptWriter(classesMap, 'js-templates');
+    jsWriter = new TypeScriptWriter(classesMap, 'ts-templates');
   });
 
   var streamFn;

@@ -19,7 +19,7 @@ function writeJsons(classes) {
 }
 
 function writeLib(classesMap) {
-  var jsWriter = new JavascriptWriter(classesMap);
+  var jsWriter = new JavascriptWriter(classesMap, 'templates');
   var classes = classesMap.getClasses();
   return BluePromise.all(_.keys(classes))
     .each(function (className) {

@@ -1,4 +1,4 @@
-/// <reference path='../node_modules/immutable/dist/Immutable.d.ts'/>
+/// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 /// <reference path='../typings/lodash/lodash.d.ts' />
 /// <reference path='../typings/node/node.d.ts' />
 /// <reference path='bluebird.d.ts' />
@@ -27,10 +27,10 @@ interface IEndFn {
   (): BluePromise<void>;
 }
 
-// ## JavascriptWriter
+// ## TypeScriptWriter
 // A class that provides methods for writing Javascript source files for a set of classes specified in `classesMap`.
 // classesMap must be a fully initialized `ClassesMap` object, see ./classes-map.js.
-class JavascriptWriter {
+class TypeScriptWriter {
 
   private classes: ClassesMap.IClassDefinitionMap;
   private methodOriginations: ClassesMap.IMethodOriginationMap;
@@ -173,4 +173,4 @@ class JavascriptWriter {
   }
 }
 
-export = JavascriptWriter;
+export = TypeScriptWriter;
