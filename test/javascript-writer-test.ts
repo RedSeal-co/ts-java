@@ -1,12 +1,12 @@
 // javascript-writer-test.ts
 ///<reference path='../lib/bluebird.d.ts' />
+///<reference path='../lib/glob.d.ts' />
 ///<reference path='../lib/java.d.ts' />
 ///<reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 ///<reference path='../typings/chai/chai.d.ts'/>
 ///<reference path='../typings/lodash/lodash.d.ts' />
 ///<reference path='../typings/mocha/mocha.d.ts'/>
 ///<reference path='../typings/node/node.d.ts'/>
-///<reference path='./glob.d.ts' />
 
 'use strict';
 
