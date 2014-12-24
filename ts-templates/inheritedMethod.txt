@@ -1,3 +1,0 @@
-// {{{signature}}}
-{{{clazz}}}.prototype.{{{method}}} = {{{defining}}}.prototype.{{{method}}};
-

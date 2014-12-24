@@ -91,49 +91,12 @@ class TypeScriptWriter {
   }
 
 
-  // *writeOneDefinedMethod(): write one method definition.
-  writeOneDefinedMethod(streamFn: IStreamFn, className: string, method: ClassesMap.IMethodDefinition) {
-    var classMap = this.classes[className];
-    var jsClassName = classMap.shortName + 'Wrapper';
-
-    var methodName = method.name;
-    var signature = method.signature;
-    return streamFn(this.fill('definedMethod', { clazz: jsClassName, method: methodName, signature: signature }));
-  }
-
-
-  // *writeOneInheritedMethod(): write the declaration of one method 'inherited' from another class.
-  writeOneInheritedMethod(streamFn: IStreamFn, className: string, method: ClassesMap.IMethodDefinition) {
-    var classMap = this.classes[className];
-    var jsClassName = classMap.shortName + 'Wrapper';
-
-    var methodName = method.name;
-    var signature = method.signature;
-    var defining = this.classes[this.methodOriginations[signature]].shortName + 'Wrapper';
-    return streamFn(this.fill('inheritedMethod', {
-      clazz: jsClassName,
-      method: methodName,
-      signature: signature,
-      defining: defining
-    }));
-  }
-
-
   // *writeJsMethods(): write all method declarations for a class.
   writeJsMethods(streamFn: IStreamFn, className: string) {
     function bySignature(a: ClassesMap.IMethodDefinition, b: ClassesMap.IMethodDefinition) {
       return a.signature.localeCompare(b.signature);
     }
-
-    var classMap = this.classes[className];
-    return BluePromise.all(classMap.methods.sort(bySignature))
-      .each((method: ClassesMap.IMethodDefinition) => {
-        if (method.definedHere) {
-          return this.writeOneDefinedMethod(streamFn, className, method);
-        } else {
-          return this.writeOneInheritedMethod(streamFn, className, method);
-        }
-      });
+    return streamFn(this.fill('methods', this.classes[className]));
   }
 
 

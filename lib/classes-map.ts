@@ -212,11 +212,15 @@ export class ClassesMap {
     var interfaces = this.mapClassInterfaces(className, clazz, work);
     var methods  = this.mapClassMethods(className, clazz, work);
 
+    function bySignature(a: IMethodDefinition, b: IMethodDefinition) {
+      return a.signature.localeCompare(b.signature);
+    }
+
     var classMap: IClassDefinition = {
       fullName: className,
       shortName: this.shortClassName(className),
       interfaces: interfaces,
-      methods: methods
+      methods: methods.sort(bySignature)
     };
 
     return classMap;

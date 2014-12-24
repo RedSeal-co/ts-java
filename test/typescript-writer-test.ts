@@ -161,54 +161,11 @@ describe('TypeScriptWriter', () => {
     });
   });
 
-  describe('writeOneDefinedMethod', () => {
-    it('should write expected lines for java.util.Iterator:next', () => {
-      var className = 'java.util.Iterator';
-      var methodName = 'next';
-      var methodVariants = jsWriter.getMethodVariants(className, methodName);
-      var method = methodVariants[0];
-      var runPromise = jsWriter.writeOneDefinedMethod(streamFn, className, method).then(endFn);
-      var expectedData = [
-        '// next()',
-        'IteratorWrapper.prototype.next = function() {',
-        '};',
-        '',
-        ''].join('\n');
-      return BluePromise.all([runPromise, resultPromise])
-        .spread(function (ignore: any, data: string) {
-          expect(data).to.equal(expectedData);
-        });
-    });
-  });
-
-  describe('writeOneInheritedMethod', () => {
-    it('should write expected lines for com.tinkerpop.gremlin.structure.Edge:addBothE', () => {
-      var className = 'com.tinkerpop.gremlin.structure.Edge';
-      var methodName = 'addBothE';
-      var methodVariants = jsWriter.getMethodVariants(className, methodName);
-      var method = methodVariants[0];
-      var runPromise = jsWriter.writeOneInheritedMethod(streamFn, className, method).then(endFn);
-      var expectedData = [
-        '// addBothE(java.lang.String,java.lang.String,java.lang.Object...)',
-        'EdgeWrapper.prototype.addBothE = ElementTraversalWrapper.prototype.addBothE;',
-        '',
-        ''].join('\n');
-      return BluePromise.all([runPromise, resultPromise])
-        .spread(function (ignore: any, data: string) {
-          expect(data).to.equal(expectedData);
-        });
-    });
-  });
-
   describe('writeJsMethods', () => {
-    // Skipping this and calling it a TODO because the implementation doesn't yet write
-    // definitions for inherited methods. But all of this will be done differently
-    // using Typescript, so this test is just a placeholder.
-    it.skip('TODO: should write expected lines for java.util.Iterator', () => {
+    it('should write expected lines for java.util.Iterator', () => {
       var className = 'java.util.Iterator';
       var runPromise = jsWriter.writeJsMethods(streamFn, className).then(endFn);
       var expectedData = [
-        'TODO: should also include methods inherited from Object!',
         '// forEachRemaining(java.util.function.Consumer)',
         'IteratorWrapper.prototype.forEachRemaining = function() {',
         '};',

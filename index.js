@@ -5,7 +5,7 @@ var ClassesMap = require('./lib/classes-map.js');
 var fs = require('fs');
 var glob = require('glob');
 var java = require('java');
-var JavascriptWriter = require('./lib/javascript-writer.js');
+var TypeScriptWriter = require('./lib/typescript-writer.js');
 var mkdirp = require('mkdirp');
 var Work = require('./lib/work.js');
 
@@ -19,18 +19,17 @@ function writeJsons(classes) {
 }
 
 function writeLib(classesMap) {
-  var jsWriter = new JavascriptWriter(classesMap, 'templates');
+  var tsWriter = new TypeScriptWriter(classesMap, 'ts-templates');
   var classes = classesMap.getClasses();
   return BluePromise.all(_.keys(classes))
     .each(function (className) {
-      return jsWriter.writeLibraryClassFile(className);
+      return tsWriter.writeLibraryClassFile(className);
     });
 }
 
 function main() {
   mkdirp.sync('out/json');
   mkdirp.sync('out/lib');
-  mkdirp.sync('out/test');
 
   var filenames = glob.sync('test/**/*.jar');
   for (var j = 0; j < filenames.length; j++) {

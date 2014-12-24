@@ -1,0 +1,6 @@
+{{#each methods}}
+// {{{signature}}}
+{{this/../shortName}}Wrapper.prototype.{{name}} = function() {
+};
+
+{{/each}}
