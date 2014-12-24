@@ -1,4 +1,4 @@
-// ${signature}
-${clazz}.prototype.${method} = function() {
+// {{{signature}}}
+{{{clazz}}}.prototype.{{{method}}} = function() {
 };
 

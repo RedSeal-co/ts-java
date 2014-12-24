@@ -19,6 +19,9 @@
     },
     "node/node.d.ts": {
       "commit": "48b4cb54af76f02b33dccaa0fdd2ae97db7cdd1b"
+    },
+    "handlebars/handlebars.d.ts": {
+      "commit": "dd4398796d746c4a7bfc739fedfcaadb0a8feb77"
     }
   }
 }

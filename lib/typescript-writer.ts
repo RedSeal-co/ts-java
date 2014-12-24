@@ -1,4 +1,5 @@
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
+/// <reference path='../typings/handlebars/handlebars.d.ts' />
 /// <reference path='../typings/lodash/lodash.d.ts' />
 /// <reference path='../typings/node/node.d.ts' />
 /// <reference path='bluebird.d.ts' />
@@ -12,6 +13,7 @@ import BluePromise = require('bluebird');
 import ClassesMap = require('./classes-map');
 import fs = require('fs');
 import glob = require('glob');
+import handlebars = require('handlebars');
 import Immutable = require('immutable');
 import path = require('path');
 
@@ -34,12 +36,12 @@ class TypeScriptWriter {
 
   private classes: ClassesMap.IClassDefinitionMap;
   private methodOriginations: ClassesMap.IMethodOriginationMap;
-  private templates: Immutable.Map<string, string>;
+  private templates: Immutable.Map<string, HandlebarsTemplateDelegate>;
 
   constructor(classesMap: ClassesMap.ClassesMap, templatesDirPath: string) {
     this.classes = classesMap.getClasses();
     this.methodOriginations = classesMap.getMethodOriginations();
-    this.templates = Immutable.Map<string, string>();
+    this.templates = Immutable.Map<string, HandlebarsTemplateDelegate>();
 
     var extension = '.txt';
     var filenames = glob.sync(path.join(templatesDirPath, '*' + extension));
@@ -48,7 +50,8 @@ class TypeScriptWriter {
       assert(lastSlash !== -1);
       var name = path.slice(lastSlash + 1, -extension.length);
       var contents = fs.readFileSync(path, { encoding: 'utf8' });
-      this.templates = this.templates.set(name, contents);
+      var compiled = handlebars.compile(contents);
+      this.templates = this.templates.set(name, compiled);
     });
   }
 
@@ -66,7 +69,7 @@ class TypeScriptWriter {
         assert.ok(intf in this.classes, 'Unknown interface:' + intf);
         var interfaceMap = this.classes[intf];
         var interfaceName = interfaceMap.shortName + 'Wrapper';
-        return streamFn(_.template(import_, { name: interfaceName }));
+        return streamFn(import_({ name: interfaceName }));
       })
       .then(() => { return streamFn('\n'); });
   }
@@ -81,12 +84,12 @@ class TypeScriptWriter {
     var firstLines = this.templates.get('firstLines');
     var constructor = this.templates.get('constructor');
 
-    return streamFn(_.template(firstLines, { name: jsClassName }))
+    return streamFn(firstLines({ name: jsClassName }))
       .then(() => {
         return this.writeRequiredInterfaces(streamFn, className);
       })
       .then(() => {
-        return streamFn(_.template(constructor, { name: jsClassName }));
+        return streamFn(constructor({ name: jsClassName }));
       });
   }
 
@@ -100,7 +103,7 @@ class TypeScriptWriter {
 
     var methodName = method.name;
     var signature = method.signature;
-    return streamFn(_.template(text, { clazz: jsClassName, method: methodName, signature: signature }));
+    return streamFn(text({ clazz: jsClassName, method: methodName, signature: signature }));
   }
 
 
@@ -114,7 +117,7 @@ class TypeScriptWriter {
     var methodName = method.name;
     var signature = method.signature;
     var defining = this.classes[this.methodOriginations[signature]].shortName + 'Wrapper';
-    return streamFn(_.template(text, { clazz: jsClassName, method: methodName, signature: signature, defining: defining }));
+    return streamFn(text({ clazz: jsClassName, method: methodName, signature: signature, defining: defining }));
   }
 
 
