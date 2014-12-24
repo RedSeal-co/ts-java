@@ -55,21 +55,21 @@ class TypeScriptWriter {
     });
   }
 
+  fill(name: string, ctx: Object): string {
+    return this.templates.get(name)(ctx);
+  }
 
   // *writeRequiredInterfaces()*: write the require() statements for all required interfaces.
   writeRequiredInterfaces(streamFn: IStreamFn, className: string): BluePromise<void> {
-    assert.ok(this.classes);
     var classMap = this.classes[className];
     assert.ok(classMap);
-
-    var import_ = this.templates.get('import');
 
     return BluePromise.all(classMap.interfaces)
       .each((intf: string) => {
         assert.ok(intf in this.classes, 'Unknown interface:' + intf);
         var interfaceMap = this.classes[intf];
         var interfaceName = interfaceMap.shortName + 'Wrapper';
-        return streamFn(import_({ name: interfaceName }));
+        return streamFn(this.fill('import', { name: interfaceName }));
       })
       .then(() => { return streamFn('\n'); });
   }
@@ -81,15 +81,12 @@ class TypeScriptWriter {
     var classMap = this.classes[className];
     var jsClassName = classMap.shortName + 'Wrapper';
 
-    var firstLines = this.templates.get('firstLines');
-    var constructor = this.templates.get('constructor');
-
-    return streamFn(firstLines({ name: jsClassName }))
+    return streamFn(this.fill('firstLines', { name: jsClassName }))
       .then(() => {
         return this.writeRequiredInterfaces(streamFn, className);
       })
       .then(() => {
-        return streamFn(constructor({ name: jsClassName }));
+        return streamFn(this.fill('constructor', { name: jsClassName }));
       });
   }
 
@@ -99,11 +96,9 @@ class TypeScriptWriter {
     var classMap = this.classes[className];
     var jsClassName = classMap.shortName + 'Wrapper';
 
-    var text = this.templates.get('definedMethod');
-
     var methodName = method.name;
     var signature = method.signature;
-    return streamFn(text({ clazz: jsClassName, method: methodName, signature: signature }));
+    return streamFn(this.fill('definedMethod', { clazz: jsClassName, method: methodName, signature: signature }));
   }
 
 
@@ -112,12 +107,15 @@ class TypeScriptWriter {
     var classMap = this.classes[className];
     var jsClassName = classMap.shortName + 'Wrapper';
 
-    var text = this.templates.get('inheritedMethod');
-
     var methodName = method.name;
     var signature = method.signature;
     var defining = this.classes[this.methodOriginations[signature]].shortName + 'Wrapper';
-    return streamFn(text({ clazz: jsClassName, method: methodName, signature: signature, defining: defining }));
+    return streamFn(this.fill('inheritedMethod', {
+      clazz: jsClassName,
+      method: methodName,
+      signature: signature,
+      defining: defining
+    }));
   }
 
 
