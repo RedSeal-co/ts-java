@@ -113,7 +113,7 @@ class TypeScriptWriter {
     var classMap = this.classes[className];
 
     var fileName = classMap.shortName + 'Wrapper';
-    var filePath = 'out/lib/' + fileName + '.js';
+    var filePath = 'out/lib/' + fileName + '.ts';
 
     var stream = fs.createWriteStream(filePath);
     var streamFn: IStreamFn = <IStreamFn> BluePromise.promisify(stream.write, stream);

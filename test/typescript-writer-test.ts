@@ -85,7 +85,7 @@ describe('TypeScriptWriter', () => {
       var className = 'java.util.Iterator';
       var runPromise = jsWriter.writeRequiredInterfaces(streamFn, className).then(endFn);
       var expectedData = [
-        'var ObjectWrapper = require(\'./ObjectWrapper.js\');',
+        'import ObjectWrapper = require(\'./ObjectWrapper\');',
         '', ''].join('\n');
       return BluePromise.all([runPromise, resultPromise])
         .spread(function (ignore: any, data: string) {
@@ -96,10 +96,10 @@ describe('TypeScriptWriter', () => {
       var className = 'com.tinkerpop.gremlin.structure.Edge';
       var runPromise = jsWriter.writeRequiredInterfaces(streamFn, className).then(endFn);
       var expectedData = [
-        'var ObjectWrapper = require(\'./ObjectWrapper.js\');',
-        'var ElementWrapper = require(\'./ElementWrapper.js\');',
-        'var ElementTraversalWrapper = require(\'./ElementTraversalWrapper.js\');',
-        'var EdgeTraversalWrapper = require(\'./EdgeTraversalWrapper.js\');',
+        'import ObjectWrapper = require(\'./ObjectWrapper\');',
+        'import ElementWrapper = require(\'./ElementWrapper\');',
+        'import ElementTraversalWrapper = require(\'./ElementTraversalWrapper\');',
+        'import EdgeTraversalWrapper = require(\'./EdgeTraversalWrapper\');',
         '', ''].join('\n');
       return BluePromise.all([runPromise, resultPromise])
         .spread(function (ignore: any, data: string) {
@@ -113,11 +113,11 @@ describe('TypeScriptWriter', () => {
       var className = 'java.util.Iterator';
       var runPromise = jsWriter.writeJsHeader(streamFn, className).then(endFn);
       var expectedData = [
-        '// IteratorWrapper.js',
+        '// IteratorWrapper.ts',
         '',
         '\'use strict\';',
         '',
-        'var ObjectWrapper = require(\'./ObjectWrapper.js\');',
+        'import ObjectWrapper = require(\'./ObjectWrapper\');',
         '',
         'function IteratorWrapper(_jThis) {',
         '  if (!(this instanceof IteratorWrapper)) {',
@@ -136,14 +136,14 @@ describe('TypeScriptWriter', () => {
       var className = 'com.tinkerpop.gremlin.structure.Edge';
       var runPromise = jsWriter.writeJsHeader(streamFn, className).then(endFn);
       var expectedData = [
-        '// EdgeWrapper.js',
+        '// EdgeWrapper.ts',
         '',
         '\'use strict\';',
         '',
-        'var ObjectWrapper = require(\'./ObjectWrapper.js\');',
-        'var ElementWrapper = require(\'./ElementWrapper.js\');',
-        'var ElementTraversalWrapper = require(\'./ElementTraversalWrapper.js\');',
-        'var EdgeTraversalWrapper = require(\'./EdgeTraversalWrapper.js\');',
+        'import ObjectWrapper = require(\'./ObjectWrapper\');',
+        'import ElementWrapper = require(\'./ElementWrapper\');',
+        'import ElementTraversalWrapper = require(\'./ElementTraversalWrapper\');',
+        'import EdgeTraversalWrapper = require(\'./EdgeTraversalWrapper\');',
         '',
         'function EdgeWrapper(_jThis) {',
         '  if (!(this instanceof EdgeWrapper)) {',

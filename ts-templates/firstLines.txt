@@ -1,4 +1,4 @@
-// {{{name}}}.js
+// {{{name}}}.ts
 
 'use strict';
 
