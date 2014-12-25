@@ -27,16 +27,17 @@ describe('TypeScriptWriter', () => {
 
   var ClassesMap = _ClassesMap.ClassesMap;
 
-  var jsWriter;
+  var classesMap;
+  var theWriter;
 
   before(() => {
     var filenames = glob.sync('test/**/*.jar');
     for (var j = 0; j < filenames.length; j++) {
       java.classpath.push(filenames[j]);
     }
-    var classesMap = new ClassesMap(java);
+    classesMap = new ClassesMap(java);
     classesMap.initialize(['com.tinkerpop.gremlin.structure.Graph']);
-    jsWriter = new TypeScriptWriter(classesMap, 'ts-templates');
+    theWriter = new TypeScriptWriter(classesMap, 'test/templates');
   });
 
   var streamFn;
@@ -66,7 +67,7 @@ describe('TypeScriptWriter', () => {
 
   describe('initialize', () => {
     it('should initialize', () => {
-      expect(jsWriter).to.be.ok;
+      expect(theWriter).to.be.ok;
       expect(streamFn).to.be.a('function');
       expect(endFn).to.be.a('function');
     });
@@ -80,109 +81,53 @@ describe('TypeScriptWriter', () => {
     });
   });
 
-  describe('writeRequiredInterfaces', () => {
-    it('should write expected lines for java.util.Iterator', () => {
+  describe('streamLibraryClassFile', () => {
+    it('should write expected given template class_summary', () => {
       var className = 'java.util.Iterator';
-      var runPromise = jsWriter.writeRequiredInterfaces(streamFn, className).then(endFn);
+      var runPromise = theWriter.streamLibraryClassFile(className, 'class_summary', streamFn, endFn).then(endFn);
       var expectedData = [
-        'import ObjectWrapper = require(\'./ObjectWrapper\');',
-        '', ''].join('\n');
-      return BluePromise.all([runPromise, resultPromise])
-        .spread(function (ignore: any, data: string) {
-          expect(data).to.equal(expectedData);
-        });
-    });
-    it('should write expected lines for com.tinkerpop.gremlin.structure.Edge', () => {
-      var className = 'com.tinkerpop.gremlin.structure.Edge';
-      var runPromise = jsWriter.writeRequiredInterfaces(streamFn, className).then(endFn);
-      var expectedData = [
-        'import ObjectWrapper = require(\'./ObjectWrapper\');',
-        'import ElementWrapper = require(\'./ElementWrapper\');',
-        'import ElementTraversalWrapper = require(\'./ElementTraversalWrapper\');',
-        'import EdgeTraversalWrapper = require(\'./EdgeTraversalWrapper\');',
-        '', ''].join('\n');
-      return BluePromise.all([runPromise, resultPromise])
-        .spread(function (ignore: any, data: string) {
-          expect(data).to.equal(expectedData);
-        });
-    });
-  });
-
-  describe('writeHeader', () => {
-    it('should write expected lines for java.util.Iterator', () => {
-      var className = 'java.util.Iterator';
-      var runPromise = jsWriter.writeJsHeader(streamFn, className).then(endFn);
-      var expectedData = [
-        '// IteratorWrapper.ts',
-        '',
-        '\'use strict\';',
-        '',
-        'import ObjectWrapper = require(\'./ObjectWrapper\');',
-        '',
-        'function IteratorWrapper(_jThis) {',
-        '  if (!(this instanceof IteratorWrapper)) {',
-        '    return new IteratorWrapper(_jThis);',
-        '  }',
-        '  this.jThis = _jThis;',
-        '}',
-        '',
-        ''].join('\n');
-      return BluePromise.all([runPromise, resultPromise])
-        .spread(function (ignore: any, data: string) {
-          expect(data).to.equal(expectedData);
-        });
-    });
-    it('should write expected lines for com.tinkerpop.gremlin.structure.Edge', () => {
-      var className = 'com.tinkerpop.gremlin.structure.Edge';
-      var runPromise = jsWriter.writeJsHeader(streamFn, className).then(endFn);
-      var expectedData = [
-        '// EdgeWrapper.ts',
-        '',
-        '\'use strict\';',
-        '',
-        'import ObjectWrapper = require(\'./ObjectWrapper\');',
-        'import ElementWrapper = require(\'./ElementWrapper\');',
-        'import ElementTraversalWrapper = require(\'./ElementTraversalWrapper\');',
-        'import EdgeTraversalWrapper = require(\'./EdgeTraversalWrapper\');',
-        '',
-        'function EdgeWrapper(_jThis) {',
-        '  if (!(this instanceof EdgeWrapper)) {',
-        '    return new EdgeWrapper(_jThis);',
-        '  }',
-        '  this.jThis = _jThis;',
-        '}',
-        '',
+        'Class Definition for class java.util.Iterator:',
+        'fullName: java.util.Iterator',
+        'shortName: Iterator',
+        'interfaces: java.lang.Object',
+        'methods: [object Object],[object Object],[object Object],[object Object]',
+        'depth: 2',
         ''
-        ].join('\n');
+      ].join('\n');
       return BluePromise.all([runPromise, resultPromise])
         .spread(function (ignore: any, data: string) {
           expect(data).to.equal(expectedData);
         });
-    });
-  });
 
-  describe('writeJsMethods', () => {
-    it('should write expected lines for java.util.Iterator', () => {
+    });
+    it('should write expected given template methods', () => {
       var className = 'java.util.Iterator';
-      var runPromise = jsWriter.writeJsMethods(streamFn, className).then(endFn);
+      var runPromise = theWriter.streamLibraryClassFile(className, 'methods', streamFn, endFn).then(endFn);
       var expectedData = [
-        '// forEachRemaining(java.util.function.Consumer)',
-        'IteratorWrapper.prototype.forEachRemaining = function() {',
-        '};',
+        'Method signatures for class java.util.Iterator:',
+        'forEachRemaining(java.util.function.Consumer)',
+        'hasNext()',
+        'next()',
+        'remove()',
+        ''
+      ].join('\n');
+      return BluePromise.all([runPromise, resultPromise])
+        .spread(function (ignore: any, data: string) {
+          expect(data).to.equal(expectedData);
+        });
+
+    });
+    it('should write expected given template interfaces', () => {
+      var className = 'com.tinkerpop.gremlin.structure.Edge';
+      var runPromise = theWriter.streamLibraryClassFile(className, 'interfaces', streamFn, endFn).then(endFn);
+      var expectedData = [
+        'Inherited interfaces for class com.tinkerpop.gremlin.structure.Edge:',
+        'o ObjectWrapper',
+        'o ElementWrapper',
+        'o ElementTraversalWrapper',
+        'o EdgeTraversalWrapper',
         '',
-        '// hasNext()',
-        'IteratorWrapper.prototype.hasNext = function() {',
-        '};',
-        '',
-        '// next()',
-        'IteratorWrapper.prototype.next = function() {',
-        '};',
-        '',
-        '// remove()',
-        'IteratorWrapper.prototype.remove = function() {',
-        '};',
-        '',
-        ''].join('\n');
+      ].join('\n');
       return BluePromise.all([runPromise, resultPromise])
         .spread(function (ignore: any, data: string) {
           expect(data).to.equal(expectedData);
@@ -190,5 +135,4 @@ describe('TypeScriptWriter', () => {
 
     });
   });
-
 });

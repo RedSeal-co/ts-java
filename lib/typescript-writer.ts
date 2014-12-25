@@ -16,6 +16,7 @@ import glob = require('glob');
 import handlebars = require('handlebars');
 import Immutable = require('immutable');
 import path = require('path');
+import util = require('util');
 
 interface IFunctionReturningPromise<R> {
   (x?: any): BluePromise<R>;

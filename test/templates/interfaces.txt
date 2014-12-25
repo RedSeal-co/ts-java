@@ -1,0 +1,4 @@
+Inherited interfaces for class {{this.fullName}}:
+{{#intf interfaces}}
+o {{this}}
+{{/intf}}
