@@ -129,6 +129,7 @@ describe('ClassesMap', () => {
         declared: 'java.lang.Object',
         returns: 'int',
         params: [],
+        paramNames: [],
         isVarArgs: false,
         generic_proto: 'public native int java.lang.Object.hashCode()',
         plain_proto: 'public native int java.lang.Object.hashCode()',

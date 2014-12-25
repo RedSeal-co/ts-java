@@ -39,15 +39,21 @@ interface IHandelBarHelperOptions {
 // classesMap must be a fully initialized `ClassesMap` object, see ./classes-map.js.
 class TypeScriptWriter {
 
+  private classesMap: ClassesMap.ClassesMap;
   private classes: ClassesMap.IClassDefinitionMap;
   private methodOriginations: ClassesMap.IMethodOriginationMap;
   private templates: Immutable.Map<string, HandlebarsTemplateDelegate>;
 
   constructor(classesMap: ClassesMap.ClassesMap, templatesDirPath: string) {
+    this.classesMap = classesMap;
     this.classes = classesMap.getClasses();
     this.methodOriginations = classesMap.getMethodOriginations();
-    this.templates = Immutable.Map<string, HandlebarsTemplateDelegate>();
+    this.templates = this.loadTemplates(templatesDirPath);
+    this.registerHandlebarHelpers();
+  }
 
+  loadTemplates(templatesDirPath: string): Immutable.Map<string, HandlebarsTemplateDelegate> {
+    var templates = Immutable.Map<string, HandlebarsTemplateDelegate>();
     var extension = '.txt';
     var filenames = glob.sync(path.join(templatesDirPath, '*' + extension));
     _.forEach(filenames, (path: string) => {
@@ -56,56 +62,34 @@ class TypeScriptWriter {
       var name = path.slice(lastSlash + 1, -extension.length);
       var contents = fs.readFileSync(path, { encoding: 'utf8' });
       var compiled = handlebars.compile(contents);
-      this.templates = this.templates.set(name, compiled);
+      templates = templates.set(name, compiled);
     });
+    return templates;
   }
 
   fill(name: string, ctx: Object): string {
     return this.templates.get(name)(ctx);
   }
 
-  // *writeRequiredInterfaces()*: write the require() statements for all required interfaces.
-  writeRequiredInterfaces(streamFn: IStreamFn, className: string): BluePromise<void> {
-    var classMap = this.classes[className];
-    assert.ok(classMap);
 
-    return BluePromise.all(classMap.interfaces)
-      .each((intf: string) => {
-        assert.ok(intf in this.classes, 'Unknown interface:' + intf);
-        var interfaceMap = this.classes[intf];
-        var interfaceName = interfaceMap.shortName + 'Wrapper';
-        return streamFn(this.fill('import', { name: interfaceName }));
-      })
-      .then(() => { return streamFn('\n'); });
-  }
-
-  // *writeJsHeader(): write the 'header' of a library .js file for the given class.
-  // The header includes a minimal doc comment, the necessary requires(), and the class constructor.
-  writeJsHeader(streamFn: IStreamFn, className: string): BluePromise<void> {
-    var classMap = this.classes[className];
-    var jsClassName = classMap.shortName + 'Wrapper';
-
-    return streamFn(this.fill('firstLines', { name: jsClassName }))
-      .then(() => {
-        return this.writeRequiredInterfaces(streamFn, className);
-      })
-      .then(() => {
-        return streamFn(this.fill('constructor', { name: jsClassName }));
-      });
-  }
-
-
-  // *writeJsMethods(): write all method declarations for a class.
-  writeJsMethods(streamFn: IStreamFn, className: string): BluePromise<void> {
-    function bySignature(a: ClassesMap.IMethodDefinition, b: ClassesMap.IMethodDefinition) {
-      return a.signature.localeCompare(b.signature);
+  tsTypeName(javaTypeName: string): string {
+    var m = javaTypeName.match(/([\.\$\w]+)(\[\])$/);
+    var ext = '';
+    if (m) {
+      javaTypeName = m[1];
+      ext = '[]';
     }
-    return streamFn(this.fill('methods', this.classes[className]));
+    if (this.classesMap.inWhiteList(javaTypeName)) {
+      var shortName = this.classesMap.shortClassName(javaTypeName);
+      return (shortName === 'String') ? 'string' : shortName + 'Wrapper' + ext;
+    } else {
+      return javaTypeName + ext;
+    }
   }
 
 
-  // *streamLibraryClassFile(): stream a complete source file for a java wrapper class.
-  streamLibraryClassFile(className: string, template: string, streamFn: IStreamFn, endFn: IEndFn): BluePromise<void> {
+  // *registerHandlebarHelpers()*
+  registerHandlebarHelpers() : void {
     var self = this;
     handlebars.registerHelper('intf', function(interfaces: Array<string>, options: IHandelBarHelperOptions) {
       var out = '';
@@ -116,6 +100,28 @@ class TypeScriptWriter {
       }
       return out;
     });
+    handlebars.registerHelper('margs', function(method: ClassesMap.IMethodDefinition, options: IHandelBarHelperOptions) {
+      var params = method.params;
+      var names = method.paramNames;
+      var args = _.map(names, (name: string, i: number) => {
+        if (method.isVarArgs && i === names.length - 1) {
+          return util.format('...%s: %s', name, self.tsTypeName(params[i]));
+        } else {
+          return util.format('%s: %s', name, self.tsTypeName(params[i]));
+        }
+      });
+      return args.join(', ');
+    });
+    handlebars.registerHelper('mcall', function(method: ClassesMap.IMethodDefinition, options: IHandelBarHelperOptions) {
+      return method.paramNames.join(', ');
+    });
+    handlebars.registerHelper('tstype', function(javaTypeName: string, options: IHandelBarHelperOptions) {
+      return self.tsTypeName(javaTypeName);
+    });
+  }
+
+  // *streamLibraryClassFile(): stream a complete source file for a java wrapper class.
+  streamLibraryClassFile(className: string, template: string, streamFn: IStreamFn, endFn: IEndFn): BluePromise<void> {
 
     return streamFn(this.fill(template, this.classes[className]))
       .then(() => { return endFn(); });

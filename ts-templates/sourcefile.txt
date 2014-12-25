@@ -15,9 +15,9 @@ export class {{shortName}}Wrapper {
   }
 
 {{#each methods}}
-  // {{signature}}
-  {{name}}(): {{returns}} {
-    return jThis.{{signature}};
+  // {{{generic_proto}}}
+  {{name}}({{margs this}}): {{tstype returns}} {
+    return jThis.{{name}}Sync({{mcall this}});
   }
 
 {{/each}}

@@ -5,6 +5,7 @@ declare module Java {
     getDeclaringClassSync(): JavaClass;
     getReturnTypeSync(): JavaClass;
     getParameterTypesSync(): Array<JavaClass>;
+    getParametersSync(): Array<JavaParameter>;
     isVarArgsSync(): boolean;
     toGenericStringSync(): string;
     toStringSync(): string;
@@ -12,8 +13,13 @@ declare module Java {
 
   export interface JavaClass {
     getNameSync(): string;
+    getTypeNameSync(): string;
     getInterfacesSync(): Array<JavaClass>;
     getMethodsSync(): Array<JavaMethod>;
+  }
+
+  export interface JavaParameter {
+    getNameSync(): string;
   }
 
   export interface JavaLoader {

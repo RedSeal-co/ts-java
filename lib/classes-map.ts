@@ -26,6 +26,7 @@ export interface IMethodDefinition {
   declared: string;       // interface where first declared: 'java.util.Iterator'
   returns: string;        // return type, e.g. 'void', 'int', of class name
   params: Array<string>;  // [ 'java.util.function.Consumer' ],
+  paramNames: Array<string>;  // [ 'arg0' ],
   isVarArgs: boolean;     // true if this method's last parameter is varargs ...type
   generic_proto: string;  // The method prototype including generic type information
   plain_proto: string;    // The java method prototype without generic type information
@@ -102,7 +103,10 @@ export class ClassesMap {
     if (!this.inWhiteList(className)) {
       throw new Error('shortClassName given bad classname:' + className);
     }
-    var m = className.match(/\.([\$\w]+)$/);
+    var m = className.match(/\.([\$\w]+)(\[\])?$/);
+    if (!m) {
+      throw new Error('shortClassName given bad classname:' + className);
+    }
     return m[1];
   }
 
@@ -139,7 +143,7 @@ export class ClassesMap {
     var varArgs = methodMap.isVarArgs ? '...' : '';
     if (methodMap.isVarArgs) {
       var last = _.last(methodMap.params);
-      var match = /\[L(.+);/.exec(last);
+      var match = /(.+)\[\]$/.exec(last);
       assert.ok(match, require('util').inspect(methodMap, {depth: null}));
       var finalArg = match[1] + '...';
       var params = methodMap.params.slice(0, -1);
@@ -158,7 +162,8 @@ export class ClassesMap {
       name: method.getNameSync(),
       declared: method.getDeclaringClassSync().getNameSync(),
       returns: method.getReturnTypeSync().getNameSync(),
-      params: _.map(method.getParameterTypesSync(), function (p: Java.JavaClass) { return p.getNameSync(); }),
+      params: _.map(method.getParameterTypesSync(), function (p: Java.JavaClass) { return p.getTypeNameSync(); }),
+      paramNames: _.map(method.getParametersSync(), function (p: Java.JavaParameter) { return p.getNameSync(); }),
       isVarArgs: method.isVarArgsSync(),
       generic_proto: method.toGenericStringSync(),
       plain_proto: method.toStringSync()
