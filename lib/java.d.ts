@@ -1,35 +1,35 @@
 declare module Java {
 
-  export interface JavaMethod {
+  export interface Method {
     getNameSync(): string;
-    getDeclaringClassSync(): JavaClass;
-    getReturnTypeSync(): JavaClass;
-    getParameterTypesSync(): Array<JavaClass>;
-    getParametersSync(): Array<JavaParameter>;
+    getDeclaringClassSync(): Class;
+    getReturnTypeSync(): Class;
+    getParameterTypesSync(): Array<Class>;
+    getParametersSync(): Array<Parameter>;
     isVarArgsSync(): boolean;
     toGenericStringSync(): string;
     toStringSync(): string;
   }
 
-  export interface JavaClass {
+  export interface Class {
     getNameSync(): string;
     getTypeNameSync(): string;
-    getInterfacesSync(): Array<JavaClass>;
-    getMethodsSync(): Array<JavaMethod>;
+    getInterfacesSync(): Array<Class>;
+    getMethodsSync(): Array<Method>;
   }
 
-  export interface JavaParameter {
+  export interface Parameter {
     getNameSync(): string;
   }
 
-  export interface JavaLoader {
-    loadClassSync(string): JavaClass;
+  export interface Loader {
+    loadClassSync(string): Class;
   }
 
   export interface Instance {
     classpath: Array<string>;
     callStaticMethodSync(className: string, methodName: string): any;
-    getClassLoader(): JavaLoader;
+    getClassLoader(): Loader;
   }
 
 }

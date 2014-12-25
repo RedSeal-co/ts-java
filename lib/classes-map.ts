@@ -112,16 +112,16 @@ export class ClassesMap {
 
 
   // *loadClass()*: load the class and return its Class object.
-  loadClass(className: string): Java.JavaClass {
+  loadClass(className: string): Java.Class {
     return this.java.getClassLoader().loadClassSync(className);
   }
 
 
   // *mapClassInterfaces()*: Find the direct interfaces of className.
   // Note that we later compute the transitive closure of all inherited interfaces
-  mapClassInterfaces(className: string, clazz: Java.JavaClass, work: Work) : Array<string>{
+  mapClassInterfaces(className: string, clazz: Java.Class, work: Work) : Array<string>{
     assert.strictEqual(clazz.getNameSync(), className);
-    var interfaces = _.map(clazz.getInterfacesSync(), (intf: Java.JavaClass) => { return intf.getNameSync(); });
+    var interfaces = _.map(clazz.getInterfacesSync(), (intf: Java.Class) => { return intf.getNameSync(); });
     interfaces = _.filter(interfaces, (intf: string) => { return this.inWhiteList(intf); });
 
     var javaLangObject = 'java.lang.Object';
@@ -157,13 +157,13 @@ export class ClassesMap {
 
 
   // *mapMethod()*: return a map of useful properties of a method.
-  mapMethod(method: Java.JavaMethod, work: Work): IMethodDefinition {
+  mapMethod(method: Java.Method, work: Work): IMethodDefinition {
     var methodMap: IMethodDefinition = {
       name: method.getNameSync(),
       declared: method.getDeclaringClassSync().getNameSync(),
       returns: method.getReturnTypeSync().getNameSync(),
-      params: _.map(method.getParameterTypesSync(), function (p: Java.JavaClass) { return p.getTypeNameSync(); }),
-      paramNames: _.map(method.getParametersSync(), function (p: Java.JavaParameter) { return p.getNameSync(); }),
+      params: _.map(method.getParameterTypesSync(), function (p: Java.Class) { return p.getTypeNameSync(); }),
+      paramNames: _.map(method.getParametersSync(), function (p: Java.Parameter) { return p.getNameSync(); }),
       isVarArgs: method.isVarArgsSync(),
       generic_proto: method.toGenericStringSync(),
       plain_proto: method.toStringSync()
@@ -198,14 +198,14 @@ export class ClassesMap {
 
 
   // *mapClassMethods()*: return a methodMap array for the methods of a class
-  mapClassMethods(className: string, clazz: Java.JavaClass, work: Work): Array<IMethodDefinition> {
-    return _.map(clazz.getMethodsSync(), function (m: Java.JavaMethod) { return this.mapMethod(m, work); }, this);
+  mapClassMethods(className: string, clazz: Java.Class, work: Work): Array<IMethodDefinition> {
+    return _.map(clazz.getMethodsSync(), function (m: Java.Method) { return this.mapMethod(m, work); }, this);
   }
 
 
   // *mapClass()*: return a map of all useful properties of a class.
   mapClass(className: string, work: Work): IClassDefinition {
-    var clazz: Java.JavaClass = this.loadClass(className);
+    var clazz: Java.Class = this.loadClass(className);
 
     var interfaces = this.mapClassInterfaces(className, clazz, work);
     var methods  = this.mapClassMethods(className, clazz, work);
