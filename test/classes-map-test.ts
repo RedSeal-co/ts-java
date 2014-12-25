@@ -130,8 +130,8 @@ describe('ClassesMap', () => {
         returns: 'int',
         params: [],
         isVarArgs: false,
-        generic: 'public native int java.lang.Object.hashCode()',
-        string: 'public native int java.lang.Object.hashCode()',
+        generic_proto: 'public native int java.lang.Object.hashCode()',
+        plain_proto: 'public native int java.lang.Object.hashCode()',
         signature: 'hashCode()'
       };
       expect(methodMap).to.deep.equal(expected);

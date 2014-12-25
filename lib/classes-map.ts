@@ -19,37 +19,30 @@ export interface IMethodOriginationMap {
   [signature: string]: string;
 }
 
-// *IMethodDefinition* is a javascript object used as a map { methodSignature: definingInterface }
-// Each *methodSignature* key is a string containing the signature of a method.
-// Each *definingInterface* value is a string containing the full class name where the method is first defined.
-// Example { 'equals(java.lang.Object): boolean' : 'java.lang.Object' }
+// ### IMethodDefinition
+// All of the properties on interest for a method.
 export interface IMethodDefinition {
-  name: string;
-  declared: string;
-  returns: string;
-  params: Array<string>;
-  isVarArgs: boolean;
-  generic: string;
-  'string': string;     // todo change name from string to something better
-  definedHere?: boolean;
-  signature?: string;
+  name: string;           // name of method, e.g. 'forEachRemaining'
+  declared: string;       // interface where first declared: 'java.util.Iterator'
+  returns: string;        // return type, e.g. 'void', 'int', of class name
+  params: Array<string>;  // [ 'java.util.function.Consumer' ],
+  isVarArgs: boolean;     // true if this method's last parameter is varargs ...type
+  generic_proto: string;  // The method prototype including generic type information
+  plain_proto: string;    // The java method prototype without generic type information
+  definedHere?: boolean;  // True if this method is first defined in this class
+  signature?: string;     // A method signature related to the plain_proto prototype above
+                          // This signature does not include return type info, as java does not
+                          // use return type to distinguish among overloaded methods.
 }
 
-// *Classes* is a javascript object used as a map {className: classMap}.
-// Each *className* key is a full java classname string, e.g. `'java.lang.Object'`.
-// Each *classMap* value is a javascript object that defines properties of the class, and has the form:
-// {
-//   fullName: string,         // full class name, e.g. 'java.util.Iterator'
-//   shortName: string,        // short class name, e.g. 'Iterator'
-//   interfaces: [ string ],   // an array of full names of interfacs this class inherits, e.g. [ 'java.lang.Object' ]
-//   methods: [ methodMaps ]   // an array of methodMap objects
-// }
+// ### IClassDefinition
+// All of the properties on interest for a class.
 export interface IClassDefinition {
-  fullName: string;
-  shortName: string;
-  interfaces: Array<string>;
-  methods: Array<IMethodDefinition>;
-  depth?: number;
+  fullName: string;                  // 'java.util.Iterator'
+  shortName: string;                 // 'Iterator'
+  interfaces: Array<string>;         // [ 'java.lang.Object' ]
+  methods: Array<IMethodDefinition>; // definitions of all methods implemented by this class
+  depth?: number;                    // distance from the root of the class inheritance tree
 }
 
 export interface IClassDefinitionMap {
@@ -167,8 +160,8 @@ export class ClassesMap {
       returns: method.getReturnTypeSync().getNameSync(),
       params: _.map(method.getParameterTypesSync(), function (p: Java.JavaClass) { return p.getNameSync(); }),
       isVarArgs: method.isVarArgsSync(),
-      generic: method.toGenericStringSync(),
-      string: method.toStringSync()
+      generic_proto: method.toGenericStringSync(),
+      plain_proto: method.toStringSync()
     };
 
     methodMap.signature = this.methodSignature(methodMap);

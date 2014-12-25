@@ -29,6 +29,10 @@ interface IEndFn {
   (): BluePromise<void>;
 }
 
+interface IHandelBarHelperOptions {
+  fn: Function;
+}
+
 // ## TypeScriptWriter
 // A class that provides methods for writing Javascript source files for a set of classes specified in `classesMap`.
 // classesMap must be a fully initialized `ClassesMap` object, see ./classes-map.js.
@@ -74,10 +78,9 @@ class TypeScriptWriter {
       .then(() => { return streamFn('\n'); });
   }
 
-
   // *writeJsHeader(): write the 'header' of a library .js file for the given class.
   // The header includes a minimal doc comment, the necessary requires(), and the class constructor.
-  writeJsHeader(streamFn: IStreamFn, className: string) {
+  writeJsHeader(streamFn: IStreamFn, className: string): BluePromise<void> {
     var classMap = this.classes[className];
     var jsClassName = classMap.shortName + 'Wrapper';
 
@@ -92,7 +95,7 @@ class TypeScriptWriter {
 
 
   // *writeJsMethods(): write all method declarations for a class.
-  writeJsMethods(streamFn: IStreamFn, className: string) {
+  writeJsMethods(streamFn: IStreamFn, className: string): BluePromise<void> {
     function bySignature(a: ClassesMap.IMethodDefinition, b: ClassesMap.IMethodDefinition) {
       return a.signature.localeCompare(b.signature);
     }
@@ -101,15 +104,25 @@ class TypeScriptWriter {
 
 
   // *streamLibraryClassFile(): stream a complete source file for a java wrapper class.
-  streamLibraryClassFile(className: string, streamFn: IStreamFn, endFn: IEndFn) {
-    return this.writeJsHeader(streamFn, className)
-      .then(() => { return this.writeJsMethods(streamFn, className); })
+  streamLibraryClassFile(className: string, template: string, streamFn: IStreamFn, endFn: IEndFn): BluePromise<void> {
+    var self = this;
+    handlebars.registerHelper('intf', function(interfaces: Array<string>, options: IHandelBarHelperOptions) {
+      var out = '';
+      for (var i = 0, l = interfaces.length; i < l; i++) {
+        var interfaceMap = self.classes[interfaces[i]];
+        var interfaceName = interfaceMap.shortName + 'Wrapper';
+        out = out + options.fn(interfaceName);
+      }
+      return out;
+    });
+
+    return streamFn(this.fill(template, this.classes[className]))
       .then(() => { return endFn(); });
   }
 
 
   // *writeLibraryClassFile(): write a complete source file for a library class (lib/classWrapper.js).
-  writeLibraryClassFile(className: string) {
+  writeLibraryClassFile(className: string): BluePromise<void> {
     var classMap = this.classes[className];
 
     var fileName = classMap.shortName + 'Wrapper';
@@ -119,13 +132,13 @@ class TypeScriptWriter {
     var streamFn: IStreamFn = <IStreamFn> BluePromise.promisify(stream.write, stream);
     var endFn: IEndFn = <IEndFn> BluePromise.promisify(stream.end, stream);
 
-    return this.streamLibraryClassFile(className, streamFn, endFn);
+    return this.streamLibraryClassFile(className, 'sourcefile', streamFn, endFn);
   }
 
 
   // *getClassMap(): accessor method to return the 'class map' for the given class name.
   // The class map is a javascript object map/dictionary containing all properties of interest for the class.
-  getClassMap(className: string) {
+  getClassMap(className: string): ClassesMap.IClassDefinition {
     return this.classes[className];
   }
 

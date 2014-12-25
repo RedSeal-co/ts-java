@@ -1,4 +1,5 @@
-.PHONY: install install-npm install-tsd lint documentation test testdata unittest compile clean clean-obj clean-tsd clean-npm clean-js-map
+.PHONY: install install-npm install-tsd lint documentation test testdata unittest compile
+.PHONY: clean clean-obj clean-tsd clean-npm clean-js-map generate-out
 
 default: test
 
@@ -47,7 +48,7 @@ clean-out:
 clean-js-map:
 	rm -rf lib/*.js.map test/*.js.map
 
-generate-out:
+generate-out: compile
 	node index.js
 
 install:
