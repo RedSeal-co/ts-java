@@ -1,6 +1,8 @@
-.PHONY: install install-npm install-tsd lint documentation test testdata unittest compile clean clean-obj clean-tsd clean-npm
+.PHONY: install install-npm install-tsd lint documentation test testdata unittest compile clean clean-obj clean-tsd clean-npm clean-js-map
 
 default: test
+
+all: install test
 
 lint:
 	ls $(TS_SRC) | xargs -n1 node_modules/tslint/bin/tslint --config tslint.json --file
@@ -12,7 +14,7 @@ lintOut:
 documentation :
 	node_modules/groc/bin/groc --except "**/node_modules/**" --except "out/**" "**/*.ts"  "**/*.js" README.md
 
-test: unittest
+test: unittest generate-out
 
 unittest: lint compile
 	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd
@@ -30,7 +32,7 @@ compile: $(TS_OBJ)
 
 lib/classes-map.js : lib/gremlin-v3.d.ts
 
-clean: clean-obj clean-tsd clean-npm
+clean: clean-obj clean-tsd clean-npm clean-js-map
 
 clean-tsd:
 	rm -rf typings
@@ -43,6 +45,12 @@ clean-obj:
 
 clean-out:
 	rm -rf out/*
+
+clean-js-map:
+	rm -rf lib/*.js.map test/*.js.map
+
+generate-out:
+	node index.js
 
 install:
 	$(MAKE) install-npm
