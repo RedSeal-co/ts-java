@@ -1,6 +1,6 @@
 // javascript-writer-test.ts
 ///<reference path='../lib/bluebird.d.ts' />
-///<reference path='../node_modules/immutable/dist/Immutable.d.ts'/>
+///<reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 ///<reference path='../typings/chai/chai.d.ts'/>
 ///<reference path='../typings/lodash/lodash.d.ts' />
 ///<reference path='../typings/mocha/mocha.d.ts'/>

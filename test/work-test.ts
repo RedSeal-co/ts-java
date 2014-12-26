@@ -1,5 +1,5 @@
 // work-test.ts
-///<reference path='../node_modules/immutable/dist/Immutable.d.ts'/>
+///<reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 ///<reference path="../typings/chai/chai.d.ts"/>
 ///<reference path="../typings/mocha/mocha.d.ts"/>
 ///<reference path="../typings/node/node.d.ts"/>
