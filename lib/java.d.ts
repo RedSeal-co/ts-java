@@ -29,7 +29,7 @@ declare module Java {
     loadClassSync(string): Class;
   }
 
-  export interface Instance {
+  export interface Entry {
     classpath: Array<string>;
     callStaticMethodSync(className: string, methodName: string): any;
     getClassLoader(): Loader;
@@ -38,6 +38,6 @@ declare module Java {
 }
 
 declare module 'java' {
-  var java: Java.Instance;
+  var java: Java.Entry;
   export = java;
 }
