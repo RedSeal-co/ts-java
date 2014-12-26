@@ -41,13 +41,11 @@ class TypeScriptWriter {
 
   private classesMap: ClassesMap.ClassesMap;
   private classes: ClassesMap.IClassDefinitionMap;
-  private methodOriginations: ClassesMap.IMethodOriginationMap;
   private templates: Immutable.Map<string, HandlebarsTemplateDelegate>;
 
   constructor(classesMap: ClassesMap.ClassesMap, templatesDirPath: string) {
     this.classesMap = classesMap;
     this.classes = classesMap.getClasses();
-    this.methodOriginations = classesMap.getMethodOriginations();
     this.templates = this.loadTemplates(templatesDirPath);
     this.registerHandlebarHelpers();
   }

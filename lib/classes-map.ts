@@ -10,15 +10,6 @@ import assert = require('assert');
 import Immutable = require('immutable');
 import Work = require('./work');
 
-interface IConfig {
-  whitelist?: Array<RegExp>;
-  blacklist?: Array<RegExp>;
-}
-
-export interface IMethodOriginationMap {
-  [signature: string]: string;
-}
-
 // ### IMethodDefinition
 // All of the properties on interest for a method.
 export interface IMethodDefinition {
@@ -50,50 +41,51 @@ export interface IClassDefinitionMap {
   [index: string]: IClassDefinition;
 }
 
+var requiredSeedClasses = [
+  'java.lang.Long',
+  'java.lang.Number',
+  'java.lang.Object',
+  'java.lang.String',
+  'java.lang.CharSequence',
+];
+
 // ## ClassesMap
 // ClassesMap is a map of a set of java classes/interfaces, containing information extracted via Java Reflection.
 // For each such class/interface, we extract the set of interfaces inherited/implemented by the class,
 // and information about all methods implemented by the class (directly or indirectly via inheritance).
 export class ClassesMap {
 
-  config: IConfig;
-
   private java: Java.Instance;
   private classes: IClassDefinitionMap;
-  private methodOriginations: IMethodOriginationMap;
+  private methodOriginations: Immutable.Map<string, string>;
+  private includedPatterns: Immutable.Set<RegExp>;
+  private excludedPatterns: Immutable.Set<RegExp>;
 
-  constructor(java: Java.Instance, _config: IConfig = {}) {
+  constructor(java: Java.Instance,
+              includedPatterns: Immutable.Set<RegExp>,
+              excludedPatterns?: Immutable.Set<RegExp>) {
     this.java = java;
     this.classes = {};
-    this.methodOriginations = {};
+    this.methodOriginations = Immutable.Map<string, string>();
 
-    this.config = _config;
-    this.config.whitelist = _config.whitelist || [];
-    this.config.blacklist = _config.blacklist || [];
+    assert.ok(includedPatterns);
+    assert.ok(includedPatterns instanceof Immutable.Set);
+    this.includedPatterns = includedPatterns;
+    this.excludedPatterns = excludedPatterns ? excludedPatterns : Immutable.Set<RegExp>();
 
-    if (_.isEmpty(this.config.whitelist)) {
-      this.config.whitelist = [
-        /^java\.lang\.Object$/,
-        /^java\.lang\.String$/,
-        /^java\.lang\.CharSequence$/,
-        /^java\.util\.Iterator$/,
-        /^java\.util\.function\./,
-        /^com\.tinkerpop\.gremlin\./
-      ];
-    }
+    var requiredPatterns = _.map(requiredSeedClasses, (s: string) => {
+      var pattern = '^' + s.replace(/\./g, '\\.') + '$';
+      return new RegExp(pattern);
+    });
 
-    if (_.isEmpty(this.config.blacklist)) {
-      this.config.blacklist = [
-        /^java\.lang\.reflect\./
-      ];
-    }
+    this.includedPatterns = this.includedPatterns.merge(requiredPatterns);
   }
 
   // *inWhiteList()*: Return true for classes of iterest.
   inWhiteList(className: string): boolean {
     var result =
-      _.find(this.config.whitelist, (ns: RegExp) => { return className.match(ns); }) !== undefined &&
-      _.find(this.config.blacklist, (ns: RegExp) => { return className.match(ns); }) === undefined;
+      this.includedPatterns.find((ns: RegExp) => { return className.match(ns) !== null; }) !== undefined &&
+      this.excludedPatterns.find((ns: RegExp) => { return className.match(ns) !== null; }) === undefined;
     return result;
   }
 
@@ -229,6 +221,10 @@ export class ClassesMap {
   loadAllClasses(seedClasses: Array<string>): Work {
     var work = new Work(seedClasses);
 
+    work.addTodo('java.lang.Long');
+    work.addTodo('java.lang.Number');
+    work.addTodo('java.lang.String');
+
     while (!work.isDone()) {
       var className = work.next();
       work.setDone(className);
@@ -308,10 +304,10 @@ export class ClassesMap {
     _.forEach(classMap.methods, (method: IMethodDefinition, index: number) => {
       assert.ok(typeof method.signature === 'string');
       var definedHere = false;
-      if (!(method.signature in this.methodOriginations)) {
+      if (!(this.methodOriginations.has(method.signature))) {
         if (!(method.signature in classMap.interfaces)) {
           definedHere = true;
-          this.methodOriginations[method.signature] = className;
+          this.methodOriginations = this.methodOriginations.set(method.signature, className);
           if (method.declared !== className) {
             console.log('Method %s located in %s but declared in %s', method.signature, className, method.declared);
           }
@@ -325,7 +321,7 @@ export class ClassesMap {
 
 
   // *mapMethodOriginations()*: Create a map of all methods. Keys are method signatures, values are class names.
-  mapMethodOriginations(): IMethodOriginationMap {
+  mapMethodOriginations(): Immutable.Map<string, string> {
     var work = new Work(_.keys(this.classes));
     while (!work.isDone()) {
       var className = work.next();
@@ -336,7 +332,7 @@ export class ClassesMap {
 
 
   // *getMethodOriginations()*: return the map of all original method definitions.
-  getMethodOriginations(): IMethodOriginationMap {
+  getMethodOriginations(): Immutable.Map<string, string> {
     return this.methodOriginations;
   }
 

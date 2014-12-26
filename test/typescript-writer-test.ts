@@ -35,7 +35,11 @@ describe('TypeScriptWriter', () => {
     for (var j = 0; j < filenames.length; j++) {
       java.classpath.push(filenames[j]);
     }
-    classesMap = new ClassesMap(java);
+    var classesMap = new ClassesMap(java, Immutable.Set([
+      /^java\.util\.Iterator$/,
+      /^java\.util\.function\./,
+      /^com\.tinkerpop\.gremlin\./
+    ]));
     classesMap.initialize(['com.tinkerpop.gremlin.structure.Graph']);
     theWriter = new TypeScriptWriter(classesMap, 'test/templates');
   });
