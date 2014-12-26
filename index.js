@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
-var assert = require('assert-plus');
+var assert = require('assert');
 var ClassesMap = require('./lib/classes-map.js');
 var JavascriptWriter = require('./lib/javascript-writer.js');
 var fs = require('fs');
@@ -32,7 +32,7 @@ function main() {
   mkdirp.sync('out/test');
 
   var seedClasses = ['com.tinkerpop.gremlin.structure.Graph'];
-  var classesMap = new ClassesMap();
+  var classesMap = new ClassesMap.ClassesMap();
   classesMap.initialize(seedClasses);
 
   writeJsons(classesMap.getClasses());
