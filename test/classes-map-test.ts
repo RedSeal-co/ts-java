@@ -176,7 +176,15 @@ describe('ClassesMap', () => {
       var work = new Work([className]);
       var classMap = classesMap.mapClass(className, work);
       expect(classMap).to.be.ok;
-      expect(classMap).to.have.keys(['fullName', 'shortName', 'interfaces', 'methods']);
+      expect(classMap).to.have.keys([
+        'fullName',
+        'interfaces',
+        'isInterface',
+        'isPrimitive',
+        'methods',
+        'shortName',
+        'superclass'
+      ]);
       expect(classMap.fullName).to.equal(className);
       expect(classMap.shortName).to.equal('Iterator');
       expect(classMap.interfaces).to.deep.equal(['java.lang.Object']);

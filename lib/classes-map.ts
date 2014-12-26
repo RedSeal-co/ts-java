@@ -32,6 +32,9 @@ export interface IMethodDefinition {
 export interface IClassDefinition {
   fullName: string;                  // 'java.util.Iterator'
   shortName: string;                 // 'Iterator'
+  isInterface: boolean;              // true if this is an interface, false for class or primitive type.
+  isPrimitive: boolean;              // true for a primitive type, false otherwise.
+  superclass: string;                // null if no superclass, otherwise class name
   interfaces: Array<string>;         // [ 'java.lang.Object' ]
   methods: Array<IMethodDefinition>; // definitions of all methods implemented by this class
   depth?: number;                    // distance from the root of the class inheritance tree
@@ -198,9 +201,14 @@ export class ClassesMap {
   // *mapClass()*: return a map of all useful properties of a class.
   mapClass(className: string, work: Work): IClassDefinition {
     var clazz: Java.Class = this.loadClass(className);
+    assert.strictEqual(className, clazz.getNameSync());
 
     var interfaces = this.mapClassInterfaces(className, clazz, work);
     var methods  = this.mapClassMethods(className, clazz, work);
+
+    var isInterface = clazz.isInterfaceSync();
+    var isPrimitive = clazz.isPrimitiveSync();
+    var superclass: Java.Class = clazz.getSuperclassSync();
 
     function bySignature(a: IMethodDefinition, b: IMethodDefinition) {
       return a.signature.localeCompare(b.signature);
@@ -209,6 +217,9 @@ export class ClassesMap {
     var classMap: IClassDefinition = {
       fullName: className,
       shortName: this.shortClassName(className),
+      isInterface: isInterface,
+      isPrimitive: isPrimitive,
+      superclass: superclass === null ? null : superclass.getNameSync(),
       interfaces: interfaces,
       methods: methods.sort(bySignature)
     };

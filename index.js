@@ -4,6 +4,7 @@ var _ = require('lodash');
 var ClassesMap = require('./lib/classes-map.js');
 var fs = require('fs');
 var glob = require('glob');
+var Immutable = require('immutable');
 var java = require('java');
 var TypeScriptWriter = require('./lib/typescript-writer.js');
 var mkdirp = require('mkdirp');
@@ -37,7 +38,11 @@ function main() {
   }
 
   var seedClasses = ['com.tinkerpop.gremlin.structure.Graph'];
-  var classesMap = new ClassesMap.ClassesMap(java);
+  var classesMap = new ClassesMap.ClassesMap(java, Immutable.Set([
+      /^java\.util\.Iterator$/,
+      /^java\.util\.function\./,
+      /^com\.tinkerpop\.gremlin\./
+  ]));
   classesMap.initialize(seedClasses);
 
   writeJsons(classesMap.getClasses());

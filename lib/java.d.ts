@@ -16,6 +16,9 @@ declare module Java {
     getTypeNameSync(): string;
     getInterfacesSync(): Array<Class>;
     getMethodsSync(): Array<Method>;
+    isInterfaceSync(): boolean;
+    isPrimitiveSync(): boolean;
+    getSuperclassSync(): Class;
   }
 
   export interface Parameter {
