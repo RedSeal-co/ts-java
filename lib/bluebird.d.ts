@@ -280,6 +280,8 @@ declare class Promise<R> implements Promise.Thenable<R>, Promise.Inspection<R> {
 	// TODO type inference from array-resolving promise?
 	all<U>(): Promise<U[]>;
 
+	each<U>(Function): Promise<U>;
+
 	/**
 	 * Same as calling `Promise.props(thisPromise)`. With the exception that if this promise is bound to a value, the returned promise is bound to that value too.
 	 */
