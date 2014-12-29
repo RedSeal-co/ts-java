@@ -1,87 +1,86 @@
-// classes-map-test.js
+// classes-map-test.ts
+///<reference path='../node_modules/immutable/dist/immutable.d.ts'/>
+///<reference path='../typings/chai/chai.d.ts'/>
+///<reference path='../typings/lodash/lodash.d.ts' />
+///<reference path='../typings/mocha/mocha.d.ts'/>
+///<reference path='../typings/node/node.d.ts'/>
+///<reference path='../lib/gremlin-v3.d.ts' />
 
 'use strict';
 
-var chai = require('chai');
-var expect = chai.expect;
-var Immutable = require('immutable');
-var _ = require('lodash');
+import _ = require('lodash');
+import chai = require('chai');
+import Gremlin = require('gremlin-v3');
+import Immutable = require('immutable');
+import Work = require('../lib/work');
+import _ClassesMap = require('../lib/classes-map');
 
-describe('ClassesMap', function() {
-
-  var ClassesMap = require('../lib/classes-map.js');
-  var Work = require('../lib/work.js');
+describe('ClassesMap', () => {
+  var expect = chai.expect;
+  var ClassesMap = _ClassesMap.ClassesMap;
 
   var classesMap;
 
   beforeEach(function() {
     classesMap = new ClassesMap();
-  })
+  });
 
-  describe('initialize', function() {
-    it('should initialize', function(done) {
+  describe('initialize', () => {
+    it('should initialize', () => {
       expect(classesMap).to.be.ok;
-      done();
     });
   });
 
-  describe('inWhiteList', function() {
-    it('should return true for valid class names', function(done) {
+  describe('inWhiteList', () => {
+    it('should return true for valid class names', () => {
       expect(classesMap.inWhiteList('java.lang.Object')).to.equal(true);
       expect(classesMap.inWhiteList('java.util.Iterator')).to.equal(true);
       expect(classesMap.inWhiteList('com.tinkerpop.gremlin.')).to.equal(true);
       expect(classesMap.inWhiteList('com.tinkerpop.gremlin.Foo')).to.equal(true);
-      done();
     });
-    it('should return false for invalid class names', function(done) {
+    it('should return false for invalid class names', () => {
       expect(classesMap.inWhiteList('')).to.equal(false);
       expect(classesMap.inWhiteList('com')).to.equal(false);
-//       expect(classesMap.inWhiteList('java.lang.Foo')).to.equal(false);
-//       expect(classesMap.inWhiteList('java.util.Iterators')).to.equal(false);
+      expect(classesMap.inWhiteList('java.lang.Foo')).to.equal(false);
+      expect(classesMap.inWhiteList('java.util.Iterators')).to.equal(false);
       expect(classesMap.inWhiteList('com.tinkerpop.gremlin')).to.equal(false);
       expect(classesMap.inWhiteList('com.tinkerpop.Gremlin.Foo')).to.equal(false);
-      done();
     });
   });
 
-  describe('shortClassName', function() {
-    it('should give expected results for valid class names', function(done) {
+  describe('shortClassName', () => {
+    it('should give expected results for valid class names', () => {
       expect(classesMap.shortClassName('java.lang.Object')).to.equal('Object');
       expect(classesMap.shortClassName('java.util.Iterator')).to.equal('Iterator');
       expect(classesMap.shortClassName('com.tinkerpop.gremlin.Foo')).to.equal('Foo');
-      done();
     });
-    it('should throw exception for invalid class names', function(done) {
+    it('should throw exception for invalid class names', () => {
       expect(function () { classesMap.shortClassName(''); }).to.throw(Error);
       expect(function () { classesMap.shortClassName('com'); }).to.throw(Error);
-//       expect(function () { classesMap.shortClassName('java.lang.Foo'); }).to.throw(Error);
-      done();
+      expect(function () { classesMap.shortClassName('java.lang.Foo'); }).to.throw(Error);
     });
   });
 
-  describe('loadClass', function() {
-    it('should return a valid Class object for a loadable class', function(done) {
+  describe('loadClass', () => {
+    it('should return a valid Class object for a loadable class', () => {
       var clazz = classesMap.loadClass('java.lang.Object');
       expect(clazz).to.be.ok;
       expect(clazz.getNameSync()).to.equal('java.lang.Object');
-      done();
     });
-    it('should fail for an invalid class name', function(done) {
+    it('should fail for an invalid class name', () => {
       expect(function () { classesMap.loadClass('net.lang.Object'); }).to.throw(/java.lang.ClassNotFoundException/);
-      done();
     });
   });
 
-  describe('mapClassInterfaces', function() {
-    it('should find no interfaces for java.lang.Object', function(done) {
+  describe('mapClassInterfaces', () => {
+    it('should find no interfaces for java.lang.Object', () => {
       var className = 'java.lang.Object';
       var work = new Work([className]);
       var clazz = classesMap.loadClass(className);
       var interfaces = classesMap.mapClassInterfaces(className, clazz, work);
       expect(interfaces).to.deep.equal([]);
-      done();
     });
-    it('should find one interface for java.util.Iterator', function(done) {
+    it('should find one interface for java.util.Iterator', () => {
       var className = 'java.util.Iterator';
       var work = new Work([className]);
       var clazz = classesMap.loadClass(className);
@@ -90,32 +89,30 @@ describe('ClassesMap', function() {
       expect(interfaces).to.deep.equal(expected);
       work.setDone(className);
       expect(work.getTodo().toArray()).to.deep.equal(expected);
-      done();
     });
-    it('should find the interfaces of com.tinkerpop.gremlin.structure.Edge', function(done) {
+    it('should find the interfaces of com.tinkerpop.gremlin.structure.Edge', () => {
       var className = 'com.tinkerpop.gremlin.structure.Edge';
       var work = new Work([className]);
       var clazz = classesMap.loadClass(className);
       var interfaces = classesMap.mapClassInterfaces(className, clazz, work);
       var expected = [
-        "com.tinkerpop.gremlin.structure.Element",
-        "com.tinkerpop.gremlin.process.graph.EdgeTraversal"
+        'com.tinkerpop.gremlin.structure.Element',
+        'com.tinkerpop.gremlin.process.graph.EdgeTraversal'
       ];
       expect(interfaces).to.deep.equal(expected);
       work.setDone(className);
       expect(work.getTodo().toArray().sort()).to.deep.equal(expected.sort());
-      done();
     });
   });
 
-  describe('mapMethod', function() {
-    it('should map java.lang.Object:hashCode', function(done) {
+  describe('mapMethod', () => {
+    it('should map java.lang.Object:hashCode', () => {
       var className = 'java.lang.Object';
       var work = new Work([className]);
       var clazz = classesMap.loadClass(className);
       expect(clazz).to.be.ok;
       var methods = clazz.getDeclaredMethodsSync();
-      var method = _.find(methods, function(method) { return method.getNameSync() === 'hashCode'; });
+      var method = _.find(methods, (method: Java.JavaMethod) => { return method.getNameSync() === 'hashCode'; });
       expect(method).to.be.ok;
       var methodMap = classesMap.mapMethod(method, work);
       expect(methodMap).to.be.ok;
@@ -129,12 +126,11 @@ describe('ClassesMap', function() {
         signature: 'hashCode()'
       };
       expect(methodMap).to.deep.equal(expected);
-      done();
     });
   });
 
-  describe('mapClassMethods', function() {
-    it('should load all methods of java.lang.Object', function(done) {
+  describe('mapClassMethods', () => {
+    it('should load all methods of java.lang.Object', () => {
       var className = 'java.lang.Object';
       var work = new Work([className]);
       var clazz = classesMap.loadClass(className);
@@ -157,12 +153,11 @@ describe('ClassesMap', function() {
         'wait(long,int)'
       ];
       expect(signatures).to.deep.equal(expectedSignatures);
-      done();
     });
   });
 
-  describe('mapClass', function() {
-    it('should map the properties of java.util.Iterator', function(done) {
+  describe('mapClass', () => {
+    it('should map the properties of java.util.Iterator', () => {
       var className = 'java.util.Iterator';
       var work = new Work([className]);
       var classMap = classesMap.mapClass(className, work);
@@ -179,12 +174,11 @@ describe('ClassesMap', function() {
         'remove()'
       ];
       expect(methodSignatures).to.deep.equal(expectedSignatures);
-      done();
     });
   });
 
-  describe('loadAllClasses', function() {
-    it('should load all classes reachable from java.util.Iterator', function(done) {
+  describe('loadAllClasses', () => {
+    it('should load all classes reachable from java.util.Iterator', () => {
       var work = classesMap.loadAllClasses(['java.util.Iterator']);
       expect(work.getDone().size).to.equal(4);
       var classes = classesMap.getClasses();
@@ -192,64 +186,38 @@ describe('ClassesMap', function() {
       var classNames = _.keys(classes).sort();
       expect(classNames).to.have.length(4);
       expect(classNames).to.deep.equal(['java.lang.CharSequence', 'java.lang.Object', 'java.lang.String', 'java.util.Iterator']);
-      done();
     });
-    it('should load all classes reachable from com.tinkerpop.gremlin.structure.Graph', function(done) {
+    it('should load all classes reachable from com.tinkerpop.gremlin.structure.Graph', () => {
       var work = classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
       var classes = classesMap.getClasses();
       expect(classes).to.be.an('object');
-      var classNames = _.keys(classes).sort();
-      var expectedClasses = [
+      var someExpectedClasses = [
         'com.tinkerpop.gremlin.process.Traversal',
-        'com.tinkerpop.gremlin.process.Traversal$SideEffects',
-        'com.tinkerpop.gremlin.process.computer.GraphComputer',
-        'com.tinkerpop.gremlin.process.computer.GraphComputer$Features',
         'com.tinkerpop.gremlin.process.graph.EdgeTraversal',
         'com.tinkerpop.gremlin.process.graph.ElementTraversal',
         'com.tinkerpop.gremlin.process.graph.GraphTraversal',
-        'com.tinkerpop.gremlin.process.graph.VertexPropertyTraversal',
         'com.tinkerpop.gremlin.process.graph.VertexTraversal',
-        'com.tinkerpop.gremlin.process.marker.CapTraversal',
-        'com.tinkerpop.gremlin.process.marker.CountTraversal',
         'com.tinkerpop.gremlin.structure.Edge',
         'com.tinkerpop.gremlin.structure.Edge$Iterators',
         'com.tinkerpop.gremlin.structure.Element',
         'com.tinkerpop.gremlin.structure.Element$Iterators',
         'com.tinkerpop.gremlin.structure.Graph',
-        'com.tinkerpop.gremlin.structure.Graph$Features',
-        'com.tinkerpop.gremlin.structure.Graph$Features$DataTypeFeatures',
-        'com.tinkerpop.gremlin.structure.Graph$Features$EdgeFeatures',
-        'com.tinkerpop.gremlin.structure.Graph$Features$EdgePropertyFeatures',
-        'com.tinkerpop.gremlin.structure.Graph$Features$ElementFeatures',
-        'com.tinkerpop.gremlin.structure.Graph$Features$FeatureSet',
-        'com.tinkerpop.gremlin.structure.Graph$Features$GraphFeatures',
-        'com.tinkerpop.gremlin.structure.Graph$Features$PropertyFeatures',
-        'com.tinkerpop.gremlin.structure.Graph$Features$VariableFeatures',
-        'com.tinkerpop.gremlin.structure.Graph$Features$VertexFeatures',
-        'com.tinkerpop.gremlin.structure.Graph$Features$VertexPropertyFeatures',
-        'com.tinkerpop.gremlin.structure.Graph$Variables',
         'com.tinkerpop.gremlin.structure.Property',
         'com.tinkerpop.gremlin.structure.Transaction',
-        'com.tinkerpop.gremlin.structure.Transaction$Workload',
         'com.tinkerpop.gremlin.structure.Vertex',
-        'com.tinkerpop.gremlin.structure.Vertex$Iterators',
-        'com.tinkerpop.gremlin.structure.VertexProperty',
-        'com.tinkerpop.gremlin.structure.VertexProperty$Iterators',
         'java.lang.CharSequence',
         'java.lang.Object',
         'java.lang.String',
         'java.util.Iterator'
       ];
-      expect(classNames).to.deep.equal(expectedClasses);
-      expect(work.getDone().toArray().sort()).to.deep.equal(expectedClasses);
-      done();
+      expect(classes).to.include.keys(someExpectedClasses);
     });
   });
 
-  describe('_interfacesClosure', function() {
-    it('should compute the _interfacesClosure of java.util.Iterator', function(done) {
+  describe('_interfacesClosure', () => {
+    it('should compute the _interfacesClosure of java.util.Iterator', () => {
       // Set up the test
-      var work = classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
+      classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
       var classes = classesMap.getClasses();
       var work = new Work(_.keys(classes));
       var className = 'java.util.Iterator';
@@ -266,11 +234,10 @@ describe('ClassesMap', function() {
       var afterInterfaces = classes[className].interfaces;
       var expectedAfter = expectedBefore;
       expect(afterInterfaces).to.deep.equal(expectedAfter);
-      done();
     });
-    it('should compute the _interfacesClosure of com.tinkerpop.gremlin.structure.Edge', function(done) {
+    it('should compute the _interfacesClosure of com.tinkerpop.gremlin.structure.Edge', () => {
       // Set up the test
-      var work = classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
+      classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
       var classes = classesMap.getClasses();
       var work = new Work(_.keys(classes));
       var className = 'com.tinkerpop.gremlin.structure.Edge';
@@ -293,35 +260,33 @@ describe('ClassesMap', function() {
         'com.tinkerpop.gremlin.process.graph.EdgeTraversal'
       ];
       expect(afterInterfaces).to.deep.equal(expectedAfter);
-      done();
     });
   });
 
-  describe('transitiveClosureInterfaces', function() {
-    it('should compute the _interfacesClosure for all classes', function(done) {
+  describe('transitiveClosureInterfaces', () => {
+    it('should compute the _interfacesClosure for all classes', () => {
       classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
       var classes = classesMap.getClasses();
       var allInterfacesBefore = _.pluck(classes, 'interfaces');
-      var beforeCounts = _.map(allInterfacesBefore, function (a) { return a.length; });
+      var beforeCounts = _.map(allInterfacesBefore, (a: string[]) => { return a.length; });
       var expBef = [ 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 2, 1, 3, 1, 1, 1, 1,
       1, 1, 1, 1 ];
       expect(beforeCounts).to.deep.equal(expBef);
       classesMap.transitiveClosureInterfaces();
       var allInterfacesAfter = _.pluck(classes, 'interfaces');
-      var afterCounts = _.map(allInterfacesAfter, function (a) { return a.length; });
+      var afterCounts = _.map(allInterfacesAfter, (a: string[]) => { return a.length; });
       var expAft = [ 1, 2, 1, 5, 3, 1, 3, 1, 1, 2, 1, 1, 1, 1, 2, 1, 4, 1, 1, 1, 2, 2, 1, 0, 3, 3, 4, 3, 4, 2, 5, 2, 2,
       2, 1, 2, 3, 4, 2 ];
       expect(afterCounts).to.deep.equal(expAft);
       expect(beforeCounts.length).to.equal(afterCounts.length);
-      for (var i=0; i<beforeCounts.length; ++i) {
+      for (var i = 0; i < beforeCounts.length; ++i) {
         expect(beforeCounts[i]).to.be.at.most(afterCounts[i]);
       }
-      done();
     });
   });
 
-  describe('_locateMethodDefinitions', function() {
-    it('should locate all methods of java.util.Iterator', function(done) {
+  describe('_locateMethodOriginations', () => {
+    it('should locate all method originations of java.util.Iterator', () => {
       // setup
       classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
       var classes = classesMap.getClasses();
@@ -330,12 +295,12 @@ describe('ClassesMap', function() {
       var className = 'java.util.Iterator';
 
       // execute method under test
-      classesMap._locateMethodDefinitions(className, work);
+      classesMap._locateMethodOriginations(className, work);
 
       // validate results
       expect(work.getDone().toArray().sort()).to.deep.equal(['java.lang.Object', 'java.util.Iterator']);
-      var methodDefinitions = classesMap.getMethodDefinitions();
-      var expectedDefinitions = {
+      var methodOriginations = classesMap.getMethodOriginations();
+      var expectedOriginations = {
         'equals(java.lang.Object)': 'java.lang.Object',
         'forEachRemaining(java.util.function.Consumer)': 'java.util.Iterator',
         'getClass()': 'java.lang.Object',
@@ -350,33 +315,31 @@ describe('ClassesMap', function() {
         'wait(long,int)': 'java.lang.Object',
         'wait(long)': 'java.lang.Object'
       };
-      expect(methodDefinitions).to.deep.equal(expectedDefinitions);
-      done();
+      expect(methodOriginations).to.deep.equal(expectedOriginations);
     });
   });
 
-  describe('mapMethodDefinitions', function() {
-    it('should map all method definitions', function(done) {
+  describe('mapMethodOriginations', () => {
+    it('should map all method originations', () => {
       // setup
       classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
       var classes = classesMap.getClasses();
 
       // execute method under test
-      var methodDefinitions = classesMap.mapMethodDefinitions();
+      var methodOriginations = classesMap.mapMethodOriginations();
 
       // validate results
 
       // expect a lot of unique method signatures
-      var uniqueSigatures = Immutable.Set(_.keys(methodDefinitions));
+      var uniqueSigatures = Immutable.Set(_.keys(methodOriginations));
       expect(uniqueSigatures.size).to.equal(365);
 
       // expect a smaller number defining class locations
-      var uniqueLocations = Immutable.Set(_.values(methodDefinitions));
+      var uniqueLocations = Immutable.Set(_.values(methodOriginations));
       expect(uniqueLocations.size).to.equal(29);
 
       // even less that the total number of classes, because a few only override methods.
       expect(uniqueLocations.size).to.be.below(_.keys(classes).length);
-      done();
     });
   });
 
