@@ -58,13 +58,13 @@ var requiredSeedClasses = [
 // and information about all methods implemented by the class (directly or indirectly via inheritance).
 export class ClassesMap {
 
-  private java: Java.Entry;
+  private java: Java.Singleton;
   private classes: IClassDefinitionMap;
   private methodOriginations: Immutable.Map<string, string>;
   private includedPatterns: Immutable.Set<RegExp>;
   private excludedPatterns: Immutable.Set<RegExp>;
 
-  constructor(java: Java.Entry,
+  constructor(java: Java.Singleton,
               includedPatterns: Immutable.Set<RegExp>,
               excludedPatterns?: Immutable.Set<RegExp>) {
     this.java = java;

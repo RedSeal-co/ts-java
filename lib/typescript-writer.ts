@@ -88,39 +88,34 @@ class TypeScriptWriter {
 
   // *registerHandlebarHelpers()*
   registerHandlebarHelpers() : void {
-    var self = this;
-    handlebars.registerHelper('intf', function(interfaces: Array<string>, options: IHandelBarHelperOptions) {
-      var out = '';
-      for (var i = 0, l = interfaces.length; i < l; i++) {
-        var interfaceMap = self.classes[interfaces[i]];
-        var interfaceName = interfaceMap.shortName + 'Wrapper';
-        out = out + options.fn(interfaceName);
-      }
-      return out;
+    handlebars.registerHelper('intf', (interfaces: Array<string>, options: IHandelBarHelperOptions) => {
+      return _.reduce(interfaces, (out: string, intf: string) => {
+        var interfaceMap = this.classes[intf];
+        return out + options.fn(interfaceMap.shortName + 'Wrapper');
+      }, '');
     });
-    handlebars.registerHelper('margs', function(method: ClassesMap.IMethodDefinition, options: IHandelBarHelperOptions) {
+    handlebars.registerHelper('margs', (method: ClassesMap.IMethodDefinition, options: IHandelBarHelperOptions) => {
       var params = method.params;
       var names = method.paramNames;
       var args = _.map(names, (name: string, i: number) => {
         if (method.isVarArgs && i === names.length - 1) {
-          return util.format('...%s: %s', name, self.tsTypeName(params[i]));
+          return util.format('...%s: %s', name, this.tsTypeName(params[i]));
         } else {
-          return util.format('%s: %s', name, self.tsTypeName(params[i]));
+          return util.format('%s: %s', name, this.tsTypeName(params[i]));
         }
       });
       return args.join(', ');
     });
-    handlebars.registerHelper('mcall', function(method: ClassesMap.IMethodDefinition, options: IHandelBarHelperOptions) {
+    handlebars.registerHelper('mcall', (method: ClassesMap.IMethodDefinition, options: IHandelBarHelperOptions) => {
       return method.paramNames.join(', ');
     });
-    handlebars.registerHelper('tstype', function(javaTypeName: string, options: IHandelBarHelperOptions) {
-      return self.tsTypeName(javaTypeName);
+    handlebars.registerHelper('tstype', (javaTypeName: string, options: IHandelBarHelperOptions) => {
+      return this.tsTypeName(javaTypeName);
     });
   }
 
   // *streamLibraryClassFile(): stream a complete source file for a java wrapper class.
   streamLibraryClassFile(className: string, template: string, streamFn: IStreamFn, endFn: IEndFn): BluePromise<void> {
-
     return streamFn(this.fill(template, this.classes[className]))
       .then(() => { return endFn(); });
   }

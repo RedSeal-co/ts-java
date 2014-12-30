@@ -29,7 +29,8 @@ declare module Java {
     loadClassSync(string): Class;
   }
 
-  export interface Entry {
+  // *Singleton* declares methods & members exported by the node java module.
+  export interface Singleton {
     classpath: Array<string>;
     callStaticMethodSync(className: string, methodName: string): any;
     getClassLoader(): Loader;
@@ -38,6 +39,6 @@ declare module Java {
 }
 
 declare module 'java' {
-  var java: Java.Entry;
+  var java: Java.Singleton;
   export = java;
 }

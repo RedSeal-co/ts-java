@@ -25,9 +25,7 @@ describe('ClassesMap', () => {
 
   before(() => {
     var filenames = glob.sync('test/**/*.jar');
-    for (var j = 0; j < filenames.length; j++) {
-      java.classpath.push(filenames[j]);
-    }
+    _.forEach(filenames, (name: string) => { java.classpath.push(name); });
   });
 
   beforeEach(() => {

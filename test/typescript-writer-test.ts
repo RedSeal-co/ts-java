@@ -32,9 +32,7 @@ describe('TypeScriptWriter', () => {
 
   before(() => {
     var filenames = glob.sync('test/**/*.jar');
-    for (var j = 0; j < filenames.length; j++) {
-      java.classpath.push(filenames[j]);
-    }
+    _.forEach(filenames, (name: string) => { java.classpath.push(name); });
     var classesMap = new ClassesMap(java, Immutable.Set([
       /^java\.util\.Iterator$/,
       /^java\.util\.function\./,
