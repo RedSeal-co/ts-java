@@ -1,4 +1,4 @@
-// typescript-writer-test.ts
+// code-writer-test.ts
 ///<reference path='../lib/bluebird.d.ts' />
 ///<reference path='../lib/glob.d.ts' />
 ///<reference path='../lib/java.d.ts' />
@@ -18,11 +18,11 @@ import concat = require('concat-stream');
 import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
-import TypeScriptWriter = require('../lib/typescript-writer');
+import CodeWriter = require('../lib/code-writer');
 
 BluePromise.longStackTraces();
 
-describe('TypeScriptWriter', () => {
+describe('CodeWriter', () => {
   var expect = chai.expect;
 
   var ClassesMap = _ClassesMap.ClassesMap;
@@ -39,7 +39,7 @@ describe('TypeScriptWriter', () => {
       /^com\.tinkerpop\.gremlin\./
     ]));
     classesMap.initialize(['com.tinkerpop.gremlin.structure.Graph']);
-    theWriter = new TypeScriptWriter(classesMap, 'test/templates');
+    theWriter = new CodeWriter(classesMap, 'test/templates');
   });
 
   var streamFn;
@@ -103,7 +103,6 @@ describe('TypeScriptWriter', () => {
         .spread(function (ignore: any, data: string) {
           expect(data).to.equal(expectedData);
         });
-
     });
     it('should write expected given template methods', () => {
       var className = 'java.util.Iterator';
@@ -120,7 +119,6 @@ describe('TypeScriptWriter', () => {
         .spread(function (ignore: any, data: string) {
           expect(data).to.equal(expectedData);
         });
-
     });
     it('should write expected given template interfaces', () => {
       var className = 'com.tinkerpop.gremlin.structure.Edge';
@@ -137,7 +135,6 @@ describe('TypeScriptWriter', () => {
         .spread(function (ignore: any, data: string) {
           expect(data).to.equal(expectedData);
         });
-
     });
   });
 });

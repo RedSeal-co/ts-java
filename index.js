@@ -6,7 +6,7 @@ var fs = require('fs');
 var glob = require('glob');
 var Immutable = require('immutable');
 var java = require('java');
-var TypeScriptWriter = require('./lib/typescript-writer.js');
+var CodeWriter = require('./lib/code-writer.js');
 var mkdirp = require('mkdirp');
 var Work = require('./lib/work.js');
 
@@ -20,7 +20,7 @@ function writeJsons(classes) {
 }
 
 function writeLib(classesMap) {
-  var tsWriter = new TypeScriptWriter(classesMap, 'ts-templates');
+  var tsWriter = new CodeWriter(classesMap, 'ts-templates');
   var classes = classesMap.getClasses();
   return BluePromise.all(_.keys(classes))
     .each(function (className) {

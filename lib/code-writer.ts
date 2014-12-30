@@ -34,10 +34,10 @@ interface IHandelBarHelperOptions {
   fn: Function;
 }
 
-// ## TypeScriptWriter
-// A class that provides methods for writing Javascript source files for a set of classes specified in `classesMap`.
-// classesMap must be a fully initialized `ClassesMap` object, see ./classes-map.js.
-class TypeScriptWriter {
+// ## CodeWriter
+// A class for writing Javascript/TypeScript source files for a set of classes specified in `classesMap`.
+// classesMap must be a fully initialized `ClassesMap` object, see ./classes-map.ts.
+class CodeWriter {
 
   private classesMap: ClassesMap.ClassesMap;
   private classes: ClassesMap.IClassDefinitionMap;
@@ -121,12 +121,12 @@ class TypeScriptWriter {
   }
 
 
-  // *writeLibraryClassFile(): write a complete source file for a library class (lib/classWrapper.js).
-  writeLibraryClassFile(className: string): BluePromise<void> {
+  // *writeLibraryClassFile(): write a complete source file for a library class (lib/classWrapper.ts).
+  writeLibraryClassFile(className: string, ext: string = '.ts'): BluePromise<void> {
     var classMap = this.classes[className];
 
     var fileName = classMap.shortName + 'Wrapper';
-    var filePath = 'out/lib/' + fileName + '.ts';
+    var filePath = 'out/lib/' + fileName + ext;
 
     var stream = fs.createWriteStream(filePath);
     var streamFn: IStreamFn = <IStreamFn> BluePromise.promisify(stream.write, stream);
@@ -150,4 +150,4 @@ class TypeScriptWriter {
   }
 }
 
-export = TypeScriptWriter;
+export = CodeWriter;
