@@ -30,7 +30,7 @@ interface IEndFn {
   (): BluePromise<void>;
 }
 
-interface IHandelBarHelperOptions {
+interface IHandlebarHelperOptions {
   fn: Function;
 }
 
@@ -88,13 +88,13 @@ class CodeWriter {
 
   // *registerHandlebarHelpers()*
   registerHandlebarHelpers() : void {
-    handlebars.registerHelper('intf', (interfaces: Array<string>, options: IHandelBarHelperOptions) => {
+    handlebars.registerHelper('intf', (interfaces: Array<string>, options: IHandlebarHelperOptions) => {
       return _.reduce(interfaces, (out: string, intf: string) => {
         var interfaceMap = this.classes[intf];
         return out + options.fn(interfaceMap.shortName + 'Wrapper');
       }, '');
     });
-    handlebars.registerHelper('margs', (method: ClassesMap.IMethodDefinition, options: IHandelBarHelperOptions) => {
+    handlebars.registerHelper('margs', (method: ClassesMap.IMethodDefinition, options: IHandlebarHelperOptions) => {
       var params = method.params;
       var names = method.paramNames;
       var args = _.map(names, (name: string, i: number) => {
@@ -106,10 +106,10 @@ class CodeWriter {
       });
       return args.join(', ');
     });
-    handlebars.registerHelper('mcall', (method: ClassesMap.IMethodDefinition, options: IHandelBarHelperOptions) => {
+    handlebars.registerHelper('mcall', (method: ClassesMap.IMethodDefinition, options: IHandlebarHelperOptions) => {
       return method.paramNames.join(', ');
     });
-    handlebars.registerHelper('tstype', (javaTypeName: string, options: IHandelBarHelperOptions) => {
+    handlebars.registerHelper('tstype', (javaTypeName: string, options: IHandlebarHelperOptions) => {
       return this.tsTypeName(javaTypeName);
     });
   }
