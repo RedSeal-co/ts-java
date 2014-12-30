@@ -1,0 +1,24 @@
+// {{shortName}}Wrapper.ts
+
+'use strict';
+
+{{#intf interfaces}}
+import {{this}}Wrapper = require('./{{this}}Wrapper');
+{{/intf}}
+
+interface JavaObject {
+}
+
+export class {{shortName}}Wrapper {
+
+  constructor(private jThis: JavaObject) {
+  }
+
+{{#each methods}}
+  // {{{generic_proto}}}
+  {{name}}({{margs this}}): {{tstype returns}} {
+    return jThis.{{name}}Sync({{mcall this}});
+  }
+
+{{/each}}
+}

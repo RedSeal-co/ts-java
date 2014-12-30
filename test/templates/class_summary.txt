@@ -1,0 +1,4 @@
+Class Definition for class {{this.fullName}}:
+{{#each this}}
+{{@key}}: {{{this}}}
+{{/each}}

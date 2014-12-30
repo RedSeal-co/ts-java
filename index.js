@@ -1,10 +1,12 @@
 'use strict';
 
 var _ = require('lodash');
-var assert = require('assert');
 var ClassesMap = require('./lib/classes-map.js');
-var JavascriptWriter = require('./lib/javascript-writer.js');
 var fs = require('fs');
+var glob = require('glob');
+var Immutable = require('immutable');
+var java = require('java');
+var CodeWriter = require('./lib/code-writer.js');
 var mkdirp = require('mkdirp');
 var Work = require('./lib/work.js');
 
@@ -18,21 +20,29 @@ function writeJsons(classes) {
 }
 
 function writeLib(classesMap) {
-  var jsWriter = new JavascriptWriter(classesMap);
+  var tsWriter = new CodeWriter(classesMap, 'ts-templates');
   var classes = classesMap.getClasses();
   return BluePromise.all(_.keys(classes))
     .each(function (className) {
-      return jsWriter.writeLibraryClassFile(className);
+      return tsWriter.writeLibraryClassFile(className);
     });
 }
 
 function main() {
   mkdirp.sync('out/json');
   mkdirp.sync('out/lib');
-  mkdirp.sync('out/test');
+
+  var filenames = glob.sync('test/**/*.jar');
+  for (var j = 0; j < filenames.length; j++) {
+    java.classpath.push(filenames[j]);
+  }
 
   var seedClasses = ['com.tinkerpop.gremlin.structure.Graph'];
-  var classesMap = new ClassesMap.ClassesMap();
+  var classesMap = new ClassesMap.ClassesMap(java, Immutable.Set([
+      /^java\.util\.Iterator$/,
+      /^java\.util\.function\./,
+      /^com\.tinkerpop\.gremlin\./
+  ]));
   classesMap.initialize(seedClasses);
 
   writeJsons(classesMap.getClasses());

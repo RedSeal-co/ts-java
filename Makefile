@@ -1,4 +1,5 @@
-.PHONY: install install-npm install-tsd lint documentation test testdata unittest compile clean clean-obj clean-tsd clean-npm clean-js-map
+.PHONY: install install-npm install-tsd lint documentation test testdata unittest compile
+.PHONY: clean clean-obj clean-tsd clean-npm clean-js-map generate-out
 
 default: test
 
@@ -30,8 +31,6 @@ compile: $(TS_OBJ)
 	$(TSC) $(TSC_OPTS) $<
 	stat $@ > /dev/null
 
-lib/classes-map.js : lib/gremlin-v3.d.ts
-
 clean: clean-obj clean-tsd clean-npm clean-js-map
 
 clean-tsd:
@@ -49,7 +48,7 @@ clean-out:
 clean-js-map:
 	rm -rf lib/*.js.map test/*.js.map
 
-generate-out:
+generate-out: compile
 	node index.js
 
 install:

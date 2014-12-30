@@ -1,19 +1,21 @@
 // classes-map-test.ts
+///<reference path='../lib/glob.d.ts' />
+///<reference path='../lib/java.d.ts' />
 ///<reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 ///<reference path='../typings/chai/chai.d.ts'/>
 ///<reference path='../typings/lodash/lodash.d.ts' />
 ///<reference path='../typings/mocha/mocha.d.ts'/>
 ///<reference path='../typings/node/node.d.ts'/>
-///<reference path='../lib/gremlin-v3.d.ts' />
 
 'use strict';
 
 import _ = require('lodash');
-import chai = require('chai');
-import Gremlin = require('gremlin-v3');
-import Immutable = require('immutable');
-import Work = require('../lib/work');
 import _ClassesMap = require('../lib/classes-map');
+import chai = require('chai');
+import glob = require('glob');
+import Immutable = require('immutable');
+import java = require('java');
+import Work = require('../lib/work');
 
 describe('ClassesMap', () => {
   var expect = chai.expect;
@@ -21,8 +23,17 @@ describe('ClassesMap', () => {
 
   var classesMap;
 
-  beforeEach(function() {
-    classesMap = new ClassesMap();
+  before(() => {
+    var filenames = glob.sync('test/**/*.jar');
+    _.forEach(filenames, (name: string) => { java.classpath.push(name); });
+  });
+
+  beforeEach(() => {
+    classesMap = new ClassesMap(java, Immutable.Set([
+      /^java\.util\.Iterator$/,
+      /^java\.util\.function\./,
+      /^com\.tinkerpop\.gremlin\./
+    ]));
   });
 
   describe('initialize', () => {
@@ -112,7 +123,7 @@ describe('ClassesMap', () => {
       var clazz = classesMap.loadClass(className);
       expect(clazz).to.be.ok;
       var methods = clazz.getDeclaredMethodsSync();
-      var method = _.find(methods, (method: Java.JavaMethod) => { return method.getNameSync() === 'hashCode'; });
+      var method = _.find(methods, (method: Java.Method) => { return method.getNameSync() === 'hashCode'; });
       expect(method).to.be.ok;
       var methodMap = classesMap.mapMethod(method, work);
       expect(methodMap).to.be.ok;
@@ -120,9 +131,10 @@ describe('ClassesMap', () => {
         declared: 'java.lang.Object',
         returns: 'int',
         params: [],
+        paramNames: [],
         isVarArgs: false,
-        generic: 'public native int java.lang.Object.hashCode()',
-        string: 'public native int java.lang.Object.hashCode()',
+        generic_proto: 'public native int java.lang.Object.hashCode()',
+        plain_proto: 'public native int java.lang.Object.hashCode()',
         signature: 'hashCode()'
       };
       expect(methodMap).to.deep.equal(expected);
@@ -162,7 +174,15 @@ describe('ClassesMap', () => {
       var work = new Work([className]);
       var classMap = classesMap.mapClass(className, work);
       expect(classMap).to.be.ok;
-      expect(classMap).to.have.keys(['fullName', 'shortName', 'interfaces', 'methods']);
+      expect(classMap).to.have.keys([
+        'fullName',
+        'interfaces',
+        'isInterface',
+        'isPrimitive',
+        'methods',
+        'shortName',
+        'superclass'
+      ]);
       expect(classMap.fullName).to.equal(className);
       expect(classMap.shortName).to.equal('Iterator');
       expect(classMap.interfaces).to.deep.equal(['java.lang.Object']);
@@ -179,13 +199,18 @@ describe('ClassesMap', () => {
 
   describe('loadAllClasses', () => {
     it('should load all classes reachable from java.util.Iterator', () => {
-      var work = classesMap.loadAllClasses(['java.util.Iterator']);
-      expect(work.getDone().size).to.equal(4);
+      classesMap.loadAllClasses(['java.util.Iterator']);
       var classes = classesMap.getClasses();
       expect(classes).to.be.an('object');
       var classNames = _.keys(classes).sort();
-      expect(classNames).to.have.length(4);
-      expect(classNames).to.deep.equal(['java.lang.CharSequence', 'java.lang.Object', 'java.lang.String', 'java.util.Iterator']);
+      expect(classNames).to.deep.equal([
+        'java.lang.CharSequence',
+        'java.lang.Long',
+        'java.lang.Number',
+        'java.lang.Object',
+        'java.lang.String',
+        'java.util.Iterator'
+      ]);
     });
     it('should load all classes reachable from com.tinkerpop.gremlin.structure.Graph', () => {
       var work = classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
@@ -206,6 +231,7 @@ describe('ClassesMap', () => {
         'com.tinkerpop.gremlin.structure.Transaction',
         'com.tinkerpop.gremlin.structure.Vertex',
         'java.lang.CharSequence',
+        'java.lang.Long',
         'java.lang.Object',
         'java.lang.String',
         'java.util.Iterator'
@@ -269,19 +295,18 @@ describe('ClassesMap', () => {
       var classes = classesMap.getClasses();
       var allInterfacesBefore = _.pluck(classes, 'interfaces');
       var beforeCounts = _.map(allInterfacesBefore, (a: string[]) => { return a.length; });
-      var expBef = [ 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 2, 1, 3, 1, 1, 1, 1,
-      1, 1, 1, 1 ];
-      expect(beforeCounts).to.deep.equal(expBef);
       classesMap.transitiveClosureInterfaces();
       var allInterfacesAfter = _.pluck(classes, 'interfaces');
       var afterCounts = _.map(allInterfacesAfter, (a: string[]) => { return a.length; });
-      var expAft = [ 1, 2, 1, 5, 3, 1, 3, 1, 1, 2, 1, 1, 1, 1, 2, 1, 4, 1, 1, 1, 2, 2, 1, 0, 3, 3, 4, 3, 4, 2, 5, 2, 2,
-      2, 1, 2, 3, 4, 2 ];
-      expect(afterCounts).to.deep.equal(expAft);
       expect(beforeCounts.length).to.equal(afterCounts.length);
+      var extendedCount = 0;
       for (var i = 0; i < beforeCounts.length; ++i) {
         expect(beforeCounts[i]).to.be.at.most(afterCounts[i]);
+        if (afterCounts[i] > beforeCounts[i]) {
+          ++extendedCount;
+        }
       }
+      expect(extendedCount).to.be.above(5);
     });
   });
 
@@ -299,7 +324,7 @@ describe('ClassesMap', () => {
 
       // validate results
       expect(work.getDone().toArray().sort()).to.deep.equal(['java.lang.Object', 'java.util.Iterator']);
-      var methodOriginations = classesMap.getMethodOriginations();
+      var methodOriginations = classesMap.getMethodOriginations().toObject();
       var expectedOriginations = {
         'equals(java.lang.Object)': 'java.lang.Object',
         'forEachRemaining(java.util.function.Consumer)': 'java.util.Iterator',
@@ -331,12 +356,12 @@ describe('ClassesMap', () => {
       // validate results
 
       // expect a lot of unique method signatures
-      var uniqueSigatures = Immutable.Set(_.keys(methodOriginations));
-      expect(uniqueSigatures.size).to.equal(365);
+      var uniqueSigatures = methodOriginations.keySeq();
+      expect(uniqueSigatures.size).to.be.above(300);
 
       // expect a smaller number defining class locations
-      var uniqueLocations = Immutable.Set(_.values(methodOriginations));
-      expect(uniqueLocations.size).to.equal(29);
+      var uniqueLocations = methodOriginations.toSet();
+      expect(uniqueLocations.size).to.equal(30);
 
       // even less that the total number of classes, because a few only override methods.
       expect(uniqueLocations.size).to.be.below(_.keys(classes).length);
