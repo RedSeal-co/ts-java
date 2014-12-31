@@ -181,7 +181,8 @@ describe('ClassesMap', () => {
         'isPrimitive',
         'methods',
         'shortName',
-        'superclass'
+        'superclass',
+        'variants'
       ]);
       expect(classMap.fullName).to.equal(className);
       expect(classMap.shortName).to.equal('Iterator');

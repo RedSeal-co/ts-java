@@ -96,6 +96,7 @@ describe('CodeWriter', () => {
         'superclass: ',
         'interfaces: java.lang.Object',
         'methods: [object Object],[object Object],[object Object],[object Object]',
+        'variants: [object Object]',
         'depth: 2',
         ''
       ].join('\n');

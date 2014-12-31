@@ -27,6 +27,12 @@ export interface IMethodDefinition {
                           // use return type to distinguish among overloaded methods.
 }
 
+// ### IVariantsMap
+// A map of method name to list of overloaded method variants
+interface IVariantsMap {
+    [index: string]: Array<IMethodDefinition>;
+}
+
 // ### IClassDefinition
 // All of the properties on interest for a class.
 export interface IClassDefinition {
@@ -37,6 +43,7 @@ export interface IClassDefinition {
   superclass: string;                // null if no superclass, otherwise class name
   interfaces: Array<string>;         // [ 'java.lang.Object' ]
   methods: Array<IMethodDefinition>; // definitions of all methods implemented by this class
+  variants: IVariantsMap;            // definitions of all methods, grouped by method name
   depth?: number;                    // distance from the root of the class inheritance tree
 }
 
@@ -197,6 +204,33 @@ export class ClassesMap {
     return _.map(clazz.getMethodsSync(), function (m: Java.Method) { return this.mapMethod(m, work); }, this);
   }
 
+  // *groupMethods()*: group overloaded methods (i.e. having the same name)
+  groupMethods(flatList: Array<IMethodDefinition>): IVariantsMap {
+    function compareVariants(a: IMethodDefinition, b: IMethodDefinition) {
+      // We want variants with more parameters to come first.
+      if (a.params.length > b.params.length) {
+        return -1;
+      } else if (a.params.length < b.params.length) {
+        return 1;
+      }
+      // For the same number of parameters, order the longer (presumably more complex) signature to be first
+      if (a.signature.length > b.signature.length) {
+        return -1;
+      } else if (a.signature.length < b.signature.length) {
+        return 1;
+      }
+      // As a final catch-all, just sort lexically by signature.
+      return b.signature.localeCompare(a.signature);
+    }
+
+    var variantsMap = _.groupBy(flatList, (method: IMethodDefinition) => { return method.name; });
+    _.forEach(variantsMap, (variants: Array<IMethodDefinition>, name: string) => {
+      variantsMap[name] = variants.sort(compareVariants);
+    });
+
+    return variantsMap;
+  }
+
 
   // *mapClass()*: return a map of all useful properties of a class.
   mapClass(className: string, work: Work): IClassDefinition {
@@ -204,7 +238,7 @@ export class ClassesMap {
     assert.strictEqual(className, clazz.getNameSync());
 
     var interfaces = this.mapClassInterfaces(className, clazz, work);
-    var methods  = this.mapClassMethods(className, clazz, work);
+    var methods: Array<IMethodDefinition> = this.mapClassMethods(className, clazz, work);
 
     var isInterface = clazz.isInterfaceSync();
     var isPrimitive = clazz.isPrimitiveSync();
@@ -221,7 +255,8 @@ export class ClassesMap {
       isPrimitive: isPrimitive,
       superclass: superclass === null ? null : superclass.getNameSync(),
       interfaces: interfaces,
-      methods: methods.sort(bySignature)
+      methods: methods.sort(bySignature),
+      variants: this.groupMethods(methods)
     };
 
     return classMap;
