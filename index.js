@@ -39,8 +39,8 @@ function main() {
 
   var seedClasses = ['com.tinkerpop.gremlin.structure.Graph'];
   var classesMap = new ClassesMap.ClassesMap(java, Immutable.Set([
-      /^java\.util\.Iterator$/,
-      /^java\.util\.function\./,
+      /^java\.util\.(\w+)$/,
+      /^java\.util\.function\.(\w+)$/,
       /^com\.tinkerpop\.gremlin\./
   ]));
   classesMap.initialize(seedClasses);

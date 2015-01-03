@@ -110,10 +110,10 @@ describe('CodeWriter', () => {
       var runPromise = theWriter.streamLibraryClassFile(className, 'methods', streamFn, endFn).then(endFn);
       var expectedData = [
         'Method signatures for class java.util.Iterator:',
-        'forEachRemaining(java.util.function.Consumer)',
-        'hasNext()',
-        'next()',
-        'remove()',
+        'forEachRemaining(Ljava/util/function/Consumer;)V',
+        'hasNext()Z',
+        'next()Ljava/lang/Object;',
+        'remove()V',
         ''
       ].join('\n');
       return BluePromise.all([runPromise, resultPromise])

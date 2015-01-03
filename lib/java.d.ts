@@ -13,9 +13,11 @@ declare module Java {
 
   export interface Class {
     getNameSync(): string;
+    getCanonicalNameSync(): string;
     getTypeNameSync(): string;
     getInterfacesSync(): Array<Class>;
     getMethodsSync(): Array<Method>;
+    isArraySync(): boolean;
     isInterfaceSync(): boolean;
     isPrimitiveSync(): boolean;
     getSuperclassSync(): Class;

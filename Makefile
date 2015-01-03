@@ -31,7 +31,7 @@ compile: $(TS_OBJ)
 	$(TSC) $(TSC_OPTS) $<
 	stat $@ > /dev/null
 
-clean: clean-obj clean-tsd clean-npm clean-js-map
+clean: clean-obj clean-tsd clean-npm clean-js-map clean-out
 
 clean-tsd:
 	rm -rf typings

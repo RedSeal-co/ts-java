@@ -136,42 +136,64 @@ export class ClassesMap {
     return interfaces;
   }
 
+  // *typeEncoding()*: return the JNI encoding string for a java class
+  typeEncoding(clazz: Java.Class): string {
+    var name = clazz.getNameSync();
+    var primitives = {
+      boolean: 'Z',
+      byte: 'B',
+      char: 'C',
+      double: 'D',
+      float: 'F',
+      int: 'I',
+      long: 'J',
+      short: 'S',
+      void: 'V'
+    };
+
+    var encoding: string;
+    if (clazz.isPrimitiveSync()) {
+      encoding = primitives[name];
+    } else if (clazz.isArraySync()) {
+      encoding = name;
+    } else {
+      encoding = clazz.getCanonicalNameSync();
+      assert.ok(encoding, 'typeEncoding cannot handle type');
+      encoding = 'L' + encoding + ';';
+    }
+
+    return encoding.replace(/\./g, '/');
+  }
+
 
   // *methodSignature()*: return the signature of a method, i.e. a string unique to any method variant,
-  // containing method name and types of parameters.
-  // Note: Java does not consider the function return type to be part of the method signature.
-  methodSignature(methodMap: IMethodDefinition): string {
-    var signature;
-    var varArgs = methodMap.isVarArgs ? '...' : '';
-    if (methodMap.isVarArgs) {
-      var last = _.last(methodMap.params);
-      var match = /(.+)\[\]$/.exec(last);
-      assert.ok(match, require('util').inspect(methodMap, {depth: null}));
-      var finalArg = match[1] + '...';
-      var params = methodMap.params.slice(0, -1);
-      params.push(finalArg);
-      signature = methodMap.name + '(' + params.join() + ')';
-    } else {
-      signature = methodMap.name + '(' + methodMap.params.join() + varArgs + ')';
-    }
-    return signature;
+  // encoding the method name, types of parameters, and the return type.
+  // This string may be passed as the method name to java.callMethod() in order to execute a specific variant.
+  methodSignature(method: Java.Method): string {
+    var name = method.getNameSync();
+    var params = method.getParameterTypesSync();
+    var sigs = params.map((p: Java.Class) => { return this.typeEncoding(p); });
+    return name + '(' + sigs.join('') + ')' + this.typeEncoding(method.getReturnTypeSync());
   }
 
 
   // *mapMethod()*: return a map of useful properties of a method.
   mapMethod(method: Java.Method, work: Work): IMethodDefinition {
+
+    var signature = this.methodSignature(method);
+
     var methodMap: IMethodDefinition = {
       name: method.getNameSync(),
       declared: method.getDeclaringClassSync().getNameSync(),
       returns: method.getReturnTypeSync().getNameSync(),
-      params: _.map(method.getParameterTypesSync(), function (p: Java.Class) { return p.getTypeNameSync(); }),
+//       params: _.map(method.getParameterTypesSync(), function (p: Java.Class) { return p.getTypeNameSync(); }),
+      params: _.map(method.getParameterTypesSync(), function (p: Java.Class) { return p.getNameSync(); }),
       paramNames: _.map(method.getParametersSync(), function (p: Java.Parameter) { return p.getNameSync(); }),
       isVarArgs: method.isVarArgsSync(),
       generic_proto: method.toGenericStringSync(),
-      plain_proto: method.toStringSync()
+      plain_proto: method.toStringSync(),
+      signature: signature
     };
-
-    methodMap.signature = this.methodSignature(methodMap);
 
     var addToTheToDoList = (canonicalTypeName: string) => {
       // We expect various type names here, 4 general categories:

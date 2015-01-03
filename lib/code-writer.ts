@@ -71,7 +71,7 @@ class CodeWriter {
 
 
   tsTypeName(javaTypeName: string): string {
-    var m = javaTypeName.match(/([\.\$\w]+)(\[\])$/);
+    var m = javaTypeName.match(/\[L([\.\$\w]+);$/);
     var ext = '';
     if (m) {
       javaTypeName = m[1];
