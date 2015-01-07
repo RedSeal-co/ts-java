@@ -25,38 +25,48 @@ import IClassDefinitionMap = _ClassesMap.IClassDefinitionMap;
 
 BluePromise.longStackTraces();
 
-function writeJsons(classes: IClassDefinitionMap): void {
-  _.forOwn(classes, (classMap: IClassDefinition, className: string) => {
-    fs.writeFileSync('out/json/' + classMap.shortName + '.json', JSON.stringify(classMap, null, '  '));
-  });
-}
-
-function writeLib(classesMap: ClassesMap): BluePromise<any> {
-  var tsWriter = new CodeWriter(classesMap, 'ts-templates');
-  var classes: IClassDefinitionMap = classesMap.getClasses();
-  return BluePromise.all(_.keys(classes))
-    .each(function (className: string) {
-      return tsWriter.writeLibraryClassFile(className);
+class Main {
+  writeJsons(classes: IClassDefinitionMap): void {
+    mkdirp.sync('out/json');
+    _.forOwn(classes, (classMap: IClassDefinition, className: string) => {
+      fs.writeFileSync('out/json/' + classMap.shortName + '.json', JSON.stringify(classMap, null, '  '));
     });
+  }
+
+  writeLib(classesMap: ClassesMap): BluePromise<any> {
+    mkdirp.sync('out/lib');
+    var tsWriter = new CodeWriter(classesMap, 'ts-templates');
+    var classes: IClassDefinitionMap = classesMap.getClasses();
+    return BluePromise.all(_.keys(classes))
+      .each(function (className: string) {
+        return tsWriter.writeLibraryClassFile(className);
+      });
+  }
+
+  initJava(): void {
+    var filenames = glob.sync('test/**/*.jar');
+    _.forEach(filenames, (name: string) => { java.classpath.push(name); });
+  }
+
+  loadClasses(): ClassesMap {
+    var seedClasses = ['com.tinkerpop.gremlin.structure.Graph'];
+    var classesMap = new ClassesMap(java, Immutable.Set([
+        /^java\.util\.(\w+)$/,
+        /^java\.util\.function\.(\w+)$/,
+        /^com\.tinkerpop\.gremlin\./
+    ]));
+    classesMap.initialize(seedClasses);
+    return classesMap;
+  }
+
+  run(): void {
+    this.initJava();
+    var classesMap = this.loadClasses();
+    this.writeJsons(classesMap.getClasses());
+    this.writeLib(classesMap).done();
+  }
 }
 
-function main(): void {
-  mkdirp.sync('out/json');
-  mkdirp.sync('out/lib');
+var main = new Main();
+main.run();
 
-  var filenames = glob.sync('test/**/*.jar');
-  _.forEach(filenames, (name: string) => { java.classpath.push(name); });
-
-  var seedClasses = ['com.tinkerpop.gremlin.structure.Graph'];
-  var classesMap = new ClassesMap(java, Immutable.Set([
-      /^java\.util\.(\w+)$/,
-      /^java\.util\.function\.(\w+)$/,
-      /^com\.tinkerpop\.gremlin\./
-  ]));
-  classesMap.initialize(seedClasses);
-
-  writeJsons(classesMap.getClasses());
-  writeLib(classesMap).done();
-}
-
-main();
