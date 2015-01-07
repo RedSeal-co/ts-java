@@ -20,7 +20,7 @@ test: unittest generate-out
 unittest: lint compile
 	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd
 
-TS_SRC=$(filter-out %.d.ts,$(wildcard lib/*.ts test/*.ts features/step_definitions/*.ts))
+TS_SRC=$(filter-out %.d.ts,$(wildcard index.ts lib/*.ts test/*.ts features/step_definitions/*.ts))
 TS_OBJ=$(patsubst %.ts,%.js,$(TS_SRC))
 TSC=./node_modules/.bin/tsc
 TSC_OPTS=--module commonjs --target ES5 --sourceMap

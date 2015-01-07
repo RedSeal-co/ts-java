@@ -22,6 +22,12 @@
     },
     "handlebars/handlebars.d.ts": {
       "commit": "dd4398796d746c4a7bfc739fedfcaadb0a8feb77"
+    },
+    "mkdirp/mkdirp.d.ts": {
+      "commit": "30cfe7dedb3ae990a369cda93995d69b169465bd"
+    },
+    "minimist/minimist.d.ts": {
+      "commit": "30cfe7dedb3ae990a369cda93995d69b169465bd"
     }
   }
 }
