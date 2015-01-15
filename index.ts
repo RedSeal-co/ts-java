@@ -1,6 +1,7 @@
 /// <reference path='node_modules/immutable/dist/immutable.d.ts'/>
 /// <reference path='typings/handlebars/handlebars.d.ts' />
 /// <reference path='typings/lodash/lodash.d.ts' />
+/// <reference path='typings/minimist/minimist.d.ts' />
 /// <reference path='typings/mkdirp/mkdirp.d.ts' />
 /// <reference path='typings/node/node.d.ts' />
 /// <reference path='lib/bluebird.d.ts' />
@@ -16,6 +17,7 @@ import fs = require('fs');
 import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
+import minimist = require('minimist');
 import mkdirp = require('mkdirp');
 import Work = require('./lib/work');
 
@@ -26,6 +28,9 @@ import IClassDefinitionMap = _ClassesMap.IClassDefinitionMap;
 BluePromise.longStackTraces();
 
 class Main {
+
+  private granularity: string;
+
   writeJsons(classes: IClassDefinitionMap): void {
     mkdirp.sync('out/json');
     _.forOwn(classes, (classMap: IClassDefinition, className: string) => {
@@ -33,14 +38,20 @@ class Main {
     });
   }
 
-  writeLib(classesMap: ClassesMap): BluePromise<any> {
+  writeClassFiles(classesMap: ClassesMap): BluePromise<any> {
     mkdirp.sync('out/lib');
     var tsWriter = new CodeWriter(classesMap, 'ts-templates');
     var classes: IClassDefinitionMap = classesMap.getClasses();
     return BluePromise.all(_.keys(classes))
-      .each(function (className: string) {
-        return tsWriter.writeLibraryClassFile(className);
+      .each((className: string) => {
+        return tsWriter.writeLibraryClassFile(className, this.granularity);
       });
+  }
+
+  writePackageFiles(classesMap: ClassesMap): BluePromise<any> {
+    var tsWriter = new CodeWriter(classesMap, 'ts-templates');
+    var classes: IClassDefinitionMap = classesMap.getClasses();
+    return tsWriter.writePackageFile();
   }
 
   initJava(): void {
@@ -59,14 +70,44 @@ class Main {
     return classesMap;
   }
 
-  run(): void {
+  usage(): void {
+    console.log('Usage: node index.js [options]');
+    console.log('  options:');
+    console.log('    -h --help:           print this usage summary');
+    console.log('    -g --granularity (\'class\'|\'package\') [default: \'package\'] ');
+    console.log(' Templates are read from ./ts-templates/*.txt');
+  }
+
+  parseArgs(argv: any): void {
+    if ('help' in argv || 'h' in argv) {
+      return this.usage();
+    }
+    console.log(argv);
+    var gran = argv.g || argv.granularity || 'package';
+    console.log(gran);
+    if (gran !== 'class' && gran !== 'package') {
+      console.error('--granularity must be either \'class\' or \'package\'');
+      return this.usage();
+    }
+    this.granularity = gran;
+  }
+
+  run(argv: minimist.ParsedArgs): BluePromise<any> {
+    this.parseArgs(argv);
     this.initJava();
     var classesMap = this.loadClasses();
     this.writeJsons(classesMap.getClasses());
-    this.writeLib(classesMap).done();
+
+    if (this.granularity === 'class') {
+      return this.writeClassFiles(classesMap);
+    } else {
+      return this.writePackageFiles(classesMap);
+    }
   }
 }
 
+var argv = minimist(process.argv.slice(2));
+
 var main = new Main();
-main.run();
+main.run(argv).done();
 

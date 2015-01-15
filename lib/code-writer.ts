@@ -79,7 +79,7 @@ class CodeWriter {
     }
     if (this.classesMap.inWhiteList(javaTypeName)) {
       var shortName = this.classesMap.shortClassName(javaTypeName);
-      return (shortName === 'String') ? 'string' : shortName + 'Wrapper' + ext;
+      return (shortName === 'String') ? 'string' : shortName + ext;
     } else {
       return javaTypeName + ext;
     }
@@ -91,7 +91,7 @@ class CodeWriter {
     handlebars.registerHelper('intf', (interfaces: Array<string>, options: IHandlebarHelperOptions) => {
       return _.reduce(interfaces, (out: string, intf: string) => {
         var interfaceMap = this.classes[intf];
-        return out + options.fn(interfaceMap.shortName + 'Wrapper');
+        return out + options.fn(interfaceMap.shortName);
       }, '');
     });
     handlebars.registerHelper('margs', (method: ClassesMap.IMethodDefinition, options: IHandlebarHelperOptions) => {
@@ -122,17 +122,34 @@ class CodeWriter {
 
 
   // *writeLibraryClassFile(): write a complete source file for a library class (lib/classWrapper.ts).
-  writeLibraryClassFile(className: string, ext: string = '.ts'): BluePromise<void> {
+  writeLibraryClassFile(className: string, template: string = 'sourcefile', ext: string = '.ts'): BluePromise<void> {
     var classMap = this.classes[className];
 
-    var fileName = classMap.shortName + 'Wrapper';
+    var fileName = classMap.shortName;
     var filePath = 'out/lib/' + fileName + ext;
 
     var stream = fs.createWriteStream(filePath);
     var streamFn: IStreamFn = <IStreamFn> BluePromise.promisify(stream.write, stream);
     var endFn: IEndFn = <IEndFn> BluePromise.promisify(stream.end, stream);
 
-    return this.streamLibraryClassFile(className, 'sourcefile', streamFn, endFn);
+    return this.streamLibraryClassFile(className, template, streamFn, endFn);
+  }
+
+
+  // *writePackageFile(): write a .d.ts file a package/namespace
+  // This currently writes one file for the entire set of classes.
+  // TODO: refactor so that we write one file per top-level package/namespace.
+  writePackageFile(): BluePromise<void> {
+
+    var fileName = 'TinkerPop'; // TODO: from package/namespace
+    var filePath = 'out/' + fileName + '.d.ts';
+
+    var stream = fs.createWriteStream(filePath);
+    var streamFn: IStreamFn = <IStreamFn> BluePromise.promisify(stream.write, stream);
+    var endFn: IEndFn = <IEndFn> BluePromise.promisify(stream.end, stream);
+
+    return streamFn(this.fill('package', this.classes))
+      .then(() => { return endFn(); });
   }
 
 

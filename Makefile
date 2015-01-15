@@ -48,8 +48,8 @@ clean-out:
 clean-js-map:
 	rm -rf lib/*.js.map test/*.js.map
 
-generate-out: compile
-	node index.js
+generate-out: lint compile
+	node index.js -g package
 
 install:
 	$(MAKE) install-npm

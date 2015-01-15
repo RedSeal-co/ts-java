@@ -126,10 +126,10 @@ describe('CodeWriter', () => {
       var runPromise = theWriter.streamLibraryClassFile(className, 'interfaces', streamFn, endFn).then(endFn);
       var expectedData = [
         'Inherited interfaces for class com.tinkerpop.gremlin.structure.Edge:',
-        'o ObjectWrapper',
-        'o ElementWrapper',
-        'o ElementTraversalWrapper',
-        'o EdgeTraversalWrapper',
+        'o Object',
+        'o Element',
+        'o ElementTraversal',
+        'o EdgeTraversal',
         '',
       ].join('\n');
       return BluePromise.all([runPromise, resultPromise])

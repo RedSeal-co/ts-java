@@ -1,0 +1,21 @@
+// Tinkerpop.d.ts
+
+{{#each this}}
+
+declare module {{fullName}} {
+
+export class {{shortName}} {
+
+{{#each variants}}
+  // {{@key}}
+{{#each this}}
+  // {{{generic_proto}}}
+  {{name}}({{margs this}}): {{tstype returns}};
+{{/each}}
+
+{{/each}}
+}
+
+}
+
+{{/each}}
