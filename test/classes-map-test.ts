@@ -67,11 +67,6 @@ describe('ClassesMap', () => {
       expect(classesMap.shortClassName('java.util.Iterator')).to.equal('Iterator');
       expect(classesMap.shortClassName('com.tinkerpop.gremlin.Foo')).to.equal('Foo');
     });
-    it('should throw exception for invalid class names', () => {
-      expect(function () { classesMap.shortClassName(''); }).to.throw(Error);
-      expect(function () { classesMap.shortClassName('com'); }).to.throw(Error);
-      expect(function () { classesMap.shortClassName('java.lang.Foo'); }).to.throw(Error);
-    });
   });
 
   describe('loadClass', () => {
@@ -122,7 +117,8 @@ describe('ClassesMap', () => {
     it('it should translate Java types to TypeScript types', () => {
       expect(classesMap.tsTypeName('java.lang.String')).to.equal('string');
       expect(classesMap.tsTypeName('int')).to.equal('number');
-      expect(classesMap.tsTypeName('Ljava.lang.Object;')).to.equal('java.lang.Object');
+      expect(classesMap.tsTypeName('Ljava.lang.Object;')).to.equal('Object');
+      expect(classesMap.tsTypeName('Ljava.util.function.Function;')).to.equal('Function');
     });
   });
 
@@ -147,7 +143,7 @@ describe('ClassesMap', () => {
         plain_proto: 'public native int java.lang.Object.hashCode()',
         signature: 'hashCode()I',
         tsParamTypes: [],
-        tsReturns: 'int'
+        tsReturns: 'number'
       };
       expect(methodMap).to.deep.equal(expected);
     });
@@ -192,6 +188,7 @@ describe('ClassesMap', () => {
         'isInterface',
         'isPrimitive',
         'methods',
+        'packageName',
         'shortName',
         'superclass',
         'variants'
@@ -218,6 +215,7 @@ describe('ClassesMap', () => {
       var classNames = _.keys(classes).sort();
       expect(classNames).to.deep.equal([
         'java.lang.CharSequence',
+        'java.lang.Class',
         'java.lang.Long',
         'java.lang.Number',
         'java.lang.Object',
@@ -372,7 +370,8 @@ describe('ClassesMap', () => {
 
       // expect a smaller number defining class locations
       var uniqueLocations = methodOriginations.toSet();
-      expect(uniqueLocations.size).to.equal(34);
+      expect(uniqueLocations.size).to.be.above(30);
+      expect(uniqueLocations.size).to.be.below(40);
 
       // even less than the total number of classes, because only a few override methods.
       expect(uniqueLocations.size).to.be.below(_.keys(classes).length);

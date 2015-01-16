@@ -9,6 +9,9 @@
 
 'use strict';
 
+declare function require(name: string);
+require('source-map-support').install();
+
 import _ = require('lodash');
 import BluePromise = require('bluebird');
 import ClassesMap = require('./lib/classes-map');
@@ -63,6 +66,7 @@ class Main {
     var classesMap = new ClassesMap(java, Immutable.Set([
         /^java\.util\.(\w+)$/,
         /^java\.util\.function\.(\w+)$/,
+        /^java\.util\.stream\.(\w+)$/,
         /^com\.tinkerpop\.gremlin\./
     ]));
     classesMap.initialize(seedClasses);

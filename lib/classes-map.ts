@@ -11,10 +11,12 @@ import Immutable = require('immutable');
 import Work = require('./work');
 
 var requiredSeedClasses = [
+  'java.lang.Class',
   'java.lang.Long',
   'java.lang.Number',
   'java.lang.Object',
   'java.lang.String',
+  'java.lang.StringBuffer',
   'java.lang.CharSequence',
 ];
 
@@ -66,14 +68,7 @@ class ClassesMap {
 
   // *shortClassName()*: Return the short class name given the full className (class path).
   shortClassName(className: string): string {
-    if (!this.inWhiteList(className)) {
-      throw new Error('shortClassName given bad classname:' + className);
-    }
-    var m = className.match(/\.([\$\w]+)(\[\])?$/);
-    if (!m) {
-      throw new Error('shortClassName given bad classname:' + className);
-    }
-    return m[1];
+    return _.last(className.split('.'));
   }
 
 
@@ -142,17 +137,39 @@ class ClassesMap {
 
 
   tsTypeName(javaTypeName: string): string {
-    var m = javaTypeName.match(/\[L([\.\$\w]+);$/);
+    var typeName = javaTypeName;
+
     var ext = '';
-    if (m) {
-      javaTypeName = m[1];
+    var isArray = typeName[0] === '[';
+    if (isArray) {
+      typeName = typeName.slice(1);
       ext = '[]';
     }
-    if (this.inWhiteList(javaTypeName)) {
-      var shortName = this.shortClassName(javaTypeName);
+
+    var primitiveTypes = {
+      B: 'number', // byte. What does node-java do with byte arrays?
+      C: 'string', // char. What does node-java do with char arrays?
+      I: 'number', // int
+      J: 'number', // short
+      D: 'number', // double
+      F: 'number', // float
+      Z: 'boolean',
+      int: 'number'
+    };
+    if (typeName in primitiveTypes) {
+      return primitiveTypes[typeName] + ext;
+    }
+
+    var m = typeName.match(/^L(.*);$/);
+    if (m) {
+      typeName = m[1];
+    }
+
+    if (this.inWhiteList(typeName)) {
+      var shortName = this.shortClassName(typeName);
       return (shortName === 'String') ? 'string' : shortName + ext;
     } else {
-      return javaTypeName + ext;
+      return typeName + ext;
     }
   }
 
@@ -235,6 +252,31 @@ class ClassesMap {
   }
 
 
+  // *fixClassPath()*: given a full class path name, rename any path components that are reserved words.
+  fixClassPath(fullName: string): string {
+    var reservedWords = [
+      'function'
+    ];
+    var parts = fullName.split('.');
+    parts = _.map(parts, (part: string) => {
+      if (_.indexOf(reservedWords, part) === -1) {
+        return part;
+      } else {
+        return part + '_';
+      }
+    });
+    return parts.join('.');
+  }
+
+
+  // *packageName()*: given a full class path name, return the package name.
+  packageName(className: string): string {
+    var parts = className.split('.');
+    parts.pop();
+    return parts.join('.');
+  }
+
+
   // *mapClass()*: return a map of all useful properties of a class.
   mapClass(className: string, work: Work): IClassDefinition {
     var clazz: Java.Class = this.loadClass(className);
@@ -252,6 +294,7 @@ class ClassesMap {
     }
 
     var classMap: IClassDefinition = {
+      packageName: this.packageName(this.fixClassPath(className)),
       fullName: className,
       shortName: this.shortClassName(className),
       isInterface: isInterface,
@@ -427,6 +470,7 @@ module ClassesMap {
   // ### IClassDefinition
   // All of the properties on interest for a class.
   export interface IClassDefinition {
+    packageName: string;               // 'java.util'
     fullName: string;                  // 'java.util.Iterator'
     shortName: string;                 // 'Iterator'
     isInterface: boolean;              // true if this is an interface, false for class or primitive type.

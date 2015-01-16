@@ -1,10 +1,15 @@
 // Tinkerpop.d.ts
 
+declare module TinkerPop {
+
 {{#each this}}
+import {{shortName}} = {{packageName}}.{{shortName}};
+{{/each}}
 
-declare module {{fullName}} {
+{{#each this}}
+module {{packageName}} {
 
-export class {{shortName}} {
+export interface {{shortName}} {
 
 {{#each variants}}
   // {{@key}}
@@ -19,3 +24,5 @@ export class {{shortName}} {
 }
 
 {{/each}}
+
+}

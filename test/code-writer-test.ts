@@ -10,6 +10,9 @@
 
 'use strict';
 
+declare function require(name: string);
+require('source-map-support').install();
+
 import _ = require('lodash');
 import ClassesMap = require('../lib/classes-map');
 import BluePromise = require('bluebird');
@@ -87,6 +90,7 @@ describe('CodeWriter', () => {
       var runPromise = theWriter.streamLibraryClassFile(className, 'class_summary', streamFn, endFn).then(endFn);
       var expectedData = [
         'Class Definition for class java.util.Iterator:',
+        'packageName: java.util',
         'fullName: java.util.Iterator',
         'shortName: Iterator',
         'isInterface: true',
