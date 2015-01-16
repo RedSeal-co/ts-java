@@ -48,8 +48,19 @@ clean-out:
 clean-js-map:
 	rm -rf lib/*.js.map test/*.js.map
 
-generate-out: lint compile
+generate-out: generate-package-out generate-class-out
+
+out/TinkerPop.d.ts: lint compile
 	node index.js -g package
+
+test-package-out: out/TinkerPop.d.ts
+	./node_modules/.bin/tsc --module commonjs --target ES5 --sourceMap dts_test/package-test.ts | head -20
+	node_modules/.bin/tslint -c dts_test/tslint.json -f out/TinkerPop.d.ts | head -20
+
+generate-package-out: out/TinkerPop.d.ts
+
+generate-class-out: lint compile
+	node index.js -g class
 
 install:
 	$(MAKE) install-npm
