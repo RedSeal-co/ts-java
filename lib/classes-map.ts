@@ -135,8 +135,8 @@ class ClassesMap {
   // This string may be passed as the method name to java.callMethod() in order to execute a specific variant.
   methodSignature(method: Java.Method): string {
     var name = method.getNameSync();
-    var params = method.getParameterTypesSync();
-    var sigs = params.map((p: Java.Class) => { return this.typeEncoding(p); });
+    var paramTypes = method.getParameterTypesSync();
+    var sigs = paramTypes.map((p: Java.Class) => { return this.typeEncoding(p); });
     return name + '(' + sigs.join('') + ')' + this.typeEncoding(method.getReturnTypeSync());
   }
 
@@ -150,8 +150,7 @@ class ClassesMap {
       name: method.getNameSync(),
       declared: method.getDeclaringClassSync().getNameSync(),
       returns: method.getReturnTypeSync().getNameSync(),
-//       params: _.map(method.getParameterTypesSync(), function (p: Java.Class) { return p.getTypeNameSync(); }),
-      params: _.map(method.getParameterTypesSync(), function (p: Java.Class) { return p.getNameSync(); }),
+      paramTypes: _.map(method.getParameterTypesSync(), function (p: Java.Class) { return p.getNameSync(); }),
       paramNames: _.map(method.getParametersSync(), function (p: Java.Parameter) { return p.getNameSync(); }),
       isVarArgs: method.isVarArgsSync(),
       generic_proto: method.toGenericStringSync(),
@@ -194,9 +193,9 @@ class ClassesMap {
   groupMethods(flatList: Array<IMethodDefinition>): IVariantsMap {
     function compareVariants(a: IMethodDefinition, b: IMethodDefinition) {
       // We want variants with more parameters to come first.
-      if (a.params.length > b.params.length) {
+      if (a.paramTypes.length > b.paramTypes.length) {
         return -1;
-      } else if (a.params.length < b.params.length) {
+      } else if (a.paramTypes.length < b.paramTypes.length) {
         return 1;
       }
       // For the same number of parameters, order the longer (presumably more complex) signature to be first
@@ -388,7 +387,7 @@ module ClassesMap {
     name: string;           // name of method, e.g. 'forEachRemaining'
     declared: string;       // interface where first declared: 'java.util.Iterator'
     returns: string;        // return type, e.g. 'void', 'int', of class name
-    params: Array<string>;  // [ 'java.util.function.Consumer' ],
+    paramTypes: Array<string>;  // [ 'java.util.function.Consumer' ],
     paramNames: Array<string>;  // [ 'arg0' ],
     isVarArgs: boolean;     // true if this method's last parameter is varargs ...type
     generic_proto: string;  // The method prototype including generic type information

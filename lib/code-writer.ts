@@ -95,13 +95,13 @@ class CodeWriter {
       }, '');
     });
     handlebars.registerHelper('margs', (method: ClassesMap.IMethodDefinition, options: IHandlebarHelperOptions) => {
-      var params = method.params;
+      var paramTypes = method.paramTypes;
       var names = method.paramNames;
       var args = _.map(names, (name: string, i: number) => {
         if (method.isVarArgs && i === names.length - 1) {
-          return util.format('...%s: %s', name, this.tsTypeName(params[i]));
+          return util.format('...%s: %s', name, this.tsTypeName(paramTypes[i]));
         } else {
-          return util.format('%s: %s', name, this.tsTypeName(params[i]));
+          return util.format('%s: %s', name, this.tsTypeName(paramTypes[i]));
         }
       });
       return args.join(', ');

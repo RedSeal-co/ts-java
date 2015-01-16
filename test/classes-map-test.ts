@@ -132,7 +132,7 @@ describe('ClassesMap', () => {
       var expected = { name: 'hashCode',
         declared: 'java.lang.Object',
         returns: 'int',
-        params: [],
+        paramTypes: [],
         paramNames: [],
         isVarArgs: false,
         generic_proto: 'public native int java.lang.Object.hashCode()',
