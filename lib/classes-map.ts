@@ -141,6 +141,22 @@ class ClassesMap {
   }
 
 
+  tsTypeName(javaTypeName: string): string {
+    var m = javaTypeName.match(/\[L([\.\$\w]+);$/);
+    var ext = '';
+    if (m) {
+      javaTypeName = m[1];
+      ext = '[]';
+    }
+    if (this.inWhiteList(javaTypeName)) {
+      var shortName = this.shortClassName(javaTypeName);
+      return (shortName === 'String') ? 'string' : shortName + ext;
+    } else {
+      return javaTypeName + ext;
+    }
+  }
+
+
   // *mapMethod()*: return a map of useful properties of a method.
   mapMethod(method: Java.Method, work: Work): IMethodDefinition {
 
@@ -150,8 +166,10 @@ class ClassesMap {
       name: method.getNameSync(),
       declared: method.getDeclaringClassSync().getNameSync(),
       returns: method.getReturnTypeSync().getNameSync(),
-      paramTypes: _.map(method.getParameterTypesSync(), function (p: Java.Class) { return p.getNameSync(); }),
-      paramNames: _.map(method.getParametersSync(), function (p: Java.Parameter) { return p.getNameSync(); }),
+      tsReturns: this.tsTypeName(method.getReturnTypeSync().getNameSync()),
+      paramNames: _.map(method.getParametersSync(), (p: Java.Parameter) => { return p.getNameSync(); }),
+      paramTypes: _.map(method.getParameterTypesSync(), (p: Java.Class) => { return p.getNameSync(); }),
+      tsParamTypes: _.map(method.getParameterTypesSync(), (p: Java.Class) => { return this.tsTypeName(p.getNameSync()); }),
       isVarArgs: method.isVarArgsSync(),
       generic_proto: method.toGenericStringSync(),
       plain_proto: method.toStringSync(),
@@ -387,8 +405,10 @@ module ClassesMap {
     name: string;           // name of method, e.g. 'forEachRemaining'
     declared: string;       // interface where first declared: 'java.util.Iterator'
     returns: string;        // return type, e.g. 'void', 'int', of class name
-    paramTypes: Array<string>;  // [ 'java.util.function.Consumer' ],
+    tsReturns: string;        // return type, e.g. 'void', 'number', of class name
     paramNames: Array<string>;  // [ 'arg0' ],
+    paramTypes: Array<string>;  // [ 'java.util.function.Consumer', '[S' ],
+    tsParamTypes: Array<string>;  // [ 'java.util.function_.Consumer',  'number' ],
     isVarArgs: boolean;     // true if this method's last parameter is varargs ...type
     generic_proto: string;  // The method prototype including generic type information
     plain_proto: string;    // The java method prototype without generic type information

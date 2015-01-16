@@ -70,22 +70,6 @@ class CodeWriter {
   }
 
 
-  tsTypeName(javaTypeName: string): string {
-    var m = javaTypeName.match(/\[L([\.\$\w]+);$/);
-    var ext = '';
-    if (m) {
-      javaTypeName = m[1];
-      ext = '[]';
-    }
-    if (this.classesMap.inWhiteList(javaTypeName)) {
-      var shortName = this.classesMap.shortClassName(javaTypeName);
-      return (shortName === 'String') ? 'string' : shortName + ext;
-    } else {
-      return javaTypeName + ext;
-    }
-  }
-
-
   // *registerHandlebarHelpers()*
   registerHandlebarHelpers() : void {
     handlebars.registerHelper('intf', (interfaces: Array<string>, options: IHandlebarHelperOptions) => {
@@ -95,22 +79,19 @@ class CodeWriter {
       }, '');
     });
     handlebars.registerHelper('margs', (method: ClassesMap.IMethodDefinition, options: IHandlebarHelperOptions) => {
-      var paramTypes = method.paramTypes;
+      var tsParamTypes = method.tsParamTypes;
       var names = method.paramNames;
       var args = _.map(names, (name: string, i: number) => {
         if (method.isVarArgs && i === names.length - 1) {
-          return util.format('...%s: %s', name, this.tsTypeName(paramTypes[i]));
+          return util.format('...%s: %s', name, tsParamTypes[i]);
         } else {
-          return util.format('%s: %s', name, this.tsTypeName(paramTypes[i]));
+          return util.format('%s: %s', name, tsParamTypes[i]);
         }
       });
       return args.join(', ');
     });
     handlebars.registerHelper('mcall', (method: ClassesMap.IMethodDefinition, options: IHandlebarHelperOptions) => {
       return method.paramNames.join(', ');
-    });
-    handlebars.registerHelper('tstype', (javaTypeName: string, options: IHandlebarHelperOptions) => {
-      return this.tsTypeName(javaTypeName);
     });
   }
 

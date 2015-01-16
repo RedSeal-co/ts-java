@@ -10,7 +10,7 @@ export class {{shortName}} {
   // {{@key}}
 {{#each this}}
   // {{{generic_proto}}}
-  {{name}}({{margs this}}): {{tstype returns}};
+  {{name}}({{margs this}}): {{tsReturns}};
 {{/each}}
 
 {{/each}}

@@ -118,6 +118,14 @@ describe('ClassesMap', () => {
     });
   });
 
+  describe('tsTypeName', () => {
+    it('it should translate Java types to TypeScript types', () => {
+      expect(classesMap.tsTypeName('java.lang.String')).to.equal('string');
+      expect(classesMap.tsTypeName('int')).to.equal('number');
+      expect(classesMap.tsTypeName('Ljava.lang.Object;')).to.equal('java.lang.Object');
+    });
+  });
+
   describe('mapMethod', () => {
     it('should map java.lang.Object:hashCode', () => {
       var className = 'java.lang.Object';
@@ -137,7 +145,9 @@ describe('ClassesMap', () => {
         isVarArgs: false,
         generic_proto: 'public native int java.lang.Object.hashCode()',
         plain_proto: 'public native int java.lang.Object.hashCode()',
-        signature: 'hashCode()I'
+        signature: 'hashCode()I',
+        tsParamTypes: [],
+        tsReturns: 'int'
       };
       expect(methodMap).to.deep.equal(expected);
     });

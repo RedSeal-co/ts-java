@@ -16,7 +16,7 @@ export class {{shortName}}Wrapper {
 
 {{#each methods}}
   // {{{generic_proto}}}
-  {{name}}({{margs this}}): {{tstype returns}} {
+  {{name}}({{margs this}}): {{tsReturns}} {
     return jThis.{{name}}Sync({{mcall this}});
   }
 
