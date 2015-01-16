@@ -9,6 +9,9 @@
 
 'use strict';
 
+declare function require(name: string);
+require('source-map-support').install();
+
 import _ = require('lodash');
 import ClassesMap = require('../lib/classes-map');
 import chai = require('chai');
