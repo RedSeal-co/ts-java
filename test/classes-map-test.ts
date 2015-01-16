@@ -10,7 +10,7 @@
 'use strict';
 
 import _ = require('lodash');
-import _ClassesMap = require('../lib/classes-map');
+import ClassesMap = require('../lib/classes-map');
 import chai = require('chai');
 import glob = require('glob');
 import Immutable = require('immutable');
@@ -19,7 +19,6 @@ import Work = require('../lib/work');
 
 describe('ClassesMap', () => {
   var expect = chai.expect;
-  var ClassesMap = _ClassesMap.ClassesMap;
 
   var classesMap;
 

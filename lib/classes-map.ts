@@ -10,47 +10,6 @@ import assert = require('assert');
 import Immutable = require('immutable');
 import Work = require('./work');
 
-// ### IMethodDefinition
-// All of the properties on interest for a method.
-export interface IMethodDefinition {
-  name: string;           // name of method, e.g. 'forEachRemaining'
-  declared: string;       // interface where first declared: 'java.util.Iterator'
-  returns: string;        // return type, e.g. 'void', 'int', of class name
-  params: Array<string>;  // [ 'java.util.function.Consumer' ],
-  paramNames: Array<string>;  // [ 'arg0' ],
-  isVarArgs: boolean;     // true if this method's last parameter is varargs ...type
-  generic_proto: string;  // The method prototype including generic type information
-  plain_proto: string;    // The java method prototype without generic type information
-  definedHere?: boolean;  // True if this method is first defined in this class
-  signature?: string;     // A method signature related to the plain_proto prototype above
-                          // This signature does not include return type info, as java does not
-                          // use return type to distinguish among overloaded methods.
-}
-
-// ### IVariantsMap
-// A map of method name to list of overloaded method variants
-interface IVariantsMap {
-    [index: string]: Array<IMethodDefinition>;
-}
-
-// ### IClassDefinition
-// All of the properties on interest for a class.
-export interface IClassDefinition {
-  fullName: string;                  // 'java.util.Iterator'
-  shortName: string;                 // 'Iterator'
-  isInterface: boolean;              // true if this is an interface, false for class or primitive type.
-  isPrimitive: boolean;              // true for a primitive type, false otherwise.
-  superclass: string;                // null if no superclass, otherwise class name
-  interfaces: Array<string>;         // [ 'java.lang.Object' ]
-  methods: Array<IMethodDefinition>; // definitions of all methods implemented by this class
-  variants: IVariantsMap;            // definitions of all methods, grouped by method name
-  depth?: number;                    // distance from the root of the class inheritance tree
-}
-
-export interface IClassDefinitionMap {
-  [index: string]: IClassDefinition;
-}
-
 var requiredSeedClasses = [
   'java.lang.Long',
   'java.lang.Number',
@@ -59,11 +18,16 @@ var requiredSeedClasses = [
   'java.lang.CharSequence',
 ];
 
+import IClassDefinition = ClassesMap.IClassDefinition;
+import IClassDefinitionMap = ClassesMap.IClassDefinitionMap;
+import IMethodDefinition = ClassesMap.IMethodDefinition;
+import IVariantsMap = ClassesMap.IVariantsMap;
+
 // ## ClassesMap
 // ClassesMap is a map of a set of java classes/interfaces, containing information extracted via Java Reflection.
 // For each such class/interface, we extract the set of interfaces inherited/implemented by the class,
 // and information about all methods implemented by the class (directly or indirectly via inheritance).
-export class ClassesMap {
+class ClassesMap {
 
   private java: Java.Singleton;
   private classes: IClassDefinitionMap;
@@ -413,3 +377,52 @@ export class ClassesMap {
   }
 
 }
+
+module ClassesMap {
+
+  'use strict';
+
+  // ### IMethodDefinition
+  // All of the properties on interest for a method.
+  export interface IMethodDefinition {
+    name: string;           // name of method, e.g. 'forEachRemaining'
+    declared: string;       // interface where first declared: 'java.util.Iterator'
+    returns: string;        // return type, e.g. 'void', 'int', of class name
+    params: Array<string>;  // [ 'java.util.function.Consumer' ],
+    paramNames: Array<string>;  // [ 'arg0' ],
+    isVarArgs: boolean;     // true if this method's last parameter is varargs ...type
+    generic_proto: string;  // The method prototype including generic type information
+    plain_proto: string;    // The java method prototype without generic type information
+    definedHere?: boolean;  // True if this method is first defined in this class
+    signature?: string;     // A method signature related to the plain_proto prototype above
+                            // This signature does not include return type info, as java does not
+                            // use return type to distinguish among overloaded methods.
+  }
+
+  // ### IVariantsMap
+  // A map of method name to list of overloaded method variants
+  export interface IVariantsMap {
+      [index: string]: Array<IMethodDefinition>;
+  }
+
+  // ### IClassDefinition
+  // All of the properties on interest for a class.
+  export interface IClassDefinition {
+    fullName: string;                  // 'java.util.Iterator'
+    shortName: string;                 // 'Iterator'
+    isInterface: boolean;              // true if this is an interface, false for class or primitive type.
+    isPrimitive: boolean;              // true for a primitive type, false otherwise.
+    superclass: string;                // null if no superclass, otherwise class name
+    interfaces: Array<string>;         // [ 'java.lang.Object' ]
+    methods: Array<IMethodDefinition>; // definitions of all methods implemented by this class
+    variants: IVariantsMap;            // definitions of all methods, grouped by method name
+    depth?: number;                    // distance from the root of the class inheritance tree
+  }
+
+  export interface IClassDefinitionMap {
+    [index: string]: IClassDefinition;
+  }
+
+}
+
+export = ClassesMap;

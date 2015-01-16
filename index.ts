@@ -11,7 +11,7 @@
 
 import _ = require('lodash');
 import BluePromise = require('bluebird');
-import _ClassesMap = require('./lib/classes-map');
+import ClassesMap = require('./lib/classes-map');
 import CodeWriter = require('./lib/code-writer');
 import fs = require('fs');
 import glob = require('glob');
@@ -21,9 +21,8 @@ import minimist = require('minimist');
 import mkdirp = require('mkdirp');
 import Work = require('./lib/work');
 
-import ClassesMap = _ClassesMap.ClassesMap;
-import IClassDefinition = _ClassesMap.IClassDefinition;
-import IClassDefinitionMap = _ClassesMap.IClassDefinitionMap;
+import IClassDefinition = ClassesMap.IClassDefinition;
+import IClassDefinitionMap = ClassesMap.IClassDefinitionMap;
 
 BluePromise.longStackTraces();
 
@@ -82,9 +81,7 @@ class Main {
     if ('help' in argv || 'h' in argv) {
       return this.usage();
     }
-    console.log(argv);
     var gran = argv.g || argv.granularity || 'package';
-    console.log(gran);
     if (gran !== 'class' && gran !== 'package') {
       console.error('--granularity must be either \'class\' or \'package\'');
       return this.usage();

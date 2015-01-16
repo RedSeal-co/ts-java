@@ -11,7 +11,7 @@
 'use strict';
 
 import _ = require('lodash');
-import _ClassesMap = require('../lib/classes-map');
+import ClassesMap = require('../lib/classes-map');
 import BluePromise = require('bluebird');
 import chai = require('chai');
 import concat = require('concat-stream');
@@ -24,8 +24,6 @@ BluePromise.longStackTraces();
 
 describe('CodeWriter', () => {
   var expect = chai.expect;
-
-  var ClassesMap = _ClassesMap.ClassesMap;
 
   var classesMap;
   var theWriter;

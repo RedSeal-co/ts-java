@@ -39,11 +39,11 @@ interface IHandlebarHelperOptions {
 // classesMap must be a fully initialized `ClassesMap` object, see ./classes-map.ts.
 class CodeWriter {
 
-  private classesMap: ClassesMap.ClassesMap;
+  private classesMap: ClassesMap;
   private classes: ClassesMap.IClassDefinitionMap;
   private templates: Immutable.Map<string, HandlebarsTemplateDelegate>;
 
-  constructor(classesMap: ClassesMap.ClassesMap, templatesDirPath: string) {
+  constructor(classesMap: ClassesMap, templatesDirPath: string) {
     this.classesMap = classesMap;
     this.classes = classesMap.getClasses();
     this.templates = this.loadTemplates(templatesDirPath);
