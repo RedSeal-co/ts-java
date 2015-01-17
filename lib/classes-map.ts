@@ -280,7 +280,9 @@ class ClassesMap {
   // *fixClassPath()*: given a full class path name, rename any path components that are reserved words.
   fixClassPath(fullName: string): string {
     var reservedWords = [
-      'function'
+      // TODO: include full list of reserved words
+      'function',
+      'package'
     ];
     var parts = fullName.split('.');
     parts = _.map(parts, (part: string) => {

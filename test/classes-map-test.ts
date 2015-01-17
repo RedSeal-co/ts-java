@@ -113,6 +113,14 @@ describe('ClassesMap', () => {
     });
   });
 
+  describe('fixClassPath', () => {
+    it('it should escape components of class paths that are reserved words', () => {
+      expect(classesMap.fixClassPath('java.lang.String')).to.equal('java.lang.String');
+      expect(classesMap.fixClassPath('java.util.function.Function')).to.equal('java.util.function_.Function');
+      expect(classesMap.fixClassPath('foo.bar.package.baloney')).to.equal('foo.bar.package_.baloney');
+    });
+  });
+
   describe('tsTypeName', () => {
     it('it should translate Java types to TypeScript types', () => {
       expect(classesMap.tsTypeName('java.lang.String')).to.equal('string');
