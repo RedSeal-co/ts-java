@@ -223,7 +223,9 @@ describe('ClassesMap', () => {
         'java.lang.Number',
         'java.lang.Object',
         'java.lang.String',
-        'java.util.Iterator'
+        'java.lang.StringBuffer',
+        'java.util.Iterator',
+        'java.util.function.Consumer'
       ]);
     });
     it('should load all classes reachable from com.tinkerpop.gremlin.structure.Graph', () => {
@@ -370,11 +372,12 @@ describe('ClassesMap', () => {
       // expect a lot of unique method signatures
       var uniqueSigatures = methodOriginations.keySeq();
       expect(uniqueSigatures.size).to.be.above(300);
+      expect(uniqueSigatures.size).to.be.below(1000);
 
       // expect a smaller number defining class locations
       var uniqueLocations = methodOriginations.toSet();
       expect(uniqueLocations.size).to.be.above(30);
-      expect(uniqueLocations.size).to.be.below(40);
+      expect(uniqueLocations.size).to.be.below(70);
 
       // even less than the total number of classes, because only a few override methods.
       expect(uniqueLocations.size).to.be.below(_.keys(classes).length);

@@ -226,7 +226,7 @@ class ClassesMap {
       canonicalTypeName = parts[0];
       if (this.inWhiteList(canonicalTypeName)) {
         if (!work.alreadyAdded(canonicalTypeName)) {
-          console.log('Adding:', canonicalTypeName);
+//           console.log('Adding:', canonicalTypeName);
           work.addTodo(canonicalTypeName);
         }
       } else {
