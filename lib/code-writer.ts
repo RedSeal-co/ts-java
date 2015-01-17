@@ -18,19 +18,15 @@ import Immutable = require('immutable');
 import path = require('path');
 import util = require('util');
 
-interface IFunctionReturningPromise<R> {
-  (x?: any): BluePromise<R>;
-}
-
-interface IStreamFn {
+interface StreamFn {
   (x: string): BluePromise<void>;
 }
 
-interface IEndFn {
+interface EndFn {
   (): BluePromise<void>;
 }
 
-interface IHandlebarHelperOptions {
+interface HandlebarHelperOptions {
   fn: Function;
 }
 
@@ -40,7 +36,7 @@ interface IHandlebarHelperOptions {
 class CodeWriter {
 
   private classesMap: ClassesMap;
-  private classes: ClassesMap.IClassDefinitionMap;
+  private classes: ClassesMap.ClassDefinitionMap;
   private templates: Immutable.Map<string, HandlebarsTemplateDelegate>;
 
   constructor(classesMap: ClassesMap, templatesDirPath: string) {
@@ -72,13 +68,13 @@ class CodeWriter {
 
   // *registerHandlebarHelpers()*
   registerHandlebarHelpers() : void {
-    handlebars.registerHelper('intf', (interfaces: Array<string>, options: IHandlebarHelperOptions) => {
+    handlebars.registerHelper('intf', (interfaces: Array<string>, options: HandlebarHelperOptions) => {
       return _.reduce(interfaces, (out: string, intf: string) => {
         var interfaceMap = this.classes[intf];
         return out + options.fn(interfaceMap.shortName);
       }, '');
     });
-    handlebars.registerHelper('margs', (method: ClassesMap.IMethodDefinition, options: IHandlebarHelperOptions) => {
+    handlebars.registerHelper('margs', (method: ClassesMap.MethodDefinition, options: HandlebarHelperOptions) => {
       var tsParamTypes = method.tsParamTypes;
       var names = method.paramNames;
       var args = _.map(names, (name: string, i: number) => {
@@ -90,13 +86,13 @@ class CodeWriter {
       });
       return args.join(', ');
     });
-    handlebars.registerHelper('mcall', (method: ClassesMap.IMethodDefinition, options: IHandlebarHelperOptions) => {
+    handlebars.registerHelper('mcall', (method: ClassesMap.MethodDefinition, options: HandlebarHelperOptions) => {
       return method.paramNames.join(', ');
     });
   }
 
   // *streamLibraryClassFile(): stream a complete source file for a java wrapper class.
-  streamLibraryClassFile(className: string, template: string, streamFn: IStreamFn, endFn: IEndFn): BluePromise<void> {
+  streamLibraryClassFile(className: string, template: string, streamFn: StreamFn, endFn: EndFn): BluePromise<void> {
     return streamFn(this.fill(template, this.classes[className]))
       .then(() => { return endFn(); });
   }
@@ -110,8 +106,8 @@ class CodeWriter {
     var filePath = 'out/lib/' + fileName + ext;
 
     var stream = fs.createWriteStream(filePath);
-    var streamFn: IStreamFn = <IStreamFn> BluePromise.promisify(stream.write, stream);
-    var endFn: IEndFn = <IEndFn> BluePromise.promisify(stream.end, stream);
+    var streamFn: StreamFn = <StreamFn> BluePromise.promisify(stream.write, stream);
+    var endFn: EndFn = <EndFn> BluePromise.promisify(stream.end, stream);
 
     return this.streamLibraryClassFile(className, template, streamFn, endFn);
   }
@@ -126,8 +122,8 @@ class CodeWriter {
     var filePath = 'out/' + fileName + '.d.ts';
 
     var stream = fs.createWriteStream(filePath);
-    var streamFn: IStreamFn = <IStreamFn> BluePromise.promisify(stream.write, stream);
-    var endFn: IEndFn = <IEndFn> BluePromise.promisify(stream.end, stream);
+    var streamFn: StreamFn = <StreamFn> BluePromise.promisify(stream.write, stream);
+    var endFn: EndFn = <EndFn> BluePromise.promisify(stream.end, stream);
 
     return streamFn(this.fill('package', this.classes))
       .then(() => { return endFn(); });
@@ -136,7 +132,7 @@ class CodeWriter {
 
   // *getClassMap(): accessor method to return the 'class map' for the given class name.
   // The class map is a javascript object map/dictionary containing all properties of interest for the class.
-  getClassMap(className: string): ClassesMap.IClassDefinition {
+  getClassMap(className: string): ClassesMap.ClassDefinition {
     return this.classes[className];
   }
 
@@ -144,7 +140,7 @@ class CodeWriter {
   // *getMethodVariants(): accessor method to return the an array of method definitions for all variants of methodName.
   getMethodVariants(className: string, methodName: string) {
     var methods = this.classes[className].methods;
-    return _.filter(methods, (method: ClassesMap.IMethodDefinition) => { return method.name === methodName; });
+    return _.filter(methods, (method: ClassesMap.MethodDefinition) => { return method.name === methodName; });
   }
 }
 

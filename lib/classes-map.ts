@@ -20,10 +20,10 @@ var requiredSeedClasses = [
   'java.lang.CharSequence',
 ];
 
-import IClassDefinition = ClassesMap.IClassDefinition;
-import IClassDefinitionMap = ClassesMap.IClassDefinitionMap;
-import IMethodDefinition = ClassesMap.IMethodDefinition;
-import IVariantsMap = ClassesMap.IVariantsMap;
+import ClassDefinition = ClassesMap.ClassDefinition;
+import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
+import MethodDefinition = ClassesMap.MethodDefinition;
+import VariantsMap = ClassesMap.VariantsMap;
 
 // ## ClassesMap
 // ClassesMap is a map of a set of java classes/interfaces, containing information extracted via Java Reflection.
@@ -32,7 +32,7 @@ import IVariantsMap = ClassesMap.IVariantsMap;
 class ClassesMap {
 
   private java: Java.Singleton;
-  private classes: IClassDefinitionMap;
+  private classes: ClassDefinitionMap;
   private methodOriginations: Immutable.Map<string, string>;
   private includedPatterns: Immutable.Set<RegExp>;
   private excludedPatterns: Immutable.Set<RegExp>;
@@ -197,11 +197,11 @@ class ClassesMap {
 
 
   // *mapMethod()*: return a map of useful properties of a method.
-  mapMethod(method: Java.Method, work: Work): IMethodDefinition {
+  mapMethod(method: Java.Method, work: Work): MethodDefinition {
 
     var signature = this.methodSignature(method);
 
-    var methodMap: IMethodDefinition = {
+    var methodMap: MethodDefinition = {
       name: method.getNameSync(),
       declared: method.getDeclaringClassSync().getNameSync(),
       returns: method.getReturnTypeSync().getNameSync(),
@@ -245,13 +245,13 @@ class ClassesMap {
 
 
   // *mapClassMethods()*: return a methodMap array for the methods of a class
-  mapClassMethods(className: string, clazz: Java.Class, work: Work): Array<IMethodDefinition> {
+  mapClassMethods(className: string, clazz: Java.Class, work: Work): Array<MethodDefinition> {
     return _.map(clazz.getMethodsSync(), function (m: Java.Method) { return this.mapMethod(m, work); }, this);
   }
 
   // *groupMethods()*: group overloaded methods (i.e. having the same name)
-  groupMethods(flatList: Array<IMethodDefinition>): IVariantsMap {
-    function compareVariants(a: IMethodDefinition, b: IMethodDefinition) {
+  groupMethods(flatList: Array<MethodDefinition>): VariantsMap {
+    function compareVariants(a: MethodDefinition, b: MethodDefinition) {
       // We want variants with more parameters to come first.
       if (a.paramTypes.length > b.paramTypes.length) {
         return -1;
@@ -268,8 +268,8 @@ class ClassesMap {
       return b.signature.localeCompare(a.signature);
     }
 
-    var variantsMap = _.groupBy(flatList, (method: IMethodDefinition) => { return method.name; });
-    _.forEach(variantsMap, (variants: Array<IMethodDefinition>, name: string) => {
+    var variantsMap = _.groupBy(flatList, (method: MethodDefinition) => { return method.name; });
+    _.forEach(variantsMap, (variants: Array<MethodDefinition>, name: string) => {
       variantsMap[name] = variants.sort(compareVariants);
     });
 
@@ -303,22 +303,22 @@ class ClassesMap {
 
 
   // *mapClass()*: return a map of all useful properties of a class.
-  mapClass(className: string, work: Work): IClassDefinition {
+  mapClass(className: string, work: Work): ClassDefinition {
     var clazz: Java.Class = this.loadClass(className);
     assert.strictEqual(className, clazz.getNameSync());
 
     var interfaces = this.mapClassInterfaces(className, clazz, work);
-    var methods: Array<IMethodDefinition> = this.mapClassMethods(className, clazz, work);
+    var methods: Array<MethodDefinition> = this.mapClassMethods(className, clazz, work);
 
     var isInterface = clazz.isInterfaceSync();
     var isPrimitive = clazz.isPrimitiveSync();
     var superclass: Java.Class = clazz.getSuperclassSync();
 
-    function bySignature(a: IMethodDefinition, b: IMethodDefinition) {
+    function bySignature(a: MethodDefinition, b: MethodDefinition) {
       return a.signature.localeCompare(b.signature);
     }
 
-    var classMap: IClassDefinition = {
+    var classMap: ClassDefinition = {
       packageName: this.packageName(this.fixClassPath(className)),
       fullName: className,
       shortName: this.shortClassName(className),
@@ -353,7 +353,7 @@ class ClassesMap {
 
 
   // *getClasses()*: return the map of all classes. Keys are classnames, values are classMaps.
-  getClasses(): IClassDefinitionMap {
+  getClasses(): ClassDefinitionMap {
     return this.classes;
   }
 
@@ -408,7 +408,7 @@ class ClassesMap {
   // before it locates the methods of this class.
   _locateMethodOriginations(className: string, work: Work): void {
     assert.ok(className in this.classes);
-    var classMap: IClassDefinition = this.classes[className];
+    var classMap: ClassDefinition = this.classes[className];
     assert.strictEqual(className, classMap.fullName);
 
     _.forEach(classMap.interfaces, (intf: string) => {
@@ -418,7 +418,7 @@ class ClassesMap {
       }
     });
 
-    _.forEach(classMap.methods, (method: IMethodDefinition, index: number) => {
+    _.forEach(classMap.methods, (method: MethodDefinition, index: number) => {
       assert.ok(typeof method.signature === 'string');
       var definedHere = false;
       if (!(this.methodOriginations.has(method.signature))) {
@@ -467,9 +467,9 @@ module ClassesMap {
 
   'use strict';
 
-  // ### IMethodDefinition
+  // ### MethodDefinition
   // All of the properties on interest for a method.
-  export interface IMethodDefinition {
+  export interface MethodDefinition {
     name: string;           // name of method, e.g. 'forEachRemaining'
     declared: string;       // interface where first declared: 'java.util.Iterator'
     returns: string;        // return type, e.g. 'void', 'int', of class name
@@ -486,15 +486,15 @@ module ClassesMap {
                             // use return type to distinguish among overloaded methods.
   }
 
-  // ### IVariantsMap
+  // ### VariantsMap
   // A map of method name to list of overloaded method variants
-  export interface IVariantsMap {
-      [index: string]: Array<IMethodDefinition>;
+  export interface VariantsMap {
+      [index: string]: Array<MethodDefinition>;
   }
 
-  // ### IClassDefinition
+  // ### ClassDefinition
   // All of the properties on interest for a class.
-  export interface IClassDefinition {
+  export interface ClassDefinition {
     packageName: string;               // 'java.util'
     fullName: string;                  // 'java.util.Iterator'
     shortName: string;                 // 'Iterator'
@@ -502,13 +502,13 @@ module ClassesMap {
     isPrimitive: boolean;              // true for a primitive type, false otherwise.
     superclass: string;                // null if no superclass, otherwise class name
     interfaces: Array<string>;         // [ 'java.lang.Object' ]
-    methods: Array<IMethodDefinition>; // definitions of all methods implemented by this class
-    variants: IVariantsMap;            // definitions of all methods, grouped by method name
+    methods: Array<MethodDefinition>; // definitions of all methods implemented by this class
+    variants: VariantsMap;            // definitions of all methods, grouped by method name
     depth?: number;                    // distance from the root of the class inheritance tree
   }
 
-  export interface IClassDefinitionMap {
-    [index: string]: IClassDefinition;
+  export interface ClassDefinitionMap {
+    [index: string]: ClassDefinition;
   }
 
 }
