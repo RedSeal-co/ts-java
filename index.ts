@@ -78,17 +78,8 @@ class Main {
     var seedClasses = ['com.tinkerpop.gremlin.structure.Graph', 'java.util.function.Predicate'];
     var classesMap = new ClassesMap(java, Immutable.Set([
         /^java\.util\./,
-        /^java\.lang\./,
         /^java\.math\./,
-        /^java\.net\./,
-        /^java\.io\./,
-        /^java\.nio\./,
-        /^java\.text\./,
-        /^java\.time\./,
-        /^java\.security\./,
-        /^javax\./,
-        /^com\.tinkerpop\.gremlin\./,
-        /^org\.apache\.commons\.configuration\.(\w+)$/
+        /^com\.tinkerpop\.gremlin\./
     ]));
     classesMap.initialize(seedClasses);
     return classesMap;

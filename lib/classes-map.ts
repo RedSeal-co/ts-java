@@ -12,12 +12,21 @@ import Work = require('./work');
 
 var requiredSeedClasses = [
   'java.lang.Class',
+  'java.lang.Cloneable',
+  'java.lang.Comparable',
+  'java.lang.Enum',
+  'java.lang.Iterable',
   'java.lang.Long',
   'java.lang.Number',
   'java.lang.Object',
-  'java.lang.String',
-  'java.lang.StringBuffer',
-  'java.lang.CharSequence',
+];
+
+var mustExcludeClasses = [
+  // Node java automatically coerces string to java.lang.String for input parameters,
+  // and does the reverse for return results, so we never need to use the java.lang.String class.
+  // Note that tsTypeName treats java.lang.String as a primitive type mapped to string.
+  'java.lang.String'
+  // TODO: are there other classes we should do this with?
 ];
 
 import ClassDefinition = ClassesMap.ClassDefinition;
@@ -53,8 +62,13 @@ class ClassesMap {
       var pattern = '^' + s.replace(/\./g, '\\.') + '$';
       return new RegExp(pattern);
     });
-
     this.includedPatterns = this.includedPatterns.merge(requiredPatterns);
+
+    var excludedPats = _.map(mustExcludeClasses, (s: string) => {
+      var pattern = '^' + s.replace(/\./g, '\\.') + '$';
+      return new RegExp(pattern);
+    });
+    this.excludedPatterns = this.excludedPatterns.merge(excludedPats);
   }
 
   // *inWhiteList()*: Return true for classes of iterest.
@@ -159,13 +173,15 @@ class ClassesMap {
       J: 'number', // long
       S: 'number', // short
       Z: 'boolean',
+      boolean: 'boolean',
       byte: 'number',
       char: 'string',
-      int: 'number',
-      short: 'number',
-      long: 'number',
-      float: 'number',
       double: 'number',
+      float: 'number',
+      int: 'number',
+      long: 'number',
+      short: 'number',
+      void: 'void',
       'java.lang.String': 'string'
     };
     if (typeName in primitiveTypes) {
@@ -176,7 +192,7 @@ class ClassesMap {
       var shortName = this.shortClassName(typeName);
       return shortName + ext;
     } else {
-      return typeName + ext;
+      return 'any' + ext;
     }
   }
 
@@ -339,10 +355,6 @@ class ClassesMap {
   // *loadAllClasses()*: load and map all classes of interest
   loadAllClasses(seedClasses: Array<string>): Work {
     var work = new Work(seedClasses);
-
-    work.addTodo('java.lang.Long');
-    work.addTodo('java.lang.Number');
-    work.addTodo('java.lang.String');
 
     while (!work.isDone()) {
       var className = work.next();
