@@ -33,14 +33,27 @@ class Main {
 
   private granularity: string;
 
-  writeJsons(classes: ClassDefinitionMap): void {
+  run(argv: minimist.ParsedArgs): BluePromise<any> {
+    this.parseArgs(argv);
+    this.initJava();
+    var classesMap = this.loadClasses();
+    this.writeJsons(classesMap.getClasses());
+
+    if (this.granularity === 'class') {
+      return this.writeClassFiles(classesMap);
+    } else {
+      return this.writePackageFiles(classesMap);
+    }
+  }
+
+  private writeJsons(classes: ClassDefinitionMap): void {
     mkdirp.sync('out/json');
     _.forOwn(classes, (classMap: ClassDefinition, className: string) => {
       fs.writeFileSync('out/json/' + classMap.shortName + '.json', JSON.stringify(classMap, null, '  '));
     });
   }
 
-  writeClassFiles(classesMap: ClassesMap): BluePromise<any> {
+  private writeClassFiles(classesMap: ClassesMap): BluePromise<any> {
     mkdirp.sync('out/lib');
     var tsWriter = new CodeWriter(classesMap, 'ts-templates');
     var classes: ClassDefinitionMap = classesMap.getClasses();
@@ -50,18 +63,18 @@ class Main {
       });
   }
 
-  writePackageFiles(classesMap: ClassesMap): BluePromise<any> {
+  private writePackageFiles(classesMap: ClassesMap): BluePromise<any> {
     var tsWriter = new CodeWriter(classesMap, 'ts-templates');
     var classes: ClassDefinitionMap = classesMap.getClasses();
     return tsWriter.writePackageFile();
   }
 
-  initJava(): void {
+  private initJava(): void {
     var filenames = glob.sync('test/**/*.jar');
     _.forEach(filenames, (name: string) => { java.classpath.push(name); });
   }
 
-  loadClasses(): ClassesMap {
+  private loadClasses(): ClassesMap {
     var seedClasses = ['com.tinkerpop.gremlin.structure.Graph', 'java.util.function.Predicate'];
     var classesMap = new ClassesMap(java, Immutable.Set([
         /^java\.util\./,
@@ -81,7 +94,7 @@ class Main {
     return classesMap;
   }
 
-  usage(): void {
+  private usage(): void {
     console.log('Usage: node index.js [options]');
     console.log('  options:');
     console.log('    -h --help:           print this usage summary');
@@ -89,7 +102,7 @@ class Main {
     console.log(' Templates are read from ./ts-templates/*.txt');
   }
 
-  parseArgs(argv: any): void {
+  private parseArgs(argv: any): void {
     if ('help' in argv || 'h' in argv) {
       return this.usage();
     }
@@ -101,18 +114,6 @@ class Main {
     this.granularity = gran;
   }
 
-  run(argv: minimist.ParsedArgs): BluePromise<any> {
-    this.parseArgs(argv);
-    this.initJava();
-    var classesMap = this.loadClasses();
-    this.writeJsons(classesMap.getClasses());
-
-    if (this.granularity === 'class') {
-      return this.writeClassFiles(classesMap);
-    } else {
-      return this.writePackageFiles(classesMap);
-    }
-  }
 }
 
 var argv = minimist(process.argv.slice(2));
