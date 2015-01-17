@@ -26,8 +26,8 @@
     "mkdirp/mkdirp.d.ts": {
       "commit": "30cfe7dedb3ae990a369cda93995d69b169465bd"
     },
-    "minimist/minimist.d.ts": {
-      "commit": "30cfe7dedb3ae990a369cda93995d69b169465bd"
+    "commander/commander.d.ts": {
+      "commit": "a283cea01a860b9e007a2e6e0f74d78cefcc798f"
     }
   }
 }

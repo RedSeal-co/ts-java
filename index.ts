@@ -1,7 +1,7 @@
 /// <reference path='node_modules/immutable/dist/immutable.d.ts'/>
+/// <reference path='typings/commander/commander.d.ts' />
 /// <reference path='typings/handlebars/handlebars.d.ts' />
 /// <reference path='typings/lodash/lodash.d.ts' />
-/// <reference path='typings/minimist/minimist.d.ts' />
 /// <reference path='typings/mkdirp/mkdirp.d.ts' />
 /// <reference path='typings/node/node.d.ts' />
 /// <reference path='lib/bluebird.d.ts' />
@@ -20,8 +20,8 @@ import fs = require('fs');
 import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
-import minimist = require('minimist');
 import mkdirp = require('mkdirp');
+import program = require('commander');
 import Work = require('./lib/work');
 
 import ClassDefinition = ClassesMap.ClassDefinition;
@@ -33,8 +33,8 @@ class Main {
 
   private granularity: string;
 
-  run(argv: minimist.ParsedArgs): BluePromise<any> {
-    this.parseArgs(argv);
+  run(program: any): BluePromise<any> {
+    this.parseArgs(program);
     this.initJava();
     var classesMap = this.loadClasses();
     this.writeJsons(classesMap.getClasses());
@@ -94,30 +94,24 @@ class Main {
     return classesMap;
   }
 
-  private usage(): void {
-    console.log('Usage: node index.js [options]');
-    console.log('  options:');
-    console.log('    -h --help:           print this usage summary');
-    console.log('    -g --granularity (\'class\'|\'package\') [default: \'package\'] ');
-    console.log(' Templates are read from ./ts-templates/*.txt');
-  }
-
-  private parseArgs(argv: any): void {
-    if ('help' in argv || 'h' in argv) {
-      return this.usage();
-    }
-    var gran = argv.g || argv.granularity || 'package';
+  private parseArgs(program: any): void {
+    var gran = program.granularity;
     if (gran !== 'class' && gran !== 'package') {
-      console.error('--granularity must be either \'class\' or \'package\'');
-      return this.usage();
+      program.help();
     }
     this.granularity = gran;
   }
-
 }
 
-var argv = minimist(process.argv.slice(2));
+program.usage('[options]')
+  .option('-g, --granularity [package]', 'Granularity of output, \'package\' or \'class\'.', 'package')
+  .parse(process.argv);
+
+program.on('--help', () => {
+    console.log('--granularity must be either \'class\' or \'package\'');
+    console.log('Templates are read from ./ts-templates/*.txt, e.g. ./ts-templates/package.txt');
+});
 
 var main = new Main();
-main.run(argv).done();
+main.run(program).done();
 

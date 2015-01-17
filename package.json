@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^2.3.11",
+    "commander": "^2.6.0",
     "glob": "^4.3.2",
     "handlebars": "^2.0.0",
     "immutable": "^3.3.0",
@@ -28,7 +29,6 @@
     "concat-stream": "^1.4.7",
     "groc": "^0.8.0",
     "jshint": "^2.5.10",
-    "minimist": "^1.1.0",
     "mocha": "^2.0.1",
     "source-map-support": "^0.2.9",
     "tsd": ">=0.6.0-beta.5",
