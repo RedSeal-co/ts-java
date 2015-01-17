@@ -154,7 +154,12 @@ class ClassesMap {
       D: 'number', // double
       F: 'number', // float
       Z: 'boolean',
-      int: 'number'
+      byte: 'number',
+      int: 'number',
+      short: 'number',
+      long: 'number',
+      float: 'number',
+      double: 'number'
     };
     if (typeName in primitiveTypes) {
       return primitiveTypes[typeName] + ext;

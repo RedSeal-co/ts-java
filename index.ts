@@ -67,7 +67,11 @@ class Main {
         /^java\.util\.(\w+)$/,
         /^java\.util\.function\.(\w+)$/,
         /^java\.util\.stream\.(\w+)$/,
-        /^com\.tinkerpop\.gremlin\./
+        /^java\.lang\.(\w+)$/,
+        /^java\.lang\.reflect\.(\w+)$/,
+        /^java\.math\.(\w+)$/,
+        /^com\.tinkerpop\.gremlin\./,
+        /^org\.apache\.commons\.configuration\.(\w+)$/
     ]));
     classesMap.initialize(seedClasses);
     return classesMap;
