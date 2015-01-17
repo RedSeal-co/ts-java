@@ -145,23 +145,46 @@ class ClassesMap {
       ext += '[]';
     }
 
+    var m = typeName.match(/^L(.*);$/);
+    if (m) {
+      typeName = m[1];
+    }
+
     var primitiveTypes = {
       B: 'number', // byte. What does node-java do with byte arrays?
       C: 'string', // char. What does node-java do with char arrays?
-      I: 'number', // int
-      J: 'number', // short
       D: 'number', // double
       F: 'number', // float
+      I: 'number', // int
+      J: 'number', // long
+      S: 'number', // short
       Z: 'boolean',
       byte: 'number',
+      char: 'string',
       int: 'number',
       short: 'number',
       long: 'number',
       float: 'number',
-      double: 'number'
+      double: 'number',
+      'java.lang.String': 'string'
     };
     if (typeName in primitiveTypes) {
       return primitiveTypes[typeName] + ext;
+    }
+
+    if (this.inWhiteList(typeName)) {
+      var shortName = this.shortClassName(typeName);
+      return shortName + ext;
+    } else {
+      return typeName + ext;
+    }
+  }
+
+  baseType(typeName: string): [string, string] {
+    var ext = '';
+    while (typeName[0] === '[') {
+      typeName = typeName.slice(1);
+      ext += '[]';
     }
 
     var m = typeName.match(/^L(.*);$/);
@@ -169,12 +192,7 @@ class ClassesMap {
       typeName = m[1];
     }
 
-    if (this.inWhiteList(typeName)) {
-      var shortName = this.shortClassName(typeName);
-      return (shortName === 'String') ? 'string' : shortName + ext;
-    } else {
-      return typeName + ext;
-    }
+    return [typeName, ext];
   }
 
 
@@ -204,20 +222,23 @@ class ClassesMap {
       // 3) class names such as java.util.Iterator
       // 4) array-of-class names such as java.util.Iterator[]
       // We only add to the todo list for the last two, and only in the non-array form.
-      var match = /(.*)\[\]/.exec(canonicalTypeName);
-      if (match) {
-        canonicalTypeName = match[1];
-      }
+      var parts: [string, string] = this.baseType(canonicalTypeName);
+      canonicalTypeName = parts[0];
       if (this.inWhiteList(canonicalTypeName)) {
         if (!work.alreadyAdded(canonicalTypeName)) {
-//           console.log('Adding:', canonicalTypeName);
+          console.log('Adding:', canonicalTypeName);
           work.addTodo(canonicalTypeName);
         }
+      } else {
+//         console.log('Not in white list:', canonicalTypeName);
       }
     };
 
     addToTheToDoList(methodMap.declared);
     addToTheToDoList(methodMap.returns);
+    _.forEach(methodMap.paramTypes, (p: string) => {
+      addToTheToDoList(p);
+    });
 
     return methodMap;
   }

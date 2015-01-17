@@ -62,14 +62,18 @@ class Main {
   }
 
   loadClasses(): ClassesMap {
-    var seedClasses = ['com.tinkerpop.gremlin.structure.Graph'];
+    var seedClasses = ['com.tinkerpop.gremlin.structure.Graph', 'java.util.function.Predicate'];
     var classesMap = new ClassesMap(java, Immutable.Set([
-        /^java\.util\.(\w+)$/,
-        /^java\.util\.function\.(\w+)$/,
-        /^java\.util\.stream\.(\w+)$/,
-        /^java\.lang\.(\w+)$/,
-        /^java\.lang\.reflect\.(\w+)$/,
-        /^java\.math\.(\w+)$/,
+        /^java\.util\./,
+        /^java\.lang\./,
+        /^java\.math\./,
+        /^java\.net\./,
+        /^java\.io\./,
+        /^java\.nio\./,
+        /^java\.text\./,
+        /^java\.time\./,
+        /^java\.security\./,
+        /^javax\./,
         /^com\.tinkerpop\.gremlin\./,
         /^org\.apache\.commons\.configuration\.(\w+)$/
     ]));
