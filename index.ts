@@ -24,8 +24,8 @@ import minimist = require('minimist');
 import mkdirp = require('mkdirp');
 import Work = require('./lib/work');
 
-import IClassDefinition = ClassesMap.IClassDefinition;
-import IClassDefinitionMap = ClassesMap.IClassDefinitionMap;
+import ClassDefinition = ClassesMap.ClassDefinition;
+import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 
 BluePromise.longStackTraces();
 
@@ -33,9 +33,9 @@ class Main {
 
   private granularity: string;
 
-  writeJsons(classes: IClassDefinitionMap): void {
+  writeJsons(classes: ClassDefinitionMap): void {
     mkdirp.sync('out/json');
-    _.forOwn(classes, (classMap: IClassDefinition, className: string) => {
+    _.forOwn(classes, (classMap: ClassDefinition, className: string) => {
       fs.writeFileSync('out/json/' + classMap.shortName + '.json', JSON.stringify(classMap, null, '  '));
     });
   }
@@ -43,7 +43,7 @@ class Main {
   writeClassFiles(classesMap: ClassesMap): BluePromise<any> {
     mkdirp.sync('out/lib');
     var tsWriter = new CodeWriter(classesMap, 'ts-templates');
-    var classes: IClassDefinitionMap = classesMap.getClasses();
+    var classes: ClassDefinitionMap = classesMap.getClasses();
     return BluePromise.all(_.keys(classes))
       .each((className: string) => {
         return tsWriter.writeLibraryClassFile(className, this.granularity);
@@ -52,7 +52,7 @@ class Main {
 
   writePackageFiles(classesMap: ClassesMap): BluePromise<any> {
     var tsWriter = new CodeWriter(classesMap, 'ts-templates');
-    var classes: IClassDefinitionMap = classesMap.getClasses();
+    var classes: ClassDefinitionMap = classesMap.getClasses();
     return tsWriter.writePackageFile();
   }
 
