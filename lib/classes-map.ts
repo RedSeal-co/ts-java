@@ -140,10 +140,9 @@ class ClassesMap {
     var typeName = javaTypeName;
 
     var ext = '';
-    var isArray = typeName[0] === '[';
-    if (isArray) {
+    while (typeName[0] === '[') {
       typeName = typeName.slice(1);
-      ext = '[]';
+      ext += '[]';
     }
 
     var primitiveTypes = {

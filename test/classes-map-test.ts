@@ -119,6 +119,9 @@ describe('ClassesMap', () => {
       expect(classesMap.tsTypeName('int')).to.equal('number');
       expect(classesMap.tsTypeName('Ljava.lang.Object;')).to.equal('Object');
       expect(classesMap.tsTypeName('Ljava.util.function.Function;')).to.equal('Function');
+      expect(classesMap.tsTypeName('[Ljava.lang.Object;')).to.equal('Object[]');
+      expect(classesMap.tsTypeName('[[Ljava.lang.Object;')).to.equal('Object[][]');
+      expect(classesMap.tsTypeName('[[[Ljava.lang.Object;')).to.equal('Object[][][]');
     });
   });
 
