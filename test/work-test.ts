@@ -6,6 +6,9 @@
 
 'use strict';
 
+declare function require(name: string);
+require('source-map-support').install();
+
 import Work = require('../lib/work');
 import chai = require('chai');
 import Immutable = require('immutable');

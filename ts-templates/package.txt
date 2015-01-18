@@ -1,0 +1,28 @@
+// Tinkerpop.d.ts
+
+declare module TinkerPop {
+
+{{#each this}}
+import {{shortName}} = {{packageName}}.{{shortName}};
+{{/each}}
+
+{{#each this}}
+module {{packageName}} {
+
+export interface {{shortName}} {
+
+{{#each variants}}
+  // {{@key}}
+{{#each this}}
+  // {{{generic_proto}}}
+  {{name}}({{margs this}}): {{tsReturns}};
+{{/each}}
+
+{{/each}}
+}
+
+}
+
+{{/each}}
+
+}

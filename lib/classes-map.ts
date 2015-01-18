@@ -10,56 +10,29 @@ import assert = require('assert');
 import Immutable = require('immutable');
 import Work = require('./work');
 
-// ### IMethodDefinition
-// All of the properties on interest for a method.
-export interface IMethodDefinition {
-  name: string;           // name of method, e.g. 'forEachRemaining'
-  declared: string;       // interface where first declared: 'java.util.Iterator'
-  returns: string;        // return type, e.g. 'void', 'int', of class name
-  params: Array<string>;  // [ 'java.util.function.Consumer' ],
-  paramNames: Array<string>;  // [ 'arg0' ],
-  isVarArgs: boolean;     // true if this method's last parameter is varargs ...type
-  generic_proto: string;  // The method prototype including generic type information
-  plain_proto: string;    // The java method prototype without generic type information
-  definedHere?: boolean;  // True if this method is first defined in this class
-  signature?: string;     // A method signature related to the plain_proto prototype above
-                          // This signature does not include return type info, as java does not
-                          // use return type to distinguish among overloaded methods.
-}
-
-// ### IClassDefinition
-// All of the properties on interest for a class.
-export interface IClassDefinition {
-  fullName: string;                  // 'java.util.Iterator'
-  shortName: string;                 // 'Iterator'
-  isInterface: boolean;              // true if this is an interface, false for class or primitive type.
-  isPrimitive: boolean;              // true for a primitive type, false otherwise.
-  superclass: string;                // null if no superclass, otherwise class name
-  interfaces: Array<string>;         // [ 'java.lang.Object' ]
-  methods: Array<IMethodDefinition>; // definitions of all methods implemented by this class
-  depth?: number;                    // distance from the root of the class inheritance tree
-}
-
-export interface IClassDefinitionMap {
-  [index: string]: IClassDefinition;
-}
-
 var requiredSeedClasses = [
+  'java.lang.Class',
   'java.lang.Long',
   'java.lang.Number',
   'java.lang.Object',
   'java.lang.String',
+  'java.lang.StringBuffer',
   'java.lang.CharSequence',
 ];
+
+import ClassDefinition = ClassesMap.ClassDefinition;
+import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
+import MethodDefinition = ClassesMap.MethodDefinition;
+import VariantsMap = ClassesMap.VariantsMap;
 
 // ## ClassesMap
 // ClassesMap is a map of a set of java classes/interfaces, containing information extracted via Java Reflection.
 // For each such class/interface, we extract the set of interfaces inherited/implemented by the class,
 // and information about all methods implemented by the class (directly or indirectly via inheritance).
-export class ClassesMap {
+class ClassesMap {
 
   private java: Java.Singleton;
-  private classes: IClassDefinitionMap;
+  private classes: ClassDefinitionMap;
   private methodOriginations: Immutable.Map<string, string>;
   private includedPatterns: Immutable.Set<RegExp>;
   private excludedPatterns: Immutable.Set<RegExp>;
@@ -95,14 +68,7 @@ export class ClassesMap {
 
   // *shortClassName()*: Return the short class name given the full className (class path).
   shortClassName(className: string): string {
-    if (!this.inWhiteList(className)) {
-      throw new Error('shortClassName given bad classname:' + className);
-    }
-    var m = className.match(/\.([\$\w]+)(\[\])?$/);
-    if (!m) {
-      throw new Error('shortClassName given bad classname:' + className);
-    }
-    return m[1];
+    return _.last(className.split('.'));
   }
 
 
@@ -129,42 +95,125 @@ export class ClassesMap {
     return interfaces;
   }
 
+  // *typeEncoding()*: return the JNI encoding string for a java class
+  typeEncoding(clazz: Java.Class): string {
+    var name = clazz.getNameSync();
+    var primitives = {
+      boolean: 'Z',
+      byte: 'B',
+      char: 'C',
+      double: 'D',
+      float: 'F',
+      int: 'I',
+      long: 'J',
+      short: 'S',
+      void: 'V'
+    };
+
+    var encoding: string;
+    if (clazz.isPrimitiveSync()) {
+      encoding = primitives[name];
+    } else if (clazz.isArraySync()) {
+      encoding = name;
+    } else {
+      encoding = clazz.getCanonicalNameSync();
+      assert.ok(encoding, 'typeEncoding cannot handle type');
+      encoding = 'L' + encoding + ';';
+    }
+
+    return encoding.replace(/\./g, '/');
+  }
+
 
   // *methodSignature()*: return the signature of a method, i.e. a string unique to any method variant,
-  // containing method name and types of parameters.
-  // Note: Java does not consider the function return type to be part of the method signature.
-  methodSignature(methodMap: IMethodDefinition): string {
-    var signature;
-    var varArgs = methodMap.isVarArgs ? '...' : '';
-    if (methodMap.isVarArgs) {
-      var last = _.last(methodMap.params);
-      var match = /(.+)\[\]$/.exec(last);
-      assert.ok(match, require('util').inspect(methodMap, {depth: null}));
-      var finalArg = match[1] + '...';
-      var params = methodMap.params.slice(0, -1);
-      params.push(finalArg);
-      signature = methodMap.name + '(' + params.join() + ')';
-    } else {
-      signature = methodMap.name + '(' + methodMap.params.join() + varArgs + ')';
+  // encoding the method name, types of parameters, and the return type.
+  // This string may be passed as the method name to java.callMethod() in order to execute a specific variant.
+  methodSignature(method: Java.Method): string {
+    var name = method.getNameSync();
+    var paramTypes = method.getParameterTypesSync();
+    var sigs = paramTypes.map((p: Java.Class) => { return this.typeEncoding(p); });
+    return name + '(' + sigs.join('') + ')' + this.typeEncoding(method.getReturnTypeSync());
+  }
+
+
+  tsTypeName(javaTypeName: string): string {
+    var typeName = javaTypeName;
+
+    var ext = '';
+    while (typeName[0] === '[') {
+      typeName = typeName.slice(1);
+      ext += '[]';
     }
-    return signature;
+
+    var m = typeName.match(/^L(.*);$/);
+    if (m) {
+      typeName = m[1];
+    }
+
+    var primitiveTypes = {
+      B: 'number', // byte. What does node-java do with byte arrays?
+      C: 'string', // char. What does node-java do with char arrays?
+      D: 'number', // double
+      F: 'number', // float
+      I: 'number', // int
+      J: 'number', // long
+      S: 'number', // short
+      Z: 'boolean',
+      byte: 'number',
+      char: 'string',
+      int: 'number',
+      short: 'number',
+      long: 'number',
+      float: 'number',
+      double: 'number',
+      'java.lang.String': 'string'
+    };
+    if (typeName in primitiveTypes) {
+      return primitiveTypes[typeName] + ext;
+    }
+
+    if (this.inWhiteList(typeName)) {
+      var shortName = this.shortClassName(typeName);
+      return shortName + ext;
+    } else {
+      return typeName + ext;
+    }
+  }
+
+  baseType(typeName: string): [string, string] {
+    var ext = '';
+    while (typeName[0] === '[') {
+      typeName = typeName.slice(1);
+      ext += '[]';
+    }
+
+    var m = typeName.match(/^L(.*);$/);
+    if (m) {
+      typeName = m[1];
+    }
+
+    return [typeName, ext];
   }
 
 
   // *mapMethod()*: return a map of useful properties of a method.
-  mapMethod(method: Java.Method, work: Work): IMethodDefinition {
-    var methodMap: IMethodDefinition = {
+  mapMethod(method: Java.Method, work: Work): MethodDefinition {
+
+    var signature = this.methodSignature(method);
+
+    var methodMap: MethodDefinition = {
       name: method.getNameSync(),
       declared: method.getDeclaringClassSync().getNameSync(),
       returns: method.getReturnTypeSync().getNameSync(),
-      params: _.map(method.getParameterTypesSync(), function (p: Java.Class) { return p.getTypeNameSync(); }),
-      paramNames: _.map(method.getParametersSync(), function (p: Java.Parameter) { return p.getNameSync(); }),
+      tsReturns: this.tsTypeName(method.getReturnTypeSync().getNameSync()),
+      paramNames: _.map(method.getParametersSync(), (p: Java.Parameter) => { return p.getNameSync(); }),
+      paramTypes: _.map(method.getParameterTypesSync(), (p: Java.Class) => { return p.getNameSync(); }),
+      tsParamTypes: _.map(method.getParameterTypesSync(), (p: Java.Class) => { return this.tsTypeName(p.getNameSync()); }),
       isVarArgs: method.isVarArgsSync(),
       generic_proto: method.toGenericStringSync(),
-      plain_proto: method.toStringSync()
+      plain_proto: method.toStringSync(),
+      signature: signature
     };
-
-    methodMap.signature = this.methodSignature(methodMap);
 
     var addToTheToDoList = (canonicalTypeName: string) => {
       // We expect various type names here, 4 general categories:
@@ -173,55 +222,114 @@ export class ClassesMap {
       // 3) class names such as java.util.Iterator
       // 4) array-of-class names such as java.util.Iterator[]
       // We only add to the todo list for the last two, and only in the non-array form.
-      var match = /(.*)\[\]/.exec(canonicalTypeName);
-      if (match) {
-        canonicalTypeName = match[1];
-      }
+      var parts: [string, string] = this.baseType(canonicalTypeName);
+      canonicalTypeName = parts[0];
       if (this.inWhiteList(canonicalTypeName)) {
         if (!work.alreadyAdded(canonicalTypeName)) {
 //           console.log('Adding:', canonicalTypeName);
           work.addTodo(canonicalTypeName);
         }
+      } else {
+//         console.log('Not in white list:', canonicalTypeName);
       }
     };
 
     addToTheToDoList(methodMap.declared);
     addToTheToDoList(methodMap.returns);
+    _.forEach(methodMap.paramTypes, (p: string) => {
+      addToTheToDoList(p);
+    });
 
     return methodMap;
   }
 
 
   // *mapClassMethods()*: return a methodMap array for the methods of a class
-  mapClassMethods(className: string, clazz: Java.Class, work: Work): Array<IMethodDefinition> {
+  mapClassMethods(className: string, clazz: Java.Class, work: Work): Array<MethodDefinition> {
     return _.map(clazz.getMethodsSync(), function (m: Java.Method) { return this.mapMethod(m, work); }, this);
+  }
+
+  // *groupMethods()*: group overloaded methods (i.e. having the same name)
+  groupMethods(flatList: Array<MethodDefinition>): VariantsMap {
+    function compareVariants(a: MethodDefinition, b: MethodDefinition) {
+      // We want variants with more parameters to come first.
+      if (a.paramTypes.length > b.paramTypes.length) {
+        return -1;
+      } else if (a.paramTypes.length < b.paramTypes.length) {
+        return 1;
+      }
+      // For the same number of parameters, order the longer (presumably more complex) signature to be first
+      if (a.signature.length > b.signature.length) {
+        return -1;
+      } else if (a.signature.length < b.signature.length) {
+        return 1;
+      }
+      // As a final catch-all, just sort lexically by signature.
+      return b.signature.localeCompare(a.signature);
+    }
+
+    var variantsMap = _.groupBy(flatList, (method: MethodDefinition) => { return method.name; });
+    _.forEach(variantsMap, (variants: Array<MethodDefinition>, name: string) => {
+      variantsMap[name] = variants.sort(compareVariants);
+    });
+
+    return variantsMap;
+  }
+
+
+  // *fixClassPath()*: given a full class path name, rename any path components that are reserved words.
+  fixClassPath(fullName: string): string {
+    var reservedWords = [
+      // TODO: include full list of reserved words
+      'function',
+      'package'
+    ];
+    var parts = fullName.split('.');
+    parts = _.map(parts, (part: string) => {
+      if (_.indexOf(reservedWords, part) === -1) {
+        return part;
+      } else {
+        return part + '_';
+      }
+    });
+    return parts.join('.');
+  }
+
+
+  // *packageName()*: given a full class path name, return the package name.
+  packageName(className: string): string {
+    var parts = className.split('.');
+    parts.pop();
+    return parts.join('.');
   }
 
 
   // *mapClass()*: return a map of all useful properties of a class.
-  mapClass(className: string, work: Work): IClassDefinition {
+  mapClass(className: string, work: Work): ClassDefinition {
     var clazz: Java.Class = this.loadClass(className);
     assert.strictEqual(className, clazz.getNameSync());
 
     var interfaces = this.mapClassInterfaces(className, clazz, work);
-    var methods  = this.mapClassMethods(className, clazz, work);
+    var methods: Array<MethodDefinition> = this.mapClassMethods(className, clazz, work);
 
     var isInterface = clazz.isInterfaceSync();
     var isPrimitive = clazz.isPrimitiveSync();
     var superclass: Java.Class = clazz.getSuperclassSync();
 
-    function bySignature(a: IMethodDefinition, b: IMethodDefinition) {
+    function bySignature(a: MethodDefinition, b: MethodDefinition) {
       return a.signature.localeCompare(b.signature);
     }
 
-    var classMap: IClassDefinition = {
+    var classMap: ClassDefinition = {
+      packageName: this.packageName(this.fixClassPath(className)),
       fullName: className,
       shortName: this.shortClassName(className),
       isInterface: isInterface,
       isPrimitive: isPrimitive,
       superclass: superclass === null ? null : superclass.getNameSync(),
       interfaces: interfaces,
-      methods: methods.sort(bySignature)
+      methods: methods.sort(bySignature),
+      variants: this.groupMethods(methods)
     };
 
     return classMap;
@@ -247,7 +355,7 @@ export class ClassesMap {
 
 
   // *getClasses()*: return the map of all classes. Keys are classnames, values are classMaps.
-  getClasses(): IClassDefinitionMap {
+  getClasses(): ClassDefinitionMap {
     return this.classes;
   }
 
@@ -302,7 +410,7 @@ export class ClassesMap {
   // before it locates the methods of this class.
   _locateMethodOriginations(className: string, work: Work): void {
     assert.ok(className in this.classes);
-    var classMap: IClassDefinition = this.classes[className];
+    var classMap: ClassDefinition = this.classes[className];
     assert.strictEqual(className, classMap.fullName);
 
     _.forEach(classMap.interfaces, (intf: string) => {
@@ -312,7 +420,7 @@ export class ClassesMap {
       }
     });
 
-    _.forEach(classMap.methods, (method: IMethodDefinition, index: number) => {
+    _.forEach(classMap.methods, (method: MethodDefinition, index: number) => {
       assert.ok(typeof method.signature === 'string');
       var definedHere = false;
       if (!(this.methodOriginations.has(method.signature))) {
@@ -356,3 +464,55 @@ export class ClassesMap {
   }
 
 }
+
+module ClassesMap {
+
+  'use strict';
+
+  // ### MethodDefinition
+  // All of the properties on interest for a method.
+  export interface MethodDefinition {
+    name: string;           // name of method, e.g. 'forEachRemaining'
+    declared: string;       // interface where first declared: 'java.util.Iterator'
+    returns: string;        // return type, e.g. 'void', 'int', of class name
+    tsReturns: string;        // return type, e.g. 'void', 'number', of class name
+    paramNames: Array<string>;  // [ 'arg0' ],
+    paramTypes: Array<string>;  // [ 'java.util.function.Consumer', '[S' ],
+    tsParamTypes: Array<string>;  // [ 'java.util.function_.Consumer',  'number' ],
+    isVarArgs: boolean;     // true if this method's last parameter is varargs ...type
+    generic_proto: string;  // The method prototype including generic type information
+    plain_proto: string;    // The java method prototype without generic type information
+    definedHere?: boolean;  // True if this method is first defined in this class
+    signature?: string;     // A method signature related to the plain_proto prototype above
+                            // This signature does not include return type info, as java does not
+                            // use return type to distinguish among overloaded methods.
+  }
+
+  // ### VariantsMap
+  // A map of method name to list of overloaded method variants
+  export interface VariantsMap {
+      [index: string]: Array<MethodDefinition>;
+  }
+
+  // ### ClassDefinition
+  // All of the properties on interest for a class.
+  export interface ClassDefinition {
+    packageName: string;               // 'java.util'
+    fullName: string;                  // 'java.util.Iterator'
+    shortName: string;                 // 'Iterator'
+    isInterface: boolean;              // true if this is an interface, false for class or primitive type.
+    isPrimitive: boolean;              // true for a primitive type, false otherwise.
+    superclass: string;                // null if no superclass, otherwise class name
+    interfaces: Array<string>;         // [ 'java.lang.Object' ]
+    methods: Array<MethodDefinition>; // definitions of all methods implemented by this class
+    variants: VariantsMap;            // definitions of all methods, grouped by method name
+    depth?: number;                    // distance from the root of the class inheritance tree
+  }
+
+  export interface ClassDefinitionMap {
+    [index: string]: ClassDefinition;
+  }
+
+}
+
+export = ClassesMap;

@@ -9,8 +9,11 @@
 
 'use strict';
 
+declare function require(name: string);
+require('source-map-support').install();
+
 import _ = require('lodash');
-import _ClassesMap = require('../lib/classes-map');
+import ClassesMap = require('../lib/classes-map');
 import chai = require('chai');
 import glob = require('glob');
 import Immutable = require('immutable');
@@ -19,7 +22,6 @@ import Work = require('../lib/work');
 
 describe('ClassesMap', () => {
   var expect = chai.expect;
-  var ClassesMap = _ClassesMap.ClassesMap;
 
   var classesMap;
 
@@ -64,11 +66,6 @@ describe('ClassesMap', () => {
       expect(classesMap.shortClassName('java.lang.Object')).to.equal('Object');
       expect(classesMap.shortClassName('java.util.Iterator')).to.equal('Iterator');
       expect(classesMap.shortClassName('com.tinkerpop.gremlin.Foo')).to.equal('Foo');
-    });
-    it('should throw exception for invalid class names', () => {
-      expect(function () { classesMap.shortClassName(''); }).to.throw(Error);
-      expect(function () { classesMap.shortClassName('com'); }).to.throw(Error);
-      expect(function () { classesMap.shortClassName('java.lang.Foo'); }).to.throw(Error);
     });
   });
 
@@ -116,6 +113,26 @@ describe('ClassesMap', () => {
     });
   });
 
+  describe('fixClassPath', () => {
+    it('it should escape components of class paths that are reserved words', () => {
+      expect(classesMap.fixClassPath('java.lang.String')).to.equal('java.lang.String');
+      expect(classesMap.fixClassPath('java.util.function.Function')).to.equal('java.util.function_.Function');
+      expect(classesMap.fixClassPath('foo.bar.package.baloney')).to.equal('foo.bar.package_.baloney');
+    });
+  });
+
+  describe('tsTypeName', () => {
+    it('it should translate Java types to TypeScript types', () => {
+      expect(classesMap.tsTypeName('java.lang.String')).to.equal('string');
+      expect(classesMap.tsTypeName('int')).to.equal('number');
+      expect(classesMap.tsTypeName('Ljava.lang.Object;')).to.equal('Object');
+      expect(classesMap.tsTypeName('Ljava.util.function.Function;')).to.equal('Function');
+      expect(classesMap.tsTypeName('[Ljava.lang.Object;')).to.equal('Object[]');
+      expect(classesMap.tsTypeName('[[Ljava.lang.Object;')).to.equal('Object[][]');
+      expect(classesMap.tsTypeName('[[[Ljava.lang.Object;')).to.equal('Object[][][]');
+    });
+  });
+
   describe('mapMethod', () => {
     it('should map java.lang.Object:hashCode', () => {
       var className = 'java.lang.Object';
@@ -130,12 +147,14 @@ describe('ClassesMap', () => {
       var expected = { name: 'hashCode',
         declared: 'java.lang.Object',
         returns: 'int',
-        params: [],
+        paramTypes: [],
         paramNames: [],
         isVarArgs: false,
         generic_proto: 'public native int java.lang.Object.hashCode()',
         plain_proto: 'public native int java.lang.Object.hashCode()',
-        signature: 'hashCode()'
+        signature: 'hashCode()I',
+        tsParamTypes: [],
+        tsReturns: 'number'
       };
       expect(methodMap).to.deep.equal(expected);
     });
@@ -154,15 +173,15 @@ describe('ClassesMap', () => {
       expect(names).to.deep.equal(expectedNames);
       var signatures = _.pluck(methods, 'signature').sort();
       var expectedSignatures = [
-        'equals(java.lang.Object)',
-        'getClass()',
-        'hashCode()',
-        'notify()',
-        'notifyAll()',
-        'toString()',
-        'wait()',
-        'wait(long)',
-        'wait(long,int)'
+        'equals(Ljava/lang/Object;)Z',
+        'getClass()Ljava/lang/Class;',
+        'hashCode()I',
+        'notify()V',
+        'notifyAll()V',
+        'toString()Ljava/lang/String;',
+        'wait()V',
+        'wait(J)V',
+        'wait(JI)V'
       ];
       expect(signatures).to.deep.equal(expectedSignatures);
     });
@@ -180,18 +199,20 @@ describe('ClassesMap', () => {
         'isInterface',
         'isPrimitive',
         'methods',
+        'packageName',
         'shortName',
-        'superclass'
+        'superclass',
+        'variants'
       ]);
       expect(classMap.fullName).to.equal(className);
       expect(classMap.shortName).to.equal('Iterator');
       expect(classMap.interfaces).to.deep.equal(['java.lang.Object']);
       var methodSignatures = _.pluck(classMap.methods, 'signature').sort();
       var expectedSignatures = [
-        'forEachRemaining(java.util.function.Consumer)',
-        'hasNext()',
-        'next()',
-        'remove()'
+        'forEachRemaining(Ljava/util/function/Consumer;)V',
+        'hasNext()Z',
+        'next()Ljava/lang/Object;',
+        'remove()V'
       ];
       expect(methodSignatures).to.deep.equal(expectedSignatures);
     });
@@ -205,11 +226,14 @@ describe('ClassesMap', () => {
       var classNames = _.keys(classes).sort();
       expect(classNames).to.deep.equal([
         'java.lang.CharSequence',
+        'java.lang.Class',
         'java.lang.Long',
         'java.lang.Number',
         'java.lang.Object',
         'java.lang.String',
-        'java.util.Iterator'
+        'java.lang.StringBuffer',
+        'java.util.Iterator',
+        'java.util.function.Consumer'
       ]);
     });
     it('should load all classes reachable from com.tinkerpop.gremlin.structure.Graph', () => {
@@ -326,19 +350,19 @@ describe('ClassesMap', () => {
       expect(work.getDone().toArray().sort()).to.deep.equal(['java.lang.Object', 'java.util.Iterator']);
       var methodOriginations = classesMap.getMethodOriginations().toObject();
       var expectedOriginations = {
-        'equals(java.lang.Object)': 'java.lang.Object',
-        'forEachRemaining(java.util.function.Consumer)': 'java.util.Iterator',
-        'getClass()': 'java.lang.Object',
-        'hashCode()': 'java.lang.Object',
-        'hasNext()': 'java.util.Iterator',
-        'next()': 'java.util.Iterator',
-        'notify()': 'java.lang.Object',
-        'notifyAll()': 'java.lang.Object',
-        'remove()': 'java.util.Iterator',
-        'toString()': 'java.lang.Object',
-        'wait()': 'java.lang.Object',
-        'wait(long,int)': 'java.lang.Object',
-        'wait(long)': 'java.lang.Object'
+        'wait()V': 'java.lang.Object',
+        'getClass()Ljava/lang/Class;': 'java.lang.Object',
+        'wait(J)V': 'java.lang.Object',
+        'forEachRemaining(Ljava/util/function/Consumer;)V': 'java.util.Iterator',
+        'notify()V': 'java.lang.Object',
+        'hasNext()Z': 'java.util.Iterator',
+        'hashCode()I': 'java.lang.Object',
+        'next()Ljava/lang/Object;': 'java.util.Iterator',
+        'remove()V': 'java.util.Iterator',
+        'equals(Ljava/lang/Object;)Z': 'java.lang.Object',
+        'toString()Ljava/lang/String;': 'java.lang.Object',
+        'notifyAll()V': 'java.lang.Object',
+        'wait(JI)V': 'java.lang.Object'
       };
       expect(methodOriginations).to.deep.equal(expectedOriginations);
     });
@@ -353,17 +377,17 @@ describe('ClassesMap', () => {
       // execute method under test
       var methodOriginations = classesMap.mapMethodOriginations();
 
-      // validate results
-
       // expect a lot of unique method signatures
       var uniqueSigatures = methodOriginations.keySeq();
       expect(uniqueSigatures.size).to.be.above(300);
+      expect(uniqueSigatures.size).to.be.below(1000);
 
       // expect a smaller number defining class locations
       var uniqueLocations = methodOriginations.toSet();
-      expect(uniqueLocations.size).to.equal(30);
+      expect(uniqueLocations.size).to.be.above(30);
+      expect(uniqueLocations.size).to.be.below(70);
 
-      // even less that the total number of classes, because a few only override methods.
+      // even less than the total number of classes, because only a few override methods.
       expect(uniqueLocations.size).to.be.below(_.keys(classes).length);
     });
   });

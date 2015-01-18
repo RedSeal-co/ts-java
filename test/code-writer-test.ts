@@ -10,8 +10,11 @@
 
 'use strict';
 
+declare function require(name: string);
+require('source-map-support').install();
+
 import _ = require('lodash');
-import _ClassesMap = require('../lib/classes-map');
+import ClassesMap = require('../lib/classes-map');
 import BluePromise = require('bluebird');
 import chai = require('chai');
 import concat = require('concat-stream');
@@ -24,8 +27,6 @@ BluePromise.longStackTraces();
 
 describe('CodeWriter', () => {
   var expect = chai.expect;
-
-  var ClassesMap = _ClassesMap.ClassesMap;
 
   var classesMap;
   var theWriter;
@@ -89,6 +90,7 @@ describe('CodeWriter', () => {
       var runPromise = theWriter.streamLibraryClassFile(className, 'class_summary', streamFn, endFn).then(endFn);
       var expectedData = [
         'Class Definition for class java.util.Iterator:',
+        'packageName: java.util',
         'fullName: java.util.Iterator',
         'shortName: Iterator',
         'isInterface: true',
@@ -96,6 +98,7 @@ describe('CodeWriter', () => {
         'superclass: ',
         'interfaces: java.lang.Object',
         'methods: [object Object],[object Object],[object Object],[object Object]',
+        'variants: [object Object]',
         'depth: 2',
         ''
       ].join('\n');
@@ -109,10 +112,10 @@ describe('CodeWriter', () => {
       var runPromise = theWriter.streamLibraryClassFile(className, 'methods', streamFn, endFn).then(endFn);
       var expectedData = [
         'Method signatures for class java.util.Iterator:',
-        'forEachRemaining(java.util.function.Consumer)',
-        'hasNext()',
-        'next()',
-        'remove()',
+        'forEachRemaining(Ljava/util/function/Consumer;)V',
+        'hasNext()Z',
+        'next()Ljava/lang/Object;',
+        'remove()V',
         ''
       ].join('\n');
       return BluePromise.all([runPromise, resultPromise])
@@ -125,10 +128,10 @@ describe('CodeWriter', () => {
       var runPromise = theWriter.streamLibraryClassFile(className, 'interfaces', streamFn, endFn).then(endFn);
       var expectedData = [
         'Inherited interfaces for class com.tinkerpop.gremlin.structure.Edge:',
-        'o ObjectWrapper',
-        'o ElementWrapper',
-        'o ElementTraversalWrapper',
-        'o EdgeTraversalWrapper',
+        'o Object',
+        'o Element',
+        'o ElementTraversal',
+        'o EdgeTraversal',
         '',
       ].join('\n');
       return BluePromise.all([runPromise, resultPromise])

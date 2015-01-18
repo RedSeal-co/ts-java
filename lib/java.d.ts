@@ -13,9 +13,11 @@ declare module Java {
 
   export interface Class {
     getNameSync(): string;
+    getCanonicalNameSync(): string;
     getTypeNameSync(): string;
     getInterfacesSync(): Array<Class>;
     getMethodsSync(): Array<Method>;
+    isArraySync(): boolean;
     isInterfaceSync(): boolean;
     isPrimitiveSync(): boolean;
     getSuperclassSync(): Class;
@@ -29,10 +31,17 @@ declare module Java {
     loadClassSync(string): Class;
   }
 
+  interface Callback {
+    (err: any, value: any): void;
+  }
+
   // *Singleton* declares methods & members exported by the node java module.
   export interface Singleton {
     classpath: Array<string>;
-    callStaticMethodSync(className: string, methodName: string): any;
+    import(className: string): any;
+    callMethod(instance: any, className: string, methodName: string, args: any[], callback: Callback): void;
+    callMethodSync(instance: any, className: string, methodName: string, ...args: any[]): any;
+    callStaticMethodSync(className: string, methodName: string, ...args: any[]): any;
     getClassLoader(): Loader;
   }
 
