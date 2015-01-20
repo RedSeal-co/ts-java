@@ -1,24 +1,26 @@
-.PHONY: install install-npm install-tsd lint documentation test testdata unittest compile
-.PHONY: clean clean-obj clean-tsd clean-npm clean-js-map generate-out
+.PHONY: install install-npm install-tsd lint documentation test testdata unittest cucumber compile
+.PHONY: clean clean-obj clean-tsd clean-npm clean-js-map generate-out clean-unittest clean-cucumber
 
 default: test
 
-all: install test
+all: install test documentation
 
 lint:
 	ls $(TS_SRC) | xargs -n1 node_modules/tslint/bin/tslint --config tslint.json --file
-	# node_modules/jshint/bin/jshint --verbose index.js lib
 
 lintOut:
-	node_modules/jshint/bin/jshint --verbose out/lib
+	node_modules/jshint/bin/jshint --verbose o/lib
 
 documentation :
-	node_modules/groc/bin/groc --except "**/node_modules/**" --except "out/**" "**/*.ts"  "**/*.js" README.md
+	node_modules/groc/bin/groc --except "**/node_modules/**" --except "o/**" --except "**/*.d.ts" "**/*.ts" README.md
 
-test: unittest generate-out
+test: unittest cucumber generate-out
 
 unittest: lint compile
 	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd
+
+cucumber: lint compile
+	./node_modules/.bin/cucumber-js --tags '~@todo'
 
 TS_SRC=$(filter-out %.d.ts,$(wildcard index.ts lib/*.ts test/*.ts features/step_definitions/*.ts))
 TS_OBJ=$(patsubst %.ts,%.js,$(TS_SRC))
@@ -31,10 +33,16 @@ compile: $(TS_OBJ)
 	$(TSC) $(TSC_OPTS) $<
 	stat $@ > /dev/null
 
-clean: clean-obj clean-tsd clean-npm clean-js-map clean-out
+clean: clean-cucumber clean-doc clean-js-map clean-npm clean-obj clean-tsd clean-unittest
 
-clean-tsd:
-	rm -rf typings
+clean-cucumber:
+	rm -rf o.features
+
+clean-doc:
+	rm -rf doc
+
+clean-js-map:
+	rm -rf lib/*.js.map test/*.js.map
 
 clean-npm:
 	rm -rf node_modules
@@ -42,22 +50,23 @@ clean-npm:
 clean-obj:
 	rm -f $(TS_OBJ)
 
-clean-out:
-	rm -rf out/*
+clean-tsd:
+	rm -rf typings
 
-clean-js-map:
-	rm -rf lib/*.js.map test/*.js.map
+clean-unittest:
+	rm -rf o/*
 
 generate-out: generate-package-out generate-class-out
 
-out/TinkerPop.d.ts: lint compile
+o/TinkerPop.d.ts: lint compile
 	node index.js -g package
 
-test-package-out: out/TinkerPop.d.ts
-	./node_modules/.bin/tsc --module commonjs --target ES5 --sourceMap dts_test/package-test.ts | head -20
-	node_modules/.bin/tslint -c dts_test/tslint.json -f out/TinkerPop.d.ts | head -20
+test-package-out: dts_test/package_test.js
+	node_modules/.bin/tslint -c dts_test/tslint.json -f o/TinkerPop.d.ts | head -20
 
-generate-package-out: out/TinkerPop.d.ts
+dts_test/package-test.js : dts_test/package-test.ts o/TinkerPop.d.ts
+
+generate-package-out: o/TinkerPop.d.ts
 
 generate-class-out: lint compile
 	node index.js -g class
@@ -74,7 +83,10 @@ TSD=./node_modules/.bin/tsd
 install-tsd:
 	$(TSD) reinstall
 
-TESTDATA=$(wildcard test/data/*.loaded)
-testdata : $(TESTDATA)
-test/data/%.loaded : ../rsxml/test/data/%.loaded
-	cp -p $< $@
+# Explicit dependencies for files that are referenced
+
+index.js: lib/work.js lib/classes-map.js lib/code-writer.js
+
+lib/classes-map.js : lib/work.js
+
+lib/code-writer.js : lib/classes-map.js

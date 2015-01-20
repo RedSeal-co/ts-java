@@ -17,6 +17,7 @@
   "dependencies": {
     "bluebird": "^2.3.11",
     "commander": "^2.6.0",
+    "debug": "^2.1.1",
     "glob": "^4.3.2",
     "handlebars": "^2.0.0",
     "immutable": "^3.3.0",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "chai": "^1.10.0",
     "concat-stream": "^1.4.7",
+    "cucumber": "^0.4.7",
     "groc": "^0.8.0",
     "jshint": "^2.5.10",
     "mocha": "^2.0.1",
