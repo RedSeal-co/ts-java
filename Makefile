@@ -59,10 +59,13 @@ clean-unittest:
 generate-out: generate-package-out generate-class-out
 
 o/TinkerPop.d.ts: lint compile
+	rm -rf o/json
 	node index.js -g package
+	wc -l o/TinkerPop.d.ts
 
 test-package-out: dts_test/package_test.js
-	node_modules/.bin/tslint -c dts_test/tslint.json -f o/TinkerPop.d.ts | head -20
+	node_modules/.bin/tslint -c dts_test/tslint.json -f o/TinkerPop.d.ts
+	ls -1 o/json | wc -l
 
 dts_test/package-test.js : dts_test/package-test.ts o/TinkerPop.d.ts
 

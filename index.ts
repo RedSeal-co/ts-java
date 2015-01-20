@@ -33,16 +33,16 @@ class Main {
 
   private granularity: string;
 
-  run(program: any): BluePromise<any> {
+  run(program: any): BluePromise<ClassesMap> {
     this.parseArgs(program);
     this.initJava();
     var classesMap = this.loadClasses();
     this.writeJsons(classesMap.getClasses());
 
     if (this.granularity === 'class') {
-      return this.writeClassFiles(classesMap);
+      return this.writeClassFiles(classesMap).then(() => classesMap);
     } else {
-      return this.writePackageFiles(classesMap);
+      return this.writePackageFiles(classesMap).then(() => classesMap);
     }
   }
 
@@ -78,17 +78,8 @@ class Main {
     var seedClasses = ['com.tinkerpop.gremlin.structure.Graph', 'java.util.function.Predicate'];
     var classesMap = new ClassesMap(java, Immutable.Set([
         /^java\.util\./,
-        /^java\.lang\./,
         /^java\.math\./,
-        /^java\.net\./,
-        /^java\.io\./,
-        /^java\.nio\./,
-        /^java\.text\./,
-        /^java\.time\./,
-        /^java\.security\./,
-        /^javax\./,
-        /^com\.tinkerpop\.gremlin\./,
-        /^org\.apache\.commons\.configuration\.(\w+)$/
+        /^com\.tinkerpop\.gremlin\./
     ]));
     classesMap.initialize(seedClasses);
     return classesMap;
@@ -113,5 +104,9 @@ program.on('--help', () => {
 });
 
 var main = new Main();
-main.run(program).done();
+main.run(program)
+  .then((classesMap: ClassesMap) => {
+    console.log(classesMap.unhandledTypes);
+  })
+  .done();
 

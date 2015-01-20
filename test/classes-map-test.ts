@@ -225,13 +225,8 @@ describe('ClassesMap', () => {
       expect(classes).to.be.an('object');
       var classNames = _.keys(classes).sort();
       expect(classNames).to.deep.equal([
-        'java.lang.CharSequence',
         'java.lang.Class',
-        'java.lang.Long',
-        'java.lang.Number',
         'java.lang.Object',
-        'java.lang.String',
-        'java.lang.StringBuffer',
         'java.util.Iterator',
         'java.util.function.Consumer'
       ]);
@@ -241,11 +236,22 @@ describe('ClassesMap', () => {
       var classes = classesMap.getClasses();
       expect(classes).to.be.an('object');
       var someExpectedClasses = [
-        'com.tinkerpop.gremlin.process.Traversal',
         'com.tinkerpop.gremlin.process.graph.EdgeTraversal',
         'com.tinkerpop.gremlin.process.graph.ElementTraversal',
         'com.tinkerpop.gremlin.process.graph.GraphTraversal',
+        'com.tinkerpop.gremlin.process.graph.VertexPropertyTraversal',
         'com.tinkerpop.gremlin.process.graph.VertexTraversal',
+        'com.tinkerpop.gremlin.process.marker.CapTraversal',
+        'com.tinkerpop.gremlin.process.marker.CountTraversal',
+        'com.tinkerpop.gremlin.process.Path',
+        'com.tinkerpop.gremlin.process.Step',
+        'com.tinkerpop.gremlin.process.T',
+        'com.tinkerpop.gremlin.process.Traversal',
+        'com.tinkerpop.gremlin.process.Traversal$SideEffects',
+        'com.tinkerpop.gremlin.process.TraversalEngine',
+        'com.tinkerpop.gremlin.process.Traverser',
+        'com.tinkerpop.gremlin.process.Traverser$Admin',
+        'com.tinkerpop.gremlin.structure.Direction',
         'com.tinkerpop.gremlin.structure.Edge',
         'com.tinkerpop.gremlin.structure.Edge$Iterators',
         'com.tinkerpop.gremlin.structure.Element',
@@ -254,10 +260,21 @@ describe('ClassesMap', () => {
         'com.tinkerpop.gremlin.structure.Property',
         'com.tinkerpop.gremlin.structure.Transaction',
         'com.tinkerpop.gremlin.structure.Vertex',
-        'java.lang.CharSequence',
-        'java.lang.Long',
+        'java.lang.Class',
+        'java.lang.Cloneable',
+        'java.lang.Comparable',
+        'java.lang.Enum',
+        'java.lang.Iterable',
         'java.lang.Object',
-        'java.lang.String',
+        'java.util.function.BiConsumer',
+        'java.util.function.BiFunction',
+        'java.util.function.BinaryOperator',
+        'java.util.function.BiPredicate',
+        'java.util.function.Consumer',
+        'java.util.function.Function',
+        'java.util.function.Predicate',
+        'java.util.function.Supplier',
+        'java.util.function.UnaryOperator',
         'java.util.Iterator'
       ];
       expect(classes).to.include.keys(someExpectedClasses);
