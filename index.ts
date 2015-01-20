@@ -47,14 +47,14 @@ class Main {
   }
 
   private writeJsons(classes: ClassDefinitionMap): void {
-    mkdirp.sync('out/json');
+    mkdirp.sync('o/json');
     _.forOwn(classes, (classMap: ClassDefinition, className: string) => {
-      fs.writeFileSync('out/json/' + classMap.shortName + '.json', JSON.stringify(classMap, null, '  '));
+      fs.writeFileSync('o/json/' + classMap.shortName + '.json', JSON.stringify(classMap, null, '  '));
     });
   }
 
   private writeClassFiles(classesMap: ClassesMap): BluePromise<any> {
-    mkdirp.sync('out/lib');
+    mkdirp.sync('o/lib');
     var tsWriter = new CodeWriter(classesMap, 'ts-templates');
     var classes: ClassDefinitionMap = classesMap.getClasses();
     return BluePromise.all(_.keys(classes))

@@ -103,7 +103,7 @@ class CodeWriter {
     var classMap = this.classes[className];
 
     var fileName = classMap.shortName;
-    var filePath = 'out/lib/' + fileName + ext;
+    var filePath = 'o/lib/' + fileName + ext;
 
     var stream = fs.createWriteStream(filePath);
     var streamFn: StreamFn = <StreamFn> BluePromise.promisify(stream.write, stream);
@@ -119,7 +119,7 @@ class CodeWriter {
   writePackageFile(): BluePromise<void> {
 
     var fileName = 'TinkerPop'; // TODO: from package/namespace
-    var filePath = 'out/' + fileName + '.d.ts';
+    var filePath = 'o/' + fileName + '.d.ts';
 
     var stream = fs.createWriteStream(filePath);
     var streamFn: StreamFn = <StreamFn> BluePromise.promisify(stream.write, stream);
