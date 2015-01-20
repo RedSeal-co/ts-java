@@ -33,16 +33,16 @@ class Main {
 
   private granularity: string;
 
-  run(program: any): BluePromise<any> {
+  run(program: any): BluePromise<ClassesMap> {
     this.parseArgs(program);
     this.initJava();
     var classesMap = this.loadClasses();
     this.writeJsons(classesMap.getClasses());
 
     if (this.granularity === 'class') {
-      return this.writeClassFiles(classesMap);
+      return this.writeClassFiles(classesMap).then(() => classesMap);
     } else {
-      return this.writePackageFiles(classesMap);
+      return this.writePackageFiles(classesMap).then(() => classesMap);
     }
   }
 
@@ -104,5 +104,9 @@ program.on('--help', () => {
 });
 
 var main = new Main();
-main.run(program).done();
+main.run(program)
+  .then((classesMap: ClassesMap) => {
+    console.log(classesMap.unhandledTypes);
+  })
+  .done();
 

@@ -40,11 +40,14 @@ import VariantsMap = ClassesMap.VariantsMap;
 // and information about all methods implemented by the class (directly or indirectly via inheritance).
 class ClassesMap {
 
+  public unhandledTypes: Immutable.Set<string>;
+
   private java: Java.Singleton;
   private classes: ClassDefinitionMap;
   private methodOriginations: Immutable.Map<string, string>;
   private includedPatterns: Immutable.Set<RegExp>;
   private excludedPatterns: Immutable.Set<RegExp>;
+
 
   constructor(java: Java.Singleton,
               includedPatterns: Immutable.Set<RegExp>,
@@ -52,6 +55,7 @@ class ClassesMap {
     this.java = java;
     this.classes = {};
     this.methodOriginations = Immutable.Map<string, string>();
+    this.unhandledTypes = Immutable.Set<string>();
 
     assert.ok(includedPatterns);
     assert.ok(includedPatterns instanceof Immutable.Set);
@@ -182,6 +186,9 @@ class ClassesMap {
       long: 'number',
       short: 'number',
       void: 'void',
+      'java.lang.Double': 'number',
+      'java.lang.Float': 'number',
+      'java.lang.Integer': 'number',
       'java.lang.String': 'string'
     };
     if (typeName in primitiveTypes) {
@@ -192,6 +199,7 @@ class ClassesMap {
       var shortName = this.shortClassName(typeName);
       return shortName + ext;
     } else {
+      this.unhandledTypes = this.unhandledTypes.add(typeName);
       return 'any' + ext;
     }
   }
