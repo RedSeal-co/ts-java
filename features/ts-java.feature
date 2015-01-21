@@ -28,10 +28,12 @@ so that I can use javascript with type safety comparable to java type safety.
     var filenames = glob.sync('test/**/*.jar');
     filenames.forEach((name: string) => { java.classpath.push(name); });
 
+    // TODO: this test is still awkward. Make it better.
     var newArray: java.util.ArrayList = java.newInstanceSync('java.util.ArrayList');
-    // TODO: We eventually want something like the following
-    // newArray.addSync('hello');
-    // newArray.addPromise('world').then(() => { console.log(newArray.toStringSync()); });
+    var obj: java.lang.Object = java.newInstanceSync('java.lang.String', 'hello');
+    newArray.addSync(obj);
+    newArray.addSync(java.newInstanceSync('java.lang.String', 'world'));
+    console.log(newArray.toStringSync());
 
     """
     Then it compiles and lints cleanly
