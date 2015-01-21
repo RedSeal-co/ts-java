@@ -14,12 +14,12 @@ lintOut:
 documentation :
 	node_modules/groc/bin/groc --except "**/node_modules/**" --except "o/**" --except "**/*.d.ts" "**/*.ts" README.md
 
-test: unittest cucumber generate-out
+test: unittest cucumber
 
 unittest: lint compile
 	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd
 
-cucumber: lint compile
+cucumber: lint compile generate-package-out
 	./node_modules/.bin/cucumber-js --tags '~@todo'
 
 TS_SRC=$(filter-out %.d.ts,$(wildcard index.ts lib/*.ts test/*.ts features/step_definitions/*.ts))

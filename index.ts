@@ -1,11 +1,11 @@
 /// <reference path='node_modules/immutable/dist/immutable.d.ts'/>
 /// <reference path='typings/commander/commander.d.ts' />
+/// <reference path='typings/glob/glob.d.ts' />
 /// <reference path='typings/handlebars/handlebars.d.ts' />
 /// <reference path='typings/lodash/lodash.d.ts' />
 /// <reference path='typings/mkdirp/mkdirp.d.ts' />
 /// <reference path='typings/node/node.d.ts' />
 /// <reference path='lib/bluebird.d.ts' />
-/// <reference path='lib/glob.d.ts' />
 
 'use strict';
 
@@ -75,7 +75,8 @@ class Main {
   }
 
   private loadClasses(): ClassesMap {
-    var seedClasses = ['com.tinkerpop.gremlin.structure.Graph', 'java.util.function.Predicate'];
+    var seedClasses = ['com.tinkerpop.gremlin.structure.Graph'
+                     , 'java.util.ArrayList'];
     var classesMap = new ClassesMap(java, Immutable.Set([
         /^java\.util\./,
         /^java\.math\./,

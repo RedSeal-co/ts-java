@@ -1,9 +1,9 @@
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
+/// <reference path='../typings/glob/glob.d.ts' />
 /// <reference path='../typings/handlebars/handlebars.d.ts' />
 /// <reference path='../typings/lodash/lodash.d.ts' />
 /// <reference path='../typings/node/node.d.ts' />
 /// <reference path='bluebird.d.ts' />
-/// <reference path='glob.d.ts' />
 
 'use strict';
 

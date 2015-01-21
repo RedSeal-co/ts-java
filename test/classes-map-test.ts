@@ -1,8 +1,8 @@
 // classes-map-test.ts
-///<reference path='../lib/glob.d.ts' />
 ///<reference path='../lib/java.d.ts' />
 ///<reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 ///<reference path='../typings/chai/chai.d.ts'/>
+///<reference path='../typings/glob/glob.d.ts' />
 ///<reference path='../typings/lodash/lodash.d.ts' />
 ///<reference path='../typings/mocha/mocha.d.ts'/>
 ///<reference path='../typings/node/node.d.ts'/>
@@ -123,7 +123,7 @@ describe('ClassesMap', () => {
 
   describe('tsTypeName', () => {
     it('it should translate Java types to TypeScript types', () => {
-      expect(classesMap.tsTypeName('java.lang.String')).to.equal('string');
+      expect(classesMap.tsTypeName('java.lang.String')).to.equal('String_');
       expect(classesMap.tsTypeName('int')).to.equal('number');
       expect(classesMap.tsTypeName('Ljava.lang.Object;')).to.equal('Object');
       expect(classesMap.tsTypeName('Ljava.util.function.Function;')).to.equal('Function');
@@ -226,7 +226,10 @@ describe('ClassesMap', () => {
       var classNames = _.keys(classes).sort();
       expect(classNames).to.deep.equal([
         'java.lang.Class',
+        'java.lang.Comparable',
+        'java.lang.Iterable',
         'java.lang.Object',
+        'java.lang.String',
         'java.util.Iterator',
         'java.util.function.Consumer'
       ]);
