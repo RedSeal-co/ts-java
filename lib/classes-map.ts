@@ -354,6 +354,7 @@ class ClassesMap {
       isPrimitive: isPrimitive,
       superclass: superclass === null ? null : superclass.getNameSync(),
       interfaces: interfaces,
+      tsInterfaces: _.map(interfaces, (intf: string) => { return this.fixClassPath(intf); }),
       methods: methods.sort(bySignature),
       variants: this.groupMethods(methods)
     };
@@ -525,7 +526,8 @@ module ClassesMap {
     isInterface: boolean;              // true if this is an interface, false for class or primitive type.
     isPrimitive: boolean;              // true for a primitive type, false otherwise.
     superclass: string;                // null if no superclass, otherwise class name
-    interfaces: Array<string>;         // [ 'java.lang.Object' ]
+    interfaces: Array<string>;         // [ 'java.util.function.Function' ]
+    tsInterfaces: Array<string>;       // [ 'java.util.function_.Function' ]
     methods: Array<MethodDefinition>; // definitions of all methods implemented by this class
     variants: VariantsMap;            // definitions of all methods, grouped by method name
     depth?: number;                    // distance from the root of the class inheritance tree

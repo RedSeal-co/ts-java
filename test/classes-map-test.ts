@@ -202,6 +202,7 @@ describe('ClassesMap', () => {
         'packageName',
         'shortName',
         'superclass',
+        'tsInterfaces',
         'variants'
       ]);
       expect(classMap.fullName).to.equal(className);

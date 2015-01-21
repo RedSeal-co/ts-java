@@ -11,7 +11,7 @@ import {{shortName}} = {{packageName}}.{{shortName}};
 
 {{#each this}}
 module {{packageName}} {
-  export interface {{shortName}} {
+  export interface {{shortName}} {{#if tsInterfaces}}extends {{tsInterfaces}}{{/if}} {
     {{#each variants}}
     // {{@key}}
     {{#each this}}
