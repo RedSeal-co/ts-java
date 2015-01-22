@@ -8,7 +8,7 @@ so that I can use javascript with type safety comparable to java type safety.
     Given the default TinkerPop packages
     And the following sample program:
     """
-    ///<reference path='../o/TinkerPop.d.ts'/>
+    ///<reference path='./TinkerPop.d.ts'/>
 
     """
     Then it compiles and lints cleanly

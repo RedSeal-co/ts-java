@@ -88,9 +88,13 @@ function wrapper() {
                            + world.sampleProgramPath;
     execChild(world, compileCmd, () => {
       expect(world.error).to.equal(null);
+      expect(world.stdout).to.equal('');
+      expect(world.stderr).to.equal('');
       var lintCmd: string = './node_modules/.bin/tslint --config tslint.json --file ' + world.sampleProgramPath;
       execChild(world, lintCmd, () => {
         expect(world.error).to.equal(null);
+        expect(world.stdout).to.equal('');
+        expect(world.stderr).to.equal('');
         callback();
       });
     });
