@@ -187,8 +187,8 @@ class ClassesMap {
       'java.lang.Double': 'number',
       'java.lang.Float': 'number',
       'java.lang.Integer': 'number',
-      'java.lang.String': 'String_'
-        // String_ is a union type [string|java.lang.String] assumed to be defined in the handlebars template
+      'java.lang.String': 'string_t'
+        // string_t is a union type [string|java.lang.String] assumed to be defined in the handlebars template
         // It can be useful to use this for parameter types,
         // But we probably shouldn't use it for function return types.
         // TODO: provide a mechanism to handle parameter types and return types differently

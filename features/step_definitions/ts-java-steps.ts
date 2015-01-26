@@ -100,9 +100,14 @@ function wrapper() {
     });
   });
 
-  this.Then(/^it runs and produces output: '\[hello, world\]'$/, function (callback: ICallback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback.pending();
+  this.Then(/^it runs and produces output:$/, function (output: string, callback: ICallback) {
+    var world = <IWorld> this;
+    var scriptPath = path.join('o', world.scenarioName.replace(/\s+/g, '_') + '.js');
+    var runCmd: string = 'node ' + scriptPath;
+    execChild(world, runCmd, () => {
+      expect(world.stdout).to.equal(output);
+      callback();
+    });
   });
 
 }

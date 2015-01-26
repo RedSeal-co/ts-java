@@ -58,12 +58,12 @@ clean-unittest:
 
 generate-out: generate-package-out generate-class-out
 
-o/TinkerPop.d.ts: lint compile
+o/java.d.ts: lint compile
 	rm -rf o/json
 	node index.js -g package
-	wc -l o/TinkerPop.d.ts
+	wc -l o/java.d.ts
 
-generate-package-out: o/TinkerPop.d.ts
+generate-package-out: o/java.d.ts
 
 generate-class-out: lint compile
 	node index.js -g class

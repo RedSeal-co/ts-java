@@ -123,7 +123,7 @@ describe('ClassesMap', () => {
 
   describe('tsTypeName', () => {
     it('it should translate Java types to TypeScript types', () => {
-      expect(classesMap.tsTypeName('java.lang.String')).to.equal('String_');
+      expect(classesMap.tsTypeName('java.lang.String')).to.equal('string_t');
       expect(classesMap.tsTypeName('int')).to.equal('number');
       expect(classesMap.tsTypeName('Ljava.lang.Object;')).to.equal('Object');
       expect(classesMap.tsTypeName('Ljava.util.function.Function;')).to.equal('Function');
