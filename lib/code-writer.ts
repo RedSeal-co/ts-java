@@ -1,9 +1,9 @@
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
+/// <reference path='../typings/glob/glob.d.ts' />
 /// <reference path='../typings/handlebars/handlebars.d.ts' />
 /// <reference path='../typings/lodash/lodash.d.ts' />
 /// <reference path='../typings/node/node.d.ts' />
 /// <reference path='bluebird.d.ts' />
-/// <reference path='glob.d.ts' />
 
 'use strict';
 
@@ -118,7 +118,7 @@ class CodeWriter {
   // TODO: refactor so that we write one file per top-level package/namespace.
   writePackageFile(): BluePromise<void> {
 
-    var fileName = 'TinkerPop'; // TODO: from package/namespace
+    var fileName = 'java'; // TODO: from package/namespace
     var filePath = 'o/' + fileName + '.d.ts';
 
     var stream = fs.createWriteStream(filePath);

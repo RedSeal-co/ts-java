@@ -19,14 +19,12 @@ var requiredSeedClasses = [
   'java.lang.Long',
   'java.lang.Number',
   'java.lang.Object',
+  'java.lang.String',
 ];
 
-var mustExcludeClasses = [
-  // Node java automatically coerces string to java.lang.String for input parameters,
-  // and does the reverse for return results, so we never need to use the java.lang.String class.
-  // Note that tsTypeName treats java.lang.String as a primitive type mapped to string.
-  'java.lang.String'
-  // TODO: are there other classes we should do this with?
+var alwaysExcludeClasses = [
+  // We are currently not using this feature.
+  // TODO: remove it if it remains unused.
 ];
 
 import ClassDefinition = ClassesMap.ClassDefinition;
@@ -68,7 +66,7 @@ class ClassesMap {
     });
     this.includedPatterns = this.includedPatterns.merge(requiredPatterns);
 
-    var excludedPats = _.map(mustExcludeClasses, (s: string) => {
+    var excludedPats = _.map(alwaysExcludeClasses, (s: string) => {
       var pattern = '^' + s.replace(/\./g, '\\.') + '$';
       return new RegExp(pattern);
     });
@@ -189,7 +187,11 @@ class ClassesMap {
       'java.lang.Double': 'number',
       'java.lang.Float': 'number',
       'java.lang.Integer': 'number',
-      'java.lang.String': 'string'
+      'java.lang.String': 'string_t'
+        // string_t is a union type [string|java.lang.String] assumed to be defined in the handlebars template
+        // It can be useful to use this for parameter types,
+        // But we probably shouldn't use it for function return types.
+        // TODO: provide a mechanism to handle parameter types and return types differently
     };
     if (typeName in primitiveTypes) {
       return primitiveTypes[typeName] + ext;
@@ -352,6 +354,7 @@ class ClassesMap {
       isPrimitive: isPrimitive,
       superclass: superclass === null ? null : superclass.getNameSync(),
       interfaces: interfaces,
+      tsInterfaces: _.map(interfaces, (intf: string) => { return this.fixClassPath(intf); }),
       methods: methods.sort(bySignature),
       variants: this.groupMethods(methods)
     };
@@ -523,7 +526,8 @@ module ClassesMap {
     isInterface: boolean;              // true if this is an interface, false for class or primitive type.
     isPrimitive: boolean;              // true for a primitive type, false otherwise.
     superclass: string;                // null if no superclass, otherwise class name
-    interfaces: Array<string>;         // [ 'java.lang.Object' ]
+    interfaces: Array<string>;         // [ 'java.util.function.Function' ]
+    tsInterfaces: Array<string>;       // [ 'java.util.function_.Function' ]
     methods: Array<MethodDefinition>; // definitions of all methods implemented by this class
     variants: VariantsMap;            // definitions of all methods, grouped by method name
     depth?: number;                    // distance from the root of the class inheritance tree

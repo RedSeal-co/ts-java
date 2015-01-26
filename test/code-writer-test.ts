@@ -1,9 +1,9 @@
 // code-writer-test.ts
 ///<reference path='../lib/bluebird.d.ts' />
-///<reference path='../lib/glob.d.ts' />
 ///<reference path='../lib/java.d.ts' />
 ///<reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 ///<reference path='../typings/chai/chai.d.ts'/>
+///<reference path='../typings/glob/glob.d.ts'/>
 ///<reference path='../typings/lodash/lodash.d.ts' />
 ///<reference path='../typings/mocha/mocha.d.ts'/>
 ///<reference path='../typings/node/node.d.ts'/>
@@ -97,6 +97,7 @@ describe('CodeWriter', () => {
         'isPrimitive: false',
         'superclass: ',
         'interfaces: java.lang.Object',
+        'tsInterfaces: java.lang.Object',
         'methods: [object Object],[object Object],[object Object],[object Object]',
         'variants: [object Object]',
         'depth: 2',

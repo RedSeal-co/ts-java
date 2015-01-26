@@ -14,12 +14,12 @@ lintOut:
 documentation :
 	node_modules/groc/bin/groc --except "**/node_modules/**" --except "o/**" --except "**/*.d.ts" "**/*.ts" README.md
 
-test: unittest cucumber generate-out
+test: unittest cucumber
 
 unittest: lint compile
 	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd
 
-cucumber: lint compile
+cucumber: lint compile generate-package-out
 	./node_modules/.bin/cucumber-js --tags '~@todo'
 
 TS_SRC=$(filter-out %.d.ts,$(wildcard index.ts lib/*.ts test/*.ts features/step_definitions/*.ts))
@@ -58,18 +58,12 @@ clean-unittest:
 
 generate-out: generate-package-out generate-class-out
 
-o/TinkerPop.d.ts: lint compile
+o/java.d.ts: lint compile
 	rm -rf o/json
 	node index.js -g package
-	wc -l o/TinkerPop.d.ts
+	wc -l o/java.d.ts
 
-test-package-out: dts_test/package_test.js
-	node_modules/.bin/tslint -c dts_test/tslint.json -f o/TinkerPop.d.ts
-	ls -1 o/json | wc -l
-
-dts_test/package-test.js : dts_test/package-test.ts o/TinkerPop.d.ts
-
-generate-package-out: o/TinkerPop.d.ts
+generate-package-out: o/java.d.ts
 
 generate-class-out: lint compile
 	node index.js -g class
