@@ -16,10 +16,10 @@ documentation :
 
 test: unittest cucumber
 
-unittest: lint compile
+unittest: compile lint
 	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd
 
-cucumber: lint compile generate-package-out
+cucumber: compile lint generate-package-out
 	./node_modules/.bin/cucumber-js --tags '~@todo'
 
 TS_SRC=$(filter-out %.d.ts,$(wildcard index.ts lib/*.ts test/*.ts features/step_definitions/*.ts))
@@ -58,14 +58,14 @@ clean-unittest:
 
 generate-out: generate-package-out generate-class-out
 
-o/java.d.ts: lint compile
+o/java.d.ts: compile lint
 	rm -rf o/json
 	node index.js -g package
 	wc -l o/java.d.ts
 
 generate-package-out: o/java.d.ts
 
-generate-class-out: lint compile
+generate-class-out: compile lint
 	node index.js -g class
 
 install:

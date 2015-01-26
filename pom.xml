@@ -6,7 +6,7 @@
   <groupId>com.redseal</groupId>
   <artifactId>tinkerpop</artifactId>
   <packaging>jar</packaging>
-  <version>${gremlin.version}</version>
+  <version>3.0.0.M7</version>
   <name>tinkerpop</name>
 
   <properties>

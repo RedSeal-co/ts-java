@@ -75,8 +75,12 @@ class Main {
   }
 
   private loadClasses(): ClassesMap {
-    var seedClasses = ['com.tinkerpop.gremlin.structure.Graph'
-                     , 'java.util.ArrayList'];
+    var seedClasses = [
+      'com.tinkerpop.gremlin.structure.Graph',
+      'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph',
+      'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory',
+      'java.util.ArrayList'
+    ];
     var classesMap = new ClassesMap(java, Immutable.Set([
         /^java\.util\./,
         /^java\.math\./,

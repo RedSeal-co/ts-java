@@ -3,36 +3,16 @@
 
 declare module Java {
 
-type string_t = string | java.lang.String;
-
-{{#each this}}
-import {{shortName}} = {{packageName}}.{{shortName}};
-{{/each}}
-
-{{#each this}}
-export module {{packageName}} {
-  export interface {{shortName}} {{#if tsInterfaces}}extends {{tsInterfaces}}{{/if}} {
-    {{#each variants}}
-    // {{@key}}
-    {{#each this}}
-    // {{{generic_proto}}}
-    {{name}}Sync({{margs this}}): {{tsReturns}};
-    {{/each}}
-
-    {{/each}}
-  }
-}
-
-{{/each}}
-
 // *Singleton* declares methods & members exported by the node java module.
 export interface Singleton {
   classpath: Array<string>;
   callMethodSync(instance: any, className: string, methodName: string, ...args: any[]): any;
   callStaticMethodSync(className: string, methodName: string, ...args: any[]): any;
+  
+  newArray(className: string, ...args: any[]): any;
 
   {{#each this}}
-  import(className: '{{packageName}}.{{shortName}}'): {{packageName}}.{{shortName}};
+  import(className: '{{packageName}}.{{shortName}}'): {{packageName}}.{{shortName}}Static;
   {{/each}}
   import(className: string): any;
 
@@ -42,6 +22,44 @@ export interface Singleton {
   newInstanceSync(className: string, ...args: any[]): any;
 }
 
+type string_t = string | java.lang.String;
+
+{{#each this}}
+export import {{shortName}} = {{packageName}}.{{shortName}};
+export import {{shortName}}Static = {{packageName}}.{{shortName}}Static;
+{{/each}}
+
+{{#each this}}
+export module {{packageName}} {
+  export interface {{shortName}} {{#if tsInterfaces}}extends {{tsInterfaces}}{{/if}} {
+    {{#each variants}}
+    // {{@key}}
+    {{#each this}}
+    // {{{generic_proto}}}
+    {{#if isStatic}}
+    // static method, see {{shortName}}Static
+    {{else}}
+    {{name}}Sync({{margs this}}): {{tsReturns}};
+    {{/if}}
+    {{/each}}
+
+    {{/each}}
+  }
+  export interface {{shortName}}Static {
+    {{#each variants}}
+    {{#each this}}
+    {{#if isStatic}}
+    // {{{generic_proto}}}
+    {{name}}Sync({{margs this}}): {{tsReturns}};
+    {{else}}
+    {{/if}}
+    {{/each}}
+
+    {{/each}}
+  }
+}
+
+{{/each}}
 }
 
 declare module 'java' {
