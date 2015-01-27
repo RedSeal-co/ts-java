@@ -26,7 +26,7 @@ describe('ClassesMap', () => {
   var classesMap;
 
   before(() => {
-    var filenames = glob.sync('test/**/*.jar');
+    var filenames = glob.sync('target/dependency/**/*.jar');
     _.forEach(filenames, (name: string) => { java.classpath.push(name); });
   });
 
@@ -245,13 +245,10 @@ describe('ClassesMap', () => {
         'com.tinkerpop.gremlin.process.graph.GraphTraversal',
         'com.tinkerpop.gremlin.process.graph.VertexPropertyTraversal',
         'com.tinkerpop.gremlin.process.graph.VertexTraversal',
-        'com.tinkerpop.gremlin.process.marker.CapTraversal',
-        'com.tinkerpop.gremlin.process.marker.CountTraversal',
         'com.tinkerpop.gremlin.process.Path',
         'com.tinkerpop.gremlin.process.Step',
         'com.tinkerpop.gremlin.process.T',
         'com.tinkerpop.gremlin.process.Traversal',
-        'com.tinkerpop.gremlin.process.Traversal$SideEffects',
         'com.tinkerpop.gremlin.process.TraversalEngine',
         'com.tinkerpop.gremlin.process.Traverser',
         'com.tinkerpop.gremlin.process.Traverser$Admin',
@@ -406,7 +403,7 @@ describe('ClassesMap', () => {
       // expect a smaller number defining class locations
       var uniqueLocations = methodOriginations.toSet();
       expect(uniqueLocations.size).to.be.above(30);
-      expect(uniqueLocations.size).to.be.below(70);
+      expect(uniqueLocations.size).to.be.below(100);
 
       // even less than the total number of classes, because only a few override methods.
       expect(uniqueLocations.size).to.be.below(_.keys(classes).length);

@@ -1,9 +1,9 @@
 .PHONY: install install-npm install-tsd lint documentation test testdata unittest cucumber compile
-.PHONY: clean clean-obj clean-tsd clean-npm clean-js-map generate-out clean-unittest clean-cucumber
+.PHONY: clean clean-obj clean-tsd clean-npm clean-js-map generate-out clean-unittest clean-cucumber clean-package
 
 default: test
 
-all: install test documentation
+all: install package test documentation
 
 lint:
 	ls $(TS_SRC) | xargs -n1 node_modules/tslint/bin/tslint --config tslint.json --file
@@ -33,7 +33,7 @@ compile: $(TS_OBJ)
 	$(TSC) $(TSC_OPTS) $<
 	stat $@ > /dev/null
 
-clean: clean-cucumber clean-doc clean-js-map clean-npm clean-obj clean-tsd clean-unittest
+clean: clean-cucumber clean-doc clean-js-map clean-npm clean-obj clean-tsd clean-unittest clean-package
 
 clean-cucumber:
 	rm -rf o.features
@@ -79,6 +79,12 @@ TSD=./node_modules/.bin/tsd
 
 install-tsd:
 	$(TSD) reinstall
+
+package:
+	mvn clean package
+
+clean-package:
+	mvn clean
 
 # Explicit dependencies for files that are referenced
 

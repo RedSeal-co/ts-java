@@ -70,7 +70,7 @@ class Main {
   }
 
   private initJava(): void {
-    var filenames = glob.sync('test/**/*.jar');
+    var filenames = glob.sync('target/dependency/**/*.jar');
     _.forEach(filenames, (name: string) => { java.classpath.push(name); });
   }
 
