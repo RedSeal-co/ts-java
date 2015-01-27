@@ -51,7 +51,6 @@ export module {{packageName}} {
     {{#if isStatic}}
     // {{{generic_proto}}}
     {{name}}Sync({{margs this}}): {{tsReturns}};
-    {{else}}
     {{/if}}
     {{/each}}
 
