@@ -24,7 +24,7 @@ so that I can use javascript with type safety comparable to java type safety.
     import glob = require('glob');
     import nodejava = require('java');
 
-    var filenames = glob.sync('test/**/*.jar');
+    var filenames = glob.sync('target/dependency/**/*.jar');
     filenames.forEach((name: string) => { nodejava.classpath.push(name); });
 
     // TODO: this test is still awkward. Make it better.
@@ -41,3 +41,40 @@ so that I can use javascript with type safety comparable to java type safety.
     [hello, world]
 
     """
+
+  Scenario: TinkerGraph Query
+    Given the default TinkerPop packages
+    And the following sample program:
+    """
+    /// <reference path='../o/java.d.ts'/>
+    /// <reference path='../typings/node/node.d.ts' />
+    /// <reference path='../typings/glob/glob.d.ts' />
+
+    import glob = require('glob');
+    import nodejava = require('java');
+
+    var filenames = glob.sync('target/dependency/**/*.jar');
+    filenames.forEach((name: string) => { nodejava.classpath.push(name); });
+
+    var tinkerFactoryClassName = 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory';
+    var TinkerFactory: Java.TinkerFactory.Static = nodejava.import(tinkerFactoryClassName);
+
+    var g: Java.TinkerGraph = TinkerFactory.createClassicSync();
+
+    // HACK: this emptyList is a hack due to current problem mapping typescript rest args to java varargs.
+    var emptyList: Java.Object = <Java.java.lang.Object> nodejava.newArray('java.lang.Object', []);
+
+    // HACK: same hack here.
+    var props: Java.String = <Java.java.lang.String> nodejava.newArray('java.lang.String', ['name', 'age']);
+
+    var vertList: Java.List = g.VSync(emptyList).valuesSync(props).toListSync();
+    console.log(vertList.toStringSync());
+
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces output:
+    """
+    [marko, 29, vadas, 27, lop, josh, 32, ripple, peter, 35]
+
+    """
+

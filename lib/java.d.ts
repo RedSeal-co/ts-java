@@ -6,6 +6,7 @@ declare module Java {
     getReturnTypeSync(): Class;
     getParameterTypesSync(): Array<Class>;
     getParametersSync(): Array<Parameter>;
+    getModifiersSync(): number;
     isVarArgsSync(): boolean;
     toGenericStringSync(): string;
     toStringSync(): string;

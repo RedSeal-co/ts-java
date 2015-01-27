@@ -150,6 +150,7 @@ describe('ClassesMap', () => {
         paramTypes: [],
         paramNames: [],
         isVarArgs: false,
+        isStatic: false,
         generic_proto: 'public native int java.lang.Object.hashCode()',
         plain_proto: 'public native int java.lang.Object.hashCode()',
         signature: 'hashCode()I',

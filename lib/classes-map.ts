@@ -227,6 +227,9 @@ class ClassesMap {
 
     var signature = this.methodSignature(method);
 
+    var modifiers: number = method.getModifiersSync();
+    var isStatic: boolean = (modifiers & 8) === 8;
+
     var methodMap: MethodDefinition = {
       name: method.getNameSync(),
       declared: method.getDeclaringClassSync().getNameSync(),
@@ -235,6 +238,7 @@ class ClassesMap {
       paramNames: _.map(method.getParametersSync(), (p: Java.Parameter) => { return p.getNameSync(); }),
       paramTypes: _.map(method.getParameterTypesSync(), (p: Java.Class) => { return p.getNameSync(); }),
       tsParamTypes: _.map(method.getParameterTypesSync(), (p: Java.Class) => { return this.tsTypeName(p.getNameSync()); }),
+      isStatic: isStatic,
       isVarArgs: method.isVarArgsSync(),
       generic_proto: method.toGenericStringSync(),
       plain_proto: method.toStringSync(),
@@ -502,6 +506,7 @@ module ClassesMap {
     paramNames: Array<string>;  // [ 'arg0' ],
     paramTypes: Array<string>;  // [ 'java.util.function.Consumer', '[S' ],
     tsParamTypes: Array<string>;  // [ 'java.util.function_.Consumer',  'number' ],
+    isStatic: boolean;      // true if this is a static method
     isVarArgs: boolean;     // true if this method's last parameter is varargs ...type
     generic_proto: string;  // The method prototype including generic type information
     plain_proto: string;    // The java method prototype without generic type information
