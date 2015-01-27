@@ -385,54 +385,9 @@ class ClassesMap {
   }
 
 
-  // *_interfacesClosure()*: extend interfaces to the transitive closure of all inherited interfaces.
-  _interfacesClosure(className: string, work: Work): void {
-    assert.ok(!work.alreadyDone(className));
-    var transitiveClosure = Immutable.Set(this.classes[className].interfaces);
-
-    var maxdepth = 0;
-    _.forEach(this.classes[className].interfaces, (intf: string) => {
-      if (!work.alreadyDone(intf)) {
-        this._interfacesClosure(intf, work);
-      }
-      assert.ok(work.alreadyDone(intf));
-      assert.ok(typeof this.classes[intf].depth === 'number');
-      if (maxdepth < this.classes[intf].depth) {
-        maxdepth = this.classes[intf].depth;
-      }
-      transitiveClosure = transitiveClosure.union(this.classes[intf].interfaces);
-    });
-
-    var byDepth = (a: string, b: string) => {
-      var result = this.classes[a].depth - this.classes[b].depth;
-      if (result === 0) {
-        // for tiebreaker, arrange for java.* to sort before com.*
-        result = this.classes[b].fullName.localeCompare(this.classes[a].fullName);
-      }
-      return result;
-    };
-
-    this.classes[className].interfaces = transitiveClosure.toArray().sort(byDepth);
-    this.classes[className].depth = maxdepth + 1;
-    work.setDone(className);
-  }
-
-
-  // *transitiveClosureInterfaces()*: compute the _interfacesClosure for all classes.
-  transitiveClosureInterfaces(): void {
-    var work = new Work(_.keys(this.classes));
-
-    while (!work.isDone()) {
-      var className = work.next();
-      this._interfacesClosure(className, work);
-    }
-  }
-
-
   // *initialize()*: fully initialize from seedClasses.
   initialize(seedClasses: Array<string>) {
     this.loadAllClasses(seedClasses);
-    this.transitiveClosureInterfaces();
   }
 
 }
@@ -480,7 +435,6 @@ module ClassesMap {
     tsInterfaces: Array<string>;       // [ 'java.util.function_.Function' ]
     methods: Array<MethodDefinition>; // definitions of all methods implemented by this class
     variants: VariantsMap;            // definitions of all methods, grouped by method name
-    depth?: number;                    // distance from the root of the class inheritance tree
   }
 
   export interface ClassDefinitionMap {
