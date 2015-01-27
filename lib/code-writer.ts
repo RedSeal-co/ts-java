@@ -77,13 +77,7 @@ class CodeWriter {
     handlebars.registerHelper('margs', (method: ClassesMap.MethodDefinition, options: HandlebarHelperOptions) => {
       var tsParamTypes = method.tsParamTypes;
       var names = method.paramNames;
-      var args = _.map(names, (name: string, i: number) => {
-        if (method.isVarArgs && i === names.length - 1) {
-          return util.format('...%s: %s', name, tsParamTypes[i]);
-        } else {
-          return util.format('%s: %s', name, tsParamTypes[i]);
-        }
-      });
+      var args = _.map(names, (name: string, i: number) => util.format('%s: %s', name, tsParamTypes[i]));
       return args.join(', ');
     });
     handlebars.registerHelper('mcall', (method: ClassesMap.MethodDefinition, options: HandlebarHelperOptions) => {

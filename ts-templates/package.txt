@@ -11,7 +11,10 @@ export interface Singleton {
   callMethodSync(instance: any, className: string, methodName: string, ...args: any[]): any;
   callStaticMethodSync(className: string, methodName: string, ...args: any[]): any;
   
-  newArray(className: string, ...args: any[]): any;
+  {{#each this}}
+  newArray(className: '{{packageName}}.{{shortName}}', arg: any[]): {{packageName}}.{{shortName}}[];
+  {{/each}}
+  newArray(className: string, arg: any[]): any[];
 
   {{#each this}}
   import(className: '{{packageName}}.{{shortName}}'): {{packageName}}.{{shortName}}.Static;
