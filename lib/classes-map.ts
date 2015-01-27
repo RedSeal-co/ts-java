@@ -42,7 +42,6 @@ class ClassesMap {
 
   private java: Java.Singleton;
   private classes: ClassDefinitionMap;
-  private methodOriginations: Immutable.Map<string, string>;
   private includedPatterns: Immutable.Set<RegExp>;
   private excludedPatterns: Immutable.Set<RegExp>;
 
@@ -52,7 +51,6 @@ class ClassesMap {
               excludedPatterns?: Immutable.Set<RegExp>) {
     this.java = java;
     this.classes = {};
-    this.methodOriginations = Immutable.Map<string, string>();
     this.unhandledTypes = Immutable.Set<string>();
 
     assert.ok(includedPatterns);
@@ -431,63 +429,10 @@ class ClassesMap {
   }
 
 
-  // *_locateMethodOriginations()*: find where each method of className was first defined.
-  // Private method for use by *mapMethodOriginations()*.
-  // This method will resursively call itself for all inherited interfaces
-  // before it locates the methods of this class.
-  _locateMethodOriginations(className: string, work: Work): void {
-    assert.ok(className in this.classes);
-    var classMap: ClassDefinition = this.classes[className];
-    assert.strictEqual(className, classMap.fullName);
-
-    _.forEach(classMap.interfaces, (intf: string) => {
-      if (!work.alreadyDone(intf)) {
-        assert.ok(intf in this.classes, 'Unknown interface:' + intf);
-        this._locateMethodOriginations(intf, work);
-      }
-    });
-
-    _.forEach(classMap.methods, (method: MethodDefinition, index: number) => {
-      assert.ok(typeof method.signature === 'string');
-      var definedHere = false;
-      if (!(this.methodOriginations.has(method.signature))) {
-        if (!(method.signature in classMap.interfaces)) {
-          definedHere = true;
-          this.methodOriginations = this.methodOriginations.set(method.signature, className);
-          if (method.declared !== className) {
-            console.log('Method %s located in %s but declared in %s', method.signature, className, method.declared);
-          }
-        }
-      }
-      classMap.methods[index].definedHere = definedHere;
-    });
-
-    work.setDone(className);
-  }
-
-
-  // *mapMethodOriginations()*: Create a map of all methods. Keys are method signatures, values are class names.
-  mapMethodOriginations(): Immutable.Map<string, string> {
-    var work = new Work(_.keys(this.classes));
-    while (!work.isDone()) {
-      var className = work.next();
-      this._locateMethodOriginations(className, work);
-    }
-    return this.methodOriginations;
-  }
-
-
-  // *getMethodOriginations()*: return the map of all original method definitions.
-  getMethodOriginations(): Immutable.Map<string, string> {
-    return this.methodOriginations;
-  }
-
-
   // *initialize()*: fully initialize from seedClasses.
   initialize(seedClasses: Array<string>) {
     this.loadAllClasses(seedClasses);
     this.transitiveClosureInterfaces();
-    this.mapMethodOriginations();
   }
 
 }
