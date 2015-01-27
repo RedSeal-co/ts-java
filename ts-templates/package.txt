@@ -12,7 +12,7 @@ export interface Singleton {
   newArray(className: string, ...args: any[]): any;
 
   {{#each this}}
-  import(className: '{{packageName}}.{{shortName}}'): {{packageName}}.{{shortName}}Static;
+  import(className: '{{packageName}}.{{shortName}}'): {{packageName}}.{{shortName}}.Static;
   {{/each}}
   import(className: string): any;
 
@@ -26,7 +26,6 @@ type string_t = string | java.lang.String;
 
 {{#each this}}
 export import {{shortName}} = {{packageName}}.{{shortName}};
-export import {{shortName}}Static = {{packageName}}.{{shortName}}Static;
 {{/each}}
 
 {{#each this}}
@@ -37,7 +36,7 @@ export module {{packageName}} {
     {{#each this}}
     // {{{generic_proto}}}
     {{#if isStatic}}
-    // static method, see {{shortName}}Static
+    // static method, see {{shortName}}.Static
     {{else}}
     {{name}}Sync({{margs this}}): {{tsReturns}};
     {{/if}}
@@ -45,16 +44,18 @@ export module {{packageName}} {
 
     {{/each}}
   }
-  export interface {{shortName}}Static {
-    {{#each variants}}
-    {{#each this}}
-    {{#if isStatic}}
-    // {{{generic_proto}}}
-    {{name}}Sync({{margs this}}): {{tsReturns}};
-    {{/if}}
-    {{/each}}
+  export module {{shortName}} {
+    export interface Static {
+      {{#each variants}}
+      {{#each this}}
+      {{#if isStatic}}
+      // {{{generic_proto}}}
+      {{name}}Sync({{margs this}}): {{tsReturns}};
+      {{/if}}
+      {{/each}}
 
-    {{/each}}
+      {{/each}}
+    }
   }
 }
 

@@ -57,7 +57,7 @@ so that I can use javascript with type safety comparable to java type safety.
     filenames.forEach((name: string) => { nodejava.classpath.push(name); });
 
     var tinkerFactoryClassName = 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory';
-    var TinkerFactory: Java.TinkerFactoryStatic = nodejava.import(tinkerFactoryClassName);
+    var TinkerFactory: Java.TinkerFactory.Static = nodejava.import(tinkerFactoryClassName);
 
     var g: Java.TinkerGraph = TinkerFactory.createClassicSync();
 
