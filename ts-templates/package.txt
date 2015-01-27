@@ -3,6 +3,8 @@
 
 declare module Java {
 
+export type string_t = string | java.lang.String;
+
 // *Singleton* declares methods & members exported by the node java module.
 export interface Singleton {
   classpath: Array<string>;
@@ -21,8 +23,6 @@ export interface Singleton {
   {{/each}}
   newInstanceSync(className: string, ...args: any[]): any;
 }
-
-type string_t = string | java.lang.String;
 
 {{#each this}}
 export import {{shortName}} = {{packageName}}.{{shortName}};
