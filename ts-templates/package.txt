@@ -30,13 +30,7 @@ export import {{shortName}} = {{packageName}}.{{shortName}};
 
 {{#each this}}
 export module {{packageName}} {
-  // TODO: use 'class' keyword for classes, 'interface' keyword for interfaces.
-  // TODO: use 'extends' and 'implements' depending on relationship to inherited type
-  // In Typescript, like Java, a class can extend only one class, but can implement many interfaces
-  // Interfaces can only extend interfaces or classes, but never implement another interface.
   export interface {{shortName}} {{#if tsInterfaces}}extends {{tsInterfaces}}{{/if}} {
-    // TODO: add constructor signature for classes with public constuctors
-    // constructor (arg0: Type0, ...);
     {{#each variants}}
     // {{@key}}
     {{#each this}}
@@ -52,7 +46,7 @@ export module {{packageName}} {
   }
   export module {{shortName}} {
     export interface Static {
-      // TODO: add constructor signature for classes with public constructors
+      // TODO: add `new` signature for classes with public constructors
       // new (arg0: Type0, ...);
       {{#each variants}}
       {{#each this}}
