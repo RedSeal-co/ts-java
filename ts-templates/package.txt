@@ -9,6 +9,7 @@ export interface Array<T> extends java.lang.Object {
   // This is an opaque type for a java array T[];
   // Use Singleton.newArray<T>(className, [...]) to create wherever a Java method expects a T[],
   // most notably for vararg parameteters.
+  __dummy: T;
 }
 
 // *Singleton* declares methods & members exported by the node java module.

@@ -76,3 +76,17 @@ so that I can use javascript with type safety comparable to java type safety.
 
     """
 
+  Scenario: Varargs Negative Test
+    Given the default TinkerPop packages
+    And the following sample program:
+    """
+    /// <reference path='../o/java.d.ts'/>
+    /// <reference path='../typings/node/node.d.ts' />
+    var g: Java.TinkerGraph;
+    var s: Java.String;
+    g.VSync(s);
+    """
+    When compiled it produces this error containing this snippet:
+    """
+    error TS2345: Argument of type 'String' is not assignable to parameter of type
+    """
