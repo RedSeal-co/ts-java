@@ -60,12 +60,14 @@ so that I can use javascript with type safety comparable to java type safety.
     var TinkerFactory: Java.TinkerFactory.Static = nodejava.import(tinkerFactoryClassName);
     var g: Java.TinkerGraph = TinkerFactory.createClassicSync();
 
-    // This illustrates how to use newArray() to create a parameter for a varargs argument.
+    // These two definitions illustrate how to use newArray() to create a parameter for a varargs argument.
+    // This is awkward due to a limitation in node-java's ability to map a function call to the correct
+    // method variant for methods with varargs. We may be able to fix this in node-java, though most likely
+    // this will be something we address in 'wrapper' classes.
+    var noargs: Java.Array<Java.Object> = nodejava.newArray<Java.Object>('java.lang.Object', []);
     var props: Java.Array<Java.String> = nodejava.newArray<Java.String>('java.lang.String', ['name', 'age']);
 
-    // Note that VSync() takes a java.lang.Object[] varargs parameter.
-    // For the case of an empty Object[] array, we can use a empty javascript array.
-    var vertList: Java.List = g.VSync([]).valuesSync(props).toListSync();
+    var vertList: Java.List = g.VSync(noargs).valuesSync(props).toListSync();
     console.log(vertList.toStringSync());
 
     """
