@@ -5,16 +5,19 @@ declare module Java {
 
 export type string_t = string | java.lang.String;
 
+export interface Array<T> extends java.lang.Object {
+  // This is an opaque type for a java array T[];
+  // Use Singleton.newArray<T>(className, [...]) to create wherever a Java method expects a T[],
+  // most notably for vararg parameteters.
+}
+
 // *Singleton* declares methods & members exported by the node java module.
 export interface Singleton {
-  classpath: Array<string>;
+  classpath: string[];
   callMethodSync(instance: any, className: string, methodName: string, ...args: any[]): any;
   callStaticMethodSync(className: string, methodName: string, ...args: any[]): any;
   
-  {{#each this}}
-  newArray(className: '{{packageName}}.{{shortName}}', arg: any[]): {{packageName}}.{{shortName}}[];
-  {{/each}}
-  newArray(className: string, arg: any[]): any[];
+  newArray<T>(className: string, arg: any[]): Array<T>;
 
   {{#each this}}
   import(className: '{{packageName}}.{{shortName}}'): {{packageName}}.{{shortName}}.Static;
@@ -41,7 +44,7 @@ export module {{packageName}} {
     {{#if isStatic}}
     // static method, see {{shortName}}.Static
     {{else}}
-    {{name}}Sync({{margs this}}): {{tsReturns}};
+    {{name}}Sync({{{margs this}}}): {{tsReturns}};
     {{/if}}
     {{/each}}
 
@@ -55,7 +58,7 @@ export module {{packageName}} {
       {{#each this}}
       {{#if isStatic}}
       // {{{generic_proto}}}
-      {{name}}Sync({{margs this}}): {{tsReturns}};
+      {{name}}Sync({{{margs this}}}): {{tsReturns}};
       {{/if}}
       {{/each}}
 

@@ -58,19 +58,13 @@ so that I can use javascript with type safety comparable to java type safety.
 
     var tinkerFactoryClassName = 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory';
     var TinkerFactory: Java.TinkerFactory.Static = nodejava.import(tinkerFactoryClassName);
-
     var g: Java.TinkerGraph = TinkerFactory.createClassicSync();
 
     // This illustrates how to use newArray() to create a parameter for a varargs argument.
-    // This is cheating, since newArray produces a Java array, not a javascript array,
-    // but it is convenient to lie to Typescript about the actual types here.
-    var props: Java.String[] = nodejava.newArray('java.lang.String', ['name', 'age']);
+    var props: Java.Array<Java.String> = nodejava.newArray<Java.String>('java.lang.String', ['name', 'age']);
 
-    // Note that VSync() also takes a java.lang.Object[] varargs parameter.
-    // When no args are to be passed and the desired array type is java.lang.Object[],
-    // we can simply pass in an empty javascript array, and node-java will automatically
-    // create the Java array instance with the correct type. This trick doesn't work
-    // when the argument is an array of some other class type.
+    // Note that VSync() takes a java.lang.Object[] varargs parameter.
+    // For the case of an empty Object[] array, we can use a empty javascript array.
     var vertList: Java.List = g.VSync([]).valuesSync(props).toListSync();
     console.log(vertList.toStringSync());
 
