@@ -1,5 +1,6 @@
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 /// <reference path='../typings/commander/commander.d.ts' />
+/// <reference path="../typings/debug/debug.d.ts"/>
 /// <reference path='../typings/glob/glob.d.ts' />
 /// <reference path='../typings/handlebars/handlebars.d.ts' />
 /// <reference path='../typings/lodash/lodash.d.ts' />
@@ -16,6 +17,7 @@ import _ = require('lodash');
 import BluePromise = require('bluebird');
 import ClassesMap = require('../lib/classes-map');
 import CodeWriter = require('../lib/code-writer');
+import debug = require('debug');
 import fs = require('fs');
 import glob = require('glob');
 import Immutable = require('immutable');
@@ -28,6 +30,10 @@ import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 
 BluePromise.longStackTraces();
+var writeFilePromise = BluePromise.promisify(fs.writeFile);
+var mkdirpPromise = BluePromise.promisify(mkdirp);
+
+var dlog = debug('ts-java:main');
 
 class Main {
 
@@ -37,36 +43,45 @@ class Main {
     this.parseArgs(program);
     this.initJava();
     var classesMap = this.loadClasses();
-    this.writeJsons(classesMap.getClasses());
-
-    if (this.granularity === 'class') {
-      return this.writeClassFiles(classesMap).then(() => classesMap);
-    } else {
-      return this.writePackageFiles(classesMap).then(() => classesMap);
-    }
+    return this.writeJsons(classesMap.getClasses())
+      .then(() => {
+        return this.granularity === 'class' ? this.writeClassFiles(classesMap) : this.writePackageFiles(classesMap);
+      })
+      .then(() => dlog('run() completed.'))
+      .then(() => classesMap);
   }
 
-  private writeJsons(classes: ClassDefinitionMap): void {
-    mkdirp.sync('o/json');
-    _.forOwn(classes, (classMap: ClassDefinition, className: string) => {
-      fs.writeFileSync('o/json/' + classMap.shortName + '.json', JSON.stringify(classMap, null, '  '));
-    });
+  private writeJsons(classes: ClassDefinitionMap): BluePromise<any> {
+    dlog('writeJsons() entered');
+    return mkdirpPromise('o/json')
+      .then(() => {
+        return _.map(_.keys(classes), (className: string) => {
+          var classMap = classes[className];
+          return writeFilePromise('o/json/' + classMap.shortName + '.json', JSON.stringify(classMap, null, '  '));
+        });
+      })
+      .then((promises: Promise<any[]>) => BluePromise.all(promises))
+      .then(() => dlog('writeJsons() completed.'));
   }
 
   private writeClassFiles(classesMap: ClassesMap): BluePromise<any> {
-    mkdirp.sync('o/lib');
-    var tsWriter = new CodeWriter(classesMap, 'ts-templates');
-    var classes: ClassDefinitionMap = classesMap.getClasses();
-    return BluePromise.all(_.keys(classes))
-      .each((className: string) => {
-        return tsWriter.writeLibraryClassFile(className, this.granularity);
-      });
+    dlog('writeClassFiles() entered');
+    return mkdirpPromise('o/lib')
+      .then(() => {
+        var tsWriter = new CodeWriter(classesMap, 'ts-templates');
+        var classes: ClassDefinitionMap = classesMap.getClasses();
+        return _.map(_.keys(classes), (name: string) => tsWriter.writeLibraryClassFile(name, this.granularity));
+      })
+      .then((promises: Promise<any[]>) => BluePromise.all(promises))
+      .then(() => dlog('writeClassFiles() completed.'));
   }
 
   private writePackageFiles(classesMap: ClassesMap): BluePromise<any> {
+    dlog('writePackageFiles() entered');
     var tsWriter = new CodeWriter(classesMap, 'ts-templates');
     var classes: ClassDefinitionMap = classesMap.getClasses();
-    return tsWriter.writePackageFile();
+    return tsWriter.writePackageFile()
+      .then(() => dlog('writePackageFiles() completed'));
   }
 
   private initJava(): void {
