@@ -110,6 +110,16 @@ function wrapper() {
     });
   });
 
+  this.When(/^compiled it produces this error containing this snippet:$/, function (expected: string, callback: ICallback) {
+    var world = <IWorld> this;
+    var compileCmd: string = './node_modules/.bin/tsc --module commonjs --target ES5 --noImplicitAny --sourceMap '
+                           + world.sampleProgramPath;
+    execChild(world, compileCmd, () => {
+      expect(world.stdout).to.contain(expected);
+      callback();
+    });
+  });
+
 }
 
 export = wrapper;

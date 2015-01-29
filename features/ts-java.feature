@@ -58,16 +58,16 @@ so that I can use javascript with type safety comparable to java type safety.
 
     var tinkerFactoryClassName = 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory';
     var TinkerFactory: Java.TinkerFactory.Static = nodejava.import(tinkerFactoryClassName);
-
     var g: Java.TinkerGraph = TinkerFactory.createClassicSync();
 
-    // HACK: this emptyList is a hack due to current problem mapping typescript rest args to java varargs.
-    var emptyList: Java.Object = <Java.java.lang.Object> nodejava.newArray('java.lang.Object', []);
+    // These two definitions illustrate how to use newArray() to create a parameter for a varargs argument.
+    // This is awkward due to a limitation in node-java's ability to map a function call to the correct
+    // method variant for methods with varargs. We may be able to fix this in node-java, though most likely
+    // this will be something we address in 'wrapper' classes.
+    var noargs: Java.Array<Java.Object> = nodejava.newArray<Java.Object>('java.lang.Object', []);
+    var props: Java.Array<Java.String> = nodejava.newArray<Java.String>('java.lang.String', ['name', 'age']);
 
-    // HACK: same hack here.
-    var props: Java.String = <Java.java.lang.String> nodejava.newArray('java.lang.String', ['name', 'age']);
-
-    var vertList: Java.List = g.VSync(emptyList).valuesSync(props).toListSync();
+    var vertList: Java.List = g.VSync(noargs).valuesSync(props).toListSync();
     console.log(vertList.toStringSync());
 
     """
@@ -78,3 +78,17 @@ so that I can use javascript with type safety comparable to java type safety.
 
     """
 
+  Scenario: Varargs Negative Test
+    Given the default TinkerPop packages
+    And the following sample program:
+    """
+    /// <reference path='../o/java.d.ts'/>
+    /// <reference path='../typings/node/node.d.ts' />
+    var g: Java.TinkerGraph;
+    var s: Java.String;
+    g.VSync(s);
+    """
+    When compiled it produces this error containing this snippet:
+    """
+    error TS2345: Argument of type 'String' is not assignable to parameter of type
+    """
