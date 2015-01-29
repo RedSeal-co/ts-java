@@ -1,9 +1,9 @@
-.PHONY: install install-npm install-tsd lint documentation test testdata unittest cucumber compile
-.PHONY: clean clean-obj clean-tsd clean-npm clean-js-map generate-out clean-unittest clean-cucumber clean-package
+.PHONY: install install-npm install-tsd install-tinkerpop lint documentation test testdata unittest cucumber compile
+.PHONY: clean clean-obj clean-tsd clean-npm clean-js-map generate-out clean-unittest clean-cucumber clean-tinkerpop
 
 default: test
 
-all: install package test documentation
+all: install test documentation
 
 lint:
 	ls $(TS_SRC) | xargs -n1 node_modules/tslint/bin/tslint --config tslint.json --file
@@ -34,7 +34,7 @@ compile: $(TS_OBJ)
 	$(TSC) $(TSC_OPTS) $<
 	stat $@ > /dev/null
 
-clean: clean-cucumber clean-doc clean-js-map clean-npm clean-obj clean-tsd clean-unittest clean-package
+clean: clean-cucumber clean-doc clean-js-map clean-npm clean-obj clean-tsd clean-unittest clean-tinkerpop
 
 clean-cucumber:
 	rm -rf o.features
@@ -72,6 +72,7 @@ generate-class-out: compile lint
 install:
 	$(MAKE) install-npm
 	$(MAKE) install-tsd
+	$(MAKE) install-tinkerpop
 
 install-npm:
 	npm install
@@ -81,10 +82,10 @@ TSD=./node_modules/.bin/tsd
 install-tsd:
 	$(TSD) reinstall
 
-package:
+install-tinkerpop:
 	cd tinkerpop && mvn clean package
 
-clean-package:
+clean-tinkerpop:
 	cd tinkerpop && mvn clean
 
 # Explicit dependencies for files that are referenced
