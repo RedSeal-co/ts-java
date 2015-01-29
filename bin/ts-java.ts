@@ -1,11 +1,11 @@
-/// <reference path='node_modules/immutable/dist/immutable.d.ts'/>
-/// <reference path='typings/commander/commander.d.ts' />
-/// <reference path='typings/glob/glob.d.ts' />
-/// <reference path='typings/handlebars/handlebars.d.ts' />
-/// <reference path='typings/lodash/lodash.d.ts' />
-/// <reference path='typings/mkdirp/mkdirp.d.ts' />
-/// <reference path='typings/node/node.d.ts' />
-/// <reference path='lib/bluebird.d.ts' />
+/// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
+/// <reference path='../typings/commander/commander.d.ts' />
+/// <reference path='../typings/glob/glob.d.ts' />
+/// <reference path='../typings/handlebars/handlebars.d.ts' />
+/// <reference path='../typings/lodash/lodash.d.ts' />
+/// <reference path='../typings/mkdirp/mkdirp.d.ts' />
+/// <reference path='../typings/node/node.d.ts' />
+/// <reference path='../lib/bluebird.d.ts' />
 
 'use strict';
 
@@ -14,15 +14,15 @@ require('source-map-support').install();
 
 import _ = require('lodash');
 import BluePromise = require('bluebird');
-import ClassesMap = require('./lib/classes-map');
-import CodeWriter = require('./lib/code-writer');
+import ClassesMap = require('../lib/classes-map');
+import CodeWriter = require('../lib/code-writer');
 import fs = require('fs');
 import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
 import mkdirp = require('mkdirp');
 import program = require('commander');
-import Work = require('./lib/work');
+import Work = require('../lib/work');
 
 import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
