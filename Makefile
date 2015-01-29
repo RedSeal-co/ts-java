@@ -82,10 +82,10 @@ install-tsd:
 	$(TSD) reinstall
 
 package:
-	mvn clean package
+	cd tinkerpop && mvn clean package
 
 clean-package:
-	mvn clean
+	cd tinkerpop && mvn clean
 
 # Explicit dependencies for files that are referenced
 

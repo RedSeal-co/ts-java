@@ -32,7 +32,7 @@ describe('CodeWriter', () => {
   var theWriter;
 
   before(() => {
-    var filenames = glob.sync('test/**/*.jar');
+    var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
     _.forEach(filenames, (name: string) => { java.classpath.push(name); });
     var classesMap = new ClassesMap(java, Immutable.Set([
       /^java\.util\.Iterator$/,

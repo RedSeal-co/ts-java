@@ -26,7 +26,7 @@ describe('ClassesMap', () => {
   var classesMap;
 
   before(() => {
-    var filenames = glob.sync('target/dependency/**/*.jar');
+    var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
     _.forEach(filenames, (name: string) => { java.classpath.push(name); });
   });
 

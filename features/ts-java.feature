@@ -24,7 +24,7 @@ so that I can use javascript with type safety comparable to java type safety.
     import glob = require('glob');
     import nodejava = require('java');
 
-    var filenames = glob.sync('target/dependency/**/*.jar');
+    var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
     filenames.forEach((name: string) => { nodejava.classpath.push(name); });
 
     // TODO: this test is still awkward. Make it better.
@@ -53,7 +53,7 @@ so that I can use javascript with type safety comparable to java type safety.
     import glob = require('glob');
     import nodejava = require('java');
 
-    var filenames = glob.sync('target/dependency/**/*.jar');
+    var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
     filenames.forEach((name: string) => { nodejava.classpath.push(name); });
 
     var tinkerFactoryClassName = 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory';
