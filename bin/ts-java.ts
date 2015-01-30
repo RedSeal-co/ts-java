@@ -115,14 +115,14 @@ class Main {
   }
 }
 
-program.usage('[options]')
-  .option('-g, --granularity [package]', 'Granularity of output, \'package\' or \'class\'.', 'package')
-  .parse(process.argv);
-
 program.on('--help', () => {
     console.log('--granularity must be either \'class\' or \'package\'');
     console.log('Templates are read from ./ts-templates/*.txt, e.g. ./ts-templates/package.txt');
 });
+
+program.usage('[options]')
+  .option('-g, --granularity [package]', 'Granularity of output, \'package\' or \'class\'.', 'package')
+  .parse(process.argv);
 
 var main = new Main();
 main.run(program)
