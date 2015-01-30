@@ -48,6 +48,7 @@ interface TsJavaOptions {
   seedClasses: Array<string>;
   whiteList: Array<string>;
   granularity?: string;
+  outputPath?: string;
 }
 
 class Main {
@@ -58,6 +59,9 @@ class Main {
     this.options = options;
     if (this.options.granularity !== 'class') {
       this.options.granularity = 'package';
+    }
+    if (!this.options.outputPath) {
+      this.options.outputPath = 'java.d.ts';
     }
   }
 
@@ -104,7 +108,7 @@ class Main {
     var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
     var tsWriter = new CodeWriter(classesMap, templatesDirPath);
     var classes: ClassDefinitionMap = classesMap.getClasses();
-    return tsWriter.writePackageFile('java.d.ts')
+    return tsWriter.writePackageFile(this.options.outputPath)
       .then(() => dlog('writePackageFiles() completed'));
   }
 
