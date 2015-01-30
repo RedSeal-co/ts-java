@@ -43,12 +43,13 @@ class Main {
     this.parseArgs(program);
     this.initJava();
     var classesMap = this.loadClasses();
-    return this.writeJsons(classesMap.getClasses())
-      .then(() => {
-        return this.granularity === 'class' ? this.writeClassFiles(classesMap) : this.writePackageFiles(classesMap);
-      })
+    return BluePromise.join(this.writeJsons(classesMap.getClasses()), this.writeInterpolatedFiles(classesMap))
       .then(() => dlog('run() completed.'))
       .then(() => classesMap);
+  }
+
+  private writeInterpolatedFiles(classesMap: ClassesMap) : BluePromise<any> {
+    return this.granularity === 'class' ? this.writeClassFiles(classesMap) : this.writePackageFiles(classesMap);
   }
 
   private writeJsons(classes: ClassDefinitionMap): BluePromise<any> {
