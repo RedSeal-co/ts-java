@@ -14,7 +14,7 @@ lintOut:
 documentation :
 	node_modules/groc/bin/groc --except "**/node_modules/**" --except "o/**" --except "**/*.d.ts" "**/*.ts" README.md
 
-test: unittest cucumber
+test: unittest cucumber test-tinkerpop
 
 unittest: compile lint
 	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd
@@ -84,6 +84,9 @@ install-tsd:
 
 install-tinkerpop:
 	cd tinkerpop && mvn clean package
+
+test-tinkerpop: compile lint
+	cd tinkerpop && node ../bin/ts-java.js
 
 clean-tinkerpop:
 	cd tinkerpop && mvn clean

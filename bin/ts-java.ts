@@ -139,8 +139,8 @@ var packageJsonPath = './package.json';
 readJsonPromise(packageJsonPath)
   .then((packageContents: any) => {
 
-    if (!('ts-java' in packageContents)) {
-      console.error(error('package.json does not contain a ts-java property'));
+    if (!('tsjava' in packageContents)) {
+      console.error(error('package.json does not contain a tsjava property'));
       program.help();
     }
 
