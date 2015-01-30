@@ -14,14 +14,15 @@ declare function require(name: string);
 require('source-map-support').install();
 
 import _ = require('lodash');
-import ClassesMap = require('../lib/classes-map');
 import BluePromise = require('bluebird');
 import chai = require('chai');
+import ClassesMap = require('../lib/classes-map');
+import CodeWriter = require('../lib/code-writer');
 import concat = require('concat-stream');
 import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
-import CodeWriter = require('../lib/code-writer');
+import path = require('path');
 
 BluePromise.longStackTraces();
 
@@ -40,7 +41,8 @@ describe('CodeWriter', () => {
       /^com\.tinkerpop\.gremlin\./
     ]));
     classesMap.initialize(['com.tinkerpop.gremlin.structure.Graph']);
-    theWriter = new CodeWriter(classesMap, 'test/templates');
+    var templatesDirPath = path.resolve(__dirname, 'templates');
+    theWriter = new CodeWriter(classesMap, templatesDirPath);
   });
 
   var streamFn;

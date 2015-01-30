@@ -27,6 +27,7 @@ import Immutable = require('immutable');
 import java = require('java');
 import jsonfile = require('jsonfile');
 import mkdirp = require('mkdirp');
+import path = require('path');
 import program = require('commander');
 import Work = require('../lib/work');
 
@@ -75,7 +76,8 @@ class Main {
     dlog('writeClassFiles() entered');
     return mkdirpPromise('o/lib')
       .then(() => {
-        var tsWriter = new CodeWriter(classesMap, 'ts-templates');
+        var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
+        var tsWriter = new CodeWriter(classesMap, templatesDirPath);
         var classes: ClassDefinitionMap = classesMap.getClasses();
         return _.map(_.keys(classes), (name: string) => tsWriter.writeLibraryClassFile(name, this.granularity));
       })
@@ -85,7 +87,8 @@ class Main {
 
   private writePackageFiles(classesMap: ClassesMap): BluePromise<any> {
     dlog('writePackageFiles() entered');
-    var tsWriter = new CodeWriter(classesMap, 'ts-templates');
+    var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
+    var tsWriter = new CodeWriter(classesMap, templatesDirPath);
     var classes: ClassDefinitionMap = classesMap.getClasses();
     return tsWriter.writePackageFile()
       .then(() => dlog('writePackageFiles() completed'));

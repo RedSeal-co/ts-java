@@ -49,7 +49,12 @@ class CodeWriter {
   loadTemplates(templatesDirPath: string): Immutable.Map<string, HandlebarsTemplateDelegate> {
     var templates = Immutable.Map<string, HandlebarsTemplateDelegate>();
     var extension = '.txt';
-    var filenames = glob.sync(path.join(templatesDirPath, '*' + extension));
+    var globExpr = path.join(templatesDirPath, '*' + extension);
+    var filenames = glob.sync(globExpr);
+    if (filenames.length === 0) {
+      console.error('No templates found in:', globExpr);
+      throw new Error('No templates');
+    }
     _.forEach(filenames, (path: string) => {
       var lastSlash = path.lastIndexOf('/');
       assert(lastSlash !== -1);
