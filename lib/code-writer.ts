@@ -122,12 +122,8 @@ class CodeWriter {
   // *writePackageFile(): write a .d.ts file a package/namespace
   // This currently writes one file for the entire set of classes.
   // TODO: refactor so that we write one file per top-level package/namespace.
-  writePackageFile(): BluePromise<void> {
-
-    var fileName = 'java'; // TODO: from package/namespace
-    var filePath = 'o/' + fileName + '.d.ts';
-
-    var stream = fs.createWriteStream(filePath);
+  writePackageFile(packageFilePath: string): BluePromise<void> {
+    var stream = fs.createWriteStream(packageFilePath);
     var streamFn: StreamFn = <StreamFn> BluePromise.promisify(stream.write, stream);
     var endFn: EndFn = <EndFn> BluePromise.promisify(stream.end, stream);
 

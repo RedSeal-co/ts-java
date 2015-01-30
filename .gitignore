@@ -3,4 +3,7 @@ node_modules/
 *.js.map
 typings/
 doc/
-target/
+
+tinkerpop/*
+!tinkerpop/package.json
+!tinkerpop/pom.xml

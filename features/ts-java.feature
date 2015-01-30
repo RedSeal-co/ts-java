@@ -8,7 +8,7 @@ so that I can use javascript with type safety comparable to java type safety.
     Given the default TinkerPop packages
     And the following sample program:
     """
-    ///<reference path='./java.d.ts'/>
+    /// <reference path='../tinkerpop/java.d.ts'/>
 
     """
     Then it compiles and lints cleanly
@@ -17,7 +17,7 @@ so that I can use javascript with type safety comparable to java type safety.
     Given the default TinkerPop packages
     And the following sample program:
     """
-    /// <reference path='../o/java.d.ts'/>
+    /// <reference path='../tinkerpop/java.d.ts'/>
     /// <reference path='../typings/node/node.d.ts' />
     /// <reference path='../typings/glob/glob.d.ts' />
 
@@ -46,7 +46,7 @@ so that I can use javascript with type safety comparable to java type safety.
     Given the default TinkerPop packages
     And the following sample program:
     """
-    /// <reference path='../o/java.d.ts'/>
+    /// <reference path='../tinkerpop/java.d.ts'/>
     /// <reference path='../typings/node/node.d.ts' />
     /// <reference path='../typings/glob/glob.d.ts' />
 
@@ -82,7 +82,7 @@ so that I can use javascript with type safety comparable to java type safety.
     Given the default TinkerPop packages
     And the following sample program:
     """
-    /// <reference path='../o/java.d.ts'/>
+    /// <reference path='../tinkerpop/java.d.ts'/>
     /// <reference path='../typings/node/node.d.ts' />
     var g: Java.TinkerGraph;
     var s: Java.String;

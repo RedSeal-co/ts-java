@@ -41,13 +41,27 @@ var mkdirpPromise = BluePromise.promisify(mkdirp);
 var readJsonPromise = BluePromise.promisify(jsonfile.readFile);
 
 var dlog = debug('ts-java:main');
+var error = chalk.bold.red;
+
+interface TsJavaOptions {
+  classpath: Array<string>;
+  seedClasses: Array<string>;
+  whiteList: Array<string>;
+  granularity?: string;
+}
 
 class Main {
 
-  private granularity: string;
+  private options: TsJavaOptions;
 
-  run(program: any): BluePromise<ClassesMap> {
-    this.parseArgs(program);
+  constructor(options: TsJavaOptions) {
+    this.options = options;
+    if (this.options.granularity !== 'class') {
+      this.options.granularity = 'package';
+    }
+  }
+
+  run(): BluePromise<ClassesMap> {
     this.initJava();
     var classesMap = this.loadClasses();
     return BluePromise.join(this.writeJsons(classesMap.getClasses()), this.writeInterpolatedFiles(classesMap))
@@ -56,7 +70,7 @@ class Main {
   }
 
   private writeInterpolatedFiles(classesMap: ClassesMap) : BluePromise<any> {
-    return this.granularity === 'class' ? this.writeClassFiles(classesMap) : this.writePackageFiles(classesMap);
+    return this.options.granularity === 'class' ? this.writeClassFiles(classesMap) : this.writePackageFiles(classesMap);
   }
 
   private writeJsons(classes: ClassDefinitionMap): BluePromise<any> {
@@ -79,7 +93,7 @@ class Main {
         var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
         var tsWriter = new CodeWriter(classesMap, templatesDirPath);
         var classes: ClassDefinitionMap = classesMap.getClasses();
-        return _.map(_.keys(classes), (name: string) => tsWriter.writeLibraryClassFile(name, this.granularity));
+        return _.map(_.keys(classes), (name: string) => tsWriter.writeLibraryClassFile(name, this.options.granularity));
       })
       .then((promises: Promise<any[]>) => BluePromise.all(promises))
       .then(() => dlog('writeClassFiles() completed.'));
@@ -90,50 +104,40 @@ class Main {
     var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
     var tsWriter = new CodeWriter(classesMap, templatesDirPath);
     var classes: ClassDefinitionMap = classesMap.getClasses();
-    return tsWriter.writePackageFile()
+    return tsWriter.writePackageFile('java.d.ts')
       .then(() => dlog('writePackageFiles() completed'));
   }
 
   private initJava(): void {
-    var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
-    _.forEach(filenames, (name: string) => { java.classpath.push(name); });
+    _.forEach(this.options.classpath, (globExpr: string) => {
+      var filenames = glob.sync(globExpr);
+      _.forEach(filenames, (name: string) => {
+        dlog('Adding to classpath:', name);
+        java.classpath.push(name);
+      });
+    });
   }
 
   private loadClasses(): ClassesMap {
-    var seedClasses = [
-      'com.tinkerpop.gremlin.structure.Graph',
-      'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph',
-      'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory',
-      'java.util.ArrayList'
-    ];
-    var classesMap = new ClassesMap(java, Immutable.Set([
-        /^java\.util\./,
-        /^java\.math\./,
-        /^com\.tinkerpop\.gremlin\./
-    ]));
-    classesMap.initialize(seedClasses);
+    var regExpWhiteList = _.map(this.options.whiteList, (str: string) => {
+      // We used to have true regular expressions in source code.
+      // Now we get the white list from the package.json, and convert the strings to RegExps.
+      // But writing correct regular expressions in .json files is messy, due to json parser behavior.
+      // See e.g. http://stackoverflow.com/questions/17597238/escaping-regex-to-get-valid-json
+      // TODO: change the white list to be lists of packages and classes to be included.
+      return new RegExp(str);
+    });
+    var classesMap = new ClassesMap(java, Immutable.Set(regExpWhiteList));
+    classesMap.initialize(this.options.seedClasses);
     return classesMap;
-  }
-
-  private parseArgs(program: any): void {
-    var gran = program.granularity;
-    if (gran !== 'class' && gran !== 'package') {
-      program.help();
-    }
-    this.granularity = gran;
   }
 }
 
-var error = chalk.bold.red;
-
 program.on('--help', () => {
-    console.log('--granularity must be either \'class\' or \'package\'');
-    console.log('Templates are read from ./ts-templates/*.txt, e.g. ./ts-templates/package.txt');
+  console.log('Templates are read from ./ts-templates/*.txt, e.g. ./ts-templates/package.txt');
 });
 
-program.usage('[options]')
-  .option('-g, --granularity [package]', 'Granularity of output, \'package\' or \'class\'.', 'package')
-  .parse(process.argv);
+program.parse(process.argv);
 
 var packageJsonPath = './package.json';
 readJsonPromise(packageJsonPath)
@@ -144,18 +148,21 @@ readJsonPromise(packageJsonPath)
       program.help();
     }
 
-    var main = new Main();
-    return main.run(program)
+    var main = new Main(packageContents.tsjava);
+    return main.run()
       .then((classesMap: ClassesMap) => {
         console.log(classesMap.unhandledTypes);
       });
   })
   .catch((err: any) => {
-    if (err.cause.code === 'ENOENT' && err.cause.path === packageJsonPath) {
+    if ('cause' in err && err.cause.code === 'ENOENT' && err.cause.path === packageJsonPath) {
       console.error(error('Not found:', packageJsonPath));
       program.help();
     } else {
       console.error(error(err));
+      if (err.stack) {
+        console.error(err.stack);
+      }
     }
   })
   .done();

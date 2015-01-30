@@ -1,5 +1,5 @@
 .PHONY: install install-npm install-tsd install-tinkerpop lint documentation test testdata unittest cucumber compile
-.PHONY: clean clean-obj clean-tsd clean-npm clean-js-map generate-out clean-unittest clean-cucumber clean-tinkerpop
+.PHONY: clean clean-obj clean-tsd clean-npm clean-js-map clean-unittest clean-cucumber clean-tinkerpop
 
 default: test
 
@@ -14,12 +14,12 @@ lintOut:
 documentation :
 	node_modules/groc/bin/groc --except "**/node_modules/**" --except "o/**" --except "**/*.d.ts" "**/*.ts" README.md
 
-test: unittest cucumber test-tinkerpop
+test: unittest cucumber
 
 unittest: compile lint
 	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd
 
-cucumber: compile lint generate-package-out
+cucumber: test-tinkerpop
 	./node_modules/.bin/cucumber-js --tags '~@todo'
 
 TS_SRC=$(filter-out %.d.ts,$(wildcard bin/*.ts lib/*.ts test/*.ts features/step_definitions/*.ts))
@@ -57,18 +57,6 @@ clean-tsd:
 clean-unittest:
 	rm -rf o/*
 
-generate-out: generate-package-out generate-class-out
-
-o/java.d.ts: compile lint
-	rm -rf o/json
-	node bin/ts-java.js -g package
-	wc -l o/java.d.ts
-
-generate-package-out: o/java.d.ts
-
-generate-class-out: compile lint
-	node bin/ts-java.js -g class
-
 install:
 	$(MAKE) install-npm
 	$(MAKE) install-tsd
@@ -90,6 +78,7 @@ test-tinkerpop: compile lint
 
 clean-tinkerpop:
 	cd tinkerpop && mvn clean
+	rm -rf tinkerpop/java.d.ts tinkerpop/o
 
 # Explicit dependencies for files that are referenced
 
