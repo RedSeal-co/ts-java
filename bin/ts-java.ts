@@ -1,4 +1,5 @@
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
+/// <reference path='../typings/bluebird/bluebird.d.ts' />
 /// <reference path='../typings/commander/commander.d.ts' />
 /// <reference path="../typings/debug/debug.d.ts"/>
 /// <reference path='../typings/glob/glob.d.ts' />
@@ -6,7 +7,6 @@
 /// <reference path='../typings/lodash/lodash.d.ts' />
 /// <reference path='../typings/mkdirp/mkdirp.d.ts' />
 /// <reference path='../typings/node/node.d.ts' />
-/// <reference path='../lib/bluebird.d.ts' />
 
 'use strict';
 

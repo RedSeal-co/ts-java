@@ -1,5 +1,5 @@
 // ts-java-steps.ts
-/// <reference path="../../lib/bluebird.d.ts"/>
+/// <reference path='../../typings/bluebird/bluebird.d.ts' />
 /// <reference path="../../typings/chai/chai.d.ts"/>
 /// <reference path="../../typings/debug/debug.d.ts"/>
 /// <reference path="../../typings/node/node.d.ts"/>
