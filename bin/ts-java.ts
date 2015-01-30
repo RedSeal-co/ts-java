@@ -1,5 +1,6 @@
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 /// <reference path='../typings/bluebird/bluebird.d.ts' />
+/// <reference path='../typings/chalk/chalk.d.ts' />
 /// <reference path='../typings/commander/commander.d.ts' />
 /// <reference path="../typings/debug/debug.d.ts"/>
 /// <reference path='../typings/glob/glob.d.ts' />
@@ -7,6 +8,7 @@
 /// <reference path='../typings/lodash/lodash.d.ts' />
 /// <reference path='../typings/mkdirp/mkdirp.d.ts' />
 /// <reference path='../typings/node/node.d.ts' />
+/// <reference path='../lib/jsonfile.d.ts' />
 
 'use strict';
 
@@ -15,6 +17,7 @@ require('source-map-support').install();
 
 import _ = require('lodash');
 import BluePromise = require('bluebird');
+import chalk = require('chalk');
 import ClassesMap = require('../lib/classes-map');
 import CodeWriter = require('../lib/code-writer');
 import debug = require('debug');
@@ -22,6 +25,7 @@ import fs = require('fs');
 import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
+import jsonfile = require('jsonfile');
 import mkdirp = require('mkdirp');
 import program = require('commander');
 import Work = require('../lib/work');
@@ -31,7 +35,9 @@ import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 
 BluePromise.longStackTraces();
 var writeFilePromise = BluePromise.promisify(fs.writeFile);
+var readFilePromise = BluePromise.promisify(fs.readFile);
 var mkdirpPromise = BluePromise.promisify(mkdirp);
+var readJsonPromise = BluePromise.promisify(jsonfile.readFile);
 
 var dlog = debug('ts-java:main');
 
@@ -115,6 +121,8 @@ class Main {
   }
 }
 
+var error = chalk.bold.red;
+
 program.on('--help', () => {
     console.log('--granularity must be either \'class\' or \'package\'');
     console.log('Templates are read from ./ts-templates/*.txt, e.g. ./ts-templates/package.txt');
@@ -124,10 +132,28 @@ program.usage('[options]')
   .option('-g, --granularity [package]', 'Granularity of output, \'package\' or \'class\'.', 'package')
   .parse(process.argv);
 
-var main = new Main();
-main.run(program)
-  .then((classesMap: ClassesMap) => {
-    console.log(classesMap.unhandledTypes);
+var packageJsonPath = './package.json';
+readJsonPromise(packageJsonPath)
+  .then((packageContents: any) => {
+
+    if (!('ts-java' in packageContents)) {
+      console.error(error('package.json does not contain a ts-java property'));
+      program.help();
+    }
+
+    var main = new Main();
+    return main.run(program)
+      .then((classesMap: ClassesMap) => {
+        console.log(classesMap.unhandledTypes);
+      });
+  })
+  .catch((err: any) => {
+    if (err.cause.code === 'ENOENT' && err.cause.path === packageJsonPath) {
+      console.error(error('Not found:', packageJsonPath));
+      program.help();
+    } else {
+      console.error(error(err));
+    }
   })
   .done();
 
