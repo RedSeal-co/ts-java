@@ -33,16 +33,19 @@ describe('CodeWriter', () => {
   var theWriter;
 
   before(() => {
-    var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
-    _.forEach(filenames, (name: string) => { java.classpath.push(name); });
-    var classesMap = new ClassesMap(java, Immutable.Set([
-      /^java\.util\.Iterator$/,
-      /^java\.util\.function\./,
-      /^com\.tinkerpop\.gremlin\./
-    ]));
-    classesMap.initialize(['com.tinkerpop.gremlin.structure.Graph']);
-    var templatesDirPath = path.resolve(__dirname, 'templates');
-    theWriter = new CodeWriter(classesMap, templatesDirPath);
+    var globPath = path.join('tinkerpop', 'target', 'dependency', '**', '*.jar');
+    return BluePromise.promisify(glob)(globPath)
+      .then((filenames: Array<string>) => {
+        _.forEach(filenames, (name: string) => { java.classpath.push(name); });
+        var classesMap = new ClassesMap(java, Immutable.Set([
+          /^java\.util\.Iterator$/,
+          /^java\.util\.function\./,
+          /^com\.tinkerpop\.gremlin\./
+        ]));
+        classesMap.initialize(['com.tinkerpop.gremlin.structure.Graph']);
+        var templatesDirPath = path.resolve(__dirname, 'templates');
+        theWriter = new CodeWriter(classesMap, templatesDirPath);
+      });
   });
 
   var streamFn;
