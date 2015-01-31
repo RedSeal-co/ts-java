@@ -39,6 +39,7 @@ var writeFilePromise = BluePromise.promisify(fs.writeFile);
 var readFilePromise = BluePromise.promisify(fs.readFile);
 var mkdirpPromise = BluePromise.promisify(mkdirp);
 var readJsonPromise = BluePromise.promisify(jsonfile.readFile);
+var globPromise = BluePromise.promisify(glob);
 
 var dlog = debug('ts-java:main');
 var error = chalk.bold.red;
@@ -66,11 +67,13 @@ class Main {
   }
 
   run(): BluePromise<ClassesMap> {
-    this.initJava();
-    var classesMap = this.loadClasses();
-    return BluePromise.join(this.writeJsons(classesMap.getClasses()), this.writeInterpolatedFiles(classesMap))
-      .then(() => dlog('run() completed.'))
-      .then(() => classesMap);
+    return this.initJava()
+      .then(() => {
+        var classesMap = this.loadClasses();
+        return BluePromise.join(this.writeJsons(classesMap.getClasses()), this.writeInterpolatedFiles(classesMap))
+          .then(() => dlog('run() completed.'))
+          .then(() => classesMap);
+      });
   }
 
   private writeInterpolatedFiles(classesMap: ClassesMap) : BluePromise<void> {
@@ -112,14 +115,15 @@ class Main {
       .then(() => dlog('writePackageFiles() completed'));
   }
 
-  private initJava(): void {
-    _.forEach(this.options.classpath, (globExpr: string) => {
-      var filenames = glob.sync(globExpr);
-      _.forEach(filenames, (name: string) => {
-        dlog('Adding to classpath:', name);
-        java.classpath.push(name);
+  private initJava(): BluePromise<void> {
+    return BluePromise.all(_.map(this.options.classpath, (globExpr: string) => globPromise(globExpr)))
+      .then((pathsArray: Array<Array<string>>) => _.flatten(pathsArray))
+      .then((paths: Array<string>) => {
+        _.forEach(paths, (path: string) => {
+          dlog('Adding to classpath:', path);
+          java.classpath.push(path);
+        });
       });
-    });
   }
 
   private loadClasses(): ClassesMap {

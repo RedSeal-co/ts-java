@@ -30,6 +30,7 @@ var writeFilePromise = BluePromise.promisify(fs.writeFile);
 var readFilePromise = BluePromise.promisify(fs.readFile);
 var mkdirpPromise = BluePromise.promisify(mkdirp);
 var readJsonPromise = BluePromise.promisify(jsonfile.readFile);
+var globPromise = BluePromise.promisify(glob);
 var dlog = debug('ts-java:main');
 var error = chalk.bold.red;
 var Main = (function () {
@@ -43,9 +44,11 @@ var Main = (function () {
         }
     }
     Main.prototype.run = function () {
-        this.initJava();
-        var classesMap = this.loadClasses();
-        return BluePromise.join(this.writeJsons(classesMap.getClasses()), this.writeInterpolatedFiles(classesMap)).then(function () { return dlog('run() completed.'); }).then(function () { return classesMap; });
+        var _this = this;
+        return this.initJava().then(function () {
+            var classesMap = _this.loadClasses();
+            return BluePromise.join(_this.writeJsons(classesMap.getClasses()), _this.writeInterpolatedFiles(classesMap)).then(function () { return dlog('run() completed.'); }).then(function () { return classesMap; });
+        });
     };
     Main.prototype.writeInterpolatedFiles = function (classesMap) {
         return this.options.granularity === 'class' ? this.writeClassFiles(classesMap) : this.writePackageFiles(classesMap);
@@ -77,11 +80,10 @@ var Main = (function () {
         return tsWriter.writePackageFile(this.options.outputPath).then(function () { return dlog('writePackageFiles() completed'); });
     };
     Main.prototype.initJava = function () {
-        _.forEach(this.options.classpath, function (globExpr) {
-            var filenames = glob.sync(globExpr);
-            _.forEach(filenames, function (name) {
-                dlog('Adding to classpath:', name);
-                java.classpath.push(name);
+        return BluePromise.all(_.map(this.options.classpath, function (globExpr) { return globPromise(globExpr); })).then(function (pathsArray) { return _.flatten(pathsArray); }).then(function (paths) {
+            _.forEach(paths, function (path) {
+                dlog('Adding to classpath:', path);
+                java.classpath.push(path);
             });
         });
     };
