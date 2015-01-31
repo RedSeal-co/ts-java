@@ -137,8 +137,13 @@ class Main {
   }
 }
 
+var helpText = [
+'  All configuration options must be specified in a node.js package.json file, in a property tsjava.',
+'  See the README.md file for more information.'
+];
+
 program.on('--help', () => {
-  console.log('Templates are read from ./ts-templates/*.txt, e.g. ./ts-templates/package.txt');
+  _.forEach(helpText, (line: string) => console.log(chalk.bold(line)));
 });
 
 program.parse(process.argv);
