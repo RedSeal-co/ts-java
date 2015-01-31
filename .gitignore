@@ -1,5 +1,4 @@
 node_modules/
-*.js
 *.js.map
 typings/
 doc/
@@ -7,3 +6,7 @@ doc/
 tinkerpop/*
 !tinkerpop/package.json
 !tinkerpop/pom.xml
+
+*.js
+!bin/*.js
+!lib/*.js
