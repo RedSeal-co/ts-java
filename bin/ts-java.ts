@@ -73,11 +73,11 @@ class Main {
       .then(() => classesMap);
   }
 
-  private writeInterpolatedFiles(classesMap: ClassesMap) : BluePromise<any> {
+  private writeInterpolatedFiles(classesMap: ClassesMap) : BluePromise<void> {
     return this.options.granularity === 'class' ? this.writeClassFiles(classesMap) : this.writePackageFiles(classesMap);
   }
 
-  private writeJsons(classes: ClassDefinitionMap): BluePromise<any> {
+  private writeJsons(classes: ClassDefinitionMap): BluePromise<void> {
     dlog('writeJsons() entered');
     return mkdirpPromise('o/json')
       .then(() => {
@@ -90,7 +90,7 @@ class Main {
       .then(() => dlog('writeJsons() completed.'));
   }
 
-  private writeClassFiles(classesMap: ClassesMap): BluePromise<any> {
+  private writeClassFiles(classesMap: ClassesMap): BluePromise<void> {
     dlog('writeClassFiles() entered');
     return mkdirpPromise('o/lib')
       .then(() => {
@@ -103,7 +103,7 @@ class Main {
       .then(() => dlog('writeClassFiles() completed.'));
   }
 
-  private writePackageFiles(classesMap: ClassesMap): BluePromise<any> {
+  private writePackageFiles(classesMap: ClassesMap): BluePromise<void> {
     dlog('writePackageFiles() entered');
     var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
     var tsWriter = new CodeWriter(classesMap, templatesDirPath);
