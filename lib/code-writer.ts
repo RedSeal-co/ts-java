@@ -52,8 +52,7 @@ class CodeWriter {
     var globExpr = path.join(templatesDirPath, '*' + extension);
     var filenames = glob.sync(globExpr);
     if (filenames.length === 0) {
-      console.error('No templates found in:', globExpr);
-      throw new Error('No templates');
+      throw new Error('No templates found in:' + globExpr);
     }
     _.forEach(filenames, (path: string) => {
       var lastSlash = path.lastIndexOf('/');
