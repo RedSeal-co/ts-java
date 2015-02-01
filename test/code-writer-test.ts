@@ -1,7 +1,7 @@
 // code-writer-test.ts
-///<reference path='../lib/bluebird.d.ts' />
 ///<reference path='../lib/java.d.ts' />
 ///<reference path='../node_modules/immutable/dist/immutable.d.ts'/>
+///<reference path='../typings/bluebird/bluebird.d.ts' />
 ///<reference path='../typings/chai/chai.d.ts'/>
 ///<reference path='../typings/glob/glob.d.ts'/>
 ///<reference path='../typings/lodash/lodash.d.ts' />
@@ -14,14 +14,15 @@ declare function require(name: string);
 require('source-map-support').install();
 
 import _ = require('lodash');
-import ClassesMap = require('../lib/classes-map');
 import BluePromise = require('bluebird');
 import chai = require('chai');
+import ClassesMap = require('../lib/classes-map');
+import CodeWriter = require('../lib/code-writer');
 import concat = require('concat-stream');
 import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
-import CodeWriter = require('../lib/code-writer');
+import path = require('path');
 
 BluePromise.longStackTraces();
 
@@ -32,15 +33,19 @@ describe('CodeWriter', () => {
   var theWriter;
 
   before(() => {
-    var filenames = glob.sync('test/**/*.jar');
-    _.forEach(filenames, (name: string) => { java.classpath.push(name); });
-    var classesMap = new ClassesMap(java, Immutable.Set([
-      /^java\.util\.Iterator$/,
-      /^java\.util\.function\./,
-      /^com\.tinkerpop\.gremlin\./
-    ]));
-    classesMap.initialize(['com.tinkerpop.gremlin.structure.Graph']);
-    theWriter = new CodeWriter(classesMap, 'test/templates');
+    var globPath = path.join('tinkerpop', 'target', 'dependency', '**', '*.jar');
+    return BluePromise.promisify(glob)(globPath)
+      .then((filenames: Array<string>) => {
+        _.forEach(filenames, (name: string) => { java.classpath.push(name); });
+        var classesMap = new ClassesMap(java, Immutable.Set([
+          /^java\.util\.Iterator$/,
+          /^java\.util\.function\./,
+          /^com\.tinkerpop\.gremlin\./
+        ]));
+        classesMap.initialize(['com.tinkerpop.gremlin.structure.Graph']);
+        var templatesDirPath = path.resolve(__dirname, 'templates');
+        theWriter = new CodeWriter(classesMap, templatesDirPath);
+      });
   });
 
   var streamFn;

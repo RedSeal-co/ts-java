@@ -37,6 +37,12 @@
     },
     "minimatch/minimatch.d.ts": {
       "commit": "e0a774f721a42198522876cce0d42512e72816b2"
+    },
+    "bluebird/bluebird.d.ts": {
+      "commit": "01ce3ccf7f071514ff5057ef32a4550bf0b81dfe"
+    },
+    "chalk/chalk.d.ts": {
+      "commit": "7bab855ae33d79e86da1eb6c73a7f7eab2676ddb"
     }
   }
 }

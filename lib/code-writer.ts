@@ -1,9 +1,9 @@
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts'/>
+/// <reference path='../typings/bluebird/bluebird.d.ts' />
 /// <reference path='../typings/glob/glob.d.ts' />
 /// <reference path='../typings/handlebars/handlebars.d.ts' />
 /// <reference path='../typings/lodash/lodash.d.ts' />
 /// <reference path='../typings/node/node.d.ts' />
-/// <reference path='bluebird.d.ts' />
 
 'use strict';
 
@@ -49,7 +49,11 @@ class CodeWriter {
   loadTemplates(templatesDirPath: string): Immutable.Map<string, HandlebarsTemplateDelegate> {
     var templates = Immutable.Map<string, HandlebarsTemplateDelegate>();
     var extension = '.txt';
-    var filenames = glob.sync(path.join(templatesDirPath, '*' + extension));
+    var globExpr = path.join(templatesDirPath, '*' + extension);
+    var filenames = glob.sync(globExpr);
+    if (filenames.length === 0) {
+      throw new Error('No templates found in:' + globExpr);
+    }
     _.forEach(filenames, (path: string) => {
       var lastSlash = path.lastIndexOf('/');
       assert(lastSlash !== -1);
@@ -117,12 +121,8 @@ class CodeWriter {
   // *writePackageFile(): write a .d.ts file a package/namespace
   // This currently writes one file for the entire set of classes.
   // TODO: refactor so that we write one file per top-level package/namespace.
-  writePackageFile(): BluePromise<void> {
-
-    var fileName = 'java'; // TODO: from package/namespace
-    var filePath = 'o/' + fileName + '.d.ts';
-
-    var stream = fs.createWriteStream(filePath);
+  writePackageFile(packageFilePath: string): BluePromise<void> {
+    var stream = fs.createWriteStream(packageFilePath);
     var streamFn: StreamFn = <StreamFn> BluePromise.promisify(stream.write, stream);
     var endFn: EndFn = <EndFn> BluePromise.promisify(stream.end, stream);
 

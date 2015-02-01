@@ -8,7 +8,7 @@ so that I can use javascript with type safety comparable to java type safety.
     Given the default TinkerPop packages
     And the following sample program:
     """
-    ///<reference path='./java.d.ts'/>
+    /// <reference path='../tinkerpop/java.d.ts'/>
 
     """
     Then it compiles and lints cleanly
@@ -17,14 +17,14 @@ so that I can use javascript with type safety comparable to java type safety.
     Given the default TinkerPop packages
     And the following sample program:
     """
-    /// <reference path='../o/java.d.ts'/>
+    /// <reference path='../tinkerpop/java.d.ts'/>
     /// <reference path='../typings/node/node.d.ts' />
     /// <reference path='../typings/glob/glob.d.ts' />
 
     import glob = require('glob');
     import nodejava = require('java');
 
-    var filenames = glob.sync('target/dependency/**/*.jar');
+    var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
     filenames.forEach((name: string) => { nodejava.classpath.push(name); });
 
     // TODO: this test is still awkward. Make it better.
@@ -46,14 +46,14 @@ so that I can use javascript with type safety comparable to java type safety.
     Given the default TinkerPop packages
     And the following sample program:
     """
-    /// <reference path='../o/java.d.ts'/>
+    /// <reference path='../tinkerpop/java.d.ts'/>
     /// <reference path='../typings/node/node.d.ts' />
     /// <reference path='../typings/glob/glob.d.ts' />
 
     import glob = require('glob');
     import nodejava = require('java');
 
-    var filenames = glob.sync('target/dependency/**/*.jar');
+    var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
     filenames.forEach((name: string) => { nodejava.classpath.push(name); });
 
     var tinkerFactoryClassName = 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory';
@@ -82,7 +82,7 @@ so that I can use javascript with type safety comparable to java type safety.
     Given the default TinkerPop packages
     And the following sample program:
     """
-    /// <reference path='../o/java.d.ts'/>
+    /// <reference path='../tinkerpop/java.d.ts'/>
     /// <reference path='../typings/node/node.d.ts' />
     var g: Java.TinkerGraph;
     var s: Java.String;

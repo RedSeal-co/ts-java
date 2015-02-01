@@ -14,14 +14,20 @@
   ],
   "author": "Jim Lloyd <jim.lloyd@gmail.com>",
   "license": "ISC",
+  "bin": {
+    "ts-java": "bin/ts-java.sh",
+    "ts-java.js": "bin/ts-java.js"
+  },
   "dependencies": {
     "bluebird": "^2.3.11",
+    "chalk": "^0.5.1",
     "commander": "^2.6.0",
     "debug": "^2.1.1",
     "glob": "^4.3.2",
     "handlebars": "^2.0.0",
     "immutable": "^3.3.0",
     "java": "^0.4.4",
+    "jsonfile": "^2.0.0",
     "lodash": "^2.4.1",
     "mkdirp": "^0.5.0"
   },
@@ -30,7 +36,6 @@
     "concat-stream": "^1.4.7",
     "cucumber": "^0.4.7",
     "groc": "^0.8.0",
-    "jshint": "^2.5.10",
     "mocha": "^2.0.1",
     "source-map-support": "^0.2.9",
     "tsd": ">=0.6.0-beta.5",
