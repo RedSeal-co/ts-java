@@ -27,7 +27,7 @@ If you are able to, it's convenient to install ts-java globally:
 $ npm install -g ts-java
 ```
 
-But you can also intall ts-java as a dev dependency and run it from ./node_modules/.bin/ts-java:
+But you can also install ts-java as a dev dependency and run it from ./node_modules/.bin/ts-java:
 
 ```bash
 $ npm install ts-java --save-dev
