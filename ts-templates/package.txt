@@ -67,7 +67,6 @@ declare module Java {
       {{name}}Promise({{{margs this}}}): Promise<{{tsReturns}}>;
       {{/if}}
       {{/each}}
-
       {{/each}}
     }
     export module {{shortName}} {
@@ -82,7 +81,6 @@ declare module Java {
         {{name}}Promise({{{margs this}}}): Promise<{{tsReturns}}>;
         {{/if}}
         {{/each}}
-
         {{/each}}
       }
     }
