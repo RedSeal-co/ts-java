@@ -57,9 +57,15 @@ declare module Java {
 declare module 'java' {
   import Promise = require('bluebird');
 
+  interface AsyncOptions {
+    promiseSuffix: string;
+    promisify: Function;
+  }
+
   // *Singleton* declares methods & members exported by the node java module.
   interface Singleton {
     classpath: string[];
+    asyncOptions: AsyncOptions;
     callMethodSync(instance: any, className: string, methodName: string, ...args: any[]): any;
     callStaticMethodSync(className: string, methodName: string, ...args: any[]): any;
 
