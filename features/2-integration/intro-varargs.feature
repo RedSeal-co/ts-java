@@ -1,8 +1,19 @@
-Feature: TypeScript generator for node-java
+Feature: Introduction and varargs
 
 As a Node.js + TypeScript + node-java developer
 I want to have TypeScript declaration (.d.ts) files java packages I use
 so that I can use javascript with type safety comparable to java type safety.
+
+To a large degree, the Typescript API produced for Java classes is a
+direct mapping from Java to Typescript, with one significant exception.
+While both Java and Typescript have similar syntax for function variadic arguments,
+node-java currently transforms methods using varargs to a method signature
+where the variable arguments are expressed as an array argument of the specified type.
+This prevents Typescript from use 'rest' arguments, and forces developers
+to explicitly gather the variable arguments into a Java array using newArray.
+The first example below illustrates how to do this.
+The second example shows that the Typescript compiler will yield an error
+if an invalid type is passed where a varags array parameter is expected.
 
   Scenario: TinkerGraph Query
     Given the default TinkerPop packages
