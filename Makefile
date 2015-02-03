@@ -20,7 +20,7 @@ unittest: compile lint
 	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd
 
 cucumber: test-tinkerpop
-	./node_modules/.bin/cucumber-js --tags '~@todo'
+	./node_modules/.bin/cucumber-js --tags '~@todo' --require features/step_definitions
 
 TS_SRC=$(filter-out %.d.ts,$(wildcard bin/*.ts lib/*.ts test/*.ts features/step_definitions/*.ts))
 TS_OBJ=$(patsubst %.ts,%.js,$(TS_SRC))
