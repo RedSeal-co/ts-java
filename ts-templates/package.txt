@@ -3,7 +3,7 @@
 /// <reference path='../typings/bluebird/bluebird.d.ts' />
 
 interface Callback<T> {
-  (err: any, result: T): void;
+  (err: Error, result: T): void;
 }
 
 declare module 'java' {
