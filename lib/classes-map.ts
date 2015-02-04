@@ -99,8 +99,10 @@ class ClassesMap {
     var interfaces = _.map(clazz.getInterfacesSync(), (intf: Java.Class) => { return intf.getNameSync(); });
     interfaces = _.filter(interfaces, (intf: string) => { return this.inWhiteList(intf); });
 
+    // Methods of Object must always be available on any instance variable, even variables whose static
+    // type is a Java interface. Java does this implicitly. We have to do it explicitly.
     var javaLangObject = 'java.lang.Object';
-    if (interfaces.length === 0 && className !== javaLangObject) {
+    if (interfaces.length === 0 && className !== javaLangObject && clazz.getSuperclassSync() === null) {
       interfaces.push(javaLangObject);
     }
 
@@ -363,6 +365,12 @@ class ClassesMap {
       return a.signature.localeCompare(b.signature);
     }
 
+    var tsInterfaces = _.map(interfaces, (intf: string) => { return this.fixClassPath(intf); });
+    if (superclass) {
+      work.addTodo(superclass.getNameSync());
+      tsInterfaces.unshift(this.fixClassPath(superclass.getNameSync()));
+    }
+
     var classMap: ClassDefinition = {
       packageName: this.packageName(this.fixClassPath(className)),
       fullName: className,
@@ -371,7 +379,7 @@ class ClassesMap {
       isPrimitive: isPrimitive,
       superclass: superclass === null ? null : superclass.getNameSync(),
       interfaces: interfaces,
-      tsInterfaces: _.map(interfaces, (intf: string) => { return this.fixClassPath(intf); }),
+      tsInterfaces: tsInterfaces,
       methods: methods.sort(bySignature),
       constructors: constructors,
       variants: this.groupMethods(methods)
