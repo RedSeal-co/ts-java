@@ -46,21 +46,26 @@ declare module Java {
     {{/each}}
     import(className: string): any;
 
-    // TODO: use constructor signature for each class instead of ...args: any[]
-    // TODO: Add the specialized version for each class, can only be done with constructor signatures.
+    {{#each this}}
+    {{#each constructors}}
+    newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}, cb: Callback<{{../packageName}}.{{../shortName}}>): void;
+    {{/each}}
+    {{/each}}
     newInstance(className: string, ...args: any[]): void;
 
-    // TODO: use constructor signature for each class instead of ...args: any[]
     {{#each this}}
-    newInstanceSync(className: '{{packageName}}.{{shortName}}', ...args: any[]): {{packageName}}.{{shortName}};
+    {{#each constructors}}
+    newInstanceSync(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{../packageName}}.{{../shortName}};
+    {{/each}}
     {{/each}}
     newInstanceSync(className: string, ...args: any[]): any;
 
-    // TODO: use constructor signature for each class instead of ...args: any[]
     {{#each this}}
-    newInstancePromise(className: '{{packageName}}.{{shortName}}', ...args: any[]): Promise<{{packageName}}.{{shortName}}>;
+    {{#each constructors}}
+    newInstancePromise(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{../packageName}}.{{../shortName}}>;
     {{/each}}
-    newInstancePromise(className: string, ...args: any[]): any;
+    {{/each}}
+    newInstancePromise(className: string, ...args: any[]): Promise<any>;
   }
 
   {{#each this}}
