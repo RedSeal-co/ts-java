@@ -185,6 +185,7 @@ class ClassesMap {
       'java.lang.Double': 'number',
       'java.lang.Float': 'number',
       'java.lang.Integer': 'number',
+      'java.lang.Object': 'object_t',
       'java.lang.String': 'string_t'
         // string_t is a union type [string|java.lang.String] assumed to be defined in the handlebars template
         // It can be useful to use this for parameter types,

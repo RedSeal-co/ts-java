@@ -50,7 +50,13 @@ declare module 'java' {
 }
 
 declare module Java {
+  // Node-java can automatically coerce a javascript string into a java.lang.String.
+  // This special type alias allows to declare that possiblity to Typescript.
   export type string_t = string | java.lang.String;
+
+  // Java methods that take java.lang.Object parameters implicitly will take a java.lang.String.
+  // But string_t is not sufficient for this case, we need object_t.
+  export type object_t = string | java.lang.Object;
 
   export interface Array<T> extends java.lang.Object {
     // This is an opaque type for a java array T[];

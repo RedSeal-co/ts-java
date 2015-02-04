@@ -27,11 +27,9 @@ So that I can easily ensure a change hasn't completely borked the app. :)
     var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
     filenames.forEach((name: string) => { nodejava.classpath.push(name); });
 
-    // TODO: this test is still awkward. Make it better.
     var newArray: Java.java.util.ArrayList = nodejava.newInstanceSync('java.util.ArrayList');
-    var obj: Java.java.lang.Object = nodejava.newInstanceSync('java.lang.String', 'hello');
-    newArray.addSync(obj);
-    newArray.addSync(nodejava.newInstanceSync('java.lang.String', 'world'));
+    newArray.addSync('hello');
+    newArray.addSync('world');
     console.log(newArray.toStringSync());
 
     """
