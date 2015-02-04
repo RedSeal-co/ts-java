@@ -195,6 +195,7 @@ describe('ClassesMap', () => {
       var classMap = classesMap.mapClass(className, work);
       expect(classMap).to.be.ok;
       expect(classMap).to.have.keys([
+        'constructors',
         'fullName',
         'interfaces',
         'isInterface',

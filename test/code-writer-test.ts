@@ -104,6 +104,7 @@ describe('CodeWriter', () => {
         'interfaces: java.lang.Object',
         'tsInterfaces: java.lang.Object',
         'methods: [object Object],[object Object],[object Object],[object Object]',
+        'constructors: ',
         'variants: [object Object]',
         ''
       ].join('\n');

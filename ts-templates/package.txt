@@ -88,8 +88,9 @@ declare module Java {
     }
     export module {{shortName}} {
       export interface Static {
-        // TODO: add `new` signature for classes with public constructors
-        // new (arg0: Type0, ...);
+        {{#each constructors}}
+        new ({{{margs this}}}): {{../packageName}}.{{../shortName}};
+        {{/each}}
         {{#each variants}}
         {{#each this}}
         {{#if isStatic}}

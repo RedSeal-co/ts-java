@@ -18,6 +18,7 @@ declare module Java {
     getTypeNameSync(): string;
     getInterfacesSync(): Array<Class>;
     getMethodsSync(): Array<Method>;
+    getConstructorsSync(): Array<Method>;
     isArraySync(): boolean;
     isInterfaceSync(): boolean;
     isPrimitiveSync(): boolean;

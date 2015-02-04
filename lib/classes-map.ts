@@ -146,7 +146,13 @@ class ClassesMap {
     var name = method.getNameSync();
     var paramTypes = method.getParameterTypesSync();
     var sigs = paramTypes.map((p: Java.Class) => { return this.typeEncoding(p); });
-    return name + '(' + sigs.join('') + ')' + this.typeEncoding(method.getReturnTypeSync());
+    var signature = name + '(' + sigs.join('') + ')';
+    if (method.getReturnTypeSync) {
+      // methodSignature can be called on either a consructor or regular method.
+      // constructors don't have return types.
+      signature += this.typeEncoding(method.getReturnTypeSync());
+    }
+    return signature;
   }
 
 
@@ -221,7 +227,8 @@ class ClassesMap {
   }
 
 
-  // *mapMethod()*: return a map of useful properties of a method.
+  // *mapMethod()*: return a map of useful properties of a method or constructor.
+  // For our purposes, we can treat constructors are methods except for the handling of return type.
   mapMethod(method: Java.Method, work: Work): MethodDefinition {
 
     var signature = this.methodSignature(method);
@@ -232,8 +239,8 @@ class ClassesMap {
     var methodMap: MethodDefinition = {
       name: method.getNameSync(),
       declared: method.getDeclaringClassSync().getNameSync(),
-      returns: method.getReturnTypeSync().getNameSync(),
-      tsReturns: this.tsTypeName(method.getReturnTypeSync().getNameSync()),
+      returns: method.getReturnTypeSync ? method.getReturnTypeSync().getNameSync() : 'void',
+      tsReturns: method.getReturnTypeSync ? this.tsTypeName(method.getReturnTypeSync().getNameSync()) : 'void',
       paramNames: _.map(method.getParametersSync(), (p: Java.Parameter) => { return p.getNameSync(); }),
       paramTypes: _.map(method.getParameterTypesSync(), (p: Java.Class) => { return p.getNameSync(); }),
       tsParamTypes: _.map(method.getParameterTypesSync(), (p: Java.Class) => { return this.tsTypeName(p.getNameSync()); }),
@@ -276,6 +283,11 @@ class ClassesMap {
   // *mapClassMethods()*: return a methodMap array for the methods of a class
   mapClassMethods(className: string, clazz: Java.Class, work: Work): Array<MethodDefinition> {
     return _.map(clazz.getMethodsSync(), function (m: Java.Method) { return this.mapMethod(m, work); }, this);
+  }
+
+  // *mapClassConstructors()*: return a methodMap array for the constructors of a class
+  mapClassConstructors(className: string, clazz: Java.Class, work: Work): Array<MethodDefinition> {
+    return _.map(clazz.getConstructorsSync(), function (m: Java.Method) { return this.mapMethod(m, work); }, this);
   }
 
   // *groupMethods()*: group overloaded methods (i.e. having the same name)
@@ -341,6 +353,8 @@ class ClassesMap {
     var interfaces = this.mapClassInterfaces(className, clazz, work);
     var methods: Array<MethodDefinition> = this.mapClassMethods(className, clazz, work);
 
+    var constructors: Array<MethodDefinition> = this.mapClassConstructors(className, clazz, work);
+
     var isInterface = clazz.isInterfaceSync();
     var isPrimitive = clazz.isPrimitiveSync();
     var superclass: Java.Class = clazz.getSuperclassSync();
@@ -359,6 +373,7 @@ class ClassesMap {
       interfaces: interfaces,
       tsInterfaces: _.map(interfaces, (intf: string) => { return this.fixClassPath(intf); }),
       methods: methods.sort(bySignature),
+      constructors: constructors,
       variants: this.groupMethods(methods)
     };
 
@@ -435,6 +450,7 @@ module ClassesMap {
     interfaces: Array<string>;         // [ 'java.util.function.Function' ]
     tsInterfaces: Array<string>;       // [ 'java.util.function_.Function' ]
     methods: Array<MethodDefinition>; // definitions of all methods implemented by this class
+    constructors: Array<MethodDefinition>; // definitions of all constructors for this class, may be empty.
     variants: VariantsMap;            // definitions of all methods, grouped by method name
   }
 
