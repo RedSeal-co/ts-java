@@ -292,28 +292,40 @@ class ClassesMap {
     return _.map(clazz.getConstructorsSync(), function (m: Java.Method) { return this.mapMethod(m, work); }, this);
   }
 
-  // *groupMethods()*: group overloaded methods (i.e. having the same name)
-  groupMethods(flatList: Array<MethodDefinition>): VariantsMap {
-    function compareVariants(a: MethodDefinition, b: MethodDefinition) {
-      // We want variants with more parameters to come first.
-      if (a.paramTypes.length > b.paramTypes.length) {
-        return -1;
-      } else if (a.paramTypes.length < b.paramTypes.length) {
-        return 1;
-      }
-      // For the same number of parameters, order the longer (presumably more complex) signature to be first
-      if (a.signature.length > b.signature.length) {
-        return -1;
-      } else if (a.signature.length < b.signature.length) {
-        return 1;
-      }
-      // As a final catch-all, just sort lexically by signature.
-      return b.signature.localeCompare(a.signature);
+  compareVariants(a: MethodDefinition, b: MethodDefinition): number {
+    function countArgsOfTypeAny(a: MethodDefinition): number {
+      return _.filter(a.tsParamTypes, (t: string) => t === 'any').length;
     }
 
+    // We want variants with more parameters to come first.
+    if (a.paramTypes.length > b.paramTypes.length) {
+      return -1;
+    } else if (a.paramTypes.length < b.paramTypes.length) {
+      return 1;
+    }
+
+    // For the same number of parameters, order methods with fewer 'any' arguments first
+    if (countArgsOfTypeAny(a) < countArgsOfTypeAny(b)) {
+      return -1;
+    } else if (countArgsOfTypeAny(a) > countArgsOfTypeAny(b)) {
+      return 1;
+    }
+
+    // For the same number of parameters, order the longer (presumably more complex) signature to be first
+    if (a.signature.length > b.signature.length) {
+      return -1;
+    } else if (a.signature.length < b.signature.length) {
+      return 1;
+    }
+    // As a final catch-all, just sort lexically by signature.
+    return b.signature.localeCompare(a.signature);
+  }
+
+  // *groupMethods()*: group overloaded methods (i.e. having the same name)
+  groupMethods(flatList: Array<MethodDefinition>): VariantsMap {
     var variantsMap = _.groupBy(flatList, (method: MethodDefinition) => { return method.name; });
     _.forEach(variantsMap, (variants: Array<MethodDefinition>, name: string) => {
-      variantsMap[name] = variants.sort(compareVariants);
+      variantsMap[name] = variants.sort(this.compareVariants);
     });
 
     return variantsMap;
@@ -381,7 +393,7 @@ class ClassesMap {
       interfaces: interfaces,
       tsInterfaces: tsInterfaces,
       methods: methods.sort(bySignature),
-      constructors: constructors,
+      constructors: constructors.sort(this.compareVariants),
       variants: this.groupMethods(methods)
     };
 
