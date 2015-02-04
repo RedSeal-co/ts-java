@@ -1,8 +1,8 @@
-Feature: Nominal unit tests fpr ts-java
+Feature: Nominal unit tests for ts-java
 
-As a developer contributing to the development ts-java
-I want nominal unit tests exercising the ts-java application
-so that I can easily a change hasn't completely borked the app. :)
+As a developer contributing to the development of ts-java
+I want nominal unit tests that exercise the ts-java application
+So that I can easily ensure a change hasn't completely borked the app. :)
 
   Scenario: Package declaration only
     Given the default TinkerPop packages
