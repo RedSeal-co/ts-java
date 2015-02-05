@@ -18,10 +18,6 @@ There are four ways to construct instances
 
     import glob = require('glob');
     import nodejava = require('java');
-    nodejava.asyncOptions = {
-      promiseSuffix: 'Promise',
-      promisify: require('bluebird').promisify
-    };
 
     var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
     filenames.forEach((name: string) => { nodejava.classpath.push(name); });
@@ -49,10 +45,6 @@ There are four ways to construct instances
 
     import glob = require('glob');
     import nodejava = require('java');
-    nodejava.asyncOptions = {
-      promiseSuffix: 'Promise',
-      promisify: require('bluebird').promisify
-    };
 
     var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
     filenames.forEach((name: string) => { nodejava.classpath.push(name); });
@@ -117,10 +109,6 @@ There are four ways to construct instances
 
     import glob = require('glob');
     import nodejava = require('java');
-    nodejava.asyncOptions = {
-      promiseSuffix: 'Promise',
-      promisify: require('bluebird').promisify
-    };
 
     var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
     filenames.forEach((name: string) => { nodejava.classpath.push(name); });
@@ -151,10 +139,6 @@ There are four ways to construct instances
     import _ = require('lodash');
     import glob = require('glob');
     import nodejava = require('java');
-    nodejava.asyncOptions = {
-      promiseSuffix: 'Promise',
-      promisify: require('bluebird').promisify
-    };
 
     var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
     filenames.forEach((name: string) => { nodejava.classpath.push(name); });
