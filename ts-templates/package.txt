@@ -36,8 +36,10 @@ declare module Java {
   interface Singleton {
     classpath: string[];
     asyncOptions: AsyncOptions;
+    callMethod(instance: any, className: string, methodName: string, args: any[], callback: Callback<any>): void;
     callMethodSync(instance: any, className: string, methodName: string, ...args: any[]): any;
     callStaticMethodSync(className: string, methodName: string, ...args: any[]): any;
+    getClassLoader(): ClassLoader;
 
     newArray<T>(className: string, arg: any[]): Array<T>;
 
