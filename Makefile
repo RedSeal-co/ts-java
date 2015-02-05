@@ -93,8 +93,12 @@ clean-reflection:
 
 # Explicit dependencies for files that are referenced
 
-bin/ts-java.js: lib/work.js lib/classes-map.js lib/code-writer.js
+lib/*.js test/*.js: lib/java.d.ts
+
+bin/ts-java.js: lib/work.js lib/classes-map.js lib/code-writer.js lib/java.d.ts
 
 lib/classes-map.js : lib/work.js
 
 lib/code-writer.js : lib/classes-map.js
+
+
