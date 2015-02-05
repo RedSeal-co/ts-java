@@ -99,8 +99,10 @@ class ClassesMap {
     var interfaces = _.map(clazz.getInterfacesSync(), (intf: Java.Class) => { return intf.getNameSync(); });
     interfaces = _.filter(interfaces, (intf: string) => { return this.inWhiteList(intf); });
 
+    // Methods of Object must always be available on any instance variable, even variables whose static
+    // type is a Java interface. Java does this implicitly. We have to do it explicitly.
     var javaLangObject = 'java.lang.Object';
-    if (interfaces.length === 0 && className !== javaLangObject) {
+    if (interfaces.length === 0 && className !== javaLangObject && clazz.getSuperclassSync() === null) {
       interfaces.push(javaLangObject);
     }
 
@@ -138,15 +140,20 @@ class ClassesMap {
     return encoding.replace(/\./g, '/');
   }
 
-
   // *methodSignature()*: return the signature of a method, i.e. a string unique to any method variant,
   // encoding the method name, types of parameters, and the return type.
   // This string may be passed as the method name to java.callMethod() in order to execute a specific variant.
-  methodSignature(method: Java.Method): string {
+  methodSignature(method: Java.Executable): string {
     var name = method.getNameSync();
     var paramTypes = method.getParameterTypesSync();
     var sigs = paramTypes.map((p: Java.Class) => { return this.typeEncoding(p); });
-    return name + '(' + sigs.join('') + ')' + this.typeEncoding(method.getReturnTypeSync());
+    var signature = name + '(' + sigs.join('') + ')';
+    if ('getReturnTypeSync' in method) {
+      // methodSignature can be called on either a constructor or regular method.
+      // constructors don't have return types.
+      signature += this.typeEncoding((<Java.Method>method).getReturnTypeSync());
+    }
+    return signature;
   }
 
 
@@ -221,19 +228,25 @@ class ClassesMap {
   }
 
 
-  // *mapMethod()*: return a map of useful properties of a method.
-  mapMethod(method: Java.Method, work: Work): MethodDefinition {
+  // *mapMethod()*: return a map of useful properties of a method or constructor.
+  // For our purposes, we can treat constructors as methods except for the handling of return type.
+  mapMethod(method: Java.Executable, work: Work): MethodDefinition {
 
     var signature = this.methodSignature(method);
 
     var modifiers: number = method.getModifiersSync();
     var isStatic: boolean = (modifiers & 8) === 8;
 
+    var returnType: string = 'void';
+    if ('getReturnTypeSync' in method) {
+      returnType = (<Java.Method>method).getReturnTypeSync().getNameSync();
+    }
+
     var methodMap: MethodDefinition = {
       name: method.getNameSync(),
       declared: method.getDeclaringClassSync().getNameSync(),
-      returns: method.getReturnTypeSync().getNameSync(),
-      tsReturns: this.tsTypeName(method.getReturnTypeSync().getNameSync()),
+      returns: returnType,
+      tsReturns: this.tsTypeName(returnType),
       paramNames: _.map(method.getParametersSync(), (p: Java.Parameter) => { return p.getNameSync(); }),
       paramTypes: _.map(method.getParameterTypesSync(), (p: Java.Class) => { return p.getNameSync(); }),
       tsParamTypes: _.map(method.getParameterTypesSync(), (p: Java.Class) => { return this.tsTypeName(p.getNameSync()); }),
@@ -278,28 +291,45 @@ class ClassesMap {
     return _.map(clazz.getMethodsSync(), function (m: Java.Method) { return this.mapMethod(m, work); }, this);
   }
 
-  // *groupMethods()*: group overloaded methods (i.e. having the same name)
-  groupMethods(flatList: Array<MethodDefinition>): VariantsMap {
-    function compareVariants(a: MethodDefinition, b: MethodDefinition) {
-      // We want variants with more parameters to come first.
-      if (a.paramTypes.length > b.paramTypes.length) {
-        return -1;
-      } else if (a.paramTypes.length < b.paramTypes.length) {
-        return 1;
-      }
-      // For the same number of parameters, order the longer (presumably more complex) signature to be first
-      if (a.signature.length > b.signature.length) {
-        return -1;
-      } else if (a.signature.length < b.signature.length) {
-        return 1;
-      }
-      // As a final catch-all, just sort lexically by signature.
-      return b.signature.localeCompare(a.signature);
+  // *mapClassConstructors()*: return a methodMap array for the constructors of a class
+  mapClassConstructors(className: string, clazz: Java.Class, work: Work): Array<MethodDefinition> {
+    return _.map(clazz.getConstructorsSync(), function (m: Java.Constructor) { return this.mapMethod(m, work); }, this);
+  }
+
+  compareVariants(a: MethodDefinition, b: MethodDefinition): number {
+    function countArgsOfTypeAny(a: MethodDefinition): number {
+      return _.filter(a.tsParamTypes, (t: string) => t === 'any').length;
     }
 
+    // We want variants with more parameters to come first.
+    if (a.paramTypes.length > b.paramTypes.length) {
+      return -1;
+    } else if (a.paramTypes.length < b.paramTypes.length) {
+      return 1;
+    }
+
+    // For the same number of parameters, order methods with fewer 'any' arguments first
+    if (countArgsOfTypeAny(a) < countArgsOfTypeAny(b)) {
+      return -1;
+    } else if (countArgsOfTypeAny(a) > countArgsOfTypeAny(b)) {
+      return 1;
+    }
+
+    // For the same number of parameters, order the longer (presumably more complex) signature to be first
+    if (a.signature.length > b.signature.length) {
+      return -1;
+    } else if (a.signature.length < b.signature.length) {
+      return 1;
+    }
+    // As a final catch-all, just sort lexically by signature.
+    return b.signature.localeCompare(a.signature);
+  }
+
+  // *groupMethods()*: group overloaded methods (i.e. having the same name)
+  groupMethods(flatList: Array<MethodDefinition>): VariantsMap {
     var variantsMap = _.groupBy(flatList, (method: MethodDefinition) => { return method.name; });
     _.forEach(variantsMap, (variants: Array<MethodDefinition>, name: string) => {
-      variantsMap[name] = variants.sort(compareVariants);
+      variantsMap[name] = variants.sort(this.compareVariants);
     });
 
     return variantsMap;
@@ -341,12 +371,20 @@ class ClassesMap {
     var interfaces = this.mapClassInterfaces(className, clazz, work);
     var methods: Array<MethodDefinition> = this.mapClassMethods(className, clazz, work);
 
+    var constructors: Array<MethodDefinition> = this.mapClassConstructors(className, clazz, work);
+
     var isInterface = clazz.isInterfaceSync();
     var isPrimitive = clazz.isPrimitiveSync();
     var superclass: Java.Class = clazz.getSuperclassSync();
 
     function bySignature(a: MethodDefinition, b: MethodDefinition) {
       return a.signature.localeCompare(b.signature);
+    }
+
+    var tsInterfaces = _.map(interfaces, (intf: string) => { return this.fixClassPath(intf); });
+    if (superclass) {
+      work.addTodo(superclass.getNameSync());
+      tsInterfaces.unshift(this.fixClassPath(superclass.getNameSync()));
     }
 
     var classMap: ClassDefinition = {
@@ -357,8 +395,9 @@ class ClassesMap {
       isPrimitive: isPrimitive,
       superclass: superclass === null ? null : superclass.getNameSync(),
       interfaces: interfaces,
-      tsInterfaces: _.map(interfaces, (intf: string) => { return this.fixClassPath(intf); }),
+      tsInterfaces: tsInterfaces,
       methods: methods.sort(bySignature),
+      constructors: constructors.sort(this.compareVariants),
       variants: this.groupMethods(methods)
     };
 
@@ -435,6 +474,7 @@ module ClassesMap {
     interfaces: Array<string>;         // [ 'java.util.function.Function' ]
     tsInterfaces: Array<string>;       // [ 'java.util.function_.Function' ]
     methods: Array<MethodDefinition>; // definitions of all methods implemented by this class
+    constructors: Array<MethodDefinition>; // definitions of all constructors for this class, may be empty.
     variants: VariantsMap;            // definitions of all methods, grouped by method name
   }
 
