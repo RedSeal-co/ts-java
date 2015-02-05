@@ -1,5 +1,5 @@
-.PHONY: install install-npm install-tsd install-tinkerpop lint documentation test testdata unittest cucumber compile
-.PHONY: clean clean-obj clean-tsd clean-npm clean-js-map clean-unittest clean-cucumber clean-tinkerpop
+.PHONY: install install-npm install-tsd install-tinkerpop install-reflection lint documentation test testdata unittest cucumber compile
+.PHONY: clean clean-obj clean-tsd clean-npm clean-js-map clean-unittest clean-cucumber clean-tinkerpop clean-reflection
 
 default: test
 
@@ -19,7 +19,7 @@ test: unittest cucumber
 unittest: compile lint
 	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd
 
-cucumber: test-tinkerpop
+cucumber: test-reflection test-tinkerpop
 	./node_modules/.bin/cucumber-js --tags '~@todo' --require features/step_definitions
 
 TS_SRC=$(filter-out %.d.ts,$(wildcard bin/*.ts lib/*.ts test/*.ts features/step_definitions/*.ts))
@@ -34,7 +34,7 @@ compile: $(TS_OBJ)
 	$(TSC) $(TSC_OPTS) $<
 	stat $@ > /dev/null
 
-clean: clean-cucumber clean-doc clean-js-map clean-npm clean-obj clean-tsd clean-unittest clean-tinkerpop
+clean: clean-cucumber clean-doc clean-js-map clean-npm clean-obj clean-tsd clean-unittest clean-tinkerpop clean-reflection
 
 clean-cucumber:
 	rm -rf o.features
@@ -60,6 +60,7 @@ clean-unittest:
 install:
 	$(MAKE) install-npm
 	$(MAKE) install-tsd
+	$(MAKE) install-reflection
 	$(MAKE) install-tinkerpop
 
 install-npm:
@@ -79,6 +80,16 @@ test-tinkerpop: compile lint
 clean-tinkerpop:
 	cd tinkerpop && mvn clean
 	rm -rf tinkerpop/java.d.ts tinkerpop/o
+
+install-reflection:
+	cd reflection && mvn clean package
+
+test-reflection: compile lint
+	cd reflection && node ../bin/ts-java.js
+
+clean-reflection:
+	cd reflection && mvn clean
+	rm -rf reflection/java.d.ts reflection/o
 
 # Explicit dependencies for files that are referenced
 
