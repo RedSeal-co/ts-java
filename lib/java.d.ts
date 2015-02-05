@@ -1,9 +1,8 @@
 declare module Java {
 
-  export interface Method {
+  export interface Executable {
     getNameSync(): string;
     getDeclaringClassSync(): Class;
-    getReturnTypeSync(): Class;
     getParameterTypesSync(): Array<Class>;
     getParametersSync(): Array<Parameter>;
     getModifiersSync(): number;
@@ -12,13 +11,19 @@ declare module Java {
     toStringSync(): string;
   }
 
+  export interface Method extends Executable {
+    getReturnTypeSync(): Class;
+  }
+
+  export interface Constructor extends Executable {
+  }
+
   export interface Class {
     getNameSync(): string;
-    getCanonicalNameSync(): string;
     getTypeNameSync(): string;
     getInterfacesSync(): Array<Class>;
     getMethodsSync(): Array<Method>;
-    getConstructorsSync(): Array<Method>;
+    getConstructorsSync(): Array<Constructor>;
     isArraySync(): boolean;
     isInterfaceSync(): boolean;
     isPrimitiveSync(): boolean;

@@ -140,19 +140,18 @@ class ClassesMap {
     return encoding.replace(/\./g, '/');
   }
 
-
   // *methodSignature()*: return the signature of a method, i.e. a string unique to any method variant,
   // encoding the method name, types of parameters, and the return type.
   // This string may be passed as the method name to java.callMethod() in order to execute a specific variant.
-  methodSignature(method: Java.Method): string {
+  methodSignature(method: Java.Executable): string {
     var name = method.getNameSync();
     var paramTypes = method.getParameterTypesSync();
     var sigs = paramTypes.map((p: Java.Class) => { return this.typeEncoding(p); });
     var signature = name + '(' + sigs.join('') + ')';
-    if (method.getReturnTypeSync) {
-      // methodSignature can be called on either a consructor or regular method.
+    if ('getReturnTypeSync' in method) {
+      // methodSignature can be called on either a constructor or regular method.
       // constructors don't have return types.
-      signature += this.typeEncoding(method.getReturnTypeSync());
+      signature += this.typeEncoding((<Java.Method>method).getReturnTypeSync());
     }
     return signature;
   }
@@ -230,19 +229,24 @@ class ClassesMap {
 
 
   // *mapMethod()*: return a map of useful properties of a method or constructor.
-  // For our purposes, we can treat constructors are methods except for the handling of return type.
-  mapMethod(method: Java.Method, work: Work): MethodDefinition {
+  // For our purposes, we can treat constructors as methods except for the handling of return type.
+  mapMethod(method: Java.Executable, work: Work): MethodDefinition {
 
     var signature = this.methodSignature(method);
 
     var modifiers: number = method.getModifiersSync();
     var isStatic: boolean = (modifiers & 8) === 8;
 
+    var returnType: string = 'void';
+    if ('getReturnTypeSync' in method) {
+      returnType = (<Java.Method>method).getReturnTypeSync().getNameSync();
+    }
+
     var methodMap: MethodDefinition = {
       name: method.getNameSync(),
       declared: method.getDeclaringClassSync().getNameSync(),
-      returns: method.getReturnTypeSync ? method.getReturnTypeSync().getNameSync() : 'void',
-      tsReturns: method.getReturnTypeSync ? this.tsTypeName(method.getReturnTypeSync().getNameSync()) : 'void',
+      returns: returnType,
+      tsReturns: this.tsTypeName(returnType),
       paramNames: _.map(method.getParametersSync(), (p: Java.Parameter) => { return p.getNameSync(); }),
       paramTypes: _.map(method.getParameterTypesSync(), (p: Java.Class) => { return p.getNameSync(); }),
       tsParamTypes: _.map(method.getParameterTypesSync(), (p: Java.Class) => { return this.tsTypeName(p.getNameSync()); }),
@@ -289,7 +293,7 @@ class ClassesMap {
 
   // *mapClassConstructors()*: return a methodMap array for the constructors of a class
   mapClassConstructors(className: string, clazz: Java.Class, work: Work): Array<MethodDefinition> {
-    return _.map(clazz.getConstructorsSync(), function (m: Java.Method) { return this.mapMethod(m, work); }, this);
+    return _.map(clazz.getConstructorsSync(), function (m: Java.Constructor) { return this.mapMethod(m, work); }, this);
   }
 
   compareVariants(a: MethodDefinition, b: MethodDefinition): number {
