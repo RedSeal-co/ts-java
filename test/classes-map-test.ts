@@ -229,10 +229,15 @@ describe('ClassesMap', () => {
       var classNames = _.keys(classes).sort();
       expect(classNames).to.deep.equal([
         'java.lang.Class',
+        'java.lang.ClassLoader',
         'java.lang.Comparable',
         'java.lang.Iterable',
         'java.lang.Object',
         'java.lang.String',
+        'java.lang.reflect.AccessibleObject',
+        'java.lang.reflect.Constructor',
+        'java.lang.reflect.Executable',
+        'java.lang.reflect.Method',
         'java.util.Iterator',
         'java.util.function.Consumer'
       ]);

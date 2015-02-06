@@ -12,11 +12,14 @@ import Work = require('./work');
 
 var requiredSeedClasses = [
   'java.lang.Class',
+  'java.lang.ClassLoader',
   'java.lang.Cloneable',
   'java.lang.Comparable',
   'java.lang.Enum',
   'java.lang.Iterable',
   'java.lang.Long',
+  'java.lang.reflect.Method',
+  'java.lang.reflect.Constructor',
   'java.lang.Number',
   'java.lang.Object',
   'java.lang.String',
@@ -31,6 +34,9 @@ import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 import MethodDefinition = ClassesMap.MethodDefinition;
 import VariantsMap = ClassesMap.VariantsMap;
+
+// The context of a parameter, either an input to a function, or a return result.
+enum ParamContext {eInput, eReturn};
 
 // ## ClassesMap
 // ClassesMap is a map of a set of java classes/interfaces, containing information extracted via Java Reflection.
@@ -156,8 +162,7 @@ class ClassesMap {
     return signature;
   }
 
-
-  tsTypeName(javaTypeName: string): string {
+  tsTypeName(javaTypeName: string, context: ParamContext = ParamContext.eInput): string {
     var typeName = javaTypeName;
 
     var ext = '';
@@ -192,13 +197,15 @@ class ClassesMap {
       'java.lang.Double': 'number',
       'java.lang.Float': 'number',
       'java.lang.Integer': 'number',
-      'java.lang.Object': 'object_t',
-      'java.lang.String': 'string_t'
-        // string_t is a union type [string|java.lang.String] assumed to be defined in the handlebars template
-        // It can be useful to use this for parameter types,
-        // But we probably shouldn't use it for function return types.
-        // TODO: provide a mechanism to handle parameter types and return types differently
+      // string_t is a union type [string|java.lang.String] defined in the handlebars template.
+      // Likewise object_t is the union type [string|java.lang.Object].
+      // It is useful to use these for method input parameters of type java.lang.String and java.lang.Object,
+      // as that allows Typescript applications to pass javascript strings, letting node-java do the implict coercion.
+      // But these union types should not be used for function return results.
+      'java.lang.Object': context === ParamContext.eInput ? 'object_t' : 'java.lang.Object',
+      'java.lang.String': context === ParamContext.eInput ? 'string_t' : 'string'
     };
+
     if (typeName in primitiveTypes) {
       return primitiveTypes[typeName] + ext;
     }
@@ -246,7 +253,7 @@ class ClassesMap {
       name: method.getNameSync(),
       declared: method.getDeclaringClassSync().getNameSync(),
       returns: returnType,
-      tsReturns: this.tsTypeName(returnType),
+      tsReturns: this.tsTypeName(returnType, ParamContext.eReturn),
       paramNames: _.map(method.getParametersSync(), (p: Java.Parameter) => { return p.getNameSync(); }),
       paramTypes: _.map(method.getParameterTypesSync(), (p: Java.Class) => { return p.getNameSync(); }),
       tsParamTypes: _.map(method.getParameterTypesSync(), (p: Java.Class) => { return this.tsTypeName(p.getNameSync()); }),

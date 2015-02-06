@@ -1,0 +1,14 @@
+{
+  "tsjava": {
+    "classpath": [
+      "target/dependency/**/*.jar"
+    ],
+    "seedClasses": [
+      "java.lang.reflect.Method"
+    ],
+    "whiteList": [
+      "java.lang.Class",
+      "java.lang.reflect."
+    ]
+  }
+}

@@ -2,10 +2,6 @@ node_modules/
 typings/
 doc/
 
-tinkerpop/*
-!tinkerpop/package.json
-!tinkerpop/pom.xml
-
 *.js
 !bin/*.js
 !lib/*.js
@@ -13,3 +9,12 @@ tinkerpop/*
 *.js.map
 !bin/*.js.map
 !lib/*.js.map
+
+tinkerpop/*
+!tinkerpop/package.json
+!tinkerpop/pom.xml
+
+reflection/*
+!reflection/package.json
+!reflection/pom.xml
+
