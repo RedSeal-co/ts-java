@@ -4,11 +4,12 @@
       "target/dependency/**/*.jar"
     ],
     "seedClasses": [
+      "java.lang.ClassLoader",
+      "java.lang.reflect.Constructor",
       "java.lang.reflect.Method"
     ],
     "whiteList": [
-      "java.lang.Class",
-      "java.lang.reflect."
+      "java.lang."
     ]
   }
 }

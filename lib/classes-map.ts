@@ -11,16 +11,6 @@ import Immutable = require('immutable');
 import Work = require('./work');
 
 var requiredSeedClasses = [
-  'java.lang.Class',
-  'java.lang.ClassLoader',
-  'java.lang.Cloneable',
-  'java.lang.Comparable',
-  'java.lang.Enum',
-  'java.lang.Iterable',
-  'java.lang.Long',
-  'java.lang.reflect.Method',
-  'java.lang.reflect.Constructor',
-  'java.lang.Number',
   'java.lang.Object',
   'java.lang.String',
 ];
