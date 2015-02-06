@@ -1,5 +1,6 @@
-.PHONY: install install-npm install-tsd install-tinkerpop install-reflection lint documentation test testdata unittest cucumber compile
-.PHONY: clean clean-obj clean-tsd clean-npm clean-js-map clean-unittest clean-cucumber clean-tinkerpop clean-reflection
+.PHONY: install install-npm install-tsd lint documentation test testdata unittest cucumber compile
+.PHONY: clean clean-obj clean-tsd clean-npm clean-js-map clean-unittest clean-cucumber
+.PHONY: install-java-pkgs build-java-pkgs clean-java-pkgs
 
 default: test
 
@@ -19,7 +20,7 @@ test: unittest cucumber
 unittest: compile lint
 	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd
 
-cucumber: test-reflection test-tinkerpop
+cucumber: build-java-pkgs
 	./node_modules/.bin/cucumber-js --tags '~@todo' --require features/step_definitions
 
 TS_SRC=$(filter-out %.d.ts,$(wildcard bin/*.ts lib/*.ts test/*.ts features/step_definitions/*.ts))
@@ -34,7 +35,7 @@ compile: $(TS_OBJ)
 	$(TSC) $(TSC_OPTS) $<
 	stat $@ > /dev/null
 
-clean: clean-cucumber clean-doc clean-js-map clean-npm clean-obj clean-tsd clean-unittest clean-tinkerpop clean-reflection
+clean: clean-cucumber clean-doc clean-js-map clean-npm clean-obj clean-tsd clean-unittest clean-java-pkgs
 
 clean-cucumber:
 	rm -rf o.features
@@ -60,8 +61,7 @@ clean-unittest:
 install:
 	$(MAKE) install-npm
 	$(MAKE) install-tsd
-	$(MAKE) install-reflection
-	$(MAKE) install-tinkerpop
+	$(MAKE) install-java-pkgs
 
 install-npm:
 	npm install
@@ -71,26 +71,37 @@ TSD=./node_modules/.bin/tsd
 install-tsd:
 	$(TSD) reinstall
 
-install-tinkerpop:
-	cd tinkerpop && mvn clean package
+######
+# JAVAPKGS are directories containing a pom.xml and a package.json in which ts-java will be run
+# to generate a java.d.ts file. Keep the packages in alphabetical order.
+# Note that cucumber tests depend on these packages being 'built' by the build-java-pkgs target.
+JAVAPKGS=\
+	reflection \
+	tinkerpop \
 
-test-tinkerpop: compile lint
-	cd tinkerpop && node ../bin/ts-java.js
+JAVAPKGS_INSTALL=$(patsubst %,%-install,$(JAVAPKGS))
+JAVAPKGS_BUILD=$(patsubst %,%-build,$(JAVAPKGS))
+JAVAPKGS_CLEAN=$(patsubst %,%-clean,$(JAVAPKGS))
 
-clean-tinkerpop:
-	cd tinkerpop && mvn clean
-	rm -rf tinkerpop/java.d.ts tinkerpop/o
+.PHONY: $(JAVAPKGS_INSTALL) $(JAVAPKGS_BUILD) $(JAVAPKGS_CLEAN)
 
-install-reflection:
-	cd reflection && mvn clean package
+install-java-pkgs : $(JAVAPKGS_INSTALL)
 
-test-reflection: compile lint
-	cd reflection && node ../bin/ts-java.js
+build-java-pkgs : $(JAVAPKGS_BUILD)
 
-clean-reflection:
-	cd reflection && mvn clean
-	rm -rf reflection/java.d.ts reflection/o
+clean-java-pkgs : $(JAVAPKGS_CLEAN)
 
+$(JAVAPKGS_INSTALL): %-install:
+	cd $* && mvn clean package
+
+$(JAVAPKGS_BUILD): %-build: bin/ts-java.js
+	cd $* && node ../bin/ts-java.js
+
+$(JAVAPKGS_CLEAN): %-clean:
+	cd $* && mvn clean
+	rm -rf $*/java.d.ts $*/o
+
+#####
 # Explicit dependencies for files that are referenced
 
 lib/*.js test/*.js: lib/java.d.ts
