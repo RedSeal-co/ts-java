@@ -1,4 +1,4 @@
-.PHONY: install install-npm install-tsd lint documentation test testdata unittest cucumber compile
+.PHONY: install install-npm install-tsd documentation test testdata unittest cucumber
 .PHONY: clean clean-obj clean-tsd clean-npm clean-js-map clean-unittest clean-cucumber
 .PHONY: install-java-pkgs build-java-pkgs clean-java-pkgs
 
@@ -8,18 +8,12 @@ all:
 	$(MAKE) install
 	$(MAKE) test documentation
 
-lint:
-	ls $(TS_SRC) | xargs -n1 node_modules/tslint/bin/tslint --config tslint.json --file
-
-lintOut:
-	node_modules/jshint/bin/jshint --verbose o/lib
-
 documentation :
 	node_modules/groc/bin/groc --except "**/node_modules/**" --except "o/**" --except "**/*.d.ts" "**/*.ts" README.md
 
 test: unittest cucumber
 
-unittest: compile lint
+unittest: $(TS_OBJ)
 	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd
 
 cucumber: build-java-pkgs
@@ -31,9 +25,8 @@ TS_JSMAP=$(patsubst %.ts,%.js.map,$(TS_SRC))
 TSC=./node_modules/.bin/tsc
 TSC_OPTS=--module commonjs --target ES5 --sourceMap
 
-compile: $(TS_OBJ)
-
 %.js: %.ts
+	node_modules/tslint/bin/tslint --config tslint.json --file $<
 	$(TSC) $(TSC_OPTS) $<
 	stat $@ > /dev/null
 
@@ -96,8 +89,8 @@ clean-java-pkgs : $(JAVAPKGS_CLEAN)
 $(JAVAPKGS_INSTALL): %-install:
 	cd $* && mvn clean package
 
-$(JAVAPKGS_BUILD): %-build: bin/ts-java.js
-	cd $* && node ../bin/ts-java.js
+$(JAVAPKGS_BUILD): %-build: bin/ts-java.sh
+	cd $* && ../bin/ts-java.sh
 
 $(JAVAPKGS_CLEAN): %-clean:
 	cd $* && mvn clean
@@ -106,12 +99,15 @@ $(JAVAPKGS_CLEAN): %-clean:
 #####
 # Explicit dependencies for files that are referenced
 
-lib/*.js test/*.js: lib/java.d.ts
+bin/*.js lib/*.js test/*.js: lib/java.d.ts
 
-bin/ts-java.js: lib/work.js lib/classes-map.js lib/code-writer.js lib/java.d.ts
+bin/ts-java.sh: $(TS_OBJ)
+	touch $@
 
-lib/classes-map.js : lib/work.js
+bin/ts-java.js : lib/*.ts
 
-lib/code-writer.js : lib/classes-map.js
+lib/classes-map.js : lib/work.ts
+
+lib/code-writer.js : lib/classes-map.ts
 
 
