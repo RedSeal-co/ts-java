@@ -1,26 +1,25 @@
 .PHONY: install install-npm install-tsd documentation test testdata unittest cucumber
 .PHONY: clean clean-obj clean-tsd clean-npm clean-js-map clean-unittest clean-cucumber
-.PHONY: install-java-pkgs build-java-pkgs clean-java-pkgs
+.PHONY: install-java-pkgs  clean-java-pkgs
 
 default: test
 
 ######
 # JAVAPKGS are directories containing a pom.xml and a package.json in which ts-java will be run
 # to generate a java.d.ts file. Keep the packages in alphabetical order.
-# Note that cucumber tests depend on these packages being 'built' by the build-java-pkgs target.
 JAVAPKGS=\
 	reflection \
 	tinkerpop \
 
 JAVAPKGS_INSTALL=$(patsubst %,%-install,$(JAVAPKGS))
-JAVAPKGS_JAVADTS=$(patsubst %,%/java.d.ts,$(JAVAPKGS))
 JAVAPKGS_CLEAN=$(patsubst %,%-clean,$(JAVAPKGS))
-
 .PHONY: $(JAVAPKGS_INSTALL) $(JAVAPKGS_CLEAN)
 
-install-java-pkgs : $(JAVAPKGS_INSTALL)
+# All of the package java.d.ts files. These are not phony targets!
+# Cucumber tests depend on these files.
+JAVAPKGS_JAVADTS=$(patsubst %,%/java.d.ts,$(JAVAPKGS))
 
-build-java-pkgs : $(JAVAPKGS_JAVADTS)
+install-java-pkgs : $(JAVAPKGS_INSTALL)
 
 clean-java-pkgs : $(JAVAPKGS_CLEAN)
 
