@@ -444,7 +444,7 @@ module ClassesMap {
     isVarArgs: boolean;     // true if this method's last parameter is varargs ...type
     generic_proto: string;  // The method prototype including generic type information
     plain_proto: string;    // The java method prototype without generic type information
-    signature?: string;     // A method signature related to the plain_proto prototype above
+    signature: string;     // A method signature related to the plain_proto prototype above
                             // This signature does not include return type info, as java does not
                             // use return type to distinguish among overloaded methods.
   }
