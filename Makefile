@@ -4,6 +4,12 @@
 
 default: test
 
+TS_SRC=$(filter-out %.d.ts,$(wildcard bin/*.ts lib/*.ts test/*.ts features/step_definitions/*.ts))
+TS_OBJ=$(patsubst %.ts,%.js,$(TS_SRC))
+TS_JSMAP=$(patsubst %.ts,%.js.map,$(TS_SRC))
+TSC=./node_modules/.bin/tsc
+TSC_OPTS=--module commonjs --target ES5 --sourceMap
+
 all:
 	$(MAKE) install
 	$(MAKE) test documentation
@@ -18,12 +24,6 @@ unittest: $(TS_OBJ)
 
 cucumber: build-java-pkgs
 	./node_modules/.bin/cucumber-js --tags '~@todo' --require features/step_definitions
-
-TS_SRC=$(filter-out %.d.ts,$(wildcard bin/*.ts lib/*.ts test/*.ts features/step_definitions/*.ts))
-TS_OBJ=$(patsubst %.ts,%.js,$(TS_SRC))
-TS_JSMAP=$(patsubst %.ts,%.js.map,$(TS_SRC))
-TSC=./node_modules/.bin/tsc
-TSC_OPTS=--module commonjs --target ES5 --sourceMap
 
 %.js: %.ts
 	node_modules/tslint/bin/tslint --config tslint.json --file $<
@@ -53,17 +53,14 @@ clean-tsd:
 clean-unittest:
 	rm -rf o/*
 
-install:
-	$(MAKE) install-npm
-	$(MAKE) install-tsd
-	$(MAKE) install-java-pkgs
+install: install-tsd install-java-pkgs
 
 install-npm:
 	npm install
 
 TSD=./node_modules/.bin/tsd
 
-install-tsd:
+install-tsd: install-npm
 	$(TSD) reinstall
 
 ######
