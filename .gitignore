@@ -18,3 +18,8 @@ tinkerpop/*
 reflection/*
 !reflection/package.json
 !reflection/pom.xml
+
+hellojava/*
+!hellojava/package.json
+!hellojava/pom.xml
+!hellojava/src

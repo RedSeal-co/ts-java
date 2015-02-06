@@ -8,6 +8,7 @@ default: test
 # JAVAPKGS are directories containing a pom.xml and a package.json in which ts-java will be run
 # to generate a java.d.ts file. Keep the packages in alphabetical order.
 JAVAPKGS=\
+	hellojava \
 	reflection \
 	tinkerpop \
 
@@ -111,7 +112,6 @@ TSD=./node_modules/.bin/tsd
 install-tsd: install-npm
 	$(TSD) reinstall
 
-#####
 # Explicit dependencies for files that are referenced
 
 bin/*.js lib/*.js test/*.js: lib/java.d.ts
