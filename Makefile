@@ -4,6 +4,37 @@
 
 default: test
 
+######
+# JAVAPKGS are directories containing a pom.xml and a package.json in which ts-java will be run
+# to generate a java.d.ts file. Keep the packages in alphabetical order.
+# Note that cucumber tests depend on these packages being 'built' by the build-java-pkgs target.
+JAVAPKGS=\
+	reflection \
+	tinkerpop \
+
+JAVAPKGS_INSTALL=$(patsubst %,%-install,$(JAVAPKGS))
+JAVAPKGS_JAVADTS=$(patsubst %,%/java.d.ts,$(JAVAPKGS))
+JAVAPKGS_CLEAN=$(patsubst %,%-clean,$(JAVAPKGS))
+
+.PHONY: $(JAVAPKGS_INSTALL) $(JAVAPKGS_CLEAN)
+
+install-java-pkgs : $(JAVAPKGS_INSTALL)
+
+build-java-pkgs : $(JAVAPKGS_JAVADTS)
+
+clean-java-pkgs : $(JAVAPKGS_CLEAN)
+
+$(JAVAPKGS_INSTALL): %-install:
+	cd $* && mvn clean package
+
+$(JAVAPKGS_JAVADTS): %/java.d.ts: bin/ts-java.sh
+	cd $* && ../bin/ts-java.sh
+
+$(JAVAPKGS_CLEAN): %-clean:
+	cd $* && mvn clean
+	rm -rf $*/java.d.ts $*/o
+
+####
 TS_SRC=$(filter-out %.d.ts,$(wildcard bin/*.ts lib/*.ts test/*.ts features/step_definitions/*.ts))
 TS_OBJ=$(patsubst %.ts,%.js,$(TS_SRC))
 TS_JSMAP=$(patsubst %.ts,%.js.map,$(TS_SRC))
@@ -22,7 +53,7 @@ test: unittest cucumber
 unittest: $(TS_OBJ)
 	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd
 
-cucumber: build-java-pkgs
+cucumber: $(JAVAPKGS_JAVADTS)
 	./node_modules/.bin/cucumber-js --tags '~@todo' --require features/step_definitions
 
 %.js: %.ts
@@ -62,36 +93,6 @@ TSD=./node_modules/.bin/tsd
 
 install-tsd: install-npm
 	$(TSD) reinstall
-
-######
-# JAVAPKGS are directories containing a pom.xml and a package.json in which ts-java will be run
-# to generate a java.d.ts file. Keep the packages in alphabetical order.
-# Note that cucumber tests depend on these packages being 'built' by the build-java-pkgs target.
-JAVAPKGS=\
-	reflection \
-	tinkerpop \
-
-JAVAPKGS_INSTALL=$(patsubst %,%-install,$(JAVAPKGS))
-JAVAPKGS_BUILD=$(patsubst %,%-build,$(JAVAPKGS))
-JAVAPKGS_CLEAN=$(patsubst %,%-clean,$(JAVAPKGS))
-
-.PHONY: $(JAVAPKGS_INSTALL) $(JAVAPKGS_BUILD) $(JAVAPKGS_CLEAN)
-
-install-java-pkgs : $(JAVAPKGS_INSTALL)
-
-build-java-pkgs : $(JAVAPKGS_BUILD)
-
-clean-java-pkgs : $(JAVAPKGS_CLEAN)
-
-$(JAVAPKGS_INSTALL): %-install:
-	cd $* && mvn clean package
-
-$(JAVAPKGS_BUILD): %-build: bin/ts-java.sh
-	cd $* && ../bin/ts-java.sh
-
-$(JAVAPKGS_CLEAN): %-clean:
-	cd $* && mvn clean
-	rm -rf $*/java.d.ts $*/o
 
 #####
 # Explicit dependencies for files that are referenced
