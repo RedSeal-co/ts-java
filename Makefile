@@ -4,7 +4,9 @@
 
 default: test
 
-all: install test documentation
+all:
+	$(MAKE) install
+	$(MAKE) test documentation
 
 lint:
 	ls $(TS_SRC) | xargs -n1 node_modules/tslint/bin/tslint --config tslint.json --file
