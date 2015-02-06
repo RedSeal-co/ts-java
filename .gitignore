@@ -18,3 +18,5 @@ reflection/*
 !reflection/package.json
 !reflection/pom.xml
 
+*.unitran
+*.featran

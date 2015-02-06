@@ -42,15 +42,24 @@ TSC_OPTS=--module commonjs --target ES5 --sourceMap
 
 ###
 FEATURES=$(wildcard features/*/*.feature)
-FEATURES_RAN=$(patsubst %.feature,%.lastran,$(FEATURES))
+FEATURES_RAN=$(patsubst %.feature,%.featran,$(FEATURES))
 
 $(FEATURES_RAN): $(JAVAPKGS_JAVADTS)
 
-$(FEATURES_RAN): %.lastran: %.feature
+$(FEATURES_RAN): %.featran: %.feature
 	./node_modules/.bin/cucumber-js --tags '~@todo' --require features/step_definitions $<
+	touch $@
 
-####
+###
+UNIT_TESTS=$(filter-out %.d.ts, $(wildcard test/*.ts))
+UNIT_TEST_OBJS=$(patsubst %.ts,%.js,$(UNIT_TESTS))
+UNIT_TEST_RAN=$(patsubst %.ts,%.unitran,$(UNIT_TESTS))
 
+$(UNIT_TEST_RAN): %.unitran: %.js
+	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd $<
+	touch $@
+
+#####
 all:
 	$(MAKE) install
 	$(MAKE) test documentation
@@ -60,8 +69,7 @@ documentation :
 
 test: unittest cucumber
 
-unittest: $(TS_OBJ)
-	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd
+unittest: $(UNIT_TEST_RAN)
 
 cucumber: $(FEATURES_RAN)
 
@@ -73,7 +81,7 @@ cucumber: $(FEATURES_RAN)
 clean: clean-cucumber clean-doc clean-js-map clean-npm clean-obj clean-tsd clean-unittest clean-java-pkgs
 
 clean-cucumber:
-	rm -rf o.features
+	rm -rf o.features $(FEATURES_RAN)
 
 clean-doc:
 	rm -rf doc
@@ -91,7 +99,7 @@ clean-tsd:
 	rm -rf typings
 
 clean-unittest:
-	rm -rf o/*
+	rm -rf o/* test/*.unitran
 
 install: install-tsd install-java-pkgs
 
