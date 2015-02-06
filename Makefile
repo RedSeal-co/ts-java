@@ -41,6 +41,17 @@ TS_JSMAP=$(patsubst %.ts,%.js.map,$(TS_SRC))
 TSC=./node_modules/.bin/tsc
 TSC_OPTS=--module commonjs --target ES5 --sourceMap
 
+###
+FEATURES=$(wildcard features/*/*.feature)
+FEATURES_RAN=$(patsubst %.feature,%.lastran,$(FEATURES))
+
+$(FEATURES_RAN): $(JAVAPKGS_JAVADTS)
+
+$(FEATURES_RAN): %.lastran: %.feature
+	./node_modules/.bin/cucumber-js --tags '~@todo' --require features/step_definitions $<
+
+####
+
 all:
 	$(MAKE) install
 	$(MAKE) test documentation
@@ -53,8 +64,7 @@ test: unittest cucumber
 unittest: $(TS_OBJ)
 	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd
 
-cucumber: $(JAVAPKGS_JAVADTS)
-	./node_modules/.bin/cucumber-js --tags '~@todo' --require features/step_definitions
+cucumber: $(FEATURES_RAN)
 
 %.js: %.ts
 	node_modules/tslint/bin/tslint --config tslint.json --file $<
