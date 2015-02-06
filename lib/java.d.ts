@@ -43,20 +43,27 @@ declare module Java {
 
     newArray<T>(className: string, arg: any[]): Array<T>;
 
+    import(className: 'java.lang.ClassLoader'): java.lang.ClassLoader.Static;
     import(className: 'java.lang.reflect.Method'): java.lang.reflect.Method.Static;
     import(className: 'java.lang.Class'): java.lang.Class.Static;
     import(className: 'java.lang.reflect.Parameter'): java.lang.reflect.Parameter.Static;
     import(className: 'java.lang.String'): java.lang.String.Static;
+    import(className: 'java.lang.StringBuffer'): java.lang.StringBuffer.Static;
     import(className: 'java.lang.Iterable'): java.lang.Iterable.Static;
     import(className: 'java.lang.reflect.GenericDeclaration'): java.lang.reflect.GenericDeclaration.Static;
+    import(className: 'java.lang.Appendable'): java.lang.Appendable.Static;
     import(className: 'java.lang.reflect.AnnotatedElement'): java.lang.reflect.AnnotatedElement.Static;
+    import(className: 'java.lang.CharSequence'): java.lang.CharSequence.Static;
     import(className: 'java.lang.reflect.AnnotatedType'): java.lang.reflect.AnnotatedType.Static;
     import(className: 'java.lang.Comparable'): java.lang.Comparable.Static;
     import(className: 'java.lang.reflect.Executable'): java.lang.reflect.Executable.Static;
+    import(className: 'java.lang.Package'): java.lang.Package.Static;
     import(className: 'java.lang.Object'): java.lang.Object.Static;
+    import(className: 'java.lang.AbstractStringBuilder'): java.lang.AbstractStringBuilder.Static;
     import(className: 'java.lang.reflect.Constructor'): java.lang.reflect.Constructor.Static;
     import(className: 'java.lang.reflect.Field'): java.lang.reflect.Field.Static;
-    import(className: 'java.lang.ClassLoader'): java.lang.ClassLoader.Static;
+    import(className: 'java.lang.StringBuilder'): java.lang.StringBuilder.Static;
+    import(className: 'java.lang.annotation.Annotation'): java.lang.annotation.Annotation.Static;
     import(className: 'java.lang.reflect.AccessibleObject'): java.lang.reflect.AccessibleObject.Static;
     import(className: 'java.lang.reflect.TypeVariable'): java.lang.reflect.TypeVariable.Static;
     import(className: 'java.lang.reflect.Member'): java.lang.reflect.Member.Static;
@@ -72,13 +79,21 @@ declare module Java {
     newInstance(className: 'java.lang.String', arg0: number[], arg1: string_t, cb: Callback<java.lang.String>): void;
     newInstance(className: 'java.lang.String', arg0: number[], arg1: number, cb: Callback<java.lang.String>): void;
     newInstance(className: 'java.lang.String', arg0: number[], arg1: any, cb: Callback<java.lang.String>): void;
+    newInstance(className: 'java.lang.String', arg0: StringBuilder, cb: Callback<java.lang.String>): void;
+    newInstance(className: 'java.lang.String', arg0: StringBuffer, cb: Callback<java.lang.String>): void;
     newInstance(className: 'java.lang.String', arg0: string_t, cb: Callback<java.lang.String>): void;
     newInstance(className: 'java.lang.String', arg0: string[], cb: Callback<java.lang.String>): void;
     newInstance(className: 'java.lang.String', arg0: number[], cb: Callback<java.lang.String>): void;
-    newInstance(className: 'java.lang.String', arg0: any, cb: Callback<java.lang.String>): void;
-    newInstance(className: 'java.lang.String', arg0: any, cb: Callback<java.lang.String>): void;
     newInstance(className: 'java.lang.String', cb: Callback<java.lang.String>): void;
+    newInstance(className: 'java.lang.StringBuffer', arg0: CharSequence, cb: Callback<java.lang.StringBuffer>): void;
+    newInstance(className: 'java.lang.StringBuffer', arg0: string_t, cb: Callback<java.lang.StringBuffer>): void;
+    newInstance(className: 'java.lang.StringBuffer', arg0: number, cb: Callback<java.lang.StringBuffer>): void;
+    newInstance(className: 'java.lang.StringBuffer', cb: Callback<java.lang.StringBuffer>): void;
     newInstance(className: 'java.lang.Object', cb: Callback<java.lang.Object>): void;
+    newInstance(className: 'java.lang.StringBuilder', arg0: CharSequence, cb: Callback<java.lang.StringBuilder>): void;
+    newInstance(className: 'java.lang.StringBuilder', arg0: string_t, cb: Callback<java.lang.StringBuilder>): void;
+    newInstance(className: 'java.lang.StringBuilder', arg0: number, cb: Callback<java.lang.StringBuilder>): void;
+    newInstance(className: 'java.lang.StringBuilder', cb: Callback<java.lang.StringBuilder>): void;
     newInstance(className: string, ...args: any[]): void;
 
     newInstanceSync(className: 'java.lang.String', arg0: number[], arg1: number, arg2: number, arg3: string_t): java.lang.String;
@@ -90,13 +105,21 @@ declare module Java {
     newInstanceSync(className: 'java.lang.String', arg0: number[], arg1: string_t): java.lang.String;
     newInstanceSync(className: 'java.lang.String', arg0: number[], arg1: number): java.lang.String;
     newInstanceSync(className: 'java.lang.String', arg0: number[], arg1: any): java.lang.String;
+    newInstanceSync(className: 'java.lang.String', arg0: StringBuilder): java.lang.String;
+    newInstanceSync(className: 'java.lang.String', arg0: StringBuffer): java.lang.String;
     newInstanceSync(className: 'java.lang.String', arg0: string_t): java.lang.String;
     newInstanceSync(className: 'java.lang.String', arg0: string[]): java.lang.String;
     newInstanceSync(className: 'java.lang.String', arg0: number[]): java.lang.String;
-    newInstanceSync(className: 'java.lang.String', arg0: any): java.lang.String;
-    newInstanceSync(className: 'java.lang.String', arg0: any): java.lang.String;
     newInstanceSync(className: 'java.lang.String'): java.lang.String;
+    newInstanceSync(className: 'java.lang.StringBuffer', arg0: CharSequence): java.lang.StringBuffer;
+    newInstanceSync(className: 'java.lang.StringBuffer', arg0: string_t): java.lang.StringBuffer;
+    newInstanceSync(className: 'java.lang.StringBuffer', arg0: number): java.lang.StringBuffer;
+    newInstanceSync(className: 'java.lang.StringBuffer'): java.lang.StringBuffer;
     newInstanceSync(className: 'java.lang.Object'): java.lang.Object;
+    newInstanceSync(className: 'java.lang.StringBuilder', arg0: CharSequence): java.lang.StringBuilder;
+    newInstanceSync(className: 'java.lang.StringBuilder', arg0: string_t): java.lang.StringBuilder;
+    newInstanceSync(className: 'java.lang.StringBuilder', arg0: number): java.lang.StringBuilder;
+    newInstanceSync(className: 'java.lang.StringBuilder'): java.lang.StringBuilder;
     newInstanceSync(className: string, ...args: any[]): any;
 
     newInstancePromise(className: 'java.lang.String', arg0: number[], arg1: number, arg2: number, arg3: string_t): Promise<java.lang.String>;
@@ -108,34 +131,174 @@ declare module Java {
     newInstancePromise(className: 'java.lang.String', arg0: number[], arg1: string_t): Promise<java.lang.String>;
     newInstancePromise(className: 'java.lang.String', arg0: number[], arg1: number): Promise<java.lang.String>;
     newInstancePromise(className: 'java.lang.String', arg0: number[], arg1: any): Promise<java.lang.String>;
+    newInstancePromise(className: 'java.lang.String', arg0: StringBuilder): Promise<java.lang.String>;
+    newInstancePromise(className: 'java.lang.String', arg0: StringBuffer): Promise<java.lang.String>;
     newInstancePromise(className: 'java.lang.String', arg0: string_t): Promise<java.lang.String>;
     newInstancePromise(className: 'java.lang.String', arg0: string[]): Promise<java.lang.String>;
     newInstancePromise(className: 'java.lang.String', arg0: number[]): Promise<java.lang.String>;
-    newInstancePromise(className: 'java.lang.String', arg0: any): Promise<java.lang.String>;
-    newInstancePromise(className: 'java.lang.String', arg0: any): Promise<java.lang.String>;
     newInstancePromise(className: 'java.lang.String'): Promise<java.lang.String>;
+    newInstancePromise(className: 'java.lang.StringBuffer', arg0: CharSequence): Promise<java.lang.StringBuffer>;
+    newInstancePromise(className: 'java.lang.StringBuffer', arg0: string_t): Promise<java.lang.StringBuffer>;
+    newInstancePromise(className: 'java.lang.StringBuffer', arg0: number): Promise<java.lang.StringBuffer>;
+    newInstancePromise(className: 'java.lang.StringBuffer'): Promise<java.lang.StringBuffer>;
     newInstancePromise(className: 'java.lang.Object'): Promise<java.lang.Object>;
+    newInstancePromise(className: 'java.lang.StringBuilder', arg0: CharSequence): Promise<java.lang.StringBuilder>;
+    newInstancePromise(className: 'java.lang.StringBuilder', arg0: string_t): Promise<java.lang.StringBuilder>;
+    newInstancePromise(className: 'java.lang.StringBuilder', arg0: number): Promise<java.lang.StringBuilder>;
+    newInstancePromise(className: 'java.lang.StringBuilder'): Promise<java.lang.StringBuilder>;
     newInstancePromise(className: string, ...args: any[]): Promise<any>;
   }
 
+  export import ClassLoader = java.lang.ClassLoader;
   export import Method = java.lang.reflect.Method;
   export import Class = java.lang.Class;
   export import Parameter = java.lang.reflect.Parameter;
   export import String = java.lang.String;
+  export import StringBuffer = java.lang.StringBuffer;
   export import Iterable = java.lang.Iterable;
   export import GenericDeclaration = java.lang.reflect.GenericDeclaration;
+  export import Appendable = java.lang.Appendable;
   export import AnnotatedElement = java.lang.reflect.AnnotatedElement;
+  export import CharSequence = java.lang.CharSequence;
   export import AnnotatedType = java.lang.reflect.AnnotatedType;
   export import Comparable = java.lang.Comparable;
   export import Executable = java.lang.reflect.Executable;
+  export import Package = java.lang.Package;
   export import Object = java.lang.Object;
+  export import AbstractStringBuilder = java.lang.AbstractStringBuilder;
   export import Constructor = java.lang.reflect.Constructor;
   export import Field = java.lang.reflect.Field;
-  export import ClassLoader = java.lang.ClassLoader;
+  export import StringBuilder = java.lang.StringBuilder;
+  export import Annotation = java.lang.annotation.Annotation;
   export import AccessibleObject = java.lang.reflect.AccessibleObject;
   export import TypeVariable = java.lang.reflect.TypeVariable;
   export import Member = java.lang.reflect.Member;
   export import Type = java.lang.reflect.Type;
+
+  export module java.lang {
+    export interface ClassLoader extends java.lang.Object {
+      // clearAssertionStatus
+      // public void java.lang.ClassLoader.clearAssertionStatus()
+      clearAssertionStatus( cb: Callback<void>): void;
+      clearAssertionStatusSync(): void;
+      clearAssertionStatusPromise(): Promise<void>;
+      // equals
+      // public boolean java.lang.Object.equals(java.lang.Object)
+      equals(arg0: object_t, cb: Callback<boolean>): void;
+      equalsSync(arg0: object_t): boolean;
+      equalsPromise(arg0: object_t): Promise<boolean>;
+      // getClass
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClass( cb: Callback<Class>): void;
+      getClassSync(): Class;
+      getClassPromise(): Promise<Class>;
+      // getParent
+      // public final java.lang.ClassLoader java.lang.ClassLoader.getParent()
+      getParent( cb: Callback<ClassLoader>): void;
+      getParentSync(): ClassLoader;
+      getParentPromise(): Promise<ClassLoader>;
+      // getResource
+      // public java.net.URL java.lang.ClassLoader.getResource(java.lang.String)
+      getResource(arg0: string_t, cb: Callback<any>): void;
+      getResourceSync(arg0: string_t): any;
+      getResourcePromise(arg0: string_t): Promise<any>;
+      // getResourceAsStream
+      // public java.io.InputStream java.lang.ClassLoader.getResourceAsStream(java.lang.String)
+      getResourceAsStream(arg0: string_t, cb: Callback<any>): void;
+      getResourceAsStreamSync(arg0: string_t): any;
+      getResourceAsStreamPromise(arg0: string_t): Promise<any>;
+      // getResources
+      // public java.util.Enumeration<java.net.URL> java.lang.ClassLoader.getResources(java.lang.String) throws java.io.IOException
+      getResources(arg0: string_t, cb: Callback<any>): void;
+      getResourcesSync(arg0: string_t): any;
+      getResourcesPromise(arg0: string_t): Promise<any>;
+      // getSystemClassLoader
+      // public static java.lang.ClassLoader java.lang.ClassLoader.getSystemClassLoader()
+      // static method, see .Static
+      // getSystemResource
+      // public static java.net.URL java.lang.ClassLoader.getSystemResource(java.lang.String)
+      // static method, see .Static
+      // getSystemResourceAsStream
+      // public static java.io.InputStream java.lang.ClassLoader.getSystemResourceAsStream(java.lang.String)
+      // static method, see .Static
+      // getSystemResources
+      // public static java.util.Enumeration<java.net.URL> java.lang.ClassLoader.getSystemResources(java.lang.String) throws java.io.IOException
+      // static method, see .Static
+      // hashCode
+      // public native int java.lang.Object.hashCode()
+      hashCode( cb: Callback<number>): void;
+      hashCodeSync(): number;
+      hashCodePromise(): Promise<number>;
+      // loadClass
+      // public java.lang.Class<?> java.lang.ClassLoader.loadClass(java.lang.String) throws java.lang.ClassNotFoundException
+      loadClass(arg0: string_t, cb: Callback<Class>): void;
+      loadClassSync(arg0: string_t): Class;
+      loadClassPromise(arg0: string_t): Promise<Class>;
+      // notify
+      // public final native void java.lang.Object.notify()
+      notify( cb: Callback<void>): void;
+      notifySync(): void;
+      notifyPromise(): Promise<void>;
+      // notifyAll
+      // public final native void java.lang.Object.notifyAll()
+      notifyAll( cb: Callback<void>): void;
+      notifyAllSync(): void;
+      notifyAllPromise(): Promise<void>;
+      // setClassAssertionStatus
+      // public void java.lang.ClassLoader.setClassAssertionStatus(java.lang.String,boolean)
+      setClassAssertionStatus(arg0: string_t, arg1: boolean, cb: Callback<void>): void;
+      setClassAssertionStatusSync(arg0: string_t, arg1: boolean): void;
+      setClassAssertionStatusPromise(arg0: string_t, arg1: boolean): Promise<void>;
+      // setDefaultAssertionStatus
+      // public void java.lang.ClassLoader.setDefaultAssertionStatus(boolean)
+      setDefaultAssertionStatus(arg0: boolean, cb: Callback<void>): void;
+      setDefaultAssertionStatusSync(arg0: boolean): void;
+      setDefaultAssertionStatusPromise(arg0: boolean): Promise<void>;
+      // setPackageAssertionStatus
+      // public void java.lang.ClassLoader.setPackageAssertionStatus(java.lang.String,boolean)
+      setPackageAssertionStatus(arg0: string_t, arg1: boolean, cb: Callback<void>): void;
+      setPackageAssertionStatusSync(arg0: string_t, arg1: boolean): void;
+      setPackageAssertionStatusPromise(arg0: string_t, arg1: boolean): Promise<void>;
+      // toString
+      // public java.lang.String java.lang.Object.toString()
+      toString( cb: Callback<string>): void;
+      toStringSync(): string;
+      toStringPromise(): Promise<string>;
+      // wait
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      wait(arg0: number, arg1: number, cb: Callback<void>): void;
+      waitSync(arg0: number, arg1: number): void;
+      waitPromise(arg0: number, arg1: number): Promise<void>;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      wait(arg0: number, cb: Callback<void>): void;
+      waitSync(arg0: number): void;
+      waitPromise(arg0: number): Promise<void>;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      wait( cb: Callback<void>): void;
+      waitSync(): void;
+      waitPromise(): Promise<void>;
+    }
+    export module ClassLoader {
+      export interface Static {
+        // public static java.lang.ClassLoader java.lang.ClassLoader.getSystemClassLoader()
+        getSystemClassLoader( cb: Callback<ClassLoader>): void;
+        getSystemClassLoaderSync(): ClassLoader;
+        getSystemClassLoaderPromise(): Promise<ClassLoader>;
+        // public static java.net.URL java.lang.ClassLoader.getSystemResource(java.lang.String)
+        getSystemResource(arg0: string_t, cb: Callback<any>): void;
+        getSystemResourceSync(arg0: string_t): any;
+        getSystemResourcePromise(arg0: string_t): Promise<any>;
+        // public static java.io.InputStream java.lang.ClassLoader.getSystemResourceAsStream(java.lang.String)
+        getSystemResourceAsStream(arg0: string_t, cb: Callback<any>): void;
+        getSystemResourceAsStreamSync(arg0: string_t): any;
+        getSystemResourceAsStreamPromise(arg0: string_t): Promise<any>;
+        // public static java.util.Enumeration<java.net.URL> java.lang.ClassLoader.getSystemResources(java.lang.String) throws java.io.IOException
+        getSystemResources(arg0: string_t, cb: Callback<any>): void;
+        getSystemResourcesSync(arg0: string_t): any;
+        getSystemResourcesPromise(arg0: string_t): Promise<any>;
+      }
+    }
+  }
 
   export module java.lang.reflect {
     export interface Method extends java.lang.reflect.Executable {
@@ -166,19 +329,19 @@ declare module Java {
       getAnnotatedReturnTypePromise(): Promise<AnnotatedType>;
       // getAnnotation
       // public <T> T java.lang.reflect.Method.getAnnotation(java.lang.Class<T>)
-      getAnnotation(arg0: Class, cb: Callback<any>): void;
-      getAnnotationSync(arg0: Class): any;
-      getAnnotationPromise(arg0: Class): Promise<any>;
+      getAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getAnnotationSync(arg0: Class): Annotation;
+      getAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getAnnotations
       // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
-      getAnnotations( cb: Callback<any[]>): void;
-      getAnnotationsSync(): any[];
-      getAnnotationsPromise(): Promise<any[]>;
+      getAnnotations( cb: Callback<Annotation[]>): void;
+      getAnnotationsSync(): Annotation[];
+      getAnnotationsPromise(): Promise<Annotation[]>;
       // getAnnotationsByType
       // public <T> T[] java.lang.reflect.Executable.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getAnnotationsByTypeSync(arg0: Class): any[];
-      getAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getClass
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClass( cb: Callback<Class>): void;
@@ -186,19 +349,19 @@ declare module Java {
       getClassPromise(): Promise<Class>;
       // getDeclaredAnnotation
       // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotation(arg0: Class, cb: Callback<any>): void;
-      getDeclaredAnnotationSync(arg0: Class): any;
-      getDeclaredAnnotationPromise(arg0: Class): Promise<any>;
+      getDeclaredAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getDeclaredAnnotationSync(arg0: Class): Annotation;
+      getDeclaredAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getDeclaredAnnotations
       // public java.lang.annotation.Annotation[] java.lang.reflect.Method.getDeclaredAnnotations()
-      getDeclaredAnnotations( cb: Callback<any[]>): void;
-      getDeclaredAnnotationsSync(): any[];
-      getDeclaredAnnotationsPromise(): Promise<any[]>;
+      getDeclaredAnnotations( cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsSync(): Annotation[];
+      getDeclaredAnnotationsPromise(): Promise<Annotation[]>;
       // getDeclaredAnnotationsByType
       // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getDeclaredAnnotationsByTypeSync(arg0: Class): any[];
-      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getDeclaringClass
       // public java.lang.Class<?> java.lang.reflect.Method.getDeclaringClass()
       getDeclaringClass( cb: Callback<Class>): void;
@@ -241,9 +404,9 @@ declare module Java {
       getNamePromise(): Promise<string>;
       // getParameterAnnotations
       // public java.lang.annotation.Annotation[][] java.lang.reflect.Method.getParameterAnnotations()
-      getParameterAnnotations( cb: Callback<any[][]>): void;
-      getParameterAnnotationsSync(): any[][];
-      getParameterAnnotationsPromise(): Promise<any[][]>;
+      getParameterAnnotations( cb: Callback<Annotation[][]>): void;
+      getParameterAnnotationsSync(): Annotation[][];
+      getParameterAnnotationsPromise(): Promise<Annotation[][]>;
       // getParameterCount
       // public int java.lang.reflect.Method.getParameterCount()
       getParameterCount( cb: Callback<number>): void;
@@ -399,19 +562,19 @@ declare module Java {
       getAnnotatedSuperclassPromise(): Promise<AnnotatedType>;
       // getAnnotation
       // public <A> A java.lang.Class.getAnnotation(java.lang.Class<A>)
-      getAnnotation(arg0: Class, cb: Callback<any>): void;
-      getAnnotationSync(arg0: Class): any;
-      getAnnotationPromise(arg0: Class): Promise<any>;
+      getAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getAnnotationSync(arg0: Class): Annotation;
+      getAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getAnnotations
       // public java.lang.annotation.Annotation[] java.lang.Class.getAnnotations()
-      getAnnotations( cb: Callback<any[]>): void;
-      getAnnotationsSync(): any[];
-      getAnnotationsPromise(): Promise<any[]>;
+      getAnnotations( cb: Callback<Annotation[]>): void;
+      getAnnotationsSync(): Annotation[];
+      getAnnotationsPromise(): Promise<Annotation[]>;
       // getAnnotationsByType
       // public <A> A[] java.lang.Class.getAnnotationsByType(java.lang.Class<A>)
-      getAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getAnnotationsByTypeSync(arg0: Class): any[];
-      getAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getCanonicalName
       // public java.lang.String java.lang.Class.getCanonicalName()
       getCanonicalName( cb: Callback<string>): void;
@@ -449,19 +612,19 @@ declare module Java {
       getConstructorsPromise(): Promise<Constructor[]>;
       // getDeclaredAnnotation
       // public <A> A java.lang.Class.getDeclaredAnnotation(java.lang.Class<A>)
-      getDeclaredAnnotation(arg0: Class, cb: Callback<any>): void;
-      getDeclaredAnnotationSync(arg0: Class): any;
-      getDeclaredAnnotationPromise(arg0: Class): Promise<any>;
+      getDeclaredAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getDeclaredAnnotationSync(arg0: Class): Annotation;
+      getDeclaredAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getDeclaredAnnotations
       // public java.lang.annotation.Annotation[] java.lang.Class.getDeclaredAnnotations()
-      getDeclaredAnnotations( cb: Callback<any[]>): void;
-      getDeclaredAnnotationsSync(): any[];
-      getDeclaredAnnotationsPromise(): Promise<any[]>;
+      getDeclaredAnnotations( cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsSync(): Annotation[];
+      getDeclaredAnnotationsPromise(): Promise<Annotation[]>;
       // getDeclaredAnnotationsByType
       // public <A> A[] java.lang.Class.getDeclaredAnnotationsByType(java.lang.Class<A>)
-      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getDeclaredAnnotationsByTypeSync(arg0: Class): any[];
-      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getDeclaredClasses
       // public java.lang.Class<?>[] java.lang.Class.getDeclaredClasses() throws java.lang.SecurityException
       getDeclaredClasses( cb: Callback<Class[]>): void;
@@ -569,9 +732,9 @@ declare module Java {
       getNamePromise(): Promise<string>;
       // getPackage
       // public java.lang.Package java.lang.Class.getPackage()
-      getPackage( cb: Callback<any>): void;
-      getPackageSync(): any;
-      getPackagePromise(): Promise<any>;
+      getPackage( cb: Callback<Package>): void;
+      getPackageSync(): Package;
+      getPackagePromise(): Promise<Package>;
       // getProtectionDomain
       // public java.security.ProtectionDomain java.lang.Class.getProtectionDomain()
       getProtectionDomain( cb: Callback<any>): void;
@@ -744,19 +907,19 @@ declare module Java {
       getAnnotatedTypePromise(): Promise<AnnotatedType>;
       // getAnnotation
       // public <T> T java.lang.reflect.Parameter.getAnnotation(java.lang.Class<T>)
-      getAnnotation(arg0: Class, cb: Callback<any>): void;
-      getAnnotationSync(arg0: Class): any;
-      getAnnotationPromise(arg0: Class): Promise<any>;
+      getAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getAnnotationSync(arg0: Class): Annotation;
+      getAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getAnnotations
       // public java.lang.annotation.Annotation[] java.lang.reflect.Parameter.getAnnotations()
-      getAnnotations( cb: Callback<any[]>): void;
-      getAnnotationsSync(): any[];
-      getAnnotationsPromise(): Promise<any[]>;
+      getAnnotations( cb: Callback<Annotation[]>): void;
+      getAnnotationsSync(): Annotation[];
+      getAnnotationsPromise(): Promise<Annotation[]>;
       // getAnnotationsByType
       // public <T> T[] java.lang.reflect.Parameter.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getAnnotationsByTypeSync(arg0: Class): any[];
-      getAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getClass
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClass( cb: Callback<Class>): void;
@@ -764,19 +927,19 @@ declare module Java {
       getClassPromise(): Promise<Class>;
       // getDeclaredAnnotation
       // public <T> T java.lang.reflect.Parameter.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotation(arg0: Class, cb: Callback<any>): void;
-      getDeclaredAnnotationSync(arg0: Class): any;
-      getDeclaredAnnotationPromise(arg0: Class): Promise<any>;
+      getDeclaredAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getDeclaredAnnotationSync(arg0: Class): Annotation;
+      getDeclaredAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getDeclaredAnnotations
       // public java.lang.annotation.Annotation[] java.lang.reflect.Parameter.getDeclaredAnnotations()
-      getDeclaredAnnotations( cb: Callback<any[]>): void;
-      getDeclaredAnnotationsSync(): any[];
-      getDeclaredAnnotationsPromise(): Promise<any[]>;
+      getDeclaredAnnotations( cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsSync(): Annotation[];
+      getDeclaredAnnotationsPromise(): Promise<Annotation[]>;
       // getDeclaredAnnotationsByType
       // public <T> T[] java.lang.reflect.Parameter.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getDeclaredAnnotationsByTypeSync(arg0: Class): any[];
-      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getDeclaringExecutable
       // public java.lang.reflect.Executable java.lang.reflect.Parameter.getDeclaringExecutable()
       getDeclaringExecutable( cb: Callback<Executable>): void;
@@ -868,7 +1031,7 @@ declare module Java {
   }
 
   export module java.lang {
-    export interface String extends java.lang.Object,java.lang.Comparable {
+    export interface String extends java.lang.Object,java.lang.Comparable,java.lang.CharSequence {
       // charAt
       // public char java.lang.String.charAt(int)
       charAt(arg0: number, cb: Callback<string>): void;
@@ -920,18 +1083,18 @@ declare module Java {
       concatPromise(arg0: string_t): Promise<string>;
       // contains
       // public boolean java.lang.String.contains(java.lang.CharSequence)
-      contains(arg0: any, cb: Callback<boolean>): void;
-      containsSync(arg0: any): boolean;
-      containsPromise(arg0: any): Promise<boolean>;
+      contains(arg0: CharSequence, cb: Callback<boolean>): void;
+      containsSync(arg0: CharSequence): boolean;
+      containsPromise(arg0: CharSequence): Promise<boolean>;
       // contentEquals
       // public boolean java.lang.String.contentEquals(java.lang.StringBuffer)
-      contentEquals(arg0: any, cb: Callback<boolean>): void;
-      contentEqualsSync(arg0: any): boolean;
-      contentEqualsPromise(arg0: any): Promise<boolean>;
+      contentEquals(arg0: StringBuffer, cb: Callback<boolean>): void;
+      contentEqualsSync(arg0: StringBuffer): boolean;
+      contentEqualsPromise(arg0: StringBuffer): Promise<boolean>;
       // public boolean java.lang.String.contentEquals(java.lang.CharSequence)
-      contentEquals(arg0: any, cb: Callback<boolean>): void;
-      contentEqualsSync(arg0: any): boolean;
-      contentEqualsPromise(arg0: any): Promise<boolean>;
+      contentEquals(arg0: CharSequence, cb: Callback<boolean>): void;
+      contentEqualsSync(arg0: CharSequence): boolean;
+      contentEqualsPromise(arg0: CharSequence): Promise<boolean>;
       // copyValueOf
       // public static java.lang.String java.lang.String.copyValueOf(char[],int,int)
       // static method, see .Static
@@ -1073,14 +1236,14 @@ declare module Java {
       regionMatchesSync(arg0: number, arg1: string_t, arg2: number, arg3: number): boolean;
       regionMatchesPromise(arg0: number, arg1: string_t, arg2: number, arg3: number): Promise<boolean>;
       // replace
+      // public java.lang.String java.lang.String.replace(java.lang.CharSequence,java.lang.CharSequence)
+      replace(arg0: CharSequence, arg1: CharSequence, cb: Callback<string>): void;
+      replaceSync(arg0: CharSequence, arg1: CharSequence): string;
+      replacePromise(arg0: CharSequence, arg1: CharSequence): Promise<string>;
       // public java.lang.String java.lang.String.replace(char,char)
       replace(arg0: string, arg1: string, cb: Callback<string>): void;
       replaceSync(arg0: string, arg1: string): string;
       replacePromise(arg0: string, arg1: string): Promise<string>;
-      // public java.lang.String java.lang.String.replace(java.lang.CharSequence,java.lang.CharSequence)
-      replace(arg0: any, arg1: any, cb: Callback<string>): void;
-      replaceSync(arg0: any, arg1: any): string;
-      replacePromise(arg0: any, arg1: any): Promise<string>;
       // replaceAll
       // public java.lang.String java.lang.String.replaceAll(java.lang.String,java.lang.String)
       replaceAll(arg0: string_t, arg1: string_t, cb: Callback<string>): void;
@@ -1111,9 +1274,9 @@ declare module Java {
       startsWithPromise(arg0: string_t): Promise<boolean>;
       // subSequence
       // public java.lang.CharSequence java.lang.String.subSequence(int,int)
-      subSequence(arg0: number, arg1: number, cb: Callback<any>): void;
-      subSequenceSync(arg0: number, arg1: number): any;
-      subSequencePromise(arg0: number, arg1: number): Promise<any>;
+      subSequence(arg0: number, arg1: number, cb: Callback<CharSequence>): void;
+      subSequenceSync(arg0: number, arg1: number): CharSequence;
+      subSequencePromise(arg0: number, arg1: number): Promise<CharSequence>;
       // substring
       // public java.lang.String java.lang.String.substring(int,int)
       substring(arg0: number, arg1: number, cb: Callback<string>): void;
@@ -1200,11 +1363,11 @@ declare module Java {
         new (arg0: number[], arg1: string_t): java.lang.String;
         new (arg0: number[], arg1: number): java.lang.String;
         new (arg0: number[], arg1: any): java.lang.String;
+        new (arg0: StringBuilder): java.lang.String;
+        new (arg0: StringBuffer): java.lang.String;
         new (arg0: string_t): java.lang.String;
         new (arg0: string[]): java.lang.String;
         new (arg0: number[]): java.lang.String;
-        new (arg0: any): java.lang.String;
-        new (arg0: any): java.lang.String;
         new (): java.lang.String;
         // public static java.lang.String java.lang.String.copyValueOf(char[],int,int)
         copyValueOf(arg0: string[], arg1: number, arg2: number, cb: Callback<string>): void;
@@ -1223,13 +1386,13 @@ declare module Java {
         formatSync(arg0: string_t, arg1: Array<object_t>): string;
         formatPromise(arg0: string_t, arg1: Array<object_t>): Promise<string>;
         // public static java.lang.String java.lang.String.join(java.lang.CharSequence,java.lang.CharSequence...)
-        join(arg0: any, arg1: Array<any>, cb: Callback<string>): void;
-        joinSync(arg0: any, arg1: Array<any>): string;
-        joinPromise(arg0: any, arg1: Array<any>): Promise<string>;
+        join(arg0: CharSequence, arg1: Array<CharSequence>, cb: Callback<string>): void;
+        joinSync(arg0: CharSequence, arg1: Array<CharSequence>): string;
+        joinPromise(arg0: CharSequence, arg1: Array<CharSequence>): Promise<string>;
         // public static java.lang.String java.lang.String.join(java.lang.CharSequence,java.lang.Iterable<? extends java.lang.CharSequence>)
-        join(arg0: any, arg1: Iterable, cb: Callback<string>): void;
-        joinSync(arg0: any, arg1: Iterable): string;
-        joinPromise(arg0: any, arg1: Iterable): Promise<string>;
+        join(arg0: CharSequence, arg1: Iterable, cb: Callback<string>): void;
+        joinSync(arg0: CharSequence, arg1: Iterable): string;
+        joinPromise(arg0: CharSequence, arg1: Iterable): Promise<string>;
         // public static java.lang.String java.lang.String.valueOf(char[],int,int)
         valueOf(arg0: string[], arg1: number, arg2: number, cb: Callback<string>): void;
         valueOfSync(arg0: string[], arg1: number, arg2: number): string;
@@ -1271,6 +1434,423 @@ declare module Java {
   }
 
   export module java.lang {
+    export interface StringBuffer extends java.lang.AbstractStringBuilder,java.lang.CharSequence {
+      // append
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.append(java.lang.CharSequence,int,int)
+      append(arg0: CharSequence, arg1: number, arg2: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: CharSequence, arg1: number, arg2: number): AbstractStringBuilder;
+      appendPromise(arg0: CharSequence, arg1: number, arg2: number): Promise<AbstractStringBuilder>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.append(java.lang.CharSequence,int,int)
+      append(arg0: CharSequence, arg1: number, arg2: number, cb: Callback<StringBuffer>): void;
+      appendSync(arg0: CharSequence, arg1: number, arg2: number): StringBuffer;
+      appendPromise(arg0: CharSequence, arg1: number, arg2: number): Promise<StringBuffer>;
+      // public java.lang.Appendable java.lang.StringBuffer.append(java.lang.CharSequence,int,int) throws java.io.IOException
+      append(arg0: CharSequence, arg1: number, arg2: number, cb: Callback<Appendable>): void;
+      appendSync(arg0: CharSequence, arg1: number, arg2: number): Appendable;
+      appendPromise(arg0: CharSequence, arg1: number, arg2: number): Promise<Appendable>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.append(char[],int,int)
+      append(arg0: string[], arg1: number, arg2: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: string[], arg1: number, arg2: number): AbstractStringBuilder;
+      appendPromise(arg0: string[], arg1: number, arg2: number): Promise<AbstractStringBuilder>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.append(char[],int,int)
+      append(arg0: string[], arg1: number, arg2: number, cb: Callback<StringBuffer>): void;
+      appendSync(arg0: string[], arg1: number, arg2: number): StringBuffer;
+      appendPromise(arg0: string[], arg1: number, arg2: number): Promise<StringBuffer>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.append(java.lang.StringBuffer)
+      append(arg0: StringBuffer, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: StringBuffer): AbstractStringBuilder;
+      appendPromise(arg0: StringBuffer): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.append(java.lang.CharSequence)
+      append(arg0: CharSequence, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: CharSequence): AbstractStringBuilder;
+      appendPromise(arg0: CharSequence): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.append(java.lang.String)
+      append(arg0: string_t, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: string_t): AbstractStringBuilder;
+      appendPromise(arg0: string_t): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.append(java.lang.Object)
+      append(arg0: object_t, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: object_t): AbstractStringBuilder;
+      appendPromise(arg0: object_t): Promise<AbstractStringBuilder>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.append(java.lang.StringBuffer)
+      append(arg0: StringBuffer, cb: Callback<StringBuffer>): void;
+      appendSync(arg0: StringBuffer): StringBuffer;
+      appendPromise(arg0: StringBuffer): Promise<StringBuffer>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.append(java.lang.CharSequence)
+      append(arg0: CharSequence, cb: Callback<StringBuffer>): void;
+      appendSync(arg0: CharSequence): StringBuffer;
+      appendPromise(arg0: CharSequence): Promise<StringBuffer>;
+      // public java.lang.Appendable java.lang.StringBuffer.append(java.lang.CharSequence) throws java.io.IOException
+      append(arg0: CharSequence, cb: Callback<Appendable>): void;
+      appendSync(arg0: CharSequence): Appendable;
+      appendPromise(arg0: CharSequence): Promise<Appendable>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.append(java.lang.String)
+      append(arg0: string_t, cb: Callback<StringBuffer>): void;
+      appendSync(arg0: string_t): StringBuffer;
+      appendPromise(arg0: string_t): Promise<StringBuffer>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.append(java.lang.Object)
+      append(arg0: object_t, cb: Callback<StringBuffer>): void;
+      appendSync(arg0: object_t): StringBuffer;
+      appendPromise(arg0: object_t): Promise<StringBuffer>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.append(char[])
+      append(arg0: string[], cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: string[]): AbstractStringBuilder;
+      appendPromise(arg0: string[]): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.append(boolean)
+      append(arg0: boolean, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: boolean): AbstractStringBuilder;
+      appendPromise(arg0: boolean): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.append(long)
+      append(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: number): AbstractStringBuilder;
+      appendPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.append(int)
+      append(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: number): AbstractStringBuilder;
+      appendPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.append(float)
+      append(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: number): AbstractStringBuilder;
+      appendPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.append(double)
+      append(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: number): AbstractStringBuilder;
+      appendPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.append(char)
+      append(arg0: string, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: string): AbstractStringBuilder;
+      appendPromise(arg0: string): Promise<AbstractStringBuilder>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.append(char[])
+      append(arg0: string[], cb: Callback<StringBuffer>): void;
+      appendSync(arg0: string[]): StringBuffer;
+      appendPromise(arg0: string[]): Promise<StringBuffer>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.append(boolean)
+      append(arg0: boolean, cb: Callback<StringBuffer>): void;
+      appendSync(arg0: boolean): StringBuffer;
+      appendPromise(arg0: boolean): Promise<StringBuffer>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.append(long)
+      append(arg0: number, cb: Callback<StringBuffer>): void;
+      appendSync(arg0: number): StringBuffer;
+      appendPromise(arg0: number): Promise<StringBuffer>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.append(int)
+      append(arg0: number, cb: Callback<StringBuffer>): void;
+      appendSync(arg0: number): StringBuffer;
+      appendPromise(arg0: number): Promise<StringBuffer>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.append(float)
+      append(arg0: number, cb: Callback<StringBuffer>): void;
+      appendSync(arg0: number): StringBuffer;
+      appendPromise(arg0: number): Promise<StringBuffer>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.append(double)
+      append(arg0: number, cb: Callback<StringBuffer>): void;
+      appendSync(arg0: number): StringBuffer;
+      appendPromise(arg0: number): Promise<StringBuffer>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.append(char)
+      append(arg0: string, cb: Callback<StringBuffer>): void;
+      appendSync(arg0: string): StringBuffer;
+      appendPromise(arg0: string): Promise<StringBuffer>;
+      // public java.lang.Appendable java.lang.StringBuffer.append(char) throws java.io.IOException
+      append(arg0: string, cb: Callback<Appendable>): void;
+      appendSync(arg0: string): Appendable;
+      appendPromise(arg0: string): Promise<Appendable>;
+      // appendCodePoint
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.appendCodePoint(int)
+      appendCodePoint(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      appendCodePointSync(arg0: number): AbstractStringBuilder;
+      appendCodePointPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.appendCodePoint(int)
+      appendCodePoint(arg0: number, cb: Callback<StringBuffer>): void;
+      appendCodePointSync(arg0: number): StringBuffer;
+      appendCodePointPromise(arg0: number): Promise<StringBuffer>;
+      // capacity
+      // public synchronized int java.lang.StringBuffer.capacity()
+      capacity( cb: Callback<number>): void;
+      capacitySync(): number;
+      capacityPromise(): Promise<number>;
+      // charAt
+      // public synchronized char java.lang.StringBuffer.charAt(int)
+      charAt(arg0: number, cb: Callback<string>): void;
+      charAtSync(arg0: number): string;
+      charAtPromise(arg0: number): Promise<string>;
+      // chars
+      // public default java.util.stream.IntStream java.lang.CharSequence.chars()
+      chars( cb: Callback<any>): void;
+      charsSync(): any;
+      charsPromise(): Promise<any>;
+      // codePointAt
+      // public synchronized int java.lang.StringBuffer.codePointAt(int)
+      codePointAt(arg0: number, cb: Callback<number>): void;
+      codePointAtSync(arg0: number): number;
+      codePointAtPromise(arg0: number): Promise<number>;
+      // codePointBefore
+      // public synchronized int java.lang.StringBuffer.codePointBefore(int)
+      codePointBefore(arg0: number, cb: Callback<number>): void;
+      codePointBeforeSync(arg0: number): number;
+      codePointBeforePromise(arg0: number): Promise<number>;
+      // codePointCount
+      // public synchronized int java.lang.StringBuffer.codePointCount(int,int)
+      codePointCount(arg0: number, arg1: number, cb: Callback<number>): void;
+      codePointCountSync(arg0: number, arg1: number): number;
+      codePointCountPromise(arg0: number, arg1: number): Promise<number>;
+      // codePoints
+      // public default java.util.stream.IntStream java.lang.CharSequence.codePoints()
+      codePoints( cb: Callback<any>): void;
+      codePointsSync(): any;
+      codePointsPromise(): Promise<any>;
+      // delete
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.delete(int,int)
+      delete(arg0: number, arg1: number, cb: Callback<AbstractStringBuilder>): void;
+      deleteSync(arg0: number, arg1: number): AbstractStringBuilder;
+      deletePromise(arg0: number, arg1: number): Promise<AbstractStringBuilder>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.delete(int,int)
+      delete(arg0: number, arg1: number, cb: Callback<StringBuffer>): void;
+      deleteSync(arg0: number, arg1: number): StringBuffer;
+      deletePromise(arg0: number, arg1: number): Promise<StringBuffer>;
+      // deleteCharAt
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.deleteCharAt(int)
+      deleteCharAt(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      deleteCharAtSync(arg0: number): AbstractStringBuilder;
+      deleteCharAtPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.deleteCharAt(int)
+      deleteCharAt(arg0: number, cb: Callback<StringBuffer>): void;
+      deleteCharAtSync(arg0: number): StringBuffer;
+      deleteCharAtPromise(arg0: number): Promise<StringBuffer>;
+      // ensureCapacity
+      // public synchronized void java.lang.StringBuffer.ensureCapacity(int)
+      ensureCapacity(arg0: number, cb: Callback<void>): void;
+      ensureCapacitySync(arg0: number): void;
+      ensureCapacityPromise(arg0: number): Promise<void>;
+      // equals
+      // public boolean java.lang.Object.equals(java.lang.Object)
+      equals(arg0: object_t, cb: Callback<boolean>): void;
+      equalsSync(arg0: object_t): boolean;
+      equalsPromise(arg0: object_t): Promise<boolean>;
+      // getChars
+      // public synchronized void java.lang.StringBuffer.getChars(int,int,char[],int)
+      getChars(arg0: number, arg1: number, arg2: string[], arg3: number, cb: Callback<void>): void;
+      getCharsSync(arg0: number, arg1: number, arg2: string[], arg3: number): void;
+      getCharsPromise(arg0: number, arg1: number, arg2: string[], arg3: number): Promise<void>;
+      // getClass
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClass( cb: Callback<Class>): void;
+      getClassSync(): Class;
+      getClassPromise(): Promise<Class>;
+      // hashCode
+      // public native int java.lang.Object.hashCode()
+      hashCode( cb: Callback<number>): void;
+      hashCodeSync(): number;
+      hashCodePromise(): Promise<number>;
+      // indexOf
+      // public synchronized int java.lang.StringBuffer.indexOf(java.lang.String,int)
+      indexOf(arg0: string_t, arg1: number, cb: Callback<number>): void;
+      indexOfSync(arg0: string_t, arg1: number): number;
+      indexOfPromise(arg0: string_t, arg1: number): Promise<number>;
+      // public int java.lang.StringBuffer.indexOf(java.lang.String)
+      indexOf(arg0: string_t, cb: Callback<number>): void;
+      indexOfSync(arg0: string_t): number;
+      indexOfPromise(arg0: string_t): Promise<number>;
+      // insert
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.insert(int,java.lang.CharSequence,int,int)
+      insert(arg0: number, arg1: CharSequence, arg2: number, arg3: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: CharSequence, arg2: number, arg3: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: CharSequence, arg2: number, arg3: number): Promise<AbstractStringBuilder>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.insert(int,java.lang.CharSequence,int,int)
+      insert(arg0: number, arg1: CharSequence, arg2: number, arg3: number, cb: Callback<StringBuffer>): void;
+      insertSync(arg0: number, arg1: CharSequence, arg2: number, arg3: number): StringBuffer;
+      insertPromise(arg0: number, arg1: CharSequence, arg2: number, arg3: number): Promise<StringBuffer>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.insert(int,char[],int,int)
+      insert(arg0: number, arg1: string[], arg2: number, arg3: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: string[], arg2: number, arg3: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: string[], arg2: number, arg3: number): Promise<AbstractStringBuilder>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.insert(int,char[],int,int)
+      insert(arg0: number, arg1: string[], arg2: number, arg3: number, cb: Callback<StringBuffer>): void;
+      insertSync(arg0: number, arg1: string[], arg2: number, arg3: number): StringBuffer;
+      insertPromise(arg0: number, arg1: string[], arg2: number, arg3: number): Promise<StringBuffer>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.insert(int,java.lang.CharSequence)
+      insert(arg0: number, arg1: CharSequence, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: CharSequence): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: CharSequence): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.insert(int,java.lang.String)
+      insert(arg0: number, arg1: string_t, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: string_t): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: string_t): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.insert(int,java.lang.Object)
+      insert(arg0: number, arg1: object_t, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: object_t): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: object_t): Promise<AbstractStringBuilder>;
+      // public java.lang.StringBuffer java.lang.StringBuffer.insert(int,java.lang.CharSequence)
+      insert(arg0: number, arg1: CharSequence, cb: Callback<StringBuffer>): void;
+      insertSync(arg0: number, arg1: CharSequence): StringBuffer;
+      insertPromise(arg0: number, arg1: CharSequence): Promise<StringBuffer>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.insert(int,java.lang.String)
+      insert(arg0: number, arg1: string_t, cb: Callback<StringBuffer>): void;
+      insertSync(arg0: number, arg1: string_t): StringBuffer;
+      insertPromise(arg0: number, arg1: string_t): Promise<StringBuffer>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.insert(int,java.lang.Object)
+      insert(arg0: number, arg1: object_t, cb: Callback<StringBuffer>): void;
+      insertSync(arg0: number, arg1: object_t): StringBuffer;
+      insertPromise(arg0: number, arg1: object_t): Promise<StringBuffer>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.insert(int,char[])
+      insert(arg0: number, arg1: string[], cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: string[]): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: string[]): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.insert(int,boolean)
+      insert(arg0: number, arg1: boolean, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: boolean): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: boolean): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.insert(int,long)
+      insert(arg0: number, arg1: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.insert(int,int)
+      insert(arg0: number, arg1: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.insert(int,float)
+      insert(arg0: number, arg1: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.insert(int,double)
+      insert(arg0: number, arg1: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.insert(int,char)
+      insert(arg0: number, arg1: string, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: string): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: string): Promise<AbstractStringBuilder>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.insert(int,char[])
+      insert(arg0: number, arg1: string[], cb: Callback<StringBuffer>): void;
+      insertSync(arg0: number, arg1: string[]): StringBuffer;
+      insertPromise(arg0: number, arg1: string[]): Promise<StringBuffer>;
+      // public java.lang.StringBuffer java.lang.StringBuffer.insert(int,boolean)
+      insert(arg0: number, arg1: boolean, cb: Callback<StringBuffer>): void;
+      insertSync(arg0: number, arg1: boolean): StringBuffer;
+      insertPromise(arg0: number, arg1: boolean): Promise<StringBuffer>;
+      // public java.lang.StringBuffer java.lang.StringBuffer.insert(int,long)
+      insert(arg0: number, arg1: number, cb: Callback<StringBuffer>): void;
+      insertSync(arg0: number, arg1: number): StringBuffer;
+      insertPromise(arg0: number, arg1: number): Promise<StringBuffer>;
+      // public java.lang.StringBuffer java.lang.StringBuffer.insert(int,int)
+      insert(arg0: number, arg1: number, cb: Callback<StringBuffer>): void;
+      insertSync(arg0: number, arg1: number): StringBuffer;
+      insertPromise(arg0: number, arg1: number): Promise<StringBuffer>;
+      // public java.lang.StringBuffer java.lang.StringBuffer.insert(int,float)
+      insert(arg0: number, arg1: number, cb: Callback<StringBuffer>): void;
+      insertSync(arg0: number, arg1: number): StringBuffer;
+      insertPromise(arg0: number, arg1: number): Promise<StringBuffer>;
+      // public java.lang.StringBuffer java.lang.StringBuffer.insert(int,double)
+      insert(arg0: number, arg1: number, cb: Callback<StringBuffer>): void;
+      insertSync(arg0: number, arg1: number): StringBuffer;
+      insertPromise(arg0: number, arg1: number): Promise<StringBuffer>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.insert(int,char)
+      insert(arg0: number, arg1: string, cb: Callback<StringBuffer>): void;
+      insertSync(arg0: number, arg1: string): StringBuffer;
+      insertPromise(arg0: number, arg1: string): Promise<StringBuffer>;
+      // lastIndexOf
+      // public synchronized int java.lang.StringBuffer.lastIndexOf(java.lang.String,int)
+      lastIndexOf(arg0: string_t, arg1: number, cb: Callback<number>): void;
+      lastIndexOfSync(arg0: string_t, arg1: number): number;
+      lastIndexOfPromise(arg0: string_t, arg1: number): Promise<number>;
+      // public int java.lang.StringBuffer.lastIndexOf(java.lang.String)
+      lastIndexOf(arg0: string_t, cb: Callback<number>): void;
+      lastIndexOfSync(arg0: string_t): number;
+      lastIndexOfPromise(arg0: string_t): Promise<number>;
+      // length
+      // public synchronized int java.lang.StringBuffer.length()
+      length( cb: Callback<number>): void;
+      lengthSync(): number;
+      lengthPromise(): Promise<number>;
+      // notify
+      // public final native void java.lang.Object.notify()
+      notify( cb: Callback<void>): void;
+      notifySync(): void;
+      notifyPromise(): Promise<void>;
+      // notifyAll
+      // public final native void java.lang.Object.notifyAll()
+      notifyAll( cb: Callback<void>): void;
+      notifyAllSync(): void;
+      notifyAllPromise(): Promise<void>;
+      // offsetByCodePoints
+      // public synchronized int java.lang.StringBuffer.offsetByCodePoints(int,int)
+      offsetByCodePoints(arg0: number, arg1: number, cb: Callback<number>): void;
+      offsetByCodePointsSync(arg0: number, arg1: number): number;
+      offsetByCodePointsPromise(arg0: number, arg1: number): Promise<number>;
+      // replace
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.replace(int,int,java.lang.String)
+      replace(arg0: number, arg1: number, arg2: string_t, cb: Callback<AbstractStringBuilder>): void;
+      replaceSync(arg0: number, arg1: number, arg2: string_t): AbstractStringBuilder;
+      replacePromise(arg0: number, arg1: number, arg2: string_t): Promise<AbstractStringBuilder>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.replace(int,int,java.lang.String)
+      replace(arg0: number, arg1: number, arg2: string_t, cb: Callback<StringBuffer>): void;
+      replaceSync(arg0: number, arg1: number, arg2: string_t): StringBuffer;
+      replacePromise(arg0: number, arg1: number, arg2: string_t): Promise<StringBuffer>;
+      // reverse
+      // public java.lang.AbstractStringBuilder java.lang.StringBuffer.reverse()
+      reverse( cb: Callback<AbstractStringBuilder>): void;
+      reverseSync(): AbstractStringBuilder;
+      reversePromise(): Promise<AbstractStringBuilder>;
+      // public synchronized java.lang.StringBuffer java.lang.StringBuffer.reverse()
+      reverse( cb: Callback<StringBuffer>): void;
+      reverseSync(): StringBuffer;
+      reversePromise(): Promise<StringBuffer>;
+      // setCharAt
+      // public synchronized void java.lang.StringBuffer.setCharAt(int,char)
+      setCharAt(arg0: number, arg1: string, cb: Callback<void>): void;
+      setCharAtSync(arg0: number, arg1: string): void;
+      setCharAtPromise(arg0: number, arg1: string): Promise<void>;
+      // setLength
+      // public synchronized void java.lang.StringBuffer.setLength(int)
+      setLength(arg0: number, cb: Callback<void>): void;
+      setLengthSync(arg0: number): void;
+      setLengthPromise(arg0: number): Promise<void>;
+      // subSequence
+      // public synchronized java.lang.CharSequence java.lang.StringBuffer.subSequence(int,int)
+      subSequence(arg0: number, arg1: number, cb: Callback<CharSequence>): void;
+      subSequenceSync(arg0: number, arg1: number): CharSequence;
+      subSequencePromise(arg0: number, arg1: number): Promise<CharSequence>;
+      // substring
+      // public synchronized java.lang.String java.lang.StringBuffer.substring(int,int)
+      substring(arg0: number, arg1: number, cb: Callback<string>): void;
+      substringSync(arg0: number, arg1: number): string;
+      substringPromise(arg0: number, arg1: number): Promise<string>;
+      // public synchronized java.lang.String java.lang.StringBuffer.substring(int)
+      substring(arg0: number, cb: Callback<string>): void;
+      substringSync(arg0: number): string;
+      substringPromise(arg0: number): Promise<string>;
+      // toString
+      // public synchronized java.lang.String java.lang.StringBuffer.toString()
+      toString( cb: Callback<string>): void;
+      toStringSync(): string;
+      toStringPromise(): Promise<string>;
+      // trimToSize
+      // public synchronized void java.lang.StringBuffer.trimToSize()
+      trimToSize( cb: Callback<void>): void;
+      trimToSizeSync(): void;
+      trimToSizePromise(): Promise<void>;
+      // wait
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      wait(arg0: number, arg1: number, cb: Callback<void>): void;
+      waitSync(arg0: number, arg1: number): void;
+      waitPromise(arg0: number, arg1: number): Promise<void>;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      wait(arg0: number, cb: Callback<void>): void;
+      waitSync(arg0: number): void;
+      waitPromise(arg0: number): Promise<void>;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      wait( cb: Callback<void>): void;
+      waitSync(): void;
+      waitPromise(): Promise<void>;
+    }
+    export module StringBuffer {
+      export interface Static {
+        new (arg0: CharSequence): java.lang.StringBuffer;
+        new (arg0: string_t): java.lang.StringBuffer;
+        new (arg0: number): java.lang.StringBuffer;
+        new (): java.lang.StringBuffer;
+      }
+    }
+  }
+
+  export module java.lang {
     export interface Iterable extends java.lang.Object {
       // forEach
       // public default void java.lang.Iterable.forEach(java.util.function.Consumer<? super T>)
@@ -1298,34 +1878,34 @@ declare module Java {
     export interface GenericDeclaration extends java.lang.reflect.AnnotatedElement {
       // getAnnotation
       // public abstract <T> T java.lang.reflect.AnnotatedElement.getAnnotation(java.lang.Class<T>)
-      getAnnotation(arg0: Class, cb: Callback<any>): void;
-      getAnnotationSync(arg0: Class): any;
-      getAnnotationPromise(arg0: Class): Promise<any>;
+      getAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getAnnotationSync(arg0: Class): Annotation;
+      getAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getAnnotations
       // public abstract java.lang.annotation.Annotation[] java.lang.reflect.AnnotatedElement.getAnnotations()
-      getAnnotations( cb: Callback<any[]>): void;
-      getAnnotationsSync(): any[];
-      getAnnotationsPromise(): Promise<any[]>;
+      getAnnotations( cb: Callback<Annotation[]>): void;
+      getAnnotationsSync(): Annotation[];
+      getAnnotationsPromise(): Promise<Annotation[]>;
       // getAnnotationsByType
       // public default <T> T[] java.lang.reflect.AnnotatedElement.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getAnnotationsByTypeSync(arg0: Class): any[];
-      getAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getDeclaredAnnotation
       // public default <T> T java.lang.reflect.AnnotatedElement.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotation(arg0: Class, cb: Callback<any>): void;
-      getDeclaredAnnotationSync(arg0: Class): any;
-      getDeclaredAnnotationPromise(arg0: Class): Promise<any>;
+      getDeclaredAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getDeclaredAnnotationSync(arg0: Class): Annotation;
+      getDeclaredAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getDeclaredAnnotations
       // public abstract java.lang.annotation.Annotation[] java.lang.reflect.AnnotatedElement.getDeclaredAnnotations()
-      getDeclaredAnnotations( cb: Callback<any[]>): void;
-      getDeclaredAnnotationsSync(): any[];
-      getDeclaredAnnotationsPromise(): Promise<any[]>;
+      getDeclaredAnnotations( cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsSync(): Annotation[];
+      getDeclaredAnnotationsPromise(): Promise<Annotation[]>;
       // getDeclaredAnnotationsByType
       // public default <T> T[] java.lang.reflect.AnnotatedElement.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getDeclaredAnnotationsByTypeSync(arg0: Class): any[];
-      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getTypeParameters
       // public abstract java.lang.reflect.TypeVariable<?>[] java.lang.reflect.GenericDeclaration.getTypeParameters()
       getTypeParameters( cb: Callback<TypeVariable[]>): void;
@@ -1343,38 +1923,60 @@ declare module Java {
     }
   }
 
+  export module java.lang {
+    export interface Appendable extends java.lang.Object {
+      // append
+      // public abstract java.lang.Appendable java.lang.Appendable.append(java.lang.CharSequence,int,int) throws java.io.IOException
+      append(arg0: CharSequence, arg1: number, arg2: number, cb: Callback<Appendable>): void;
+      appendSync(arg0: CharSequence, arg1: number, arg2: number): Appendable;
+      appendPromise(arg0: CharSequence, arg1: number, arg2: number): Promise<Appendable>;
+      // public abstract java.lang.Appendable java.lang.Appendable.append(java.lang.CharSequence) throws java.io.IOException
+      append(arg0: CharSequence, cb: Callback<Appendable>): void;
+      appendSync(arg0: CharSequence): Appendable;
+      appendPromise(arg0: CharSequence): Promise<Appendable>;
+      // public abstract java.lang.Appendable java.lang.Appendable.append(char) throws java.io.IOException
+      append(arg0: string, cb: Callback<Appendable>): void;
+      appendSync(arg0: string): Appendable;
+      appendPromise(arg0: string): Promise<Appendable>;
+    }
+    export module Appendable {
+      export interface Static {
+      }
+    }
+  }
+
   export module java.lang.reflect {
     export interface AnnotatedElement extends java.lang.Object {
       // getAnnotation
       // public abstract <T> T java.lang.reflect.AnnotatedElement.getAnnotation(java.lang.Class<T>)
-      getAnnotation(arg0: Class, cb: Callback<any>): void;
-      getAnnotationSync(arg0: Class): any;
-      getAnnotationPromise(arg0: Class): Promise<any>;
+      getAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getAnnotationSync(arg0: Class): Annotation;
+      getAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getAnnotations
       // public abstract java.lang.annotation.Annotation[] java.lang.reflect.AnnotatedElement.getAnnotations()
-      getAnnotations( cb: Callback<any[]>): void;
-      getAnnotationsSync(): any[];
-      getAnnotationsPromise(): Promise<any[]>;
+      getAnnotations( cb: Callback<Annotation[]>): void;
+      getAnnotationsSync(): Annotation[];
+      getAnnotationsPromise(): Promise<Annotation[]>;
       // getAnnotationsByType
       // public default <T> T[] java.lang.reflect.AnnotatedElement.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getAnnotationsByTypeSync(arg0: Class): any[];
-      getAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getDeclaredAnnotation
       // public default <T> T java.lang.reflect.AnnotatedElement.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotation(arg0: Class, cb: Callback<any>): void;
-      getDeclaredAnnotationSync(arg0: Class): any;
-      getDeclaredAnnotationPromise(arg0: Class): Promise<any>;
+      getDeclaredAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getDeclaredAnnotationSync(arg0: Class): Annotation;
+      getDeclaredAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getDeclaredAnnotations
       // public abstract java.lang.annotation.Annotation[] java.lang.reflect.AnnotatedElement.getDeclaredAnnotations()
-      getDeclaredAnnotations( cb: Callback<any[]>): void;
-      getDeclaredAnnotationsSync(): any[];
-      getDeclaredAnnotationsPromise(): Promise<any[]>;
+      getDeclaredAnnotations( cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsSync(): Annotation[];
+      getDeclaredAnnotationsPromise(): Promise<Annotation[]>;
       // getDeclaredAnnotationsByType
       // public default <T> T[] java.lang.reflect.AnnotatedElement.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getDeclaredAnnotationsByTypeSync(arg0: Class): any[];
-      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // isAnnotationPresent
       // public default boolean java.lang.reflect.AnnotatedElement.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)
       isAnnotationPresent(arg0: Class, cb: Callback<boolean>): void;
@@ -1387,38 +1989,77 @@ declare module Java {
     }
   }
 
+  export module java.lang {
+    export interface CharSequence extends java.lang.Object {
+      // charAt
+      // public abstract char java.lang.CharSequence.charAt(int)
+      charAt(arg0: number, cb: Callback<string>): void;
+      charAtSync(arg0: number): string;
+      charAtPromise(arg0: number): Promise<string>;
+      // chars
+      // public default java.util.stream.IntStream java.lang.CharSequence.chars()
+      chars( cb: Callback<any>): void;
+      charsSync(): any;
+      charsPromise(): Promise<any>;
+      // codePoints
+      // public default java.util.stream.IntStream java.lang.CharSequence.codePoints()
+      codePoints( cb: Callback<any>): void;
+      codePointsSync(): any;
+      codePointsPromise(): Promise<any>;
+      // length
+      // public abstract int java.lang.CharSequence.length()
+      length( cb: Callback<number>): void;
+      lengthSync(): number;
+      lengthPromise(): Promise<number>;
+      // subSequence
+      // public abstract java.lang.CharSequence java.lang.CharSequence.subSequence(int,int)
+      subSequence(arg0: number, arg1: number, cb: Callback<CharSequence>): void;
+      subSequenceSync(arg0: number, arg1: number): CharSequence;
+      subSequencePromise(arg0: number, arg1: number): Promise<CharSequence>;
+      // toString
+      // public abstract java.lang.String java.lang.CharSequence.toString()
+      toString( cb: Callback<string>): void;
+      toStringSync(): string;
+      toStringPromise(): Promise<string>;
+    }
+    export module CharSequence {
+      export interface Static {
+      }
+    }
+  }
+
   export module java.lang.reflect {
     export interface AnnotatedType extends java.lang.reflect.AnnotatedElement {
       // getAnnotation
       // public abstract <T> T java.lang.reflect.AnnotatedElement.getAnnotation(java.lang.Class<T>)
-      getAnnotation(arg0: Class, cb: Callback<any>): void;
-      getAnnotationSync(arg0: Class): any;
-      getAnnotationPromise(arg0: Class): Promise<any>;
+      getAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getAnnotationSync(arg0: Class): Annotation;
+      getAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getAnnotations
       // public abstract java.lang.annotation.Annotation[] java.lang.reflect.AnnotatedElement.getAnnotations()
-      getAnnotations( cb: Callback<any[]>): void;
-      getAnnotationsSync(): any[];
-      getAnnotationsPromise(): Promise<any[]>;
+      getAnnotations( cb: Callback<Annotation[]>): void;
+      getAnnotationsSync(): Annotation[];
+      getAnnotationsPromise(): Promise<Annotation[]>;
       // getAnnotationsByType
       // public default <T> T[] java.lang.reflect.AnnotatedElement.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getAnnotationsByTypeSync(arg0: Class): any[];
-      getAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getDeclaredAnnotation
       // public default <T> T java.lang.reflect.AnnotatedElement.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotation(arg0: Class, cb: Callback<any>): void;
-      getDeclaredAnnotationSync(arg0: Class): any;
-      getDeclaredAnnotationPromise(arg0: Class): Promise<any>;
+      getDeclaredAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getDeclaredAnnotationSync(arg0: Class): Annotation;
+      getDeclaredAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getDeclaredAnnotations
       // public abstract java.lang.annotation.Annotation[] java.lang.reflect.AnnotatedElement.getDeclaredAnnotations()
-      getDeclaredAnnotations( cb: Callback<any[]>): void;
-      getDeclaredAnnotationsSync(): any[];
-      getDeclaredAnnotationsPromise(): Promise<any[]>;
+      getDeclaredAnnotations( cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsSync(): Annotation[];
+      getDeclaredAnnotationsPromise(): Promise<Annotation[]>;
       // getDeclaredAnnotationsByType
       // public default <T> T[] java.lang.reflect.AnnotatedElement.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getDeclaredAnnotationsByTypeSync(arg0: Class): any[];
-      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getType
       // public abstract java.lang.reflect.Type java.lang.reflect.AnnotatedType.getType()
       getType( cb: Callback<Type>): void;
@@ -1479,19 +2120,19 @@ declare module Java {
       getAnnotatedReturnTypePromise(): Promise<AnnotatedType>;
       // getAnnotation
       // public <T> T java.lang.reflect.Executable.getAnnotation(java.lang.Class<T>)
-      getAnnotation(arg0: Class, cb: Callback<any>): void;
-      getAnnotationSync(arg0: Class): any;
-      getAnnotationPromise(arg0: Class): Promise<any>;
+      getAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getAnnotationSync(arg0: Class): Annotation;
+      getAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getAnnotations
       // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
-      getAnnotations( cb: Callback<any[]>): void;
-      getAnnotationsSync(): any[];
-      getAnnotationsPromise(): Promise<any[]>;
+      getAnnotations( cb: Callback<Annotation[]>): void;
+      getAnnotationsSync(): Annotation[];
+      getAnnotationsPromise(): Promise<Annotation[]>;
       // getAnnotationsByType
       // public <T> T[] java.lang.reflect.Executable.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getAnnotationsByTypeSync(arg0: Class): any[];
-      getAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getClass
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClass( cb: Callback<Class>): void;
@@ -1499,19 +2140,19 @@ declare module Java {
       getClassPromise(): Promise<Class>;
       // getDeclaredAnnotation
       // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotation(arg0: Class, cb: Callback<any>): void;
-      getDeclaredAnnotationSync(arg0: Class): any;
-      getDeclaredAnnotationPromise(arg0: Class): Promise<any>;
+      getDeclaredAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getDeclaredAnnotationSync(arg0: Class): Annotation;
+      getDeclaredAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getDeclaredAnnotations
       // public java.lang.annotation.Annotation[] java.lang.reflect.Executable.getDeclaredAnnotations()
-      getDeclaredAnnotations( cb: Callback<any[]>): void;
-      getDeclaredAnnotationsSync(): any[];
-      getDeclaredAnnotationsPromise(): Promise<any[]>;
+      getDeclaredAnnotations( cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsSync(): Annotation[];
+      getDeclaredAnnotationsPromise(): Promise<Annotation[]>;
       // getDeclaredAnnotationsByType
       // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getDeclaredAnnotationsByTypeSync(arg0: Class): any[];
-      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getDeclaringClass
       // public abstract java.lang.Class<?> java.lang.reflect.Executable.getDeclaringClass()
       getDeclaringClass( cb: Callback<Class>): void;
@@ -1544,9 +2185,9 @@ declare module Java {
       getNamePromise(): Promise<string>;
       // getParameterAnnotations
       // public abstract java.lang.annotation.Annotation[][] java.lang.reflect.Executable.getParameterAnnotations()
-      getParameterAnnotations( cb: Callback<any[][]>): void;
-      getParameterAnnotationsSync(): any[][];
-      getParameterAnnotationsPromise(): Promise<any[][]>;
+      getParameterAnnotations( cb: Callback<Annotation[][]>): void;
+      getParameterAnnotationsSync(): Annotation[][];
+      getParameterAnnotationsPromise(): Promise<Annotation[][]>;
       // getParameterCount
       // public int java.lang.reflect.Executable.getParameterCount()
       getParameterCount( cb: Callback<number>): void;
@@ -1644,6 +2285,156 @@ declare module Java {
   }
 
   export module java.lang {
+    export interface Package extends java.lang.Object,java.lang.reflect.AnnotatedElement {
+      // equals
+      // public boolean java.lang.Object.equals(java.lang.Object)
+      equals(arg0: object_t, cb: Callback<boolean>): void;
+      equalsSync(arg0: object_t): boolean;
+      equalsPromise(arg0: object_t): Promise<boolean>;
+      // getAnnotation
+      // public <A> A java.lang.Package.getAnnotation(java.lang.Class<A>)
+      getAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getAnnotationSync(arg0: Class): Annotation;
+      getAnnotationPromise(arg0: Class): Promise<Annotation>;
+      // getAnnotations
+      // public java.lang.annotation.Annotation[] java.lang.Package.getAnnotations()
+      getAnnotations( cb: Callback<Annotation[]>): void;
+      getAnnotationsSync(): Annotation[];
+      getAnnotationsPromise(): Promise<Annotation[]>;
+      // getAnnotationsByType
+      // public <A> A[] java.lang.Package.getAnnotationsByType(java.lang.Class<A>)
+      getAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
+      // getClass
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClass( cb: Callback<Class>): void;
+      getClassSync(): Class;
+      getClassPromise(): Promise<Class>;
+      // getDeclaredAnnotation
+      // public <A> A java.lang.Package.getDeclaredAnnotation(java.lang.Class<A>)
+      getDeclaredAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getDeclaredAnnotationSync(arg0: Class): Annotation;
+      getDeclaredAnnotationPromise(arg0: Class): Promise<Annotation>;
+      // getDeclaredAnnotations
+      // public java.lang.annotation.Annotation[] java.lang.Package.getDeclaredAnnotations()
+      getDeclaredAnnotations( cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsSync(): Annotation[];
+      getDeclaredAnnotationsPromise(): Promise<Annotation[]>;
+      // getDeclaredAnnotationsByType
+      // public <A> A[] java.lang.Package.getDeclaredAnnotationsByType(java.lang.Class<A>)
+      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
+      // getImplementationTitle
+      // public java.lang.String java.lang.Package.getImplementationTitle()
+      getImplementationTitle( cb: Callback<string>): void;
+      getImplementationTitleSync(): string;
+      getImplementationTitlePromise(): Promise<string>;
+      // getImplementationVendor
+      // public java.lang.String java.lang.Package.getImplementationVendor()
+      getImplementationVendor( cb: Callback<string>): void;
+      getImplementationVendorSync(): string;
+      getImplementationVendorPromise(): Promise<string>;
+      // getImplementationVersion
+      // public java.lang.String java.lang.Package.getImplementationVersion()
+      getImplementationVersion( cb: Callback<string>): void;
+      getImplementationVersionSync(): string;
+      getImplementationVersionPromise(): Promise<string>;
+      // getName
+      // public java.lang.String java.lang.Package.getName()
+      getName( cb: Callback<string>): void;
+      getNameSync(): string;
+      getNamePromise(): Promise<string>;
+      // getPackage
+      // public static java.lang.Package java.lang.Package.getPackage(java.lang.String)
+      // static method, see .Static
+      // getPackages
+      // public static java.lang.Package[] java.lang.Package.getPackages()
+      // static method, see .Static
+      // getSpecificationTitle
+      // public java.lang.String java.lang.Package.getSpecificationTitle()
+      getSpecificationTitle( cb: Callback<string>): void;
+      getSpecificationTitleSync(): string;
+      getSpecificationTitlePromise(): Promise<string>;
+      // getSpecificationVendor
+      // public java.lang.String java.lang.Package.getSpecificationVendor()
+      getSpecificationVendor( cb: Callback<string>): void;
+      getSpecificationVendorSync(): string;
+      getSpecificationVendorPromise(): Promise<string>;
+      // getSpecificationVersion
+      // public java.lang.String java.lang.Package.getSpecificationVersion()
+      getSpecificationVersion( cb: Callback<string>): void;
+      getSpecificationVersionSync(): string;
+      getSpecificationVersionPromise(): Promise<string>;
+      // hashCode
+      // public int java.lang.Package.hashCode()
+      hashCode( cb: Callback<number>): void;
+      hashCodeSync(): number;
+      hashCodePromise(): Promise<number>;
+      // isAnnotationPresent
+      // public boolean java.lang.Package.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)
+      isAnnotationPresent(arg0: Class, cb: Callback<boolean>): void;
+      isAnnotationPresentSync(arg0: Class): boolean;
+      isAnnotationPresentPromise(arg0: Class): Promise<boolean>;
+      // isCompatibleWith
+      // public boolean java.lang.Package.isCompatibleWith(java.lang.String) throws java.lang.NumberFormatException
+      isCompatibleWith(arg0: string_t, cb: Callback<boolean>): void;
+      isCompatibleWithSync(arg0: string_t): boolean;
+      isCompatibleWithPromise(arg0: string_t): Promise<boolean>;
+      // isSealed
+      // public boolean java.lang.Package.isSealed(java.net.URL)
+      isSealed(arg0: any, cb: Callback<boolean>): void;
+      isSealedSync(arg0: any): boolean;
+      isSealedPromise(arg0: any): Promise<boolean>;
+      // public boolean java.lang.Package.isSealed()
+      isSealed( cb: Callback<boolean>): void;
+      isSealedSync(): boolean;
+      isSealedPromise(): Promise<boolean>;
+      // notify
+      // public final native void java.lang.Object.notify()
+      notify( cb: Callback<void>): void;
+      notifySync(): void;
+      notifyPromise(): Promise<void>;
+      // notifyAll
+      // public final native void java.lang.Object.notifyAll()
+      notifyAll( cb: Callback<void>): void;
+      notifyAllSync(): void;
+      notifyAllPromise(): Promise<void>;
+      // toString
+      // public java.lang.String java.lang.Package.toString()
+      toString( cb: Callback<string>): void;
+      toStringSync(): string;
+      toStringPromise(): Promise<string>;
+      // wait
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      wait(arg0: number, arg1: number, cb: Callback<void>): void;
+      waitSync(arg0: number, arg1: number): void;
+      waitPromise(arg0: number, arg1: number): Promise<void>;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      wait(arg0: number, cb: Callback<void>): void;
+      waitSync(arg0: number): void;
+      waitPromise(arg0: number): Promise<void>;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      wait( cb: Callback<void>): void;
+      waitSync(): void;
+      waitPromise(): Promise<void>;
+    }
+    export module Package {
+      export interface Static {
+        // public static java.lang.Package java.lang.Package.getPackage(java.lang.String)
+        getPackage(arg0: string_t, cb: Callback<Package>): void;
+        getPackageSync(arg0: string_t): Package;
+        getPackagePromise(arg0: string_t): Promise<Package>;
+        // public static java.lang.Package[] java.lang.Package.getPackages()
+        getPackages( cb: Callback<Package[]>): void;
+        getPackagesSync(): Package[];
+        getPackagesPromise(): Promise<Package[]>;
+      }
+    }
+  }
+
+  export module java.lang {
     export interface Object  {
       // equals
       // public boolean java.lang.Object.equals(java.lang.Object)
@@ -1696,6 +2487,299 @@ declare module Java {
     }
   }
 
+  export module java.lang {
+    export interface AbstractStringBuilder extends java.lang.Object,java.lang.Appendable,java.lang.CharSequence {
+      // append
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.append(java.lang.CharSequence,int,int)
+      append(arg0: CharSequence, arg1: number, arg2: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: CharSequence, arg1: number, arg2: number): AbstractStringBuilder;
+      appendPromise(arg0: CharSequence, arg1: number, arg2: number): Promise<AbstractStringBuilder>;
+      // public java.lang.Appendable java.lang.AbstractStringBuilder.append(java.lang.CharSequence,int,int) throws java.io.IOException
+      append(arg0: CharSequence, arg1: number, arg2: number, cb: Callback<Appendable>): void;
+      appendSync(arg0: CharSequence, arg1: number, arg2: number): Appendable;
+      appendPromise(arg0: CharSequence, arg1: number, arg2: number): Promise<Appendable>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.append(char[],int,int)
+      append(arg0: string[], arg1: number, arg2: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: string[], arg1: number, arg2: number): AbstractStringBuilder;
+      appendPromise(arg0: string[], arg1: number, arg2: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.append(java.lang.StringBuffer)
+      append(arg0: StringBuffer, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: StringBuffer): AbstractStringBuilder;
+      appendPromise(arg0: StringBuffer): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.append(java.lang.CharSequence)
+      append(arg0: CharSequence, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: CharSequence): AbstractStringBuilder;
+      appendPromise(arg0: CharSequence): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.append(java.lang.String)
+      append(arg0: string_t, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: string_t): AbstractStringBuilder;
+      appendPromise(arg0: string_t): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.append(java.lang.Object)
+      append(arg0: object_t, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: object_t): AbstractStringBuilder;
+      appendPromise(arg0: object_t): Promise<AbstractStringBuilder>;
+      // public java.lang.Appendable java.lang.AbstractStringBuilder.append(java.lang.CharSequence) throws java.io.IOException
+      append(arg0: CharSequence, cb: Callback<Appendable>): void;
+      appendSync(arg0: CharSequence): Appendable;
+      appendPromise(arg0: CharSequence): Promise<Appendable>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.append(char[])
+      append(arg0: string[], cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: string[]): AbstractStringBuilder;
+      appendPromise(arg0: string[]): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.append(boolean)
+      append(arg0: boolean, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: boolean): AbstractStringBuilder;
+      appendPromise(arg0: boolean): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.append(long)
+      append(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: number): AbstractStringBuilder;
+      appendPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.append(int)
+      append(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: number): AbstractStringBuilder;
+      appendPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.append(float)
+      append(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: number): AbstractStringBuilder;
+      appendPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.append(double)
+      append(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: number): AbstractStringBuilder;
+      appendPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.append(char)
+      append(arg0: string, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: string): AbstractStringBuilder;
+      appendPromise(arg0: string): Promise<AbstractStringBuilder>;
+      // public java.lang.Appendable java.lang.AbstractStringBuilder.append(char) throws java.io.IOException
+      append(arg0: string, cb: Callback<Appendable>): void;
+      appendSync(arg0: string): Appendable;
+      appendPromise(arg0: string): Promise<Appendable>;
+      // appendCodePoint
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.appendCodePoint(int)
+      appendCodePoint(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      appendCodePointSync(arg0: number): AbstractStringBuilder;
+      appendCodePointPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // capacity
+      // public int java.lang.AbstractStringBuilder.capacity()
+      capacity( cb: Callback<number>): void;
+      capacitySync(): number;
+      capacityPromise(): Promise<number>;
+      // charAt
+      // public char java.lang.AbstractStringBuilder.charAt(int)
+      charAt(arg0: number, cb: Callback<string>): void;
+      charAtSync(arg0: number): string;
+      charAtPromise(arg0: number): Promise<string>;
+      // chars
+      // public default java.util.stream.IntStream java.lang.CharSequence.chars()
+      chars( cb: Callback<any>): void;
+      charsSync(): any;
+      charsPromise(): Promise<any>;
+      // codePointAt
+      // public int java.lang.AbstractStringBuilder.codePointAt(int)
+      codePointAt(arg0: number, cb: Callback<number>): void;
+      codePointAtSync(arg0: number): number;
+      codePointAtPromise(arg0: number): Promise<number>;
+      // codePointBefore
+      // public int java.lang.AbstractStringBuilder.codePointBefore(int)
+      codePointBefore(arg0: number, cb: Callback<number>): void;
+      codePointBeforeSync(arg0: number): number;
+      codePointBeforePromise(arg0: number): Promise<number>;
+      // codePointCount
+      // public int java.lang.AbstractStringBuilder.codePointCount(int,int)
+      codePointCount(arg0: number, arg1: number, cb: Callback<number>): void;
+      codePointCountSync(arg0: number, arg1: number): number;
+      codePointCountPromise(arg0: number, arg1: number): Promise<number>;
+      // codePoints
+      // public default java.util.stream.IntStream java.lang.CharSequence.codePoints()
+      codePoints( cb: Callback<any>): void;
+      codePointsSync(): any;
+      codePointsPromise(): Promise<any>;
+      // delete
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.delete(int,int)
+      delete(arg0: number, arg1: number, cb: Callback<AbstractStringBuilder>): void;
+      deleteSync(arg0: number, arg1: number): AbstractStringBuilder;
+      deletePromise(arg0: number, arg1: number): Promise<AbstractStringBuilder>;
+      // deleteCharAt
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.deleteCharAt(int)
+      deleteCharAt(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      deleteCharAtSync(arg0: number): AbstractStringBuilder;
+      deleteCharAtPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // ensureCapacity
+      // public void java.lang.AbstractStringBuilder.ensureCapacity(int)
+      ensureCapacity(arg0: number, cb: Callback<void>): void;
+      ensureCapacitySync(arg0: number): void;
+      ensureCapacityPromise(arg0: number): Promise<void>;
+      // equals
+      // public boolean java.lang.Object.equals(java.lang.Object)
+      equals(arg0: object_t, cb: Callback<boolean>): void;
+      equalsSync(arg0: object_t): boolean;
+      equalsPromise(arg0: object_t): Promise<boolean>;
+      // getChars
+      // public void java.lang.AbstractStringBuilder.getChars(int,int,char[],int)
+      getChars(arg0: number, arg1: number, arg2: string[], arg3: number, cb: Callback<void>): void;
+      getCharsSync(arg0: number, arg1: number, arg2: string[], arg3: number): void;
+      getCharsPromise(arg0: number, arg1: number, arg2: string[], arg3: number): Promise<void>;
+      // getClass
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClass( cb: Callback<Class>): void;
+      getClassSync(): Class;
+      getClassPromise(): Promise<Class>;
+      // hashCode
+      // public native int java.lang.Object.hashCode()
+      hashCode( cb: Callback<number>): void;
+      hashCodeSync(): number;
+      hashCodePromise(): Promise<number>;
+      // indexOf
+      // public int java.lang.AbstractStringBuilder.indexOf(java.lang.String,int)
+      indexOf(arg0: string_t, arg1: number, cb: Callback<number>): void;
+      indexOfSync(arg0: string_t, arg1: number): number;
+      indexOfPromise(arg0: string_t, arg1: number): Promise<number>;
+      // public int java.lang.AbstractStringBuilder.indexOf(java.lang.String)
+      indexOf(arg0: string_t, cb: Callback<number>): void;
+      indexOfSync(arg0: string_t): number;
+      indexOfPromise(arg0: string_t): Promise<number>;
+      // insert
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.insert(int,java.lang.CharSequence,int,int)
+      insert(arg0: number, arg1: CharSequence, arg2: number, arg3: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: CharSequence, arg2: number, arg3: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: CharSequence, arg2: number, arg3: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.insert(int,char[],int,int)
+      insert(arg0: number, arg1: string[], arg2: number, arg3: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: string[], arg2: number, arg3: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: string[], arg2: number, arg3: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.insert(int,java.lang.CharSequence)
+      insert(arg0: number, arg1: CharSequence, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: CharSequence): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: CharSequence): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.insert(int,java.lang.String)
+      insert(arg0: number, arg1: string_t, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: string_t): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: string_t): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.insert(int,java.lang.Object)
+      insert(arg0: number, arg1: object_t, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: object_t): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: object_t): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.insert(int,char[])
+      insert(arg0: number, arg1: string[], cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: string[]): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: string[]): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.insert(int,boolean)
+      insert(arg0: number, arg1: boolean, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: boolean): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: boolean): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.insert(int,long)
+      insert(arg0: number, arg1: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.insert(int,int)
+      insert(arg0: number, arg1: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.insert(int,float)
+      insert(arg0: number, arg1: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.insert(int,double)
+      insert(arg0: number, arg1: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.insert(int,char)
+      insert(arg0: number, arg1: string, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: string): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: string): Promise<AbstractStringBuilder>;
+      // lastIndexOf
+      // public int java.lang.AbstractStringBuilder.lastIndexOf(java.lang.String,int)
+      lastIndexOf(arg0: string_t, arg1: number, cb: Callback<number>): void;
+      lastIndexOfSync(arg0: string_t, arg1: number): number;
+      lastIndexOfPromise(arg0: string_t, arg1: number): Promise<number>;
+      // public int java.lang.AbstractStringBuilder.lastIndexOf(java.lang.String)
+      lastIndexOf(arg0: string_t, cb: Callback<number>): void;
+      lastIndexOfSync(arg0: string_t): number;
+      lastIndexOfPromise(arg0: string_t): Promise<number>;
+      // length
+      // public int java.lang.AbstractStringBuilder.length()
+      length( cb: Callback<number>): void;
+      lengthSync(): number;
+      lengthPromise(): Promise<number>;
+      // notify
+      // public final native void java.lang.Object.notify()
+      notify( cb: Callback<void>): void;
+      notifySync(): void;
+      notifyPromise(): Promise<void>;
+      // notifyAll
+      // public final native void java.lang.Object.notifyAll()
+      notifyAll( cb: Callback<void>): void;
+      notifyAllSync(): void;
+      notifyAllPromise(): Promise<void>;
+      // offsetByCodePoints
+      // public int java.lang.AbstractStringBuilder.offsetByCodePoints(int,int)
+      offsetByCodePoints(arg0: number, arg1: number, cb: Callback<number>): void;
+      offsetByCodePointsSync(arg0: number, arg1: number): number;
+      offsetByCodePointsPromise(arg0: number, arg1: number): Promise<number>;
+      // replace
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.replace(int,int,java.lang.String)
+      replace(arg0: number, arg1: number, arg2: string_t, cb: Callback<AbstractStringBuilder>): void;
+      replaceSync(arg0: number, arg1: number, arg2: string_t): AbstractStringBuilder;
+      replacePromise(arg0: number, arg1: number, arg2: string_t): Promise<AbstractStringBuilder>;
+      // reverse
+      // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.reverse()
+      reverse( cb: Callback<AbstractStringBuilder>): void;
+      reverseSync(): AbstractStringBuilder;
+      reversePromise(): Promise<AbstractStringBuilder>;
+      // setCharAt
+      // public void java.lang.AbstractStringBuilder.setCharAt(int,char)
+      setCharAt(arg0: number, arg1: string, cb: Callback<void>): void;
+      setCharAtSync(arg0: number, arg1: string): void;
+      setCharAtPromise(arg0: number, arg1: string): Promise<void>;
+      // setLength
+      // public void java.lang.AbstractStringBuilder.setLength(int)
+      setLength(arg0: number, cb: Callback<void>): void;
+      setLengthSync(arg0: number): void;
+      setLengthPromise(arg0: number): Promise<void>;
+      // subSequence
+      // public java.lang.CharSequence java.lang.AbstractStringBuilder.subSequence(int,int)
+      subSequence(arg0: number, arg1: number, cb: Callback<CharSequence>): void;
+      subSequenceSync(arg0: number, arg1: number): CharSequence;
+      subSequencePromise(arg0: number, arg1: number): Promise<CharSequence>;
+      // substring
+      // public java.lang.String java.lang.AbstractStringBuilder.substring(int,int)
+      substring(arg0: number, arg1: number, cb: Callback<string>): void;
+      substringSync(arg0: number, arg1: number): string;
+      substringPromise(arg0: number, arg1: number): Promise<string>;
+      // public java.lang.String java.lang.AbstractStringBuilder.substring(int)
+      substring(arg0: number, cb: Callback<string>): void;
+      substringSync(arg0: number): string;
+      substringPromise(arg0: number): Promise<string>;
+      // toString
+      // public abstract java.lang.String java.lang.AbstractStringBuilder.toString()
+      toString( cb: Callback<string>): void;
+      toStringSync(): string;
+      toStringPromise(): Promise<string>;
+      // trimToSize
+      // public void java.lang.AbstractStringBuilder.trimToSize()
+      trimToSize( cb: Callback<void>): void;
+      trimToSizeSync(): void;
+      trimToSizePromise(): Promise<void>;
+      // wait
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      wait(arg0: number, arg1: number, cb: Callback<void>): void;
+      waitSync(arg0: number, arg1: number): void;
+      waitPromise(arg0: number, arg1: number): Promise<void>;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      wait(arg0: number, cb: Callback<void>): void;
+      waitSync(arg0: number): void;
+      waitPromise(arg0: number): Promise<void>;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      wait( cb: Callback<void>): void;
+      waitSync(): void;
+      waitPromise(): Promise<void>;
+    }
+    export module AbstractStringBuilder {
+      export interface Static {
+      }
+    }
+  }
+
   export module java.lang.reflect {
     export interface Constructor extends java.lang.reflect.Executable {
       // equals
@@ -1725,19 +2809,19 @@ declare module Java {
       getAnnotatedReturnTypePromise(): Promise<AnnotatedType>;
       // getAnnotation
       // public <T> T java.lang.reflect.Constructor.getAnnotation(java.lang.Class<T>)
-      getAnnotation(arg0: Class, cb: Callback<any>): void;
-      getAnnotationSync(arg0: Class): any;
-      getAnnotationPromise(arg0: Class): Promise<any>;
+      getAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getAnnotationSync(arg0: Class): Annotation;
+      getAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getAnnotations
       // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
-      getAnnotations( cb: Callback<any[]>): void;
-      getAnnotationsSync(): any[];
-      getAnnotationsPromise(): Promise<any[]>;
+      getAnnotations( cb: Callback<Annotation[]>): void;
+      getAnnotationsSync(): Annotation[];
+      getAnnotationsPromise(): Promise<Annotation[]>;
       // getAnnotationsByType
       // public <T> T[] java.lang.reflect.Executable.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getAnnotationsByTypeSync(arg0: Class): any[];
-      getAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getClass
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClass( cb: Callback<Class>): void;
@@ -1745,19 +2829,19 @@ declare module Java {
       getClassPromise(): Promise<Class>;
       // getDeclaredAnnotation
       // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotation(arg0: Class, cb: Callback<any>): void;
-      getDeclaredAnnotationSync(arg0: Class): any;
-      getDeclaredAnnotationPromise(arg0: Class): Promise<any>;
+      getDeclaredAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getDeclaredAnnotationSync(arg0: Class): Annotation;
+      getDeclaredAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getDeclaredAnnotations
       // public java.lang.annotation.Annotation[] java.lang.reflect.Constructor.getDeclaredAnnotations()
-      getDeclaredAnnotations( cb: Callback<any[]>): void;
-      getDeclaredAnnotationsSync(): any[];
-      getDeclaredAnnotationsPromise(): Promise<any[]>;
+      getDeclaredAnnotations( cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsSync(): Annotation[];
+      getDeclaredAnnotationsPromise(): Promise<Annotation[]>;
       // getDeclaredAnnotationsByType
       // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getDeclaredAnnotationsByTypeSync(arg0: Class): any[];
-      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getDeclaringClass
       // public java.lang.Class<T> java.lang.reflect.Constructor.getDeclaringClass()
       getDeclaringClass( cb: Callback<Class>): void;
@@ -1790,9 +2874,9 @@ declare module Java {
       getNamePromise(): Promise<string>;
       // getParameterAnnotations
       // public java.lang.annotation.Annotation[][] java.lang.reflect.Constructor.getParameterAnnotations()
-      getParameterAnnotations( cb: Callback<any[][]>): void;
-      getParameterAnnotationsSync(): any[][];
-      getParameterAnnotationsPromise(): Promise<any[][]>;
+      getParameterAnnotations( cb: Callback<Annotation[][]>): void;
+      getParameterAnnotationsSync(): Annotation[][];
+      getParameterAnnotationsPromise(): Promise<Annotation[][]>;
       // getParameterCount
       // public int java.lang.reflect.Constructor.getParameterCount()
       getParameterCount( cb: Callback<number>): void;
@@ -1913,19 +2997,19 @@ declare module Java {
       getAnnotatedTypePromise(): Promise<AnnotatedType>;
       // getAnnotation
       // public <T> T java.lang.reflect.Field.getAnnotation(java.lang.Class<T>)
-      getAnnotation(arg0: Class, cb: Callback<any>): void;
-      getAnnotationSync(arg0: Class): any;
-      getAnnotationPromise(arg0: Class): Promise<any>;
+      getAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getAnnotationSync(arg0: Class): Annotation;
+      getAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getAnnotations
       // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
-      getAnnotations( cb: Callback<any[]>): void;
-      getAnnotationsSync(): any[];
-      getAnnotationsPromise(): Promise<any[]>;
+      getAnnotations( cb: Callback<Annotation[]>): void;
+      getAnnotationsSync(): Annotation[];
+      getAnnotationsPromise(): Promise<Annotation[]>;
       // getAnnotationsByType
       // public <T> T[] java.lang.reflect.Field.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getAnnotationsByTypeSync(arg0: Class): any[];
-      getAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getBoolean
       // public boolean java.lang.reflect.Field.getBoolean(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
       getBoolean(arg0: object_t, cb: Callback<boolean>): void;
@@ -1948,19 +3032,19 @@ declare module Java {
       getClassPromise(): Promise<Class>;
       // getDeclaredAnnotation
       // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotation(arg0: Class, cb: Callback<any>): void;
-      getDeclaredAnnotationSync(arg0: Class): any;
-      getDeclaredAnnotationPromise(arg0: Class): Promise<any>;
+      getDeclaredAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getDeclaredAnnotationSync(arg0: Class): Annotation;
+      getDeclaredAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getDeclaredAnnotations
       // public java.lang.annotation.Annotation[] java.lang.reflect.Field.getDeclaredAnnotations()
-      getDeclaredAnnotations( cb: Callback<any[]>): void;
-      getDeclaredAnnotationsSync(): any[];
-      getDeclaredAnnotationsPromise(): Promise<any[]>;
+      getDeclaredAnnotations( cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsSync(): Annotation[];
+      getDeclaredAnnotationsPromise(): Promise<Annotation[]>;
       // getDeclaredAnnotationsByType
       // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getDeclaredAnnotationsByTypeSync(arg0: Class): any[];
-      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getDeclaringClass
       // public java.lang.Class<?> java.lang.reflect.Field.getDeclaringClass()
       getDeclaringClass( cb: Callback<Class>): void;
@@ -2133,64 +3217,331 @@ declare module Java {
   }
 
   export module java.lang {
-    export interface ClassLoader extends java.lang.Object {
-      // clearAssertionStatus
-      // public void java.lang.ClassLoader.clearAssertionStatus()
-      clearAssertionStatus( cb: Callback<void>): void;
-      clearAssertionStatusSync(): void;
-      clearAssertionStatusPromise(): Promise<void>;
+    export interface StringBuilder extends java.lang.AbstractStringBuilder,java.lang.CharSequence {
+      // append
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.append(java.lang.CharSequence,int,int)
+      append(arg0: CharSequence, arg1: number, arg2: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: CharSequence, arg1: number, arg2: number): AbstractStringBuilder;
+      appendPromise(arg0: CharSequence, arg1: number, arg2: number): Promise<AbstractStringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.append(java.lang.CharSequence,int,int)
+      append(arg0: CharSequence, arg1: number, arg2: number, cb: Callback<StringBuilder>): void;
+      appendSync(arg0: CharSequence, arg1: number, arg2: number): StringBuilder;
+      appendPromise(arg0: CharSequence, arg1: number, arg2: number): Promise<StringBuilder>;
+      // public java.lang.Appendable java.lang.StringBuilder.append(java.lang.CharSequence,int,int) throws java.io.IOException
+      append(arg0: CharSequence, arg1: number, arg2: number, cb: Callback<Appendable>): void;
+      appendSync(arg0: CharSequence, arg1: number, arg2: number): Appendable;
+      appendPromise(arg0: CharSequence, arg1: number, arg2: number): Promise<Appendable>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.append(char[],int,int)
+      append(arg0: string[], arg1: number, arg2: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: string[], arg1: number, arg2: number): AbstractStringBuilder;
+      appendPromise(arg0: string[], arg1: number, arg2: number): Promise<AbstractStringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.append(char[],int,int)
+      append(arg0: string[], arg1: number, arg2: number, cb: Callback<StringBuilder>): void;
+      appendSync(arg0: string[], arg1: number, arg2: number): StringBuilder;
+      appendPromise(arg0: string[], arg1: number, arg2: number): Promise<StringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.append(java.lang.StringBuffer)
+      append(arg0: StringBuffer, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: StringBuffer): AbstractStringBuilder;
+      appendPromise(arg0: StringBuffer): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.append(java.lang.CharSequence)
+      append(arg0: CharSequence, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: CharSequence): AbstractStringBuilder;
+      appendPromise(arg0: CharSequence): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.append(java.lang.String)
+      append(arg0: string_t, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: string_t): AbstractStringBuilder;
+      appendPromise(arg0: string_t): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.append(java.lang.Object)
+      append(arg0: object_t, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: object_t): AbstractStringBuilder;
+      appendPromise(arg0: object_t): Promise<AbstractStringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.append(java.lang.StringBuffer)
+      append(arg0: StringBuffer, cb: Callback<StringBuilder>): void;
+      appendSync(arg0: StringBuffer): StringBuilder;
+      appendPromise(arg0: StringBuffer): Promise<StringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.append(java.lang.CharSequence)
+      append(arg0: CharSequence, cb: Callback<StringBuilder>): void;
+      appendSync(arg0: CharSequence): StringBuilder;
+      appendPromise(arg0: CharSequence): Promise<StringBuilder>;
+      // public java.lang.Appendable java.lang.StringBuilder.append(java.lang.CharSequence) throws java.io.IOException
+      append(arg0: CharSequence, cb: Callback<Appendable>): void;
+      appendSync(arg0: CharSequence): Appendable;
+      appendPromise(arg0: CharSequence): Promise<Appendable>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.append(java.lang.String)
+      append(arg0: string_t, cb: Callback<StringBuilder>): void;
+      appendSync(arg0: string_t): StringBuilder;
+      appendPromise(arg0: string_t): Promise<StringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.append(java.lang.Object)
+      append(arg0: object_t, cb: Callback<StringBuilder>): void;
+      appendSync(arg0: object_t): StringBuilder;
+      appendPromise(arg0: object_t): Promise<StringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.append(char[])
+      append(arg0: string[], cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: string[]): AbstractStringBuilder;
+      appendPromise(arg0: string[]): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.append(boolean)
+      append(arg0: boolean, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: boolean): AbstractStringBuilder;
+      appendPromise(arg0: boolean): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.append(long)
+      append(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: number): AbstractStringBuilder;
+      appendPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.append(int)
+      append(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: number): AbstractStringBuilder;
+      appendPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.append(float)
+      append(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: number): AbstractStringBuilder;
+      appendPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.append(double)
+      append(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: number): AbstractStringBuilder;
+      appendPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.append(char)
+      append(arg0: string, cb: Callback<AbstractStringBuilder>): void;
+      appendSync(arg0: string): AbstractStringBuilder;
+      appendPromise(arg0: string): Promise<AbstractStringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.append(char[])
+      append(arg0: string[], cb: Callback<StringBuilder>): void;
+      appendSync(arg0: string[]): StringBuilder;
+      appendPromise(arg0: string[]): Promise<StringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.append(boolean)
+      append(arg0: boolean, cb: Callback<StringBuilder>): void;
+      appendSync(arg0: boolean): StringBuilder;
+      appendPromise(arg0: boolean): Promise<StringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.append(long)
+      append(arg0: number, cb: Callback<StringBuilder>): void;
+      appendSync(arg0: number): StringBuilder;
+      appendPromise(arg0: number): Promise<StringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.append(int)
+      append(arg0: number, cb: Callback<StringBuilder>): void;
+      appendSync(arg0: number): StringBuilder;
+      appendPromise(arg0: number): Promise<StringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.append(float)
+      append(arg0: number, cb: Callback<StringBuilder>): void;
+      appendSync(arg0: number): StringBuilder;
+      appendPromise(arg0: number): Promise<StringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.append(double)
+      append(arg0: number, cb: Callback<StringBuilder>): void;
+      appendSync(arg0: number): StringBuilder;
+      appendPromise(arg0: number): Promise<StringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.append(char)
+      append(arg0: string, cb: Callback<StringBuilder>): void;
+      appendSync(arg0: string): StringBuilder;
+      appendPromise(arg0: string): Promise<StringBuilder>;
+      // public java.lang.Appendable java.lang.StringBuilder.append(char) throws java.io.IOException
+      append(arg0: string, cb: Callback<Appendable>): void;
+      appendSync(arg0: string): Appendable;
+      appendPromise(arg0: string): Promise<Appendable>;
+      // appendCodePoint
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.appendCodePoint(int)
+      appendCodePoint(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      appendCodePointSync(arg0: number): AbstractStringBuilder;
+      appendCodePointPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.appendCodePoint(int)
+      appendCodePoint(arg0: number, cb: Callback<StringBuilder>): void;
+      appendCodePointSync(arg0: number): StringBuilder;
+      appendCodePointPromise(arg0: number): Promise<StringBuilder>;
+      // capacity
+      // public int java.lang.StringBuilder.capacity()
+      capacity( cb: Callback<number>): void;
+      capacitySync(): number;
+      capacityPromise(): Promise<number>;
+      // charAt
+      // public char java.lang.StringBuilder.charAt(int)
+      charAt(arg0: number, cb: Callback<string>): void;
+      charAtSync(arg0: number): string;
+      charAtPromise(arg0: number): Promise<string>;
+      // chars
+      // public default java.util.stream.IntStream java.lang.CharSequence.chars()
+      chars( cb: Callback<any>): void;
+      charsSync(): any;
+      charsPromise(): Promise<any>;
+      // codePointAt
+      // public int java.lang.StringBuilder.codePointAt(int)
+      codePointAt(arg0: number, cb: Callback<number>): void;
+      codePointAtSync(arg0: number): number;
+      codePointAtPromise(arg0: number): Promise<number>;
+      // codePointBefore
+      // public int java.lang.StringBuilder.codePointBefore(int)
+      codePointBefore(arg0: number, cb: Callback<number>): void;
+      codePointBeforeSync(arg0: number): number;
+      codePointBeforePromise(arg0: number): Promise<number>;
+      // codePointCount
+      // public int java.lang.StringBuilder.codePointCount(int,int)
+      codePointCount(arg0: number, arg1: number, cb: Callback<number>): void;
+      codePointCountSync(arg0: number, arg1: number): number;
+      codePointCountPromise(arg0: number, arg1: number): Promise<number>;
+      // codePoints
+      // public default java.util.stream.IntStream java.lang.CharSequence.codePoints()
+      codePoints( cb: Callback<any>): void;
+      codePointsSync(): any;
+      codePointsPromise(): Promise<any>;
+      // delete
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.delete(int,int)
+      delete(arg0: number, arg1: number, cb: Callback<AbstractStringBuilder>): void;
+      deleteSync(arg0: number, arg1: number): AbstractStringBuilder;
+      deletePromise(arg0: number, arg1: number): Promise<AbstractStringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.delete(int,int)
+      delete(arg0: number, arg1: number, cb: Callback<StringBuilder>): void;
+      deleteSync(arg0: number, arg1: number): StringBuilder;
+      deletePromise(arg0: number, arg1: number): Promise<StringBuilder>;
+      // deleteCharAt
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.deleteCharAt(int)
+      deleteCharAt(arg0: number, cb: Callback<AbstractStringBuilder>): void;
+      deleteCharAtSync(arg0: number): AbstractStringBuilder;
+      deleteCharAtPromise(arg0: number): Promise<AbstractStringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.deleteCharAt(int)
+      deleteCharAt(arg0: number, cb: Callback<StringBuilder>): void;
+      deleteCharAtSync(arg0: number): StringBuilder;
+      deleteCharAtPromise(arg0: number): Promise<StringBuilder>;
+      // ensureCapacity
+      // public void java.lang.StringBuilder.ensureCapacity(int)
+      ensureCapacity(arg0: number, cb: Callback<void>): void;
+      ensureCapacitySync(arg0: number): void;
+      ensureCapacityPromise(arg0: number): Promise<void>;
       // equals
       // public boolean java.lang.Object.equals(java.lang.Object)
       equals(arg0: object_t, cb: Callback<boolean>): void;
       equalsSync(arg0: object_t): boolean;
       equalsPromise(arg0: object_t): Promise<boolean>;
+      // getChars
+      // public void java.lang.StringBuilder.getChars(int,int,char[],int)
+      getChars(arg0: number, arg1: number, arg2: string[], arg3: number, cb: Callback<void>): void;
+      getCharsSync(arg0: number, arg1: number, arg2: string[], arg3: number): void;
+      getCharsPromise(arg0: number, arg1: number, arg2: string[], arg3: number): Promise<void>;
       // getClass
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClass( cb: Callback<Class>): void;
       getClassSync(): Class;
       getClassPromise(): Promise<Class>;
-      // getParent
-      // public final java.lang.ClassLoader java.lang.ClassLoader.getParent()
-      getParent( cb: Callback<ClassLoader>): void;
-      getParentSync(): ClassLoader;
-      getParentPromise(): Promise<ClassLoader>;
-      // getResource
-      // public java.net.URL java.lang.ClassLoader.getResource(java.lang.String)
-      getResource(arg0: string_t, cb: Callback<any>): void;
-      getResourceSync(arg0: string_t): any;
-      getResourcePromise(arg0: string_t): Promise<any>;
-      // getResourceAsStream
-      // public java.io.InputStream java.lang.ClassLoader.getResourceAsStream(java.lang.String)
-      getResourceAsStream(arg0: string_t, cb: Callback<any>): void;
-      getResourceAsStreamSync(arg0: string_t): any;
-      getResourceAsStreamPromise(arg0: string_t): Promise<any>;
-      // getResources
-      // public java.util.Enumeration<java.net.URL> java.lang.ClassLoader.getResources(java.lang.String) throws java.io.IOException
-      getResources(arg0: string_t, cb: Callback<any>): void;
-      getResourcesSync(arg0: string_t): any;
-      getResourcesPromise(arg0: string_t): Promise<any>;
-      // getSystemClassLoader
-      // public static java.lang.ClassLoader java.lang.ClassLoader.getSystemClassLoader()
-      // static method, see .Static
-      // getSystemResource
-      // public static java.net.URL java.lang.ClassLoader.getSystemResource(java.lang.String)
-      // static method, see .Static
-      // getSystemResourceAsStream
-      // public static java.io.InputStream java.lang.ClassLoader.getSystemResourceAsStream(java.lang.String)
-      // static method, see .Static
-      // getSystemResources
-      // public static java.util.Enumeration<java.net.URL> java.lang.ClassLoader.getSystemResources(java.lang.String) throws java.io.IOException
-      // static method, see .Static
       // hashCode
       // public native int java.lang.Object.hashCode()
       hashCode( cb: Callback<number>): void;
       hashCodeSync(): number;
       hashCodePromise(): Promise<number>;
-      // loadClass
-      // public java.lang.Class<?> java.lang.ClassLoader.loadClass(java.lang.String) throws java.lang.ClassNotFoundException
-      loadClass(arg0: string_t, cb: Callback<Class>): void;
-      loadClassSync(arg0: string_t): Class;
-      loadClassPromise(arg0: string_t): Promise<Class>;
+      // indexOf
+      // public int java.lang.StringBuilder.indexOf(java.lang.String,int)
+      indexOf(arg0: string_t, arg1: number, cb: Callback<number>): void;
+      indexOfSync(arg0: string_t, arg1: number): number;
+      indexOfPromise(arg0: string_t, arg1: number): Promise<number>;
+      // public int java.lang.StringBuilder.indexOf(java.lang.String)
+      indexOf(arg0: string_t, cb: Callback<number>): void;
+      indexOfSync(arg0: string_t): number;
+      indexOfPromise(arg0: string_t): Promise<number>;
+      // insert
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.insert(int,java.lang.CharSequence,int,int)
+      insert(arg0: number, arg1: CharSequence, arg2: number, arg3: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: CharSequence, arg2: number, arg3: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: CharSequence, arg2: number, arg3: number): Promise<AbstractStringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.insert(int,java.lang.CharSequence,int,int)
+      insert(arg0: number, arg1: CharSequence, arg2: number, arg3: number, cb: Callback<StringBuilder>): void;
+      insertSync(arg0: number, arg1: CharSequence, arg2: number, arg3: number): StringBuilder;
+      insertPromise(arg0: number, arg1: CharSequence, arg2: number, arg3: number): Promise<StringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.insert(int,char[],int,int)
+      insert(arg0: number, arg1: string[], arg2: number, arg3: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: string[], arg2: number, arg3: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: string[], arg2: number, arg3: number): Promise<AbstractStringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.insert(int,char[],int,int)
+      insert(arg0: number, arg1: string[], arg2: number, arg3: number, cb: Callback<StringBuilder>): void;
+      insertSync(arg0: number, arg1: string[], arg2: number, arg3: number): StringBuilder;
+      insertPromise(arg0: number, arg1: string[], arg2: number, arg3: number): Promise<StringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.insert(int,java.lang.CharSequence)
+      insert(arg0: number, arg1: CharSequence, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: CharSequence): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: CharSequence): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.insert(int,java.lang.String)
+      insert(arg0: number, arg1: string_t, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: string_t): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: string_t): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.insert(int,java.lang.Object)
+      insert(arg0: number, arg1: object_t, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: object_t): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: object_t): Promise<AbstractStringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.insert(int,java.lang.CharSequence)
+      insert(arg0: number, arg1: CharSequence, cb: Callback<StringBuilder>): void;
+      insertSync(arg0: number, arg1: CharSequence): StringBuilder;
+      insertPromise(arg0: number, arg1: CharSequence): Promise<StringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.insert(int,java.lang.String)
+      insert(arg0: number, arg1: string_t, cb: Callback<StringBuilder>): void;
+      insertSync(arg0: number, arg1: string_t): StringBuilder;
+      insertPromise(arg0: number, arg1: string_t): Promise<StringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.insert(int,java.lang.Object)
+      insert(arg0: number, arg1: object_t, cb: Callback<StringBuilder>): void;
+      insertSync(arg0: number, arg1: object_t): StringBuilder;
+      insertPromise(arg0: number, arg1: object_t): Promise<StringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.insert(int,char[])
+      insert(arg0: number, arg1: string[], cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: string[]): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: string[]): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.insert(int,boolean)
+      insert(arg0: number, arg1: boolean, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: boolean): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: boolean): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.insert(int,long)
+      insert(arg0: number, arg1: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.insert(int,int)
+      insert(arg0: number, arg1: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.insert(int,float)
+      insert(arg0: number, arg1: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.insert(int,double)
+      insert(arg0: number, arg1: number, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: number): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: number): Promise<AbstractStringBuilder>;
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.insert(int,char)
+      insert(arg0: number, arg1: string, cb: Callback<AbstractStringBuilder>): void;
+      insertSync(arg0: number, arg1: string): AbstractStringBuilder;
+      insertPromise(arg0: number, arg1: string): Promise<AbstractStringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.insert(int,char[])
+      insert(arg0: number, arg1: string[], cb: Callback<StringBuilder>): void;
+      insertSync(arg0: number, arg1: string[]): StringBuilder;
+      insertPromise(arg0: number, arg1: string[]): Promise<StringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.insert(int,boolean)
+      insert(arg0: number, arg1: boolean, cb: Callback<StringBuilder>): void;
+      insertSync(arg0: number, arg1: boolean): StringBuilder;
+      insertPromise(arg0: number, arg1: boolean): Promise<StringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.insert(int,long)
+      insert(arg0: number, arg1: number, cb: Callback<StringBuilder>): void;
+      insertSync(arg0: number, arg1: number): StringBuilder;
+      insertPromise(arg0: number, arg1: number): Promise<StringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.insert(int,int)
+      insert(arg0: number, arg1: number, cb: Callback<StringBuilder>): void;
+      insertSync(arg0: number, arg1: number): StringBuilder;
+      insertPromise(arg0: number, arg1: number): Promise<StringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.insert(int,float)
+      insert(arg0: number, arg1: number, cb: Callback<StringBuilder>): void;
+      insertSync(arg0: number, arg1: number): StringBuilder;
+      insertPromise(arg0: number, arg1: number): Promise<StringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.insert(int,double)
+      insert(arg0: number, arg1: number, cb: Callback<StringBuilder>): void;
+      insertSync(arg0: number, arg1: number): StringBuilder;
+      insertPromise(arg0: number, arg1: number): Promise<StringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.insert(int,char)
+      insert(arg0: number, arg1: string, cb: Callback<StringBuilder>): void;
+      insertSync(arg0: number, arg1: string): StringBuilder;
+      insertPromise(arg0: number, arg1: string): Promise<StringBuilder>;
+      // lastIndexOf
+      // public int java.lang.StringBuilder.lastIndexOf(java.lang.String,int)
+      lastIndexOf(arg0: string_t, arg1: number, cb: Callback<number>): void;
+      lastIndexOfSync(arg0: string_t, arg1: number): number;
+      lastIndexOfPromise(arg0: string_t, arg1: number): Promise<number>;
+      // public int java.lang.StringBuilder.lastIndexOf(java.lang.String)
+      lastIndexOf(arg0: string_t, cb: Callback<number>): void;
+      lastIndexOfSync(arg0: string_t): number;
+      lastIndexOfPromise(arg0: string_t): Promise<number>;
+      // length
+      // public int java.lang.StringBuilder.length()
+      length( cb: Callback<number>): void;
+      lengthSync(): number;
+      lengthPromise(): Promise<number>;
       // notify
       // public final native void java.lang.Object.notify()
       notify( cb: Callback<void>): void;
@@ -2201,26 +3552,63 @@ declare module Java {
       notifyAll( cb: Callback<void>): void;
       notifyAllSync(): void;
       notifyAllPromise(): Promise<void>;
-      // setClassAssertionStatus
-      // public void java.lang.ClassLoader.setClassAssertionStatus(java.lang.String,boolean)
-      setClassAssertionStatus(arg0: string_t, arg1: boolean, cb: Callback<void>): void;
-      setClassAssertionStatusSync(arg0: string_t, arg1: boolean): void;
-      setClassAssertionStatusPromise(arg0: string_t, arg1: boolean): Promise<void>;
-      // setDefaultAssertionStatus
-      // public void java.lang.ClassLoader.setDefaultAssertionStatus(boolean)
-      setDefaultAssertionStatus(arg0: boolean, cb: Callback<void>): void;
-      setDefaultAssertionStatusSync(arg0: boolean): void;
-      setDefaultAssertionStatusPromise(arg0: boolean): Promise<void>;
-      // setPackageAssertionStatus
-      // public void java.lang.ClassLoader.setPackageAssertionStatus(java.lang.String,boolean)
-      setPackageAssertionStatus(arg0: string_t, arg1: boolean, cb: Callback<void>): void;
-      setPackageAssertionStatusSync(arg0: string_t, arg1: boolean): void;
-      setPackageAssertionStatusPromise(arg0: string_t, arg1: boolean): Promise<void>;
+      // offsetByCodePoints
+      // public int java.lang.StringBuilder.offsetByCodePoints(int,int)
+      offsetByCodePoints(arg0: number, arg1: number, cb: Callback<number>): void;
+      offsetByCodePointsSync(arg0: number, arg1: number): number;
+      offsetByCodePointsPromise(arg0: number, arg1: number): Promise<number>;
+      // replace
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.replace(int,int,java.lang.String)
+      replace(arg0: number, arg1: number, arg2: string_t, cb: Callback<AbstractStringBuilder>): void;
+      replaceSync(arg0: number, arg1: number, arg2: string_t): AbstractStringBuilder;
+      replacePromise(arg0: number, arg1: number, arg2: string_t): Promise<AbstractStringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.replace(int,int,java.lang.String)
+      replace(arg0: number, arg1: number, arg2: string_t, cb: Callback<StringBuilder>): void;
+      replaceSync(arg0: number, arg1: number, arg2: string_t): StringBuilder;
+      replacePromise(arg0: number, arg1: number, arg2: string_t): Promise<StringBuilder>;
+      // reverse
+      // public java.lang.AbstractStringBuilder java.lang.StringBuilder.reverse()
+      reverse( cb: Callback<AbstractStringBuilder>): void;
+      reverseSync(): AbstractStringBuilder;
+      reversePromise(): Promise<AbstractStringBuilder>;
+      // public java.lang.StringBuilder java.lang.StringBuilder.reverse()
+      reverse( cb: Callback<StringBuilder>): void;
+      reverseSync(): StringBuilder;
+      reversePromise(): Promise<StringBuilder>;
+      // setCharAt
+      // public void java.lang.StringBuilder.setCharAt(int,char)
+      setCharAt(arg0: number, arg1: string, cb: Callback<void>): void;
+      setCharAtSync(arg0: number, arg1: string): void;
+      setCharAtPromise(arg0: number, arg1: string): Promise<void>;
+      // setLength
+      // public void java.lang.StringBuilder.setLength(int)
+      setLength(arg0: number, cb: Callback<void>): void;
+      setLengthSync(arg0: number): void;
+      setLengthPromise(arg0: number): Promise<void>;
+      // subSequence
+      // public java.lang.CharSequence java.lang.StringBuilder.subSequence(int,int)
+      subSequence(arg0: number, arg1: number, cb: Callback<CharSequence>): void;
+      subSequenceSync(arg0: number, arg1: number): CharSequence;
+      subSequencePromise(arg0: number, arg1: number): Promise<CharSequence>;
+      // substring
+      // public java.lang.String java.lang.StringBuilder.substring(int,int)
+      substring(arg0: number, arg1: number, cb: Callback<string>): void;
+      substringSync(arg0: number, arg1: number): string;
+      substringPromise(arg0: number, arg1: number): Promise<string>;
+      // public java.lang.String java.lang.StringBuilder.substring(int)
+      substring(arg0: number, cb: Callback<string>): void;
+      substringSync(arg0: number): string;
+      substringPromise(arg0: number): Promise<string>;
       // toString
-      // public java.lang.String java.lang.Object.toString()
+      // public java.lang.String java.lang.StringBuilder.toString()
       toString( cb: Callback<string>): void;
       toStringSync(): string;
       toStringPromise(): Promise<string>;
+      // trimToSize
+      // public void java.lang.StringBuilder.trimToSize()
+      trimToSize( cb: Callback<void>): void;
+      trimToSizeSync(): void;
+      trimToSizePromise(): Promise<void>;
       // wait
       // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
       wait(arg0: number, arg1: number, cb: Callback<void>): void;
@@ -2235,24 +3623,41 @@ declare module Java {
       waitSync(): void;
       waitPromise(): Promise<void>;
     }
-    export module ClassLoader {
+    export module StringBuilder {
       export interface Static {
-        // public static java.lang.ClassLoader java.lang.ClassLoader.getSystemClassLoader()
-        getSystemClassLoader( cb: Callback<ClassLoader>): void;
-        getSystemClassLoaderSync(): ClassLoader;
-        getSystemClassLoaderPromise(): Promise<ClassLoader>;
-        // public static java.net.URL java.lang.ClassLoader.getSystemResource(java.lang.String)
-        getSystemResource(arg0: string_t, cb: Callback<any>): void;
-        getSystemResourceSync(arg0: string_t): any;
-        getSystemResourcePromise(arg0: string_t): Promise<any>;
-        // public static java.io.InputStream java.lang.ClassLoader.getSystemResourceAsStream(java.lang.String)
-        getSystemResourceAsStream(arg0: string_t, cb: Callback<any>): void;
-        getSystemResourceAsStreamSync(arg0: string_t): any;
-        getSystemResourceAsStreamPromise(arg0: string_t): Promise<any>;
-        // public static java.util.Enumeration<java.net.URL> java.lang.ClassLoader.getSystemResources(java.lang.String) throws java.io.IOException
-        getSystemResources(arg0: string_t, cb: Callback<any>): void;
-        getSystemResourcesSync(arg0: string_t): any;
-        getSystemResourcesPromise(arg0: string_t): Promise<any>;
+        new (arg0: CharSequence): java.lang.StringBuilder;
+        new (arg0: string_t): java.lang.StringBuilder;
+        new (arg0: number): java.lang.StringBuilder;
+        new (): java.lang.StringBuilder;
+      }
+    }
+  }
+
+  export module java.lang.annotation {
+    export interface Annotation extends java.lang.Object {
+      // annotationType
+      // public abstract java.lang.Class<? extends java.lang.annotation.Annotation> java.lang.annotation.Annotation.annotationType()
+      annotationType( cb: Callback<Class>): void;
+      annotationTypeSync(): Class;
+      annotationTypePromise(): Promise<Class>;
+      // equals
+      // public abstract boolean java.lang.annotation.Annotation.equals(java.lang.Object)
+      equals(arg0: object_t, cb: Callback<boolean>): void;
+      equalsSync(arg0: object_t): boolean;
+      equalsPromise(arg0: object_t): Promise<boolean>;
+      // hashCode
+      // public abstract int java.lang.annotation.Annotation.hashCode()
+      hashCode( cb: Callback<number>): void;
+      hashCodeSync(): number;
+      hashCodePromise(): Promise<number>;
+      // toString
+      // public abstract java.lang.String java.lang.annotation.Annotation.toString()
+      toString( cb: Callback<string>): void;
+      toStringSync(): string;
+      toStringPromise(): Promise<string>;
+    }
+    export module Annotation {
+      export interface Static {
       }
     }
   }
@@ -2266,19 +3671,19 @@ declare module Java {
       equalsPromise(arg0: object_t): Promise<boolean>;
       // getAnnotation
       // public <T> T java.lang.reflect.AccessibleObject.getAnnotation(java.lang.Class<T>)
-      getAnnotation(arg0: Class, cb: Callback<any>): void;
-      getAnnotationSync(arg0: Class): any;
-      getAnnotationPromise(arg0: Class): Promise<any>;
+      getAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getAnnotationSync(arg0: Class): Annotation;
+      getAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getAnnotations
       // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
-      getAnnotations( cb: Callback<any[]>): void;
-      getAnnotationsSync(): any[];
-      getAnnotationsPromise(): Promise<any[]>;
+      getAnnotations( cb: Callback<Annotation[]>): void;
+      getAnnotationsSync(): Annotation[];
+      getAnnotationsPromise(): Promise<Annotation[]>;
       // getAnnotationsByType
       // public <T> T[] java.lang.reflect.AccessibleObject.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getAnnotationsByTypeSync(arg0: Class): any[];
-      getAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getClass
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClass( cb: Callback<Class>): void;
@@ -2286,19 +3691,19 @@ declare module Java {
       getClassPromise(): Promise<Class>;
       // getDeclaredAnnotation
       // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotation(arg0: Class, cb: Callback<any>): void;
-      getDeclaredAnnotationSync(arg0: Class): any;
-      getDeclaredAnnotationPromise(arg0: Class): Promise<any>;
+      getDeclaredAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getDeclaredAnnotationSync(arg0: Class): Annotation;
+      getDeclaredAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getDeclaredAnnotations
       // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getDeclaredAnnotations()
-      getDeclaredAnnotations( cb: Callback<any[]>): void;
-      getDeclaredAnnotationsSync(): any[];
-      getDeclaredAnnotationsPromise(): Promise<any[]>;
+      getDeclaredAnnotations( cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsSync(): Annotation[];
+      getDeclaredAnnotationsPromise(): Promise<Annotation[]>;
       // getDeclaredAnnotationsByType
       // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getDeclaredAnnotationsByTypeSync(arg0: Class): any[];
-      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // hashCode
       // public native int java.lang.Object.hashCode()
       hashCode( cb: Callback<number>): void;
@@ -2369,19 +3774,19 @@ declare module Java {
       getAnnotatedBoundsPromise(): Promise<AnnotatedType[]>;
       // getAnnotation
       // public abstract <T> T java.lang.reflect.AnnotatedElement.getAnnotation(java.lang.Class<T>)
-      getAnnotation(arg0: Class, cb: Callback<any>): void;
-      getAnnotationSync(arg0: Class): any;
-      getAnnotationPromise(arg0: Class): Promise<any>;
+      getAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getAnnotationSync(arg0: Class): Annotation;
+      getAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getAnnotations
       // public abstract java.lang.annotation.Annotation[] java.lang.reflect.AnnotatedElement.getAnnotations()
-      getAnnotations( cb: Callback<any[]>): void;
-      getAnnotationsSync(): any[];
-      getAnnotationsPromise(): Promise<any[]>;
+      getAnnotations( cb: Callback<Annotation[]>): void;
+      getAnnotationsSync(): Annotation[];
+      getAnnotationsPromise(): Promise<Annotation[]>;
       // getAnnotationsByType
       // public default <T> T[] java.lang.reflect.AnnotatedElement.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getAnnotationsByTypeSync(arg0: Class): any[];
-      getAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getBounds
       // public abstract java.lang.reflect.Type[] java.lang.reflect.TypeVariable.getBounds()
       getBounds( cb: Callback<Type[]>): void;
@@ -2389,19 +3794,19 @@ declare module Java {
       getBoundsPromise(): Promise<Type[]>;
       // getDeclaredAnnotation
       // public default <T> T java.lang.reflect.AnnotatedElement.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotation(arg0: Class, cb: Callback<any>): void;
-      getDeclaredAnnotationSync(arg0: Class): any;
-      getDeclaredAnnotationPromise(arg0: Class): Promise<any>;
+      getDeclaredAnnotation(arg0: Class, cb: Callback<Annotation>): void;
+      getDeclaredAnnotationSync(arg0: Class): Annotation;
+      getDeclaredAnnotationPromise(arg0: Class): Promise<Annotation>;
       // getDeclaredAnnotations
       // public abstract java.lang.annotation.Annotation[] java.lang.reflect.AnnotatedElement.getDeclaredAnnotations()
-      getDeclaredAnnotations( cb: Callback<any[]>): void;
-      getDeclaredAnnotationsSync(): any[];
-      getDeclaredAnnotationsPromise(): Promise<any[]>;
+      getDeclaredAnnotations( cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsSync(): Annotation[];
+      getDeclaredAnnotationsPromise(): Promise<Annotation[]>;
       // getDeclaredAnnotationsByType
       // public default <T> T[] java.lang.reflect.AnnotatedElement.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<any[]>): void;
-      getDeclaredAnnotationsByTypeSync(arg0: Class): any[];
-      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<any[]>;
+      getDeclaredAnnotationsByType(arg0: Class, cb: Callback<Annotation[]>): void;
+      getDeclaredAnnotationsByTypeSync(arg0: Class): Annotation[];
+      getDeclaredAnnotationsByTypePromise(arg0: Class): Promise<Annotation[]>;
       // getGenericDeclaration
       // public abstract D java.lang.reflect.TypeVariable.getGenericDeclaration()
       getGenericDeclaration( cb: Callback<GenericDeclaration>): void;
