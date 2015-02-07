@@ -7,6 +7,7 @@
       "com.tinkerpop.gremlin.structure.Graph",
       "com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph",
       "com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory",
+      "com.tinkerpop.gremlin.process.computer.util.ScriptEngineLambda",
       "java.lang.ClassLoader",
       "java.lang.Long",
       "java.util.ArrayList"
