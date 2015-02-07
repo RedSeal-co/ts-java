@@ -1,6 +1,7 @@
 node_modules/
 typings/
 doc/
+o/
 
 *.js
 !bin/*.js
@@ -17,4 +18,3 @@ tinkerpop/*
 reflection/*
 !reflection/package.json
 !reflection/pom.xml
-
