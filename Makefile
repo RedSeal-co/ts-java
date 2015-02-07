@@ -26,7 +26,7 @@ clean-java-pkgs : $(JAVAPKGS_CLEAN)
 $(JAVAPKGS_INSTALL): %-install:
 	cd $* && mvn clean package
 
-$(JAVAPKGS_JAVADTS): %/java.d.ts: bin/ts-java.sh
+$(JAVAPKGS_JAVADTS): %/java.d.ts: bin/ts-java.sh %/package.json
 	cd $* && ../bin/ts-java.sh
 
 $(JAVAPKGS_CLEAN): %-clean:
@@ -42,22 +42,22 @@ TSC_OPTS=--module commonjs --target ES5 --sourceMap
 
 ###
 FEATURES=$(wildcard features/*/*.feature)
-FEATURES_RAN=$(patsubst %.feature,%.featran,$(FEATURES))
+FEATURES_RAN=$(patsubst %.feature,o/%.lastran,$(FEATURES))
 
 $(FEATURES_RAN): $(JAVAPKGS_JAVADTS)
 
-$(FEATURES_RAN): %.featran: %.feature
+$(FEATURES_RAN): o/%.lastran: %.feature
 	./node_modules/.bin/cucumber-js --tags '~@todo' --require features/step_definitions $<
-	touch $@
+	mkdir -p $(dir $@) && touch  $@
 
 ###
 UNIT_TESTS=$(filter-out %.d.ts, $(wildcard test/*.ts))
 UNIT_TEST_OBJS=$(patsubst %.ts,%.js,$(UNIT_TESTS))
-UNIT_TEST_RAN=$(patsubst %.ts,%.unitran,$(UNIT_TESTS))
+UNIT_TEST_RAN=$(patsubst %.ts,o/%.lastran,$(UNIT_TESTS))
 
-$(UNIT_TEST_RAN): %.unitran: %.js
+$(UNIT_TEST_RAN): o/%.lastran: %.js
 	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd $<
-	touch $@
+	mkdir -p $(dir $@) && touch  $@
 
 #####
 all:
@@ -99,7 +99,7 @@ clean-tsd:
 	rm -rf typings
 
 clean-unittest:
-	rm -rf o/* test/*.unitran
+	rm -rf o/* test/*.lastran
 
 install: install-tsd install-java-pkgs
 
