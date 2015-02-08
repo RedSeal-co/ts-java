@@ -30,6 +30,7 @@ $(JAVAPKGS_INSTALL): %-install:
 $(JAVAPKGS_JAVADTS): %/java.d.ts: %/package.json bin/ts-java.sh ts-templates/package.txt
 	cd $* && ../bin/ts-java.sh
 
+
 $(JAVAPKGS_CLEAN): %-clean:
 	cd $* && mvn clean
 	rm -rf $*/java.d.ts $*/o
@@ -42,7 +43,7 @@ TSC=./node_modules/.bin/tsc
 TSC_OPTS=--module commonjs --target ES5 --sourceMap
 
 ###
-FEATURES=$(wildcard features/*/*.feature)
+FEATURES=$(wildcard features/*/*.feature */features/*.feature)
 FEATURES_RAN=$(patsubst %.feature,o/%.lastran,$(FEATURES))
 
 $(FEATURES_RAN): $(JAVAPKGS_JAVADTS)

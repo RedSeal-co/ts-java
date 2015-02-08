@@ -119,6 +119,26 @@ function wrapper() {
       callback();
     });
   });
+
+  this.Given(/^this boilerplate to intialize node\-java:$/, function (boilerplate: string, callback: Callback) {
+    // Write code here that turns the phrase above into concrete actions
+    callback.pending();
+  });
+
+  this.Given(/^the above boilerplate with following scenario snippet:$/, function (snippet: string, callback: Callback) {
+    // Write code here that turns the phrase above into concrete actions
+    callback.pending();
+  });
+
+  this.Then(/^it compiles cleanly$/, function (callback: Callback) {
+    // Write code here that turns the phrase above into concrete actions
+    callback.pending();
+  });
+
+  this.Then(/^when run it produces output:$/, function (output: string, callback: Callback) {
+    // Write code here that turns the phrase above into concrete actions
+    callback.pending();
+  });
 }
 
 export = wrapper;
