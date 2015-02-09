@@ -2,6 +2,7 @@
 /// <reference path='../../typings/bluebird/bluebird.d.ts' />
 /// <reference path="../../typings/chai/chai.d.ts"/>
 /// <reference path="../../typings/debug/debug.d.ts"/>
+/// <reference path="../../typings/handlebars/handlebars.d.ts"/>
 /// <reference path="../../typings/node/node.d.ts"/>
 
 import BluePromise = require('bluebird');
@@ -9,6 +10,7 @@ import chai = require('chai');
 import childProcess = require('child_process');
 import debug = require('debug');
 import fs = require('fs');
+import handlebars = require('handlebars');
 import path = require('path');
 
 // ### Callback
@@ -35,8 +37,14 @@ interface World {
   error: Error;
   stdout: string;
   stderr: string;
+
+  // Boilerplate template and its parameters
+  boilerplate: HandlebarsTemplateDelegate;
+  scenario_snippet: string;
 }
 
+// ### ExecCallback
+// A generalized map of properties
 interface ExecCallback {
   (): void;
 }
@@ -121,24 +129,33 @@ function wrapper() {
   });
 
   this.Given(/^this boilerplate to intialize node\-java:$/, function (boilerplate: string, callback: Callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback.pending();
+    var world = <World> this;
+    world.boilerplate = handlebars.compile(boilerplate);
+    callback();
   });
 
   this.Given(/^the above boilerplate with following scenario snippet:$/, function (snippet: string, callback: Callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback.pending();
+    // Save the scenario_snippet parameter.
+    var world = <World> this;
+    var program = world.boilerplate({scenario_snippet: snippet});
+    expect(world.sampleProgramPath).to.be.ok;
+    fs.writeFileSync(world.sampleProgramPath, program);
+    callback();
   });
 
   this.Then(/^it compiles cleanly$/, function (callback: Callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback.pending();
-  });
-
-  this.Then(/^when run it produces output:$/, function (output: string, callback: Callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback.pending();
+    var world = <World> this;
+    var compileCmd: string = './node_modules/.bin/tsc --module commonjs --target ES5 --noImplicitAny --sourceMap '
+                           + world.sampleProgramPath;
+    execChild(world, compileCmd, () => {
+      expect(world.error).to.equal(null);
+      expect(world.stdout).to.equal('');
+      expect(world.stderr).to.equal('');
+      callback();
+    });
   });
 }
+
+
 
 export = wrapper;

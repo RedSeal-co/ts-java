@@ -22,8 +22,12 @@ in the Background section.
 
     import glob = require('glob');
     import java = require('java');
+    java.asyncOptions = {
+      promiseSuffix: 'Promise',
+      promisify: require('bluebird').promisify
+    };
 
-    var filenames = glob.sync('../hellojava/target/**/*.jar');
+    var filenames = glob.sync('hellojava/target/**/*.jar');
     filenames.forEach((name: string) => { java.classpath.push(name); });
     var HelloJava = java.import('com.redseal.hellojava.HelloJava');
     {{{ scenario_snippet }}}
@@ -35,7 +39,7 @@ in the Background section.
     console.log(HelloJava.sayHelloSync());
     """
     Then it compiles cleanly
-    And when run it produces output:
+    And it runs and produces output:
     """
     Hello, Java!
 
@@ -47,7 +51,7 @@ in the Background section.
     HelloJava.sayHello((err: Error, result: string) => console.log(result));
     """
     Then it compiles cleanly
-    And when run it produces output:
+    And it runs and produces output:
     """
     Hello, Java!
 
@@ -59,7 +63,7 @@ in the Background section.
     HelloJava.sayHelloPromise().then((result: string) => console.log(result));
     """
     Then it compiles cleanly
-    And when run it produces output:
+    And it runs and produces output:
     """
     Hello, Java!
 
