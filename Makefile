@@ -26,7 +26,7 @@ clean-java-pkgs : $(JAVAPKGS_CLEAN)
 $(JAVAPKGS_INSTALL): %-install:
 	cd $* && mvn clean package
 
-$(JAVAPKGS_JAVADTS): %/java.d.ts: bin/ts-java.sh %/package.json
+$(JAVAPKGS_JAVADTS): %/java.d.ts: %/package.json bin/ts-java.sh ts-templates/package.txt
 	cd $* && ../bin/ts-java.sh
 
 $(JAVAPKGS_CLEAN): %-clean:
