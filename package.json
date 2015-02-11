@@ -19,7 +19,7 @@
     "ts-java.js": "bin/ts-java.js"
   },
   "dependencies": {
-    "bluebird": "^2.3.11",
+    "bluebird": ">2.9.7",
     "chalk": "^0.5.1",
     "commander": "^2.6.0",
     "debug": "^2.1.1",

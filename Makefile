@@ -8,6 +8,7 @@ default: test
 # JAVAPKGS are directories containing a pom.xml and a package.json in which ts-java will be run
 # to generate a java.d.ts file. Keep the packages in alphabetical order.
 JAVAPKGS=\
+	hellojava \
 	reflection \
 	tinkerpop \
 
@@ -26,8 +27,9 @@ clean-java-pkgs : $(JAVAPKGS_CLEAN)
 $(JAVAPKGS_INSTALL): %-install:
 	cd $* && mvn clean package
 
-$(JAVAPKGS_JAVADTS): %/java.d.ts: bin/ts-java.sh %/package.json
+$(JAVAPKGS_JAVADTS): %/java.d.ts: %/package.json bin/ts-java.sh ts-templates/package.txt
 	cd $* && ../bin/ts-java.sh
+
 
 $(JAVAPKGS_CLEAN): %-clean:
 	cd $* && mvn clean
@@ -41,7 +43,7 @@ TSC=./node_modules/.bin/tsc
 TSC_OPTS=--module commonjs --target ES5 --sourceMap
 
 ###
-FEATURES=$(wildcard features/*/*.feature)
+FEATURES=$(wildcard features/*/*.feature */features/*.feature)
 FEATURES_RAN=$(patsubst %.feature,o/%.lastran,$(FEATURES))
 
 $(FEATURES_RAN): $(JAVAPKGS_JAVADTS)
@@ -111,7 +113,6 @@ TSD=./node_modules/.bin/tsd
 install-tsd: install-npm
 	$(TSD) reinstall
 
-#####
 # Explicit dependencies for files that are referenced
 
 bin/*.js lib/*.js test/*.js: lib/java.d.ts

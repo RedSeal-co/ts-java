@@ -228,16 +228,8 @@ describe('ClassesMap', () => {
       expect(classes).to.be.an('object');
       var classNames = _.keys(classes).sort();
       expect(classNames).to.deep.equal([
-        'java.lang.Class',
-        'java.lang.ClassLoader',
-        'java.lang.Comparable',
-        'java.lang.Iterable',
         'java.lang.Object',
         'java.lang.String',
-        'java.lang.reflect.AccessibleObject',
-        'java.lang.reflect.Constructor',
-        'java.lang.reflect.Executable',
-        'java.lang.reflect.Method',
         'java.util.Iterator',
         'java.util.function.Consumer'
       ]);
@@ -268,11 +260,7 @@ describe('ClassesMap', () => {
         'com.tinkerpop.gremlin.structure.Property',
         'com.tinkerpop.gremlin.structure.Transaction',
         'com.tinkerpop.gremlin.structure.Vertex',
-        'java.lang.Class',
-        'java.lang.Cloneable',
-        'java.lang.Comparable',
         'java.lang.Enum',
-        'java.lang.Iterable',
         'java.lang.Object',
         'java.util.function.BiConsumer',
         'java.util.function.BiFunction',

@@ -11,10 +11,6 @@ o/
 !bin/*.js.map
 !lib/*.js.map
 
-tinkerpop/*
-!tinkerpop/package.json
-!tinkerpop/pom.xml
-
-reflection/*
-!reflection/package.json
-!reflection/pom.xml
+target/
+*/java.d.ts
+!lib/java.d.ts

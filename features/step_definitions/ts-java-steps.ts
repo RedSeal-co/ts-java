@@ -2,6 +2,7 @@
 /// <reference path='../../typings/bluebird/bluebird.d.ts' />
 /// <reference path="../../typings/chai/chai.d.ts"/>
 /// <reference path="../../typings/debug/debug.d.ts"/>
+/// <reference path="../../typings/handlebars/handlebars.d.ts"/>
 /// <reference path="../../typings/node/node.d.ts"/>
 
 import BluePromise = require('bluebird');
@@ -9,25 +10,26 @@ import chai = require('chai');
 import childProcess = require('child_process');
 import debug = require('debug');
 import fs = require('fs');
+import handlebars = require('handlebars');
 import path = require('path');
 
-// ### ICallback
+// ### Callback
 // Interface of the callback from Cucumber.js
-interface ICallback {
+interface Callback {
   (error?: string): void;
   (error?: Error): void;
   pending(): void;
 }
 
-// ### IScenario
+// ### Scenario
 // Interface of the scenario object from Cucumber.js
-interface IScenario {
+interface Scenario {
   getName(): string;
 }
 
-// ### IWorld
+// ### World
 // Interface to the "world" for these steps.
-interface IWorld {
+interface World {
   scenarioName: string;
   sampleProgramPath: string;
 
@@ -35,9 +37,15 @@ interface IWorld {
   error: Error;
   stdout: string;
   stderr: string;
+
+  // Boilerplate template and its parameters
+  boilerplate: HandlebarsTemplateDelegate;
+  scenario_snippet: string;
 }
 
-interface IExecCallback {
+// ### ExecCallback
+// A generalized map of properties
+interface ExecCallback {
   (): void;
 }
 
@@ -46,7 +54,7 @@ function wrapper() {
   var expect = chai.expect;
 
   // Function which runs a child process and captures the relevant data in the world object.
-  var execChild = function (world: IWorld, cmd: string, callback: IExecCallback) {
+  var execChild = function (world: World, cmd: string, callback: ExecCallback) {
     world.child = childProcess.exec(cmd, function (error: Error, stdout: Buffer, stderr: Buffer) {
       world.error = error;
       world.stdout = stdout.toString();
@@ -60,8 +68,8 @@ function wrapper() {
   };
 
   // Set up a test area before each scenario.
-  this.Before(function (scenario: IScenario, callback: ICallback) {
-    var world = <IWorld> this;
+  this.Before(function (scenario: Scenario, callback: Callback) {
+    var world = <World> this;
     world.scenarioName = scenario.getName();
     expect(world.scenarioName).to.be.ok;
 
@@ -71,19 +79,19 @@ function wrapper() {
     callback();
   });
 
-  this.Given(/^the default TinkerPop packages$/, function (callback: ICallback) {
+  this.Given(/^the default TinkerPop packages$/, function (callback: Callback) {
     callback();
   });
 
-  this.Given(/^the following sample program:$/, function (program: string, callback: ICallback) {
-    var world = <IWorld> this;
+  this.Given(/^the following sample program:$/, function (program: string, callback: Callback) {
+    var world = <World> this;
     expect(world.sampleProgramPath).to.be.ok;
     fs.writeFileSync(world.sampleProgramPath, program);
     callback();
   });
 
-  this.Then(/^it compiles and lints cleanly$/, function (callback: ICallback) {
-    var world = <IWorld> this;
+  this.Then(/^it compiles and lints cleanly$/, function (callback: Callback) {
+    var world = <World> this;
     var compileCmd: string = './node_modules/.bin/tsc --module commonjs --target ES5 --noImplicitAny --sourceMap '
                            + world.sampleProgramPath;
     execChild(world, compileCmd, () => {
@@ -100,8 +108,8 @@ function wrapper() {
     });
   });
 
-  this.Then(/^it runs and produces output:$/, function (output: string, callback: ICallback) {
-    var world = <IWorld> this;
+  this.Then(/^it runs and produces output:$/, function (output: string, callback: Callback) {
+    var world = <World> this;
     var scriptPath = path.join('o', world.scenarioName.replace(/\s+/g, '_') + '.js');
     var runCmd: string = 'node ' + scriptPath;
     execChild(world, runCmd, () => {
@@ -110,8 +118,8 @@ function wrapper() {
     });
   });
 
-  this.When(/^compiled it produces this error containing this snippet:$/, function (expected: string, callback: ICallback) {
-    var world = <IWorld> this;
+  this.When(/^compiled it produces this error containing this snippet:$/, function (expected: string, callback: Callback) {
+    var world = <World> this;
     var compileCmd: string = './node_modules/.bin/tsc --module commonjs --target ES5 --noImplicitAny --sourceMap '
                            + world.sampleProgramPath;
     execChild(world, compileCmd, () => {
@@ -120,6 +128,34 @@ function wrapper() {
     });
   });
 
+  this.Given(/^this boilerplate to intialize node\-java:$/, function (boilerplate: string, callback: Callback) {
+    var world = <World> this;
+    world.boilerplate = handlebars.compile(boilerplate);
+    callback();
+  });
+
+  this.Given(/^the above boilerplate with following scenario snippet:$/, function (snippet: string, callback: Callback) {
+    // Save the scenario_snippet parameter.
+    var world = <World> this;
+    var program = world.boilerplate({scenario_snippet: snippet});
+    expect(world.sampleProgramPath).to.be.ok;
+    fs.writeFileSync(world.sampleProgramPath, program);
+    callback();
+  });
+
+  this.Then(/^it compiles cleanly$/, function (callback: Callback) {
+    var world = <World> this;
+    var compileCmd: string = './node_modules/.bin/tsc --module commonjs --target ES5 --noImplicitAny --sourceMap '
+                           + world.sampleProgramPath;
+    execChild(world, compileCmd, () => {
+      expect(world.error).to.equal(null);
+      expect(world.stdout).to.equal('');
+      expect(world.stderr).to.equal('');
+      callback();
+    });
+  });
 }
+
+
 
 export = wrapper;

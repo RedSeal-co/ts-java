@@ -11,16 +11,6 @@ import Immutable = require('immutable');
 import Work = require('./work');
 
 var requiredSeedClasses = [
-  'java.lang.Class',
-  'java.lang.ClassLoader',
-  'java.lang.Cloneable',
-  'java.lang.Comparable',
-  'java.lang.Enum',
-  'java.lang.Iterable',
-  'java.lang.Long',
-  'java.lang.reflect.Method',
-  'java.lang.reflect.Constructor',
-  'java.lang.Number',
   'java.lang.Object',
   'java.lang.String',
 ];
@@ -275,11 +265,8 @@ class ClassesMap {
       canonicalTypeName = parts[0];
       if (this.inWhiteList(canonicalTypeName)) {
         if (!work.alreadyAdded(canonicalTypeName)) {
-//           console.log('Adding:', canonicalTypeName);
           work.addTodo(canonicalTypeName);
         }
-      } else {
-//         console.log('Not in white list:', canonicalTypeName);
       }
     };
 
@@ -457,8 +444,7 @@ module ClassesMap {
     isVarArgs: boolean;     // true if this method's last parameter is varargs ...type
     generic_proto: string;  // The method prototype including generic type information
     plain_proto: string;    // The java method prototype without generic type information
-    definedHere?: boolean;  // True if this method is first defined in this class
-    signature?: string;     // A method signature related to the plain_proto prototype above
+    signature: string;     // A method signature related to the plain_proto prototype above
                             // This signature does not include return type info, as java does not
                             // use return type to distinguish among overloaded methods.
   }
