@@ -94,6 +94,11 @@ class CodeWriter {
     handlebars.registerHelper('mcall', (method: ClassesMap.MethodDefinition, options: HandlebarHelperOptions) => {
       return method.paramNames.join(', ');
     });
+    handlebars.registerHelper('hasClass', (className: string, options: HandlebarHelperOptions) => {
+      if (this.classes[className]) {
+        return options.fn(this.classes[className]);
+      }
+    });
   }
 
   // *streamLibraryClassFile(): stream a complete source file for a java wrapper class.
