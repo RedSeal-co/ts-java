@@ -9,6 +9,7 @@ default: test
 # to generate a java.d.ts file. Keep the packages in alphabetical order.
 JAVAPKGS=\
 	hellojava \
+	featureset \
 	reflection \
 	tinkerpop \
 
@@ -29,7 +30,6 @@ $(JAVAPKGS_INSTALL): %-install:
 
 $(JAVAPKGS_JAVADTS): %/java.d.ts: %/package.json bin/ts-java.sh ts-templates/package.txt
 	cd $* && ../bin/ts-java.sh
-
 
 $(JAVAPKGS_CLEAN): %-clean:
 	cd $* && mvn clean

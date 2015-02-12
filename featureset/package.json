@@ -1,0 +1,14 @@
+{
+  "tsjava": {
+    "classpath": [
+      "target/*.jar",
+      "target/dependency/*.jar"
+    ],
+    "seedClasses": [
+      "com.redseal.featureset.SomeClass"
+    ],
+    "whiteList": [
+      "com.redseal.featureset."
+    ]
+  }
+}
