@@ -4,7 +4,7 @@ public class SomeClass extends SomeAbstractClass {
 
     public SomeClass() {
         theInt = 42;
-        theLong = 0x0123456789abcdefL;
+        theLong = java.lang.Long.MAX_VALUE;
         theString = "Just some class.";
     }
 
