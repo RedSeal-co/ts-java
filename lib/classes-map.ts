@@ -402,6 +402,7 @@ class ClassesMap {
   // *loadAllClasses()*: load and map all classes of interest
   loadAllClasses(seedClasses: Array<string>): Work {
     var work = new Work(seedClasses);
+    _.forEach(requiredSeedClasses, (className: string) => work.addTodo(className));
 
     while (!work.isDone()) {
       var className = work.next();
