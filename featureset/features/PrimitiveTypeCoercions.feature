@@ -24,7 +24,7 @@ So I can understand how to primitive types and be aware of some limitations.
   Scenario: Java functions returning java.lang.String values return javascript strings.
     Given the above boilerplate with following scenario snippet:
     """
-    var str: string = something.getStringSync()
+    var str: string = something.getStringSync();
     console.log(typeof str, str);
     """
     Then it compiles cleanly
@@ -62,3 +62,28 @@ So I can understand how to primitive types and be aware of some limitations.
 
     """
 
+  Scenario: Java functions returning boolean values return javascript booleans.
+    Given the above boilerplate with following scenario snippet:
+    """
+    var val: boolean = something.getBooleanSync();
+    console.log(typeof val, val);
+    """
+    Then it compiles cleanly
+    And it runs and produces output:
+    """
+    boolean true
+
+    """
+
+  Scenario: Java functions returning double values return javascript numbers.
+    Given the above boilerplate with following scenario snippet:
+    """
+    var val: number = something.getDoubleSync();
+    console.log(typeof val, val);
+    """
+    Then it compiles cleanly
+    And it runs and produces output:
+    """
+    number 3.141592653589793
+
+    """
