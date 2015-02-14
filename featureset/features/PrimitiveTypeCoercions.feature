@@ -1,17 +1,8 @@
-Feature: Feature Set
+Feature: Primitive Type Coercions
 
 As a developer learning how to use ts-java
-I want an example of using typescript on some trivial java code
-So I can learn the basics with minimal complications
-
-All examples here use the java code in hellojava/src/main/java/com/redseal/hellojava/HelloJava.java.
-This file is build using maven and packaged into target/hellojava-1.0.0.jar.
-When make is run in the root ts-java directory, it runs the ts-java in the hellojava directory,
-which reads from package.json, writes the file hellojava/java.d.ts.
-
-The following shows several variation of simple Typscript code that executes the HelloJava class.
-The programs all require common initialization code, which is extracted into the boilerplate shown
-in the Background section.
+I want to understand how Typescript maps primitive types between Java and Typescript
+So I can understand how to primitive types and be aware of some limitations.
 
   Background:
     Given this boilerplate to intialize node-java:
@@ -61,7 +52,7 @@ in the Background section.
     """
     var num: longValue_t = something.getLongSync();
     console.log(typeof num, num);
-    console.log(typeof num.longValue, num.longValue);
+    console.log(typeof num.longValue, num.longValue); // longValue is a string showing the full 64-bit long integer
     """
     Then it compiles cleanly
     And it runs and produces output:
