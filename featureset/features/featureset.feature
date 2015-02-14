@@ -22,13 +22,52 @@ in the Background section.
 
     import glob = require('glob');
     import java = require('java');
-    java.asyncOptions = {
-      promiseSuffix: 'Promise',
-      promisify: require('bluebird').promisify
-    };
 
     var filenames = glob.sync('featureset/target/**/*.jar');
     filenames.forEach((name: string) => { java.classpath.push(name); });
-    var SomeAbstractClass = java.import('com.redseal.featureset.SomeAbstractClass');
+    var SomeClass = java.import('com.redseal.featureset.SomeClass');
+    var something: Java.SomeInterface = new SomeClass();
     {{{ scenario_snippet }}}
     """
+
+  Scenario: Java functions returning java.lang.String values return javascript strings.
+    Given the above boilerplate with following scenario snippet:
+    """
+    var str: string = something.getStringSync()
+    console.log(typeof str, str);
+    """
+    Then it compiles cleanly
+    And it runs and produces output:
+    """
+    string Just some class.
+
+    """
+
+  Scenario: Java functions returning int values return javascript numbers.
+    Given the above boilerplate with following scenario snippet:
+    """
+    var num: number = something.getIntSync();
+    console.log(typeof num, num);
+    """
+    Then it compiles cleanly
+    And it runs and produces output:
+    """
+    number 42
+
+    """
+
+  Scenario: Java functions returning long values return javascript objects containing both a number and a string.
+    Given the above boilerplate with following scenario snippet:
+    """
+    var num: longValue_t = something.getLongSync();
+    console.log(typeof num, num);
+    console.log(typeof num.longValue, num.longValue);
+    """
+    Then it compiles cleanly
+    And it runs and produces output:
+    """
+    object { [Number: 9223372036854776000] longValue: '9223372036854775807' }
+    string 9223372036854775807
+
+    """
+
