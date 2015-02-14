@@ -8,6 +8,7 @@
 import _ = require('lodash');
 import assert = require('assert');
 import Immutable = require('immutable');
+import ParamContext = require('./paramcontext');
 import Work = require('./work');
 
 var requiredSeedClasses = [
@@ -24,9 +25,6 @@ import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 import MethodDefinition = ClassesMap.MethodDefinition;
 import VariantsMap = ClassesMap.VariantsMap;
-
-// The context of a parameter, either an input to a function, or a return result.
-enum ParamContext {eInput, eReturn};
 
 // ## ClassesMap
 // ClassesMap is a map of a set of java classes/interfaces, containing information extracted via Java Reflection.

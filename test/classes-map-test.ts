@@ -18,6 +18,7 @@ import chai = require('chai');
 import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
+import ParamContext = require('../lib/paramcontext');
 import Work = require('../lib/work');
 
 describe('ClassesMap', () => {
@@ -130,6 +131,8 @@ describe('ClassesMap', () => {
       expect(classesMap.tsTypeName('[Ljava.lang.Object;')).to.equal('object_t[]');
       expect(classesMap.tsTypeName('[[Ljava.lang.Object;')).to.equal('object_t[][]');
       expect(classesMap.tsTypeName('[[[Ljava.lang.Object;')).to.equal('object_t[][][]');
+
+      expect(classesMap.tsTypeName('java.lang.String', ParamContext.eReturn)).to.equal('string');
     });
   });
 
