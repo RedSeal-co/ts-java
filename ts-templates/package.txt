@@ -33,6 +33,7 @@ declare module Java {
   export type integer_t = number {{#hasClass 'java.lang.Integer'}}| java.lang.Integer{{/hasClass}};
   export type double_t = number {{#hasClass 'java.lang.Double'}}| java.lang.Double{{/hasClass}};
   export type float_t = number {{#hasClass 'java.lang.Float'}}| java.lang.Float{{/hasClass}};
+  export type number_t = number {{#hasClass 'java.lang.Number'}}| java.lang.Number{{/hasClass}};
 
   export interface Array<T> extends java.lang.Object {
     // This is an opaque type for a java array T[];
@@ -69,21 +70,21 @@ declare module Java {
 
     {{#each this}}
     {{#each constructors}}
-    newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}, cb: Callback<{{../packageName}}.{{../shortName}}>): void;
+    newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}, cb: Callback<{{tsReturns}}>): void;
     {{/each}}
     {{/each}}
     newInstance(className: string, ...args: any[]): void;
 
     {{#each this}}
     {{#each constructors}}
-    newInstanceSync(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{../packageName}}.{{../shortName}};
+    newInstanceSync(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{tsReturns}};
     {{/each}}
     {{/each}}
     newInstanceSync(className: string, ...args: any[]): any;
 
     {{#each this}}
     {{#each constructors}}
-    newInstancePromise(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{../packageName}}.{{../shortName}}>;
+    newInstancePromise(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{tsReturns}}>;
     {{/each}}
     {{/each}}
     newInstancePromise(className: string, ...args: any[]): Promise<any>;

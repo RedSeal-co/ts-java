@@ -123,28 +123,57 @@ describe('ClassesMap', () => {
   });
 
   describe('tsTypeName', () => {
-    it('it should translate Java types to TypeScript types', () => {
-      expect(classesMap.tsTypeName('java.lang.String')).to.equal('string_t');
-      expect(classesMap.tsTypeName('int')).to.equal('integer_t');
+    it('it should translate Java primitive types to TypeScript types for function input parameters', () => {
       expect(classesMap.tsTypeName('boolean')).to.equal('boolean_t');
-      expect(classesMap.tsTypeName('short')).to.equal('short_t');
-      expect(classesMap.tsTypeName('long')).to.equal('long_t');
-      expect(classesMap.tsTypeName('float')).to.equal('float_t');
       expect(classesMap.tsTypeName('double')).to.equal('double_t');
+      expect(classesMap.tsTypeName('float')).to.equal('float_t');
+      expect(classesMap.tsTypeName('int')).to.equal('integer_t');
+      expect(classesMap.tsTypeName('long')).to.equal('long_t');
+      expect(classesMap.tsTypeName('short')).to.equal('short_t');
+    });
+    it('it should translate Java primitive types to TypeScript types for function return results', () => {
+      expect(classesMap.tsTypeName('boolean', ParamContext.eReturn)).to.equal('boolean');
+      expect(classesMap.tsTypeName('double', ParamContext.eReturn)).to.equal('number');
+      expect(classesMap.tsTypeName('float', ParamContext.eReturn)).to.equal('number');
+      expect(classesMap.tsTypeName('int', ParamContext.eReturn)).to.equal('number');
+      expect(classesMap.tsTypeName('long', ParamContext.eReturn)).to.equal('longValue_t');
+      expect(classesMap.tsTypeName('short', ParamContext.eReturn)).to.equal('number');
+    });
+    it('it should translate Java primitive classes to TypeScript types for function input parameters', () => {
+      expect(classesMap.tsTypeName('java.lang.Boolean')).to.equal('boolean_t');
+      expect(classesMap.tsTypeName('java.lang.Double')).to.equal('double_t');
+      expect(classesMap.tsTypeName('java.lang.Float')).to.equal('float_t');
+      expect(classesMap.tsTypeName('java.lang.Integer')).to.equal('integer_t');
+      expect(classesMap.tsTypeName('java.lang.Long')).to.equal('long_t');
+      expect(classesMap.tsTypeName('java.lang.Number')).to.equal('number_t');
+      expect(classesMap.tsTypeName('java.lang.Short')).to.equal('short_t');
+      expect(classesMap.tsTypeName('java.lang.String')).to.equal('string_t');
       expect(classesMap.tsTypeName('Ljava.lang.Object;')).to.equal('object_t');
       expect(classesMap.tsTypeName('Ljava.util.function.Function;')).to.equal('Function');
+    });
+    it('it should translate Java primitive classes to TypeScript types for function return results', () => {
+      expect(classesMap.tsTypeName('java.lang.Boolean', ParamContext.eReturn)).to.equal('boolean');
+      expect(classesMap.tsTypeName('java.lang.Double', ParamContext.eReturn)).to.equal('number');
+      expect(classesMap.tsTypeName('java.lang.Float', ParamContext.eReturn)).to.equal('number');
+      expect(classesMap.tsTypeName('java.lang.Integer', ParamContext.eReturn)).to.equal('number');
+      expect(classesMap.tsTypeName('java.lang.Long', ParamContext.eReturn)).to.equal('longValue_t');
+      expect(classesMap.tsTypeName('java.lang.Number', ParamContext.eReturn)).to.equal('number');
+      expect(classesMap.tsTypeName('java.lang.Short', ParamContext.eReturn)).to.equal('number');
+      expect(classesMap.tsTypeName('java.lang.String', ParamContext.eReturn)).to.equal('string');
+    });
+    it('it should translate Java array types to TypeScript array types for function input parameters', () => {
+      expect(classesMap.tsTypeName('java.lang.Object')).to.equal('object_t');
+      expect(classesMap.tsTypeName('Ljava.lang.Object;')).to.equal('object_t');
       expect(classesMap.tsTypeName('[Ljava.lang.Object;')).to.equal('object_t[]');
       expect(classesMap.tsTypeName('[[Ljava.lang.Object;')).to.equal('object_t[][]');
       expect(classesMap.tsTypeName('[[[Ljava.lang.Object;')).to.equal('object_t[][][]');
-
-      expect(classesMap.tsTypeName('java.lang.String', ParamContext.eReturn)).to.equal('string');
-      expect(classesMap.tsTypeName('java.lang.Long', ParamContext.eReturn)).to.equal('longValue_t');
-      expect(classesMap.tsTypeName('long', ParamContext.eReturn)).to.equal('longValue_t');
-      expect(classesMap.tsTypeName('boolean', ParamContext.eReturn)).to.equal('boolean');
-      expect(classesMap.tsTypeName('int', ParamContext.eReturn)).to.equal('number');
-      expect(classesMap.tsTypeName('short', ParamContext.eReturn)).to.equal('number');
-      expect(classesMap.tsTypeName('float', ParamContext.eReturn)).to.equal('number');
-      expect(classesMap.tsTypeName('double', ParamContext.eReturn)).to.equal('number');
+    });
+    it('it should translate Java array types to TypeScript array types for function return results', () => {
+      expect(classesMap.tsTypeName('java.lang.Object', ParamContext.eReturn)).to.equal('java.lang.Object');
+      expect(classesMap.tsTypeName('Ljava.lang.Object;', ParamContext.eReturn)).to.equal('java.lang.Object');
+      expect(classesMap.tsTypeName('[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('java.lang.Object[]');
+      expect(classesMap.tsTypeName('[[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('java.lang.Object[][]');
+      expect(classesMap.tsTypeName('[[[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('java.lang.Object[][][]');
     });
   });
 

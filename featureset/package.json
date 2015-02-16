@@ -5,7 +5,9 @@
       "target/dependency/*.jar"
     ],
     "seedClasses": [
-      "com.redseal.featureset.SomeClass"
+      "com.redseal.featureset.SomeClass",
+      "java.lang.Double",
+      "java.lang.Integer"
     ],
     "whiteList": [
       "com.redseal.featureset."

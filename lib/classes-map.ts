@@ -219,14 +219,15 @@ class ClassesMap {
       byte: 'number', // TODO: reassess this.
       char: 'string', // TODO: reassess this.
       void: 'void',
-      'java.lang.Object':  context === ParamContext.eInput ? 'object_t' : 'java.lang.Object',
-      'java.lang.String':  context === ParamContext.eInput ? 'string_t' : 'string',
       'java.lang.Boolean': context === ParamContext.eInput ? 'boolean_t' : 'boolean',
       'java.lang.Double':  context === ParamContext.eInput ? 'double_t' : 'number',
       'java.lang.Float':   context === ParamContext.eInput ? 'float_t' : 'number',
       'java.lang.Integer': context === ParamContext.eInput ? 'integer_t' : 'number',
+      'java.lang.Long':    context === ParamContext.eInput ? 'long_t' : 'longValue_t',
+      'java.lang.Number':  context === ParamContext.eInput ? 'number_t' : 'number',
+      'java.lang.Object':  context === ParamContext.eInput ? 'object_t' : 'java.lang.Object',
       'java.lang.Short':   context === ParamContext.eInput ? 'short_t' : 'number',
-      'java.lang.Long':    context === ParamContext.eInput ? 'long_t' : 'longValue_t'
+      'java.lang.String':  context === ParamContext.eInput ? 'string_t' : 'string'
     };
 
     if (typeName in javaTypeToTypescriptType) {
@@ -270,6 +271,12 @@ class ClassesMap {
     var returnType: string = 'void';
     if ('getReturnTypeSync' in method) {
       returnType = (<Java.Method>method).getReturnTypeSync().getNameSync();
+    } else {
+      // It is convenient to declare the return type for a constructor to be the type of the class,
+      // possibly transformed by tsTypeName. This is because node-java will always convert boxed primitive
+      // types to the corresponding javascript primitives, e.g. java.lang.String -> string, and
+      // java.lang.Integer -> number.
+      returnType = method.getDeclaringClassSync().getNameSync();
     }
 
     var methodMap: MethodDefinition = {

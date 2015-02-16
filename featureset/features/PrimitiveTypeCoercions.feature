@@ -87,3 +87,25 @@ So I can understand how to primitive types and be aware of some limitations.
     number 3.141592653589793
 
     """
+
+  Scenario: Node-java always converts wrapped primitives to javascript primitives.
+    Given the above boilerplate with following scenario snippet:
+    """
+    // Node-java always converts wrapper class instances for primitive types to
+    // the corresponding primitive types, even via newInstance().
+    var str: string = java.newInstanceSync('java.lang.String', 'hello');
+    console.log(typeof str, str);
+
+    var num: number = java.newInstanceSync('java.lang.Integer', 42);
+    console.log(typeof num, num);
+
+    java.newInstance('java.lang.Double', 2.71828, (err: Error, num: number) => console.log(typeof num, num));
+    """
+    Then it compiles cleanly
+    And it runs and produces output:
+    """
+    string hello
+    number 42
+    number 2.71828
+
+    """
