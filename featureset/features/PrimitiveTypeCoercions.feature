@@ -7,9 +7,9 @@ So I can understand how to primitive types and be aware of some limitations.
   Background:
     Given this boilerplate to intialize node-java:
     """
-    /// <reference path='../typings/node/node.d.ts' />
-    /// <reference path='../typings/glob/glob.d.ts' />
-    /// <reference path='../featureset/java.d.ts'/>
+    /// <reference path='../../typings/node/node.d.ts' />
+    /// <reference path='../../typings/glob/glob.d.ts' />
+    /// <reference path='../../featureset/java.d.ts'/>
 
     import glob = require('glob');
     import java = require('java');

@@ -43,6 +43,9 @@
     },
     "chalk/chalk.d.ts": {
       "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
+    },
+    "cucumber/cucumber.d.ts": {
+      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
     }
   }
 }

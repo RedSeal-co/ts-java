@@ -1,20 +1,19 @@
 Feature: Constructors
-
-As a Node.js + TypeScript + node-java developer
-I want to be able to construct Java objects using various forms of constructors
-There are four ways to construct instances
-1. newInstanceSync         - synchronous
-2. newInstance             - asynchronous using a callback
-3. newInstancePromise      - asynchronous using a promise
-4. new ClassName.Static()  - synchronous
+  As a Node.js + TypeScript + node-java developer
+  I want to be able to construct Java objects using various forms of constructors
+  There are four ways to construct instances
+  1. newInstanceSync         - synchronous
+  2. newInstance             - asynchronous using a callback
+  3. newInstancePromise      - asynchronous using a promise
+  4. new ClassName.Static()  - synchronous
 
   Scenario: newInstanceSync
     Given the default TinkerPop packages
     And the following sample program:
     """
-    /// <reference path='../tinkerpop/java.d.ts'/>
-    /// <reference path='../typings/node/node.d.ts' />
-    /// <reference path='../typings/glob/glob.d.ts' />
+    /// <reference path='../../tinkerpop/java.d.ts'/>
+    /// <reference path='../../typings/node/node.d.ts' />
+    /// <reference path='../../typings/glob/glob.d.ts' />
 
     import glob = require('glob');
     import nodejava = require('java');
@@ -39,9 +38,9 @@ There are four ways to construct instances
     Given the default TinkerPop packages
     And the following sample program:
     """
-    /// <reference path='../tinkerpop/java.d.ts'/>
-    /// <reference path='../typings/node/node.d.ts' />
-    /// <reference path='../typings/glob/glob.d.ts' />
+    /// <reference path='../../tinkerpop/java.d.ts'/>
+    /// <reference path='../../typings/node/node.d.ts' />
+    /// <reference path='../../typings/glob/glob.d.ts' />
 
     import glob = require('glob');
     import nodejava = require('java');
@@ -67,9 +66,9 @@ There are four ways to construct instances
     Given the default TinkerPop packages
     And the following sample program:
     """
-    /// <reference path='../tinkerpop/java.d.ts'/>
-    /// <reference path='../typings/node/node.d.ts' />
-    /// <reference path='../typings/glob/glob.d.ts' />
+    /// <reference path='../../tinkerpop/java.d.ts'/>
+    /// <reference path='../../typings/node/node.d.ts' />
+    /// <reference path='../../typings/glob/glob.d.ts' />
 
     import glob = require('glob');
     import nodejava = require('java');
@@ -103,9 +102,9 @@ There are four ways to construct instances
     Given the default TinkerPop packages
     And the following sample program:
     """
-    /// <reference path='../tinkerpop/java.d.ts'/>
-    /// <reference path='../typings/node/node.d.ts' />
-    /// <reference path='../typings/glob/glob.d.ts' />
+    /// <reference path='../../tinkerpop/java.d.ts'/>
+    /// <reference path='../../typings/node/node.d.ts' />
+    /// <reference path='../../typings/glob/glob.d.ts' />
 
     import glob = require('glob');
     import nodejava = require('java');
@@ -131,10 +130,10 @@ There are four ways to construct instances
     Given the default TinkerPop packages
     And the following sample program:
     """
-    /// <reference path='../tinkerpop/java.d.ts'/>
-    /// <reference path='../typings/node/node.d.ts' />
-    /// <reference path='../typings/glob/glob.d.ts' />
-    /// <reference path='../typings/lodash/lodash.d.ts' />
+    /// <reference path='../../tinkerpop/java.d.ts'/>
+    /// <reference path='../../typings/node/node.d.ts' />
+    /// <reference path='../../typings/glob/glob.d.ts' />
+    /// <reference path='../../typings/lodash/lodash.d.ts' />
 
     import _ = require('lodash');
     import glob = require('glob');

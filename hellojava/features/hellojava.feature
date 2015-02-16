@@ -16,9 +16,9 @@ in the Background section.
   Background:
     Given this boilerplate to intialize node-java:
     """
-    /// <reference path='../typings/node/node.d.ts' />
-    /// <reference path='../typings/glob/glob.d.ts' />
-    /// <reference path='../hellojava/java.d.ts'/>
+    /// <reference path='../../typings/node/node.d.ts' />
+    /// <reference path='../../typings/glob/glob.d.ts' />
+    /// <reference path='../../hellojava/java.d.ts'/>
 
     import glob = require('glob');
     import java = require('java');

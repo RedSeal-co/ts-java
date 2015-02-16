@@ -19,9 +19,9 @@ if an invalid type is passed where a varags array parameter is expected.
     Given the default TinkerPop packages
     And the following sample program:
     """
-    /// <reference path='../tinkerpop/java.d.ts'/>
-    /// <reference path='../typings/node/node.d.ts' />
-    /// <reference path='../typings/glob/glob.d.ts' />
+    /// <reference path='../../tinkerpop/java.d.ts'/>
+    /// <reference path='../../typings/node/node.d.ts' />
+    /// <reference path='../../typings/glob/glob.d.ts' />
 
     import glob = require('glob');
     import nodejava = require('java');
@@ -55,8 +55,8 @@ if an invalid type is passed where a varags array parameter is expected.
     Given the default TinkerPop packages
     And the following sample program:
     """
-    /// <reference path='../tinkerpop/java.d.ts'/>
-    /// <reference path='../typings/node/node.d.ts' />
+    /// <reference path='../../tinkerpop/java.d.ts'/>
+    /// <reference path='../../typings/node/node.d.ts' />
     var g: Java.TinkerGraph;
     var s: Java.String;
     g.VSync(s);

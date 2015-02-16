@@ -8,9 +8,9 @@ So that I can use promises in my application.
     Given the default TinkerPop packages
     And the following sample program:
     """
-    /// <reference path='../tinkerpop/java.d.ts'/>
-    /// <reference path='../typings/node/node.d.ts' />
-    /// <reference path='../typings/glob/glob.d.ts' />
+    /// <reference path='../../tinkerpop/java.d.ts'/>
+    /// <reference path='../../typings/node/node.d.ts' />
+    /// <reference path='../../typings/glob/glob.d.ts' />
 
     import glob = require('glob');
     import nodejava = require('java');

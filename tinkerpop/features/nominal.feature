@@ -1,14 +1,13 @@
 Feature: Nominal unit tests for ts-java
-
-As a developer contributing to the development of ts-java
-I want nominal unit tests that exercise the ts-java application
-So that I can easily ensure a change hasn't completely borked the app. :)
+  As a developer contributing to the development of ts-java
+  I want nominal unit tests that exercise the ts-java application
+  So that I can easily ensure a change hasn't completely borked the app. :)
 
   Scenario: Package declaration only
     Given the default TinkerPop packages
     And the following sample program:
     """
-    /// <reference path='../tinkerpop/java.d.ts'/>
+    /// <reference path='../../tinkerpop/java.d.ts'/>
 
     """
     Then it compiles and lints cleanly
@@ -17,9 +16,9 @@ So that I can easily ensure a change hasn't completely borked the app. :)
     Given the default TinkerPop packages
     And the following sample program:
     """
-    /// <reference path='../tinkerpop/java.d.ts'/>
-    /// <reference path='../typings/node/node.d.ts' />
-    /// <reference path='../typings/glob/glob.d.ts' />
+    /// <reference path='../../tinkerpop/java.d.ts'/>
+    /// <reference path='../../typings/node/node.d.ts' />
+    /// <reference path='../../typings/glob/glob.d.ts' />
 
     import glob = require('glob');
     import nodejava = require('java');
