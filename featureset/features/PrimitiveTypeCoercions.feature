@@ -34,6 +34,20 @@ So I can understand how to primitive types and be aware of some limitations.
 
     """
 
+  Scenario: Java functions taking java.lang.String values accept javascript strings.
+    Given the above boilerplate with following scenario snippet:
+    """
+    something.setStringSync('foo');
+    var str: string = something.getStringSync();
+    console.log(typeof str, str);
+    """
+    Then it compiles cleanly
+    And it runs and produces output:
+    """
+    string foo
+
+    """
+
   Scenario: Java functions returning int values return javascript numbers.
     Given the above boilerplate with following scenario snippet:
     """
@@ -44,6 +58,20 @@ So I can understand how to primitive types and be aware of some limitations.
     And it runs and produces output:
     """
     number 42
+
+    """
+
+  Scenario: Java functions taking int values accept javascript numbers.
+    Given the above boilerplate with following scenario snippet:
+    """
+    something.setIntSync(999);
+    var num: number = something.getIntSync();
+    console.log(typeof num, num);
+    """
+    Then it compiles cleanly
+    And it runs and produces output:
+    """
+    number 999
 
     """
 
