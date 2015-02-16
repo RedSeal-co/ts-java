@@ -8,6 +8,8 @@ public class SomeClass extends SomeAbstractClass {
         theString = "Just some class.";
         theBoolean = true;
         theDouble = java.lang.Math.PI;
+
+        theList = new String[]{"a", "b", "c"};
     }
 
     public SomeClass(int x, long y, String z, boolean b, double d) {
@@ -23,6 +25,7 @@ public class SomeClass extends SomeAbstractClass {
     private String theString;
     private boolean theBoolean;
     private double theDouble;
+    private String[] theList;
 
     public int getInt() { return theInt; }
     public long getLong() { return theLong; }
@@ -35,4 +38,13 @@ public class SomeClass extends SomeAbstractClass {
     public void setString(String x) { theString = x; }
     public void setBoolean(boolean x) { theBoolean = x; }
     public void setDouble(double x) { theDouble = x; }
+
+    public String[] getList() {
+        return theList;
+    }
+
+    public void setList(String... args) {
+        theList = args;
+    }
+
 }

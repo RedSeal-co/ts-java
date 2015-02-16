@@ -2,6 +2,7 @@
 /// <reference path='../../typings/bluebird/bluebird.d.ts' />
 /// <reference path="../../typings/cucumber/cucumber.d.ts"/>
 /// <reference path="../../typings/chai/chai.d.ts"/>
+/// <reference path='../../typings/chalk/chalk.d.ts' />
 /// <reference path="../../typings/debug/debug.d.ts"/>
 /// <reference path="../../typings/handlebars/handlebars.d.ts"/>
 /// <reference path="../../typings/node/node.d.ts"/>
@@ -10,6 +11,7 @@
 
 import BluePromise = require('bluebird');
 import chai = require('chai');
+import chalk = require('chalk');
 import childProcess = require('child_process');
 import debug = require('debug');
 import fs = require('fs');
@@ -53,9 +55,9 @@ function wrapper() {
       world.stdout = stdout.toString();
       world.stderr = stderr.toString();
       dlog('Exec cmd:', cmd);
-      dlog('Exec error:', world.error);
-      dlog('Exec stdout:', world.stdout);
-      dlog('Exec stderr:', world.stderr);
+      dlog('Exec error:', chalk.bold.red(world.error));
+      dlog('Exec stdout:', chalk.bold.blue(world.stdout));
+      dlog('Exec stderr:', chalk.bold.red(world.stderr));
       callback();
     });
   };
@@ -74,7 +76,6 @@ function wrapper() {
 
     dlog('Scenario Name:', world.scenarioName);
     dlog('Scenario URI:', world.scenarioUri);
-
 
     var name: string = world.scenarioName.replace(/\W+/g, '_');
     name = name.replace(/_+$/, '') + '.ts';
