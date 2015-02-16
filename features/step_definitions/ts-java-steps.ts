@@ -79,10 +79,8 @@ function wrapper() {
 
     var name: string = world.scenarioName.replace(/\W+/g, '_');
     name = name.replace(/_+$/, '') + '.ts';
-    dlog('Normalized name:', name);
 
     var dirParts: string[] = world.scenarioUri.split(path.sep);
-    dlog('URI Parts:', dirParts);
 
     // We expect dirParts to look something like this:
     // [
