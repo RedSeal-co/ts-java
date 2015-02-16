@@ -425,6 +425,7 @@ class ClassesMap {
       packageName: this.packageName(this.fixClassPath(className)),
       fullName: className,
       shortName: this.shortClassName(className),
+      tsType: this.tsTypeName(className),
       isInterface: isInterface,
       isPrimitive: isPrimitive,
       superclass: superclass === null ? null : superclass.getNameSync(),
@@ -502,6 +503,7 @@ module ClassesMap {
     packageName: string;               // 'java.util'
     fullName: string;                  // 'java.util.Iterator'
     shortName: string;                 // 'Iterator'
+    tsType: string;                    // For primitive wrappers, the ts type, e.g. 'java.lang.String' -> 'string'
     isInterface: boolean;              // true if this is an interface, false for class or primitive type.
     isPrimitive: boolean;              // true for a primitive type, false otherwise.
     superclass: string;                // null if no superclass, otherwise class name

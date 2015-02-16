@@ -109,3 +109,23 @@ So I can understand how to primitive types and be aware of some limitations.
     number 2.71828
 
     """
+
+  Scenario: newArray returns java object wrapper for the array.
+    Given the above boilerplate with following scenario snippet:
+    """
+    var arr: Java.Array<Java.java.lang.String> = java.newArray('java.lang.String', ['hello', 'world']);
+    console.log(typeof arr, arr);
+
+    // TODO: ts-java needs generics to support something like the following:
+    // var Arrays = java.import('java.util.Arrays');
+    // var list: Java.java.util.List = Arrays.asList(arr);
+    // console.log(list.toStringSync());
+
+    """
+    Then it compiles cleanly
+    And it runs and produces output:
+    """
+    object {}
+
+    """
+

@@ -7,7 +7,9 @@
     "seedClasses": [
       "com.redseal.featureset.SomeClass",
       "java.lang.Double",
-      "java.lang.Integer"
+      "java.lang.Integer",
+      "java.util.Arrays",
+      "java.util.List"
     ],
     "whiteList": [
       "com.redseal.featureset."

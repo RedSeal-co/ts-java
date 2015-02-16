@@ -61,6 +61,9 @@ declare module Java {
     {{#hasClass 'java.lang.ClassLoader'}}getClassLoader(): ClassLoader;
     {{/hasClass}}
 
+    {{#each this}}
+    newArray(className: '{{packageName}}.{{shortName}}', arg: {{tsType}}[]): Array<{{packageName}}.{{shortName}}>;
+    {{/each}}
     newArray<T>(className: string, arg: any[]): Array<T>;
 
     {{#each this}}
