@@ -1,48 +1,48 @@
 {
   "version": "v4",
-  "repo": "borisyankov/DefinitelyTyped",
-  "ref": "master",
+  "repo": "mhfrantz/DefinitelyTyped",
+  "ref": "prod",
   "path": "typings",
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "mocha/mocha.d.ts": {
-      "commit": "48b4cb54af76f02b33dccaa0fdd2ae97db7cdd1b"
+      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
     },
     "chai/chai.d.ts": {
-      "commit": "48b4cb54af76f02b33dccaa0fdd2ae97db7cdd1b"
+      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
     },
     "lodash/lodash.d.ts": {
-      "commit": "48b4cb54af76f02b33dccaa0fdd2ae97db7cdd1b"
+      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
     },
     "assert/assert.d.ts": {
-      "commit": "48b4cb54af76f02b33dccaa0fdd2ae97db7cdd1b"
+      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
     },
     "node/node.d.ts": {
-      "commit": "48b4cb54af76f02b33dccaa0fdd2ae97db7cdd1b"
+      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
     },
     "handlebars/handlebars.d.ts": {
-      "commit": "dd4398796d746c4a7bfc739fedfcaadb0a8feb77"
+      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
     },
     "mkdirp/mkdirp.d.ts": {
-      "commit": "30cfe7dedb3ae990a369cda93995d69b169465bd"
+      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
     },
     "commander/commander.d.ts": {
-      "commit": "a283cea01a860b9e007a2e6e0f74d78cefcc798f"
+      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
     },
     "debug/debug.d.ts": {
-      "commit": "0bf824eb633122fb748e17f89aa067cc4383c2df"
+      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
     },
     "glob/glob.d.ts": {
-      "commit": "e0a774f721a42198522876cce0d42512e72816b2"
+      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
     },
     "minimatch/minimatch.d.ts": {
-      "commit": "e0a774f721a42198522876cce0d42512e72816b2"
+      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
     },
     "bluebird/bluebird.d.ts": {
-      "commit": "01ce3ccf7f071514ff5057ef32a4550bf0b81dfe"
+      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
     },
     "chalk/chalk.d.ts": {
-      "commit": "7bab855ae33d79e86da1eb6c73a7f7eab2676ddb"
+      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
     }
   }
 }
