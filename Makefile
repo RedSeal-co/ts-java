@@ -113,6 +113,9 @@ TSD=./node_modules/.bin/tsd
 install-tsd: install-npm
 	$(TSD) reinstall
 
+update-tsd:
+	$(TSD) update -o -s
+
 # Explicit dependencies for files that are referenced
 
 bin/*.js lib/*.js test/*.js: lib/java.d.ts

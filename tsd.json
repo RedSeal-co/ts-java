@@ -6,46 +6,46 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "mocha/mocha.d.ts": {
-      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
+      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
     },
     "chai/chai.d.ts": {
-      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
+      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
     },
     "lodash/lodash.d.ts": {
-      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
+      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
     },
     "assert/assert.d.ts": {
-      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
+      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
     },
     "node/node.d.ts": {
-      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
+      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
     },
     "handlebars/handlebars.d.ts": {
-      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
+      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
     },
     "mkdirp/mkdirp.d.ts": {
-      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
+      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
     },
     "commander/commander.d.ts": {
-      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
+      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
     },
     "debug/debug.d.ts": {
-      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
+      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
     },
     "glob/glob.d.ts": {
-      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
+      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
     },
     "minimatch/minimatch.d.ts": {
-      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
+      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
     },
     "bluebird/bluebird.d.ts": {
-      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
+      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
     },
     "chalk/chalk.d.ts": {
-      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
+      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
     },
     "cucumber/cucumber.d.ts": {
-      "commit": "dfe3adccb58269c3765b2f3faa1bca6bece2ba22"
+      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
     }
   }
 }
