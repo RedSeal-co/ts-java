@@ -55,9 +55,15 @@ function wrapper() {
       world.stdout = stdout.toString();
       world.stderr = stderr.toString();
       dlog('Exec cmd:', cmd);
-      dlog('Exec error:', chalk.bold.red(world.error));
-      dlog('Exec stdout:', chalk.bold.blue(world.stdout));
-      dlog('Exec stderr:', chalk.bold.red(world.stderr));
+      if (world.error) {
+        dlog('Exec error:', chalk.bold.red(world.error.toString()));
+      }
+      if (world.stdout) {
+        dlog('Exec stdout:', chalk.bold.blue(world.stdout));
+      }
+      if (world.stderr) {
+        dlog('Exec stderr:', chalk.bold.red(world.stderr));
+      }
       callback();
     });
   };
