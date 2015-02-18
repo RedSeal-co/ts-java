@@ -1,56 +1,97 @@
-.PHONY: install install-npm install-tsd documentation test testdata unittest cucumber
-.PHONY: clean clean-obj clean-tsd clean-npm clean-js-map clean-unittest clean-cucumber
-.PHONY: install-java-pkgs  clean-java-pkgs
+.PHONY: install install-npm install-tsd documentation test testdata unittest
+.PHONY: clean clean-obj clean-tsd clean-npm clean-js-map clean-unittest
+.PHONY: install-java-pkgs clean-java-pkgs
+.PHONY: cucumber clean-cucumber
 
 default: test
+
+##### typescript sources #####
+
+ALL_TS_SRC=$(filter-out %.d.ts,$(wildcard bin/*.ts lib/*.ts test/*.ts features/step_definitions/*.ts))
+ALL_TS_OBJ=$(patsubst %.ts,%.js,$(ALL_TS_SRC))
+ALL_TS_JSMAP=$(patsubst %.ts,%.js.map,$(ALL_TS_SRC))
+
+STEPS_SRC=$(wildcard features/step_definitions/*.ts)
+STEPS_OBJS=$(patsubst %.ts,%.js,$(STEPS_SRC))
+
+LIBS_SRC=$(filter-out %.d.ts,$(wildcard lib/*.ts))
+LIBS_OBJS=$(patsubst %.ts,%.js,$(LIBS_SRC))
+
+TSC=./node_modules/.bin/tsc
+TSC_OPTS=--module commonjs --target ES5 --sourceMap
+
+%.js: %.ts
+	node_modules/tslint/bin/tslint --config tslint.json --file $<
+	$(TSC) $(TSC_OPTS) $<
+	stat $@ > /dev/null
 
 ######
 # JAVAPKGS are directories containing a pom.xml and a package.json in which ts-java will be run
 # to generate a java.d.ts file. Keep the packages in alphabetical order.
 JAVAPKGS=\
 	hellojava \
+	featureset \
 	reflection \
 	tinkerpop \
 
-JAVAPKGS_INSTALL=$(patsubst %,%-install,$(JAVAPKGS))
+##### java packages: clean package artifacts #####
+
+# hellojava-clean
 JAVAPKGS_CLEAN=$(patsubst %,%-clean,$(JAVAPKGS))
-.PHONY: $(JAVAPKGS_INSTALL) $(JAVAPKGS_CLEAN)
-
-# All of the package java.d.ts files. These are not phony targets!
-# Cucumber tests depend on these files.
-JAVAPKGS_JAVADTS=$(patsubst %,%/java.d.ts,$(JAVAPKGS))
-
-install-java-pkgs : $(JAVAPKGS_INSTALL)
 
 clean-java-pkgs : $(JAVAPKGS_CLEAN)
 
-$(JAVAPKGS_INSTALL): %-install:
+.PHONY: $(JAVAPKGS_CLEAN)
+
+##### java packages: maven build rules #####
+
+# all java source files across all pacakges
+ALL_JAVA_SOURCES=$(shell find */src -name '*.java')
+
+# hellojava/o/maven.lastran
+JAVAPKGS_INSTALL=$(patsubst %,%/o/maven.lastran,$(JAVAPKGS))
+
+$(JAVAPKGS_INSTALL): %/o/maven.lastran: %/pom.xml $(ALL_JAVA_SOURCES)
 	cd $* && mvn clean package
+	mkdir -p $(dir $@) && touch  $@
 
-$(JAVAPKGS_JAVADTS): %/java.d.ts: %/package.json bin/ts-java.sh ts-templates/package.txt
+install-java-pkgs : $(JAVAPKGS_INSTALL)
+
+##### java packages: java.d.ts rules #####
+
+# The java.d.ts file for each java package, e.g.: hellojava/java.d.ts
+JAVAPKGS_JAVADTS=$(patsubst %,%/java.d.ts,$(JAVAPKGS))
+
+# The rule to update each java.d.ts file
+$(JAVAPKGS_JAVADTS): %/java.d.ts: %/package.json %/o/maven.lastran bin/ts-java.sh ts-templates/package.txt
 	cd $* && ../bin/ts-java.sh
-
 
 $(JAVAPKGS_CLEAN): %-clean:
 	cd $* && mvn clean
 	rm -rf $*/java.d.ts $*/o
 
-####
-TS_SRC=$(filter-out %.d.ts,$(wildcard bin/*.ts lib/*.ts test/*.ts features/step_definitions/*.ts))
-TS_OBJ=$(patsubst %.ts,%.js,$(TS_SRC))
-TS_JSMAP=$(patsubst %.ts,%.js.map,$(TS_SRC))
-TSC=./node_modules/.bin/tsc
-TSC_OPTS=--module commonjs --target ES5 --sourceMap
+##### java packages: cucumber rules #####
 
-###
-FEATURES=$(wildcard features/*/*.feature */features/*.feature)
-FEATURES_RAN=$(patsubst %.feature,o/%.lastran,$(FEATURES))
+# A list of all .feature files (not organized by java packages)
+ALL_CUCUMBER_FEATURES=$(wildcard */features/*.feature)
 
-$(FEATURES_RAN): $(JAVAPKGS_JAVADTS)
+# The corresponding list of feature .lastran marker files
+ALL_CUCUMBER_FEATURES_RAN=$(patsubst %.feature,o/%.lastran,$(ALL_CUCUMBER_FEATURES))
 
-$(FEATURES_RAN): o/%.lastran: %.feature
+# A rule to make sure that every feature file is run
+$(ALL_CUCUMBER_FEATURES_RAN): o/%.lastran : %.feature $(STEPS_OBJS) $(LIBS_OBJS) $(JAVAPKGS_JAVADTS)
 	./node_modules/.bin/cucumber-js --tags '~@todo' --require features/step_definitions $<
 	mkdir -p $(dir $@) && touch  $@
+
+# A convenience target
+cucumber : o/cucumber.lastran
+
+# Run all out of date cucumber feature tests
+o/cucumber.lastran: $(ALL_CUCUMBER_FEATURES_RAN)
+	mkdir -p $(dir $@) && touch  $@
+
+clean-cucumber:
+	rm -rf $(ALL_CUCUMBER_FEATURES_RAN) o/cucumber.lastran
 
 ###
 UNIT_TESTS=$(filter-out %.d.ts, $(wildcard test/*.ts))
@@ -73,29 +114,20 @@ test: unittest cucumber
 
 unittest: $(UNIT_TEST_RAN)
 
-cucumber: $(FEATURES_RAN)
-
-%.js: %.ts
-	node_modules/tslint/bin/tslint --config tslint.json --file $<
-	$(TSC) $(TSC_OPTS) $<
-	stat $@ > /dev/null
 
 clean: clean-cucumber clean-doc clean-js-map clean-npm clean-obj clean-tsd clean-unittest clean-java-pkgs
-
-clean-cucumber:
-	rm -rf o.features $(FEATURES_RAN)
 
 clean-doc:
 	rm -rf doc
 
 clean-js-map:
-	rm -f $(TS_JSMAP)
+	rm -f $(ALL_TS_JSMAP)
 
 clean-npm:
 	rm -rf node_modules
 
 clean-obj:
-	rm -f $(TS_OBJ)
+	rm -f $(ALL_TS_OBJ)
 
 clean-tsd:
 	rm -rf typings
@@ -113,17 +145,18 @@ TSD=./node_modules/.bin/tsd
 install-tsd: install-npm
 	$(TSD) reinstall
 
+update-tsd:
+	$(TSD) update -o -s
+
 # Explicit dependencies for files that are referenced
 
-bin/*.js lib/*.js test/*.js: lib/java.d.ts
-
-bin/ts-java.sh: $(TS_OBJ)
+bin/ts-java.sh: bin/ts-java.js lib/java.d.ts
 	touch $@
 
-bin/ts-java.js : lib/*.ts
+bin/ts-java.js : $(LIBS_SRC)
 
-lib/classes-map.js : lib/work.ts
+lib/classes-map.js : lib/work.ts lib/paramcontext.ts
 
 lib/code-writer.js : lib/classes-map.ts
 
-
+test/classes-map-test.js : lib/paramcontext.ts

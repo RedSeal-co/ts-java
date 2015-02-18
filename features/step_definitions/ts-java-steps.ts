@@ -1,36 +1,31 @@
 // ts-java-steps.ts
 /// <reference path='../../typings/bluebird/bluebird.d.ts' />
+/// <reference path="../../typings/cucumber/cucumber.d.ts"/>
 /// <reference path="../../typings/chai/chai.d.ts"/>
+/// <reference path='../../typings/chalk/chalk.d.ts' />
 /// <reference path="../../typings/debug/debug.d.ts"/>
 /// <reference path="../../typings/handlebars/handlebars.d.ts"/>
 /// <reference path="../../typings/node/node.d.ts"/>
 
+'use strict';
+
 import BluePromise = require('bluebird');
 import chai = require('chai');
+import chalk = require('chalk');
 import childProcess = require('child_process');
 import debug = require('debug');
 import fs = require('fs');
 import handlebars = require('handlebars');
 import path = require('path');
 
-// ### Callback
-// Interface of the callback from Cucumber.js
-interface Callback {
-  (error?: string): void;
-  (error?: Error): void;
-  pending(): void;
-}
-
-// ### Scenario
-// Interface of the scenario object from Cucumber.js
-interface Scenario {
-  getName(): string;
-}
+// Generic Cucumber step callback interface.
+import Callback = cucumber.StepCallback;
 
 // ### World
 // Interface to the "world" for these steps.
 interface World {
   scenarioName: string;
+  scenarioUri: string;
   sampleProgramPath: string;
 
   child: childProcess.ChildProcess;
@@ -60,21 +55,50 @@ function wrapper() {
       world.stdout = stdout.toString();
       world.stderr = stderr.toString();
       dlog('Exec cmd:', cmd);
-      dlog('Exec error:', world.error);
-      dlog('Exec stdout:', world.stdout);
-      dlog('Exec stderr:', world.stderr);
+      if (world.error) {
+        dlog('Exec error:', chalk.bold.red(world.error.toString()));
+      }
+      if (world.stdout) {
+        dlog('Exec stdout:', chalk.bold.blue(world.stdout));
+      }
+      if (world.stderr) {
+        dlog('Exec stderr:', chalk.bold.red(world.stderr));
+      }
       callback();
     });
   };
 
   // Set up a test area before each scenario.
-  this.Before(function (scenario: Scenario, callback: Callback) {
+  this.Before(function (scenario: cucumber.Scenario, callback: Callback) {
     var world = <World> this;
     world.scenarioName = scenario.getName();
     expect(world.scenarioName).to.be.ok;
 
+    var cwd = process.cwd();
+    world.scenarioUri = scenario.getUri();
+    expect(world.scenarioUri).to.be.ok;
+    expect(world.scenarioUri.substring(0, cwd.length)).to.equal(cwd);
+    world.scenarioUri = world.scenarioUri.slice(cwd.length + 1);
+
+    dlog('Scenario Name:', world.scenarioName);
+    dlog('Scenario URI:', world.scenarioUri);
+
+    var name: string = world.scenarioName.replace(/\W+/g, '_');
+    name = name.replace(/_+$/, '') + '.ts';
+
+    var dirParts: string[] = world.scenarioUri.split(path.sep);
+
+    // We expect dirParts to look something like this:
+    // [
+    //   'featureset',
+    //   'features',   // must have this
+    //   'PrimitiveTypeCoercions.feature'
+    // ]
+    expect(dirParts[dirParts.length - 2]).to.equal('features');
+    // Now we only need the initial directory name to construct our path.
+
     // Create a sample program source file each scenario.
-    world.sampleProgramPath = path.join('o', world.scenarioName.replace(/\s+/g, '_') + '.ts');
+    world.sampleProgramPath = path.join(dirParts[0], 'o', name);
     dlog('Sample program path:', world.sampleProgramPath);
     callback();
   });
@@ -110,7 +134,7 @@ function wrapper() {
 
   this.Then(/^it runs and produces output:$/, function (output: string, callback: Callback) {
     var world = <World> this;
-    var scriptPath = path.join('o', world.scenarioName.replace(/\s+/g, '_') + '.js');
+    var scriptPath = world.sampleProgramPath.replace(/ts$/, 'js');
     var runCmd: string = 'node ' + scriptPath;
     execChild(world, runCmd, () => {
       expect(world.stdout).to.equal(output);

@@ -130,6 +130,7 @@ readJsonPromise(packageJsonPath).then(function (packageContents) {
         if (err.stack) {
             console.error(err.stack);
         }
+        process.exit(1);
     }
 }).done();
 //# sourceMappingURL=ts-java.js.map

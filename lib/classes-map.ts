@@ -8,6 +8,7 @@
 import _ = require('lodash');
 import assert = require('assert');
 import Immutable = require('immutable');
+import ParamContext = require('./paramcontext');
 import Work = require('./work');
 
 var requiredSeedClasses = [
@@ -25,9 +26,6 @@ import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 import MethodDefinition = ClassesMap.MethodDefinition;
 import VariantsMap = ClassesMap.VariantsMap;
 
-// The context of a parameter, either an input to a function, or a return result.
-enum ParamContext {eInput, eReturn};
-
 // ## ClassesMap
 // ClassesMap is a map of a set of java classes/interfaces, containing information extracted via Java Reflection.
 // For each such class/interface, we extract the set of interfaces inherited/implemented by the class,
@@ -40,7 +38,6 @@ class ClassesMap {
   private classes: ClassDefinitionMap;
   private includedPatterns: Immutable.Set<RegExp>;
   private excludedPatterns: Immutable.Set<RegExp>;
-
 
   constructor(java: Java.Singleton,
               includedPatterns: Immutable.Set<RegExp>,
@@ -136,7 +133,7 @@ class ClassesMap {
     return encoding.replace(/\./g, '/');
   }
 
-  // *methodSignature()*: return the signature of a method, i.e. a string unique to any method variant,
+  // #### **methodSignature()**: return the signature of a method, i.e. a string unique to any method variant,
   // encoding the method name, types of parameters, and the return type.
   // This string may be passed as the method name to java.callMethod() in order to execute a specific variant.
   methodSignature(method: Java.Executable): string {
@@ -152,6 +149,7 @@ class ClassesMap {
     return signature;
   }
 
+  // #### **tsTypeName()**: given a java type name, return a typescript type name
   tsTypeName(javaTypeName: string, context: ParamContext = ParamContext.eInput): string {
     var typeName = javaTypeName;
 
@@ -166,38 +164,74 @@ class ClassesMap {
       typeName = m[1];
     }
 
-    var primitiveTypes = {
-      B: 'number', // byte. What does node-java do with byte arrays?
-      C: 'string', // char. What does node-java do with char arrays?
-      D: 'number', // double
-      F: 'number', // float
-      I: 'number', // int
-      J: 'number', // long
-      S: 'number', // short
-      Z: 'boolean',
-      boolean: 'boolean',
-      byte: 'number',
-      char: 'string',
-      double: 'number',
-      float: 'number',
-      int: 'number',
-      long: 'number',
-      short: 'number',
+    // First convert the 1-letter JNI abbreviated type names to their human readble types
+    var jniAbbreviations = {
+      // see http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/types.html
+      B: 'byte',
+      C: 'char',
+      D: 'double',
+      F: 'float',
+      I: 'int',
+      J: 'long',
+      S: 'short',
+      Z: 'boolean'
+    };
+    if (typeName in jniAbbreviations) {
+      typeName = jniAbbreviations[typeName];
+    }
+
+    // Next, promote primitive types to their corresponding Object types, to avoid redundancy below.
+    var primitiveToObjectMap = {
+      'boolean': 'java.lang.Boolean',
+      'short': 'java.lang.Short',
+      'long' : 'java.lang.Long',
+      'int': 'java.lang.Integer',
+      'float': 'java.lang.Float',
+      'double': 'java.lang.Double'
+    };
+    if (typeName in primitiveToObjectMap) {
+      typeName = primitiveToObjectMap[typeName];
+    }
+
+    // Finally, convert Java types to Typescript types.
+
+    // node-java does type translation for a set of common/primitive types.
+    // Translation is done both for function input parameters, and function return values.
+    // In general, it's not a 1-1 mapping between types.
+    // For function input parameters, we generaly need union types, so that methods can accept
+    // either javascript values, or java values (object pointers of a given Java type).
+    // Function return results are always a single type, but several java types may map to
+    // one javascript type (e.g. number).
+
+    // string_t is a union type [string|java.lang.String] defined in the handlebars template.
+    // Likewise object_t is the union type [string|java.lang.Object], a special case because it
+    // is common to pass a string to methods that are declared to take Object.
+    // (This may change when we implement generics).
+
+    // java.lang.Long type requires special handling, since javascript does not have 64-bit integers.
+    // For return values, node-java returns a Number that has an additional key 'longValue' holding a string
+    // representation of the full long integer. The value of the Number itself is the best floating point
+    // approximation (53 bits of the mantissa plus an exponent).
+    // We define an interface longValue_t (in package.txt) that that extends Number and adds a string member longValue.
+    // We also define long_t, which is the union [number|longValue_t|java.lang.Long].
+
+    var javaTypeToTypescriptType = {
+      byte: 'number', // TODO: reassess this.
+      char: 'string', // TODO: reassess this.
       void: 'void',
-      'java.lang.Double': 'number',
-      'java.lang.Float': 'number',
-      'java.lang.Integer': 'number',
-      // string_t is a union type [string|java.lang.String] defined in the handlebars template.
-      // Likewise object_t is the union type [string|java.lang.Object].
-      // It is useful to use these for method input parameters of type java.lang.String and java.lang.Object,
-      // as that allows Typescript applications to pass javascript strings, letting node-java do the implict coercion.
-      // But these union types should not be used for function return results.
-      'java.lang.Object': context === ParamContext.eInput ? 'object_t' : 'java.lang.Object',
-      'java.lang.String': context === ParamContext.eInput ? 'string_t' : 'string'
+      'java.lang.Boolean': context === ParamContext.eInput ? 'boolean_t' : 'boolean',
+      'java.lang.Double':  context === ParamContext.eInput ? 'double_t' : 'number',
+      'java.lang.Float':   context === ParamContext.eInput ? 'float_t' : 'number',
+      'java.lang.Integer': context === ParamContext.eInput ? 'integer_t' : 'number',
+      'java.lang.Long':    context === ParamContext.eInput ? 'long_t' : 'longValue_t',
+      'java.lang.Number':  context === ParamContext.eInput ? 'number_t' : 'number',
+      'java.lang.Object':  context === ParamContext.eInput ? 'object_t' : 'java.lang.Object',
+      'java.lang.Short':   context === ParamContext.eInput ? 'short_t' : 'number',
+      'java.lang.String':  context === ParamContext.eInput ? 'string_t' : 'string'
     };
 
-    if (typeName in primitiveTypes) {
-      return primitiveTypes[typeName] + ext;
+    if (typeName in javaTypeToTypescriptType) {
+      return javaTypeToTypescriptType[typeName] + ext;
     }
 
     if (this.inWhiteList(typeName)) {
@@ -237,6 +271,12 @@ class ClassesMap {
     var returnType: string = 'void';
     if ('getReturnTypeSync' in method) {
       returnType = (<Java.Method>method).getReturnTypeSync().getNameSync();
+    } else {
+      // It is convenient to declare the return type for a constructor to be the type of the class,
+      // possibly transformed by tsTypeName. This is because node-java will always convert boxed primitive
+      // types to the corresponding javascript primitives, e.g. java.lang.String -> string, and
+      // java.lang.Integer -> number.
+      returnType = method.getDeclaringClassSync().getNameSync();
     }
 
     var methodMap: MethodDefinition = {
@@ -385,6 +425,7 @@ class ClassesMap {
       packageName: this.packageName(this.fixClassPath(className)),
       fullName: className,
       shortName: this.shortClassName(className),
+      tsType: this.tsTypeName(className),
       isInterface: isInterface,
       isPrimitive: isPrimitive,
       superclass: superclass === null ? null : superclass.getNameSync(),
@@ -402,6 +443,7 @@ class ClassesMap {
   // *loadAllClasses()*: load and map all classes of interest
   loadAllClasses(seedClasses: Array<string>): Work {
     var work = new Work(seedClasses);
+    _.forEach(requiredSeedClasses, (className: string) => work.addTodo(className));
 
     while (!work.isDone()) {
       var className = work.next();
@@ -461,6 +503,7 @@ module ClassesMap {
     packageName: string;               // 'java.util'
     fullName: string;                  // 'java.util.Iterator'
     shortName: string;                 // 'Iterator'
+    tsType: string;                    // For primitive wrappers, the ts type, e.g. 'java.lang.String' -> 'string'
     isInterface: boolean;              // true if this is an interface, false for class or primitive type.
     isPrimitive: boolean;              // true for a primitive type, false otherwise.
     superclass: string;                // null if no superclass, otherwise class name

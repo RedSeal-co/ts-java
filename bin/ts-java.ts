@@ -176,6 +176,7 @@ readJsonPromise(packageJsonPath)
       if (err.stack) {
         console.error(err.stack);
       }
+      process.exit(1);
     }
   })
   .done();

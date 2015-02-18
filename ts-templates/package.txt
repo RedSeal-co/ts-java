@@ -7,6 +7,12 @@ declare module 'java' {
   export = Java;
 }
 
+// Node-java has special handling for methods that return long or java.lang.Long,
+// returning a Javascript Number but with an additional property longValue.
+interface longValue_t extends Number {
+  longValue: string;
+}
+
 declare module Java {
   // Node-java can automatically coerce a javascript string into a java.lang.String.
   // This special type alias allows to declare that possiblity to Typescript.
@@ -15,6 +21,19 @@ declare module Java {
   // Java methods that take java.lang.Object parameters implicitly will take a java.lang.String.
   // But string_t is not sufficient for this case, we need object_t.
   export type object_t = string | java.lang.Object;
+
+  // Java methods that take long or java.lang.Long parameters may take javascript numbers,
+  // longValue_t (see above) or java.lang.Long.
+  // This special type alias allows to declare that possiblity to Typescript.
+  export type long_t = number | longValue_t {{#hasClass 'java.lang.Long'}}| java.lang.Long{{/hasClass}};
+
+  // Handling of other primitive numeric types is simpler, as there is no loss of precision.
+  export type boolean_t = boolean {{#hasClass 'java.lang.Boolean'}}| java.lang.Boolean{{/hasClass}};
+  export type short_t = number {{#hasClass 'java.lang.Short'}}| java.lang.Short{{/hasClass}};
+  export type integer_t = number {{#hasClass 'java.lang.Integer'}}| java.lang.Integer{{/hasClass}};
+  export type double_t = number {{#hasClass 'java.lang.Double'}}| java.lang.Double{{/hasClass}};
+  export type float_t = number {{#hasClass 'java.lang.Float'}}| java.lang.Float{{/hasClass}};
+  export type number_t = number {{#hasClass 'java.lang.Number'}}| java.lang.Number{{/hasClass}};
 
   export interface Array<T> extends java.lang.Object {
     // This is an opaque type for a java array T[];
@@ -42,6 +61,9 @@ declare module Java {
     {{#hasClass 'java.lang.ClassLoader'}}getClassLoader(): ClassLoader;
     {{/hasClass}}
 
+    {{#each this}}
+    newArray(className: '{{packageName}}.{{shortName}}', arg: {{tsType}}[]): Array<{{packageName}}.{{shortName}}>;
+    {{/each}}
     newArray<T>(className: string, arg: any[]): Array<T>;
 
     {{#each this}}
@@ -51,21 +73,21 @@ declare module Java {
 
     {{#each this}}
     {{#each constructors}}
-    newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}, cb: Callback<{{../packageName}}.{{../shortName}}>): void;
+    newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}, cb: Callback<{{tsReturns}}>): void;
     {{/each}}
     {{/each}}
     newInstance(className: string, ...args: any[]): void;
 
     {{#each this}}
     {{#each constructors}}
-    newInstanceSync(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{../packageName}}.{{../shortName}};
+    newInstanceSync(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{tsReturns}};
     {{/each}}
     {{/each}}
     newInstanceSync(className: string, ...args: any[]): any;
 
     {{#each this}}
     {{#each constructors}}
-    newInstancePromise(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{../packageName}}.{{../shortName}}>;
+    newInstancePromise(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{tsReturns}}>;
     {{/each}}
     {{/each}}
     newInstancePromise(className: string, ...args: any[]): Promise<any>;
