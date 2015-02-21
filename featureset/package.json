@@ -1,5 +1,6 @@
 {
   "tsjava": {
+    "promisesPath": "../typings/bluebird/bluebird.d.ts",
     "classpath": [
       "target/*.jar",
       "target/dependency/*.jar"
