@@ -28,10 +28,10 @@ So that I can use promises in my application.
     // noargs is a convenience to work around limitation with node-java's handling of varargs.
     // Methods that take a varags final parameter must be passed an array, even in the case of
     // an empty varargs list.
-    var noargs: Java.Array<Java.Object> = java.newArray<Java.Object>('java.lang.Object', []);
+    var noargs: Java.array_t<Java.Object> = java.newArray<Java.Object>('java.lang.Object', []);
 
     // All queries below use this array of vertex property names
-    var props: Java.Array<Java.String> = java.newArray<Java.String>('java.lang.String', ['name', 'age']);
+    var props: Java.array_t<Java.String> = java.newArray<Java.String>('java.lang.String', ['name', 'age']);
 
     {{{ scenario_snippet }}}
 

@@ -85,7 +85,7 @@ class CodeWriter {
       var args = _.map(names, (name: string, i: number) => {
         if (method.isVarArgs && i === names.length - 1) {
           var t = tsParamTypes[i].slice(0, -2);
-          return util.format('%s: Array<%s>', name, t);
+          return util.format('%s: array_t<%s>', name, t);
         } else {
           return util.format('%s: %s', name, tsParamTypes[i]);
         }

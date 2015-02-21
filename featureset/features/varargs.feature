@@ -39,7 +39,7 @@ if an invalid type is passed where a varags array parameter is expected.
     // something.setListSync('hello', 'world');
 
     // But for now we have to do this instead:
-    var list: Java.Array<Java.String> = java.newArray<Java.String>('java.lang.String', ['hello', 'world']);
+    var list: Java.array_t<Java.String> = java.newArray<Java.String>('java.lang.String', ['hello', 'world']);
     something.setListSync(list);
 
     console.log(something.joinListSync('--'));

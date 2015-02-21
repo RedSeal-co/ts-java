@@ -141,7 +141,7 @@ So I can understand how to primitive types and be aware of some limitations.
   Scenario: newArray returns java object wrapper for the array.
     Given the above boilerplate with following scenario snippet:
     """
-    var arr: Java.Array<Java.java.lang.String> = java.newArray('java.lang.String', ['hello', 'world']);
+    var arr: Java.array_t<Java.java.lang.String> = java.newArray('java.lang.String', ['hello', 'world']);
     console.log(typeof arr, arr);
 
     // TODO: ts-java needs generics to support something like the following:
