@@ -29,6 +29,7 @@ import jsonfile = require('jsonfile');
 import mkdirp = require('mkdirp');
 import path = require('path');
 import program = require('commander');
+import TsJavaOptions = require('../lib/TsJavaOptions');
 import Work = require('../lib/work');
 
 import ClassDefinition = ClassesMap.ClassDefinition;
@@ -44,14 +45,6 @@ var globPromise = BluePromise.promisify(glob);
 var dlog = debug('ts-java:main');
 var error = chalk.bold.red;
 
-interface TsJavaOptions {
-  classpath: Array<string>;
-  seedClasses: Array<string>;
-  whiteList: Array<string>;
-  granularity?: string;
-  outputPath?: string;
-}
-
 class Main {
 
   private options: TsJavaOptions;
@@ -63,6 +56,10 @@ class Main {
     }
     if (!this.options.outputPath) {
       this.options.outputPath = 'java.d.ts';
+    }
+    if (!this.options.promisesPath) {
+      // TODO: Provide more control over promises
+      this.options.promisesPath = 'typings/bluebird/bluebird.d.ts';
     }
   }
 
@@ -111,7 +108,7 @@ class Main {
     var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
     var tsWriter = new CodeWriter(classesMap, templatesDirPath);
     var classes: ClassDefinitionMap = classesMap.getClasses();
-    return tsWriter.writePackageFile(this.options.outputPath)
+    return tsWriter.writePackageFile(this.options)
       .then(() => dlog('writePackageFiles() completed'));
   }
 
