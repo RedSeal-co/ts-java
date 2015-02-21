@@ -18,7 +18,7 @@ LIBS_SRC=$(filter-out %.d.ts,$(wildcard lib/*.ts))
 LIBS_OBJS=$(patsubst %.ts,%.js,$(LIBS_SRC))
 
 TSC=./node_modules/.bin/tsc
-TSC_OPTS=--module commonjs --target ES5 --sourceMap
+TSC_OPTS=--module commonjs --target ES5 --sourceMap --noEmitOnError
 
 %.js: %.ts
 	node_modules/tslint/bin/tslint --config tslint.json --file $<
