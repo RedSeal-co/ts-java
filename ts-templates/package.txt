@@ -31,8 +31,8 @@ declare module Java {
   export type float_t = number {{#hasClass 'java.lang.Float'}}| java.lang.Float{{/hasClass}};
   export type number_t = number {{#hasClass 'java.lang.Number'}}| java.lang.Number{{/hasClass}};
 
-  export interface Array<T> extends java.lang.Object {
-    // This is an opaque type for a java array T[];
+  export interface array_t<T> extends java.lang.Object {
+    // This is an opaque type for a java array_t T[];
     // Use Java.newArray<T>(className, [...]) to create wherever a Java method expects a T[],
     // most notably for vararg parameteters.
     __dummy: T;
@@ -58,9 +58,9 @@ declare module Java {
     {{/hasClass}}
 
     {{#each this}}
-    newArray(className: '{{packageName}}.{{shortName}}', arg: {{tsType}}[]): Array<{{packageName}}.{{shortName}}>;
+    newArray(className: '{{packageName}}.{{shortName}}', arg: {{tsType}}[]): array_t<{{packageName}}.{{shortName}}>;
     {{/each}}
-    newArray<T>(className: string, arg: any[]): Array<T>;
+    newArray<T>(className: string, arg: any[]): array_t<T>;
 
     {{#each this}}
     import(className: '{{packageName}}.{{shortName}}'): {{packageName}}.{{shortName}}.Static;
