@@ -35,6 +35,13 @@ describe('ClassesMap', () => {
     classesMap = new ClassesMap(java, Immutable.Set([
       /^java\.util\.Iterator$/,
       /^java\.util\.function\./,
+      /^java\.lang\.Boolean$/,
+      /^java\.lang\.Short$/,
+      /^java\.lang\.Integer$/,
+      /^java\.lang\.Long$/,
+      /^java\.lang\.Double$/,
+      /^java\.lang\.Float$/,
+      /^java\.lang\.Number$/,
       /^com\.tinkerpop\.gremlin\./
     ]));
   });
@@ -55,7 +62,6 @@ describe('ClassesMap', () => {
     it('should return false for invalid class names', () => {
       expect(classesMap.inWhiteList('')).to.equal(false);
       expect(classesMap.inWhiteList('com')).to.equal(false);
-      expect(classesMap.inWhiteList('java.lang.Foo')).to.equal(false);
       expect(classesMap.inWhiteList('java.util.Iterators')).to.equal(false);
       expect(classesMap.inWhiteList('com.tinkerpop.gremlin')).to.equal(false);
       expect(classesMap.inWhiteList('com.tinkerpop.Gremlin.Foo')).to.equal(false);
@@ -130,6 +136,7 @@ describe('ClassesMap', () => {
       expect(classesMap.tsTypeName('int')).to.equal('integer_t');
       expect(classesMap.tsTypeName('long')).to.equal('long_t');
       expect(classesMap.tsTypeName('short')).to.equal('short_t');
+      expect(classesMap.tsTypeName('void')).to.equal('void');
     });
     it('it should translate Java primitive types to TypeScript types for function return results', () => {
       expect(classesMap.tsTypeName('boolean', ParamContext.eReturn)).to.equal('boolean');
@@ -138,6 +145,7 @@ describe('ClassesMap', () => {
       expect(classesMap.tsTypeName('int', ParamContext.eReturn)).to.equal('number');
       expect(classesMap.tsTypeName('long', ParamContext.eReturn)).to.equal('longValue_t');
       expect(classesMap.tsTypeName('short', ParamContext.eReturn)).to.equal('number');
+      expect(classesMap.tsTypeName('void', ParamContext.eReturn)).to.equal('void');
     });
     it('it should translate Java primitive classes to TypeScript types for function input parameters', () => {
       expect(classesMap.tsTypeName('java.lang.Boolean')).to.equal('boolean_t');
@@ -164,16 +172,20 @@ describe('ClassesMap', () => {
     it('it should translate Java array types to TypeScript array types for function input parameters', () => {
       expect(classesMap.tsTypeName('java.lang.Object')).to.equal('object_t');
       expect(classesMap.tsTypeName('Ljava.lang.Object;')).to.equal('object_t');
-      expect(classesMap.tsTypeName('[Ljava.lang.Object;')).to.equal('object_t[]');
-      expect(classesMap.tsTypeName('[[Ljava.lang.Object;')).to.equal('object_t[][]');
-      expect(classesMap.tsTypeName('[[[Ljava.lang.Object;')).to.equal('object_t[][][]');
+      expect(classesMap.tsTypeName('[Ljava.lang.Object;')).to.equal('array_t<object_t>');
+      expect(classesMap.tsTypeName('[[Ljava.lang.Object;')).to.equal('void');
+      expect(classesMap.tsTypeName('[[[Ljava.lang.Object;')).to.equal('void');
+      expect(classesMap.tsTypeName('[I')).to.equal('array_t<integer_t>');
+      expect(classesMap.tsTypeName('[[I')).to.equal('void');
     });
     it('it should translate Java array types to TypeScript array types for function return results', () => {
       expect(classesMap.tsTypeName('java.lang.Object', ParamContext.eReturn)).to.equal('java.lang.Object');
       expect(classesMap.tsTypeName('Ljava.lang.Object;', ParamContext.eReturn)).to.equal('java.lang.Object');
-      expect(classesMap.tsTypeName('[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('java.lang.Object[]');
-      expect(classesMap.tsTypeName('[[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('java.lang.Object[][]');
-      expect(classesMap.tsTypeName('[[[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('java.lang.Object[][][]');
+      expect(classesMap.tsTypeName('[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('array_t<java.lang.Object>');
+      expect(classesMap.tsTypeName('[[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('void');
+      expect(classesMap.tsTypeName('[[[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('void');
+      expect(classesMap.tsTypeName('[I', ParamContext.eReturn)).to.equal('number[]');
+      expect(classesMap.tsTypeName('[[I', ParamContext.eReturn)).to.equal('number[][]');
     });
   });
 

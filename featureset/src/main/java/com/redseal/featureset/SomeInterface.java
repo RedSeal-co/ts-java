@@ -7,6 +7,7 @@ public interface SomeInterface {
     boolean getBoolean();
     double getDouble();
     String[] getList();
+    int[][] getArray();
 
     void setInt(int x);
     void setLong(long x);
@@ -14,6 +15,7 @@ public interface SomeInterface {
     void setBoolean(boolean x);
     void setDouble(double x);
     void setList(String... args);
+    void setArray(int[][] x);
 
     String joinList(String sep);
 }
