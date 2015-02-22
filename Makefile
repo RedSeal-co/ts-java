@@ -21,9 +21,9 @@ TSC=./node_modules/.bin/tsc
 TSC_OPTS=--module commonjs --target ES5 --sourceMap --noEmitOnError
 
 %.js: %.ts
-	node_modules/tslint/bin/tslint --config tslint.json --file $<
-	$(TSC) $(TSC_OPTS) $<
+	$(TSC) $(TSC_OPTS) $< || (rm -f $@ && false)
 	stat $@ > /dev/null
+	node_modules/tslint/bin/tslint --config tslint.json --file $<
 
 ######
 # JAVAPKGS are directories containing a pom.xml and a package.json in which ts-java will be run
