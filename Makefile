@@ -21,9 +21,9 @@ TSC=./node_modules/.bin/tsc
 TSC_OPTS=--module commonjs --target ES5 --sourceMap --noEmitOnError
 
 %.js: %.ts
-	node_modules/tslint/bin/tslint --config tslint.json --file $<
-	$(TSC) $(TSC_OPTS) $<
+	$(TSC) $(TSC_OPTS) $< || (rm -f $@ && false)
 	stat $@ > /dev/null
+	node_modules/tslint/bin/tslint --config tslint.json --file $<
 
 ######
 # JAVAPKGS are directories containing a pom.xml and a package.json in which ts-java will be run
@@ -99,7 +99,7 @@ UNIT_TEST_OBJS=$(patsubst %.ts,%.js,$(UNIT_TESTS))
 UNIT_TEST_RAN=$(patsubst %.ts,o/%.lastran,$(UNIT_TESTS))
 
 $(UNIT_TEST_RAN): o/%.lastran: %.js
-	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd $<
+	node_modules/mocha/bin/mocha --timeout 10s --reporter=spec --ui tdd $<
 	mkdir -p $(dir $@) && touch  $@
 
 #####

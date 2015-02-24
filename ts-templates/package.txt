@@ -69,21 +69,21 @@ declare module Java {
 
     {{#each this}}
     {{#each constructors}}
-    newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}, cb: Callback<{{tsReturns}}>): void;
+    newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}, cb: Callback<{{{tsReturns}}}>): void;
     {{/each}}
     {{/each}}
     newInstance(className: string, ...args: any[]): void;
 
     {{#each this}}
     {{#each constructors}}
-    newInstanceSync(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{tsReturns}};
+    newInstanceSync(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{{tsReturns}}};
     {{/each}}
     {{/each}}
     newInstanceSync(className: string, ...args: any[]): any;
 
     {{#each this}}
     {{#each constructors}}
-    newInstancePromise(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{tsReturns}}>;
+    newInstancePromise(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{{tsReturns}}}>;
     {{/each}}
     {{/each}}
     newInstancePromise(className: string, ...args: any[]): Promise<any>;
@@ -103,9 +103,9 @@ declare module Java {
       {{#if isStatic}}
       // static method, see {{shortName}}.Static
       {{else}}
-      {{name}}({{#if tsParamTypes}}{{{margs this}}},{{/if}} cb: Callback<{{tsReturns}}>): void;
-      {{name}}Sync({{{margs this}}}): {{tsReturns}};
-      {{name}}Promise({{{margs this}}}): Promise<{{tsReturns}}>;
+      {{name}}({{#if tsParamTypes}}{{{margs this}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
+      {{name}}Sync({{{margs this}}}): {{{tsReturns}}};
+      {{name}}Promise({{{margs this}}}): Promise<{{{tsReturns}}}>;
       {{/if}}
       {{/each}}
       {{/each}}
@@ -119,9 +119,9 @@ declare module Java {
         {{#each this}}
         {{#if isStatic}}
         // {{{generic_proto}}}
-        {{name}}({{#if tsParamTypes}}{{{margs this}}},{{/if}} cb: Callback<{{tsReturns}}>): void;
-        {{name}}Sync({{{margs this}}}): {{tsReturns}};
-        {{name}}Promise({{{margs this}}}): Promise<{{tsReturns}}>;
+        {{name}}({{#if tsParamTypes}}{{{margs this}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
+        {{name}}Sync({{{margs this}}}): {{{tsReturns}}};
+        {{name}}Promise({{{margs this}}}): Promise<{{{tsReturns}}}>;
         {{/if}}
         {{/each}}
         {{/each}}

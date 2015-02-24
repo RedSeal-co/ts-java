@@ -9,6 +9,7 @@ public abstract class SomeAbstractClass implements SomeInterface {
     public abstract boolean getBoolean();
     public abstract double getDouble();
     public abstract String[] getList();
+    public abstract int[][] getArray();
 
     public abstract void setInt(int x);
     public abstract void setLong(long x);
@@ -16,6 +17,7 @@ public abstract class SomeAbstractClass implements SomeInterface {
     public abstract void setBoolean(boolean x);
     public abstract void setDouble(double x);
     public abstract void setList(String... args);
+    public abstract void setArray(int[][] x);
 
     // Here is one method we implement in the abstract class
     public String joinList(String sep) {

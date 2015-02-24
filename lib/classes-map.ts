@@ -1,4 +1,5 @@
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts' />
+/// <reference path="../typings/debug/debug.d.ts"/>
 /// <reference path="../typings/lodash/lodash.d.ts" />
 /// <reference path='../typings/node/node.d.ts' />
 /// <reference path='./java.d.ts' />
@@ -7,9 +8,12 @@
 
 import _ = require('lodash');
 import assert = require('assert');
+import debug = require('debug');
 import Immutable = require('immutable');
 import ParamContext = require('./paramcontext');
 import Work = require('./work');
+
+var dlog = debug('ts-java:classes-map');
 
 var requiredSeedClasses = [
   'java.lang.Object',
@@ -182,6 +186,8 @@ class ClassesMap {
 
     // Next, promote primitive types to their corresponding Object types, to avoid redundancy below.
     var primitiveToObjectMap = {
+      'byte': 'java.lang.Object',
+      'char': 'java.lang.Object',
       'boolean': 'java.lang.Boolean',
       'short': 'java.lang.Short',
       'long' : 'java.lang.Long',
@@ -193,7 +199,15 @@ class ClassesMap {
       typeName = primitiveToObjectMap[typeName];
     }
 
-    // Finally, convert Java types to Typescript types.
+    if (!this.inWhiteList(typeName) && typeName !== 'void') {
+      // Since the type is not in our whiteList, we might want to use the Typescript 'any' type.
+      // However, array_t<any> doesn't really make sense. Rather, we want array_t<Object>,
+      // or possibly instead of Object a superclass that is in our whitelist.
+      this.unhandledTypes = this.unhandledTypes.add(typeName);
+      typeName = 'java.lang.Object';
+    }
+
+    // Finally, convert Java primitive types to Typescript primitive types.
 
     // node-java does type translation for a set of common/primitive types.
     // Translation is done both for function input parameters, and function return values.
@@ -216,8 +230,6 @@ class ClassesMap {
     // We also define long_t, which is the union [number|longValue_t|java.lang.Long].
 
     var javaTypeToTypescriptType = {
-      byte: 'number', // TODO: reassess this.
-      char: 'string', // TODO: reassess this.
       void: 'void',
       'java.lang.Boolean': context === ParamContext.eInput ? 'boolean_t' : 'boolean',
       'java.lang.Double':  context === ParamContext.eInput ? 'double_t' : 'number',
@@ -225,22 +237,50 @@ class ClassesMap {
       'java.lang.Integer': context === ParamContext.eInput ? 'integer_t' : 'number',
       'java.lang.Long':    context === ParamContext.eInput ? 'long_t' : 'longValue_t',
       'java.lang.Number':  context === ParamContext.eInput ? 'number_t' : 'number',
-      'java.lang.Object':  context === ParamContext.eInput ? 'object_t' : 'java.lang.Object',
+      'java.lang.Object':  context === ParamContext.eInput ? 'object_t' : 'java.lang.Object', // special case
       'java.lang.Short':   context === ParamContext.eInput ? 'short_t' : 'number',
       'java.lang.String':  context === ParamContext.eInput ? 'string_t' : 'string'
     };
 
-    if (typeName in javaTypeToTypescriptType) {
-      return javaTypeToTypescriptType[typeName] + ext;
+    var isJavaLangType: boolean = typeName in javaTypeToTypescriptType;
+    var isPrimitiveType: boolean = isJavaLangType && typeName !== 'java.lang.Object';
+
+    if (isJavaLangType) {
+      typeName = javaTypeToTypescriptType[typeName];
+    } else if (this.inWhiteList(typeName)) {
+      // TODO: we should only return shortName if we know there are no ambiguous cases.
+      // Pivotal story 88154024
+      typeName = this.shortClassName(typeName);
+    } else {
+      dlog('Unhandled type:', typeName);
+      this.unhandledTypes = this.unhandledTypes.add(typeName);
+      typeName = 'any';
     }
 
-    if (this.inWhiteList(typeName)) {
-      var shortName = this.shortClassName(typeName);
-      return shortName + ext;
+    // Handle arrays
+    assert.ok(ext.length % 2 === 0);  // ext must be sequence of zero or more '[]'.
+    if (ext === '') {
+      // A scalar type, nothing to do here
+    } else if (context === ParamContext.eReturn && isPrimitiveType) {
+      // Functions that return an array of a primitive type are thunked by node-java to return a
+      // javascript array of the corresponding javascript primitive type.
+      // This seems to work even for multidimensional arrays.
+      typeName = typeName + ext;
+    } else if (ext === '[]') {
+      // Node-java has support for 1d arrays via newArray. We need the special opaque type array_t<T> to
+      // model the type of these array objects.
+      typeName = 'array_t<' + typeName  + '>';
     } else {
-      this.unhandledTypes = this.unhandledTypes.add(typeName);
-      return 'any' + ext;
+      // This final else block handles two cases for multidimensial arrays:
+      // 1) When used as a function input.
+      // 2) When returned as a function result, and the element type is not a primitive.
+      // Node-java currently doesn't handle these cases. We use the 'void' type here so that
+      // such uses will be flagged with an error at compile time.
+      this.unhandledTypes = this.unhandledTypes.add(typeName + ext);
+      typeName = 'void';
     }
+
+    return typeName;
   }
 
   baseType(typeName: string): [string, string] {

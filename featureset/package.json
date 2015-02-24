@@ -13,7 +13,9 @@
       "java.util.List"
     ],
     "whiteList": [
-      "com.redseal.featureset."
+      "com.redseal.featureset.",
+      "java.lang.",
+      "java.util."
     ]
   }
 }

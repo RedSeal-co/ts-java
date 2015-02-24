@@ -10,6 +10,8 @@ public class SomeClass extends SomeAbstractClass {
         theDouble = java.lang.Math.PI;
 
         theList = new String[]{"a", "b", "c"};
+
+        theArray = new int[][]{{1, 2, 3}, {4, 5, 6}};
     }
 
     public SomeClass(int x, long y, String z, boolean b, double d) {
@@ -26,6 +28,7 @@ public class SomeClass extends SomeAbstractClass {
     private boolean theBoolean;
     private double theDouble;
     private String[] theList;
+    private int[][] theArray;
 
     public int getInt() { return theInt; }
     public long getLong() { return theLong; }
@@ -45,6 +48,14 @@ public class SomeClass extends SomeAbstractClass {
 
     public void setList(String... args) {
         theList = args;
+    }
+
+    public int[][] getArray() {
+        return theArray;
+    }
+
+    public void setArray(int[][] x) {
+        theArray = x;
     }
 
 }

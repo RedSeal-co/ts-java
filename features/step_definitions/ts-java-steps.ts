@@ -178,8 +178,19 @@ function wrapper() {
       callback();
     });
   });
+
+  this.Then(/^it runs and produces no output$/, function (callback: Callback) {
+    // Write code here that turns the phrase above into concrete actions
+    var world = <World> this;
+    var scriptPath = world.sampleProgramPath.replace(/ts$/, 'js');
+    var runCmd: string = 'node ' + scriptPath;
+    execChild(world, runCmd, () => {
+      expect(world.error).to.equal(null);
+      expect(world.stdout).to.equal('');
+      expect(world.stderr).to.equal('');
+      callback();
+    });
+  });
 }
-
-
 
 export = wrapper;
