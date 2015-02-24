@@ -99,7 +99,7 @@ UNIT_TEST_OBJS=$(patsubst %.ts,%.js,$(UNIT_TESTS))
 UNIT_TEST_RAN=$(patsubst %.ts,o/%.lastran,$(UNIT_TESTS))
 
 $(UNIT_TEST_RAN): o/%.lastran: %.js
-	node_modules/mocha/bin/mocha --timeout 5s --reporter=spec --ui tdd $<
+	node_modules/mocha/bin/mocha --timeout 10s --reporter=spec --ui tdd $<
 	mkdir -p $(dir $@) && touch  $@
 
 #####
