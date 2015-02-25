@@ -58,6 +58,8 @@ declare module Java {
     callMethod(instance: any, className: string, methodName: string, args: any[], callback: Callback<any>): void;
     callMethodSync(instance: any, className: string, methodName: string, ...args: any[]): any;
     callStaticMethodSync(className: string, methodName: string, ...args: any[]): any;
+    instanceOf(javaObject: any, className: string): boolean;
+
     getClassLoader(): ClassLoader;
 
     newArray(className: 'java.lang.ClassLoader', arg: ClassLoader[]): array_t<java.lang.ClassLoader>;
