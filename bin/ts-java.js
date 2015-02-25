@@ -40,11 +40,11 @@ var Main = (function () {
             this.options.granularity = 'package';
         }
         if (!this.options.outputPath) {
-            this.options.outputPath = 'java.d.ts';
+            this.options.outputPath = 'typings/java/java.d.ts';
         }
         if (!this.options.promisesPath) {
             // TODO: Provide more control over promises
-            this.options.promisesPath = 'typings/bluebird/bluebird.d.ts';
+            this.options.promisesPath = '../typings/bluebird/bluebird.d.ts';
         }
     }
     Main.prototype.run = function () {
@@ -77,11 +77,12 @@ var Main = (function () {
         }).then(function (promises) { return BluePromise.all(promises); }).then(function () { return dlog('writeClassFiles() completed.'); });
     };
     Main.prototype.writePackageFiles = function (classesMap) {
+        var _this = this;
         dlog('writePackageFiles() entered');
         var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
         var tsWriter = new CodeWriter(classesMap, templatesDirPath);
         var classes = classesMap.getClasses();
-        return tsWriter.writePackageFile(this.options).then(function () { return dlog('writePackageFiles() completed'); });
+        return mkdirpPromise(path.dirname(this.options.outputPath)).then(function () { return tsWriter.writePackageFile(_this.options); }).then(function () { return dlog('writePackageFiles() completed'); });
     };
     Main.prototype.initJava = function () {
         return BluePromise.all(_.map(this.options.classpath, function (globExpr) { return globPromise(globExpr); })).then(function (pathsArray) { return _.flatten(pathsArray); }).then(function (paths) {

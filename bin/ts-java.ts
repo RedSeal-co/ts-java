@@ -55,11 +55,11 @@ class Main {
       this.options.granularity = 'package';
     }
     if (!this.options.outputPath) {
-      this.options.outputPath = 'java.d.ts';
+      this.options.outputPath = 'typings/java/java.d.ts';
     }
     if (!this.options.promisesPath) {
       // TODO: Provide more control over promises
-      this.options.promisesPath = 'typings/bluebird/bluebird.d.ts';
+      this.options.promisesPath = '../typings/bluebird/bluebird.d.ts';
     }
   }
 
@@ -108,7 +108,8 @@ class Main {
     var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
     var tsWriter = new CodeWriter(classesMap, templatesDirPath);
     var classes: ClassDefinitionMap = classesMap.getClasses();
-    return tsWriter.writePackageFile(this.options)
+    return mkdirpPromise(path.dirname(this.options.outputPath))
+      .then(() => tsWriter.writePackageFile(this.options))
       .then(() => dlog('writePackageFiles() completed'));
   }
 
