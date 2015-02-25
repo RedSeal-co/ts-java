@@ -8,6 +8,7 @@ public interface SomeInterface {
     double getDouble();
     String[] getList();
     int[][] getArray();
+    Thing[][] getThings();
 
     void setInt(int x);
     void setLong(long x);
@@ -16,6 +17,7 @@ public interface SomeInterface {
     void setDouble(double x);
     void setList(String... args);
     void setArray(int[][] x);
+    void setThings(Thing[][] things);
 
     String joinList(String sep);
 }

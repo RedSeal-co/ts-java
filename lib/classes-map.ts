@@ -15,12 +15,12 @@ import Work = require('./work');
 
 var dlog = debug('ts-java:classes-map');
 
-var requiredSeedClasses = [
+var requiredSeedClasses: string[] = [
   'java.lang.Object',
   'java.lang.String',
 ];
 
-var alwaysExcludeClasses = [
+var alwaysExcludeClasses: string[] = [
   // We are currently not using this feature.
   // TODO: remove it if it remains unused.
 ];
@@ -29,6 +29,10 @@ import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 import MethodDefinition = ClassesMap.MethodDefinition;
 import VariantsMap = ClassesMap.VariantsMap;
+
+interface Dictionary {
+  [index: string]: string;
+}
 
 // ## ClassesMap
 // ClassesMap is a map of a set of java classes/interfaces, containing information extracted via Java Reflection.
@@ -111,7 +115,7 @@ class ClassesMap {
   // *typeEncoding()*: return the JNI encoding string for a java class
   typeEncoding(clazz: Java.Class): string {
     var name = clazz.getNameSync();
-    var primitives = {
+    var primitives: Dictionary = {
       boolean: 'Z',
       byte: 'B',
       char: 'C',
@@ -169,7 +173,7 @@ class ClassesMap {
     }
 
     // First convert the 1-letter JNI abbreviated type names to their human readble types
-    var jniAbbreviations = {
+    var jniAbbreviations: Dictionary = {
       // see http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/types.html
       B: 'byte',
       C: 'char',
@@ -185,7 +189,7 @@ class ClassesMap {
     }
 
     // Next, promote primitive types to their corresponding Object types, to avoid redundancy below.
-    var primitiveToObjectMap = {
+    var primitiveToObjectMap: Dictionary = {
       'byte': 'java.lang.Object',
       'char': 'java.lang.Object',
       'boolean': 'java.lang.Boolean',
@@ -229,7 +233,7 @@ class ClassesMap {
     // We define an interface longValue_t (in package.txt) that that extends Number and adds a string member longValue.
     // We also define long_t, which is the union [number|longValue_t|java.lang.Long].
 
-    var javaTypeToTypescriptType = {
+    var javaTypeToTypescriptType: Dictionary = {
       void: 'void',
       'java.lang.Boolean': context === ParamContext.eInput ? 'boolean_t' : 'boolean',
       'java.lang.Double':  context === ParamContext.eInput ? 'double_t' : 'number',
@@ -261,9 +265,9 @@ class ClassesMap {
     assert.ok(ext.length % 2 === 0);  // ext must be sequence of zero or more '[]'.
     if (ext === '') {
       // A scalar type, nothing to do here
-    } else if (context === ParamContext.eReturn && isPrimitiveType) {
-      // Functions that return an array of a primitive type are thunked by node-java to return a
-      // javascript array of the corresponding javascript primitive type.
+    } else if (context === ParamContext.eReturn) {
+      // Functions that return a Java array are thunked by node-java to return a
+      // javascript array of the corresponding type.
       // This seems to work even for multidimensional arrays.
       typeName = typeName + ext;
     } else if (ext === '[]') {

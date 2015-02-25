@@ -18,7 +18,7 @@ LIBS_SRC=$(filter-out %.d.ts,$(wildcard lib/*.ts))
 LIBS_OBJS=$(patsubst %.ts,%.js,$(LIBS_SRC))
 
 TSC=./node_modules/.bin/tsc
-TSC_OPTS=--module commonjs --target ES5 --sourceMap --noEmitOnError
+TSC_OPTS=--module commonjs --target ES5 --sourceMap --noEmitOnError --noImplicitAny
 
 %.js: %.ts
 	$(TSC) $(TSC_OPTS) $< || (rm -f $@ && false)
@@ -111,6 +111,12 @@ documentation :
 	node_modules/groc/bin/groc --except "**/node_modules/**" --except "o/**" --except "**/*.d.ts" "**/*.ts" README.md
 
 test: unittest cucumber
+	# Test that lib/java.d.ts is up to date. If there are differences, manually update using 'make lib-java-dts'.
+	diff -q lib/java.d.ts reflection/java.d.ts
+
+lib-java-dts:
+	cp reflection/java.d.ts lib/java.d.ts
+	$(MAKE) test
 
 unittest: $(UNIT_TEST_RAN)
 

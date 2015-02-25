@@ -54,6 +54,8 @@ declare module Java {
     callMethod(instance: any, className: string, methodName: string, args: any[], callback: Callback<any>): void;
     callMethodSync(instance: any, className: string, methodName: string, ...args: any[]): any;
     callStaticMethodSync(className: string, methodName: string, ...args: any[]): any;
+    instanceOf(javaObject: any, className: string): boolean;
+
     {{#hasClass 'java.lang.ClassLoader'}}getClassLoader(): ClassLoader;
     {{/hasClass}}
 

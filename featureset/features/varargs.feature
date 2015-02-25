@@ -44,7 +44,7 @@ if an invalid type is passed where a varags array parameter is expected.
 
     console.log(something.joinListSync('--'));
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces output:
     """
     hello--world

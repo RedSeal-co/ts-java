@@ -1,4 +1,5 @@
 declare module 'concat-stream' {
-  function concat(opts: Object, resolve: () => void);
+  import stream = require('stream');
+  function concat(opts: Object, resolve: () => void): stream.Writable;
   export = concat;
 }

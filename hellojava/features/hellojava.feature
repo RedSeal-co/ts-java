@@ -31,6 +31,7 @@ in the Background section.
     filenames.forEach((name: string) => { java.classpath.push(name); });
     var HelloJava = java.import('com.redseal.hellojava.HelloJava');
     {{{ scenario_snippet }}}
+
     """
 
   Scenario: Hello Java with sync calls
@@ -38,7 +39,7 @@ in the Background section.
     """
     console.log(HelloJava.sayHelloSync());
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces output:
     """
     Hello, Java!
@@ -50,7 +51,7 @@ in the Background section.
     """
     HelloJava.sayHello((err: Error, result: string) => console.log(result));
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces output:
     """
     Hello, Java!
@@ -62,7 +63,7 @@ in the Background section.
     """
     HelloJava.sayHelloPromise().then((result: string) => console.log(result));
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces output:
     """
     Hello, Java!

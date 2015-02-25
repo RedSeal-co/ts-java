@@ -4,5 +4,5 @@ declare module 'jsonfile' {
     (err: any, obj: any): void;
   }
 
-  export function readFile(path: string, cb: Callback);
+  export function readFile(path: string, cb: Callback): void;
 }

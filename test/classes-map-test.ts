@@ -9,7 +9,7 @@
 
 'use strict';
 
-declare function require(name: string);
+declare function require(name: string): any;
 require('source-map-support').install();
 
 import _ = require('lodash');
@@ -24,7 +24,7 @@ import Work = require('../lib/work');
 describe('ClassesMap', () => {
   var expect = chai.expect;
 
-  var classesMap;
+  var classesMap: ClassesMap;
 
   before(() => {
     var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
@@ -177,15 +177,17 @@ describe('ClassesMap', () => {
       expect(classesMap.tsTypeName('[[[Ljava.lang.Object;')).to.equal('void');
       expect(classesMap.tsTypeName('[I')).to.equal('array_t<integer_t>');
       expect(classesMap.tsTypeName('[[I')).to.equal('void');
+      expect(classesMap.tsTypeName('[[[I')).to.equal('void');
     });
     it('it should translate Java array types to TypeScript array types for function return results', () => {
       expect(classesMap.tsTypeName('java.lang.Object', ParamContext.eReturn)).to.equal('java.lang.Object');
       expect(classesMap.tsTypeName('Ljava.lang.Object;', ParamContext.eReturn)).to.equal('java.lang.Object');
-      expect(classesMap.tsTypeName('[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('array_t<java.lang.Object>');
-      expect(classesMap.tsTypeName('[[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('void');
-      expect(classesMap.tsTypeName('[[[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('void');
+      expect(classesMap.tsTypeName('[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('java.lang.Object[]');
+      expect(classesMap.tsTypeName('[[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('java.lang.Object[][]');
+      expect(classesMap.tsTypeName('[[[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('java.lang.Object[][][]');
       expect(classesMap.tsTypeName('[I', ParamContext.eReturn)).to.equal('number[]');
       expect(classesMap.tsTypeName('[[I', ParamContext.eReturn)).to.equal('number[][]');
+      expect(classesMap.tsTypeName('[[[I', ParamContext.eReturn)).to.equal('number[][][]');
     });
   });
 
@@ -203,14 +205,14 @@ describe('ClassesMap', () => {
       var expected = { name: 'hashCode',
         declared: 'java.lang.Object',
         returns: 'int',
-        paramTypes: [],
-        paramNames: [],
+        paramTypes: new Array<string>(),
+        paramNames: new Array<string>(),
         isVarArgs: false,
         isStatic: false,
         generic_proto: 'public native int java.lang.Object.hashCode()',
         plain_proto: 'public native int java.lang.Object.hashCode()',
         signature: 'hashCode()I',
-        tsParamTypes: [],
+        tsParamTypes: new Array<string>(),
         tsReturns: 'number'
       };
       expect(methodMap).to.deep.equal(expected);

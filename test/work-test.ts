@@ -6,7 +6,7 @@
 
 'use strict';
 
-declare function require(name: string);
+declare function require(name: string): any;
 require('source-map-support').install();
 
 import Work = require('../lib/work');
@@ -16,7 +16,7 @@ import Immutable = require('immutable');
 describe('Work', () => {
   var expect = chai.expect;
 
-  var work;
+  var work: Work;
 
   beforeEach(function() {
     work = new Work();
