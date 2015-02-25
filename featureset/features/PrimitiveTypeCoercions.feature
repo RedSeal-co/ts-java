@@ -19,6 +19,7 @@ So I can understand how to primitive types and be aware of some limitations.
     var SomeClass = java.import('com.redseal.featureset.SomeClass');
     var something: Java.SomeInterface = new SomeClass();
     {{{ scenario_snippet }}}
+
     """
 
   Scenario: Java functions returning java.lang.String values return javascript strings.
@@ -27,7 +28,7 @@ So I can understand how to primitive types and be aware of some limitations.
     var str: string = something.getStringSync();
     console.log(typeof str, str);
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces output:
     """
     string Just some class.
@@ -41,7 +42,7 @@ So I can understand how to primitive types and be aware of some limitations.
     var str: string = something.getStringSync();
     console.log(typeof str, str);
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces output:
     """
     string foo
@@ -54,7 +55,7 @@ So I can understand how to primitive types and be aware of some limitations.
     var num: number = something.getIntSync();
     console.log(typeof num, num);
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces output:
     """
     number 42
@@ -68,7 +69,7 @@ So I can understand how to primitive types and be aware of some limitations.
     var num: number = something.getIntSync();
     console.log(typeof num, num);
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces output:
     """
     number 999
@@ -82,7 +83,7 @@ So I can understand how to primitive types and be aware of some limitations.
     console.log(typeof num, num);
     console.log(typeof num.longValue, num.longValue); // longValue is a string showing the full 64-bit long integer
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces output:
     """
     object { [Number: 9223372036854776000] longValue: '9223372036854775807' }
@@ -96,7 +97,7 @@ So I can understand how to primitive types and be aware of some limitations.
     var val: boolean = something.getBooleanSync();
     console.log(typeof val, val);
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces output:
     """
     boolean true
@@ -109,7 +110,7 @@ So I can understand how to primitive types and be aware of some limitations.
     var val: number = something.getDoubleSync();
     console.log(typeof val, val);
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces output:
     """
     number 3.141592653589793
@@ -129,7 +130,7 @@ So I can understand how to primitive types and be aware of some limitations.
 
     java.newInstance('java.lang.Double', 2.71828, (err: Error, num: number) => console.log(typeof num, num));
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces output:
     """
     string hello
@@ -150,7 +151,7 @@ So I can understand how to primitive types and be aware of some limitations.
     // console.log(list.toStringSync());
 
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces output:
     """
     object {}

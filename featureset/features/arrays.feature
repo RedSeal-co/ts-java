@@ -32,18 +32,18 @@ I want to understand how to use Java array types in Typescript.
     """
     var arr: string[] = something.getListSync();
     assert.ok(_.isArray(arr));
-    assert.deepEqual(arr, [ 'a', 'b', 'c' ])
+    assert.deepEqual(arr, [ 'a', 'b', 'c' ]);
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces no output
 
   Scenario: Getting 2d array of primitive type
     Given the above boilerplate with following scenario snippet:
     """
     var arr: number[][] = something.getArraySync();
-    assert.deepEqual(arr, [ [ 1, 2, 3 ], [ 4, 5, 6 ] ])
+    assert.deepEqual(arr, [ [ 1, 2, 3 ], [ 4, 5, 6 ] ]);
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces no output
 
   Scenario: Getting 1d array of non-primitive type
@@ -53,7 +53,7 @@ I want to understand how to use Java array types in Typescript.
     var methods: Java.java.lang.reflect.Method[] = clazz.getDeclaredMethodsSync();
     assert.ok(_.isArray(methods));
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces no output
 
   Scenario: Getting 2d array of non-primitive type
@@ -73,7 +73,7 @@ I want to understand how to use Java array types in Typescript.
     );
     assert.deepEqual(thingStrs, [ [ 'Thing0', 'Thing1', 'Thing2' ], [ 'Thing3', 'Thing4', 'Thing5' ] ]);
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces no output
 
   Scenario: Setting 1d array of primitive type fails without newArray
@@ -97,9 +97,9 @@ I want to understand how to use Java array types in Typescript.
     something.setListSync(x);
 
     var arr: string[] = something.getListSync();
-    assert.deepEqual(arr, someData)
+    assert.deepEqual(arr, someData);
     """
-    Then it compiles cleanly
+    Then it compiles and lints cleanly
     And it runs and produces no output
 
   Scenario: Setting 2d array is unsupported.

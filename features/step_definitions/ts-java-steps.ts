@@ -167,18 +167,6 @@ function wrapper() {
     callback();
   });
 
-  this.Then(/^it compiles cleanly$/, function (callback: Callback) {
-    var world = <World> this;
-    var compileCmd: string = './node_modules/.bin/tsc --module commonjs --target ES5 --noImplicitAny --sourceMap '
-                           + world.sampleProgramPath;
-    execChild(world, compileCmd, () => {
-      expect(world.error).to.equal(null);
-      expect(world.stdout).to.equal('');
-      expect(world.stderr).to.equal('');
-      callback();
-    });
-  });
-
   this.Then(/^it runs and produces no output$/, function (callback: Callback) {
     // Write code here that turns the phrase above into concrete actions
     var world = <World> this;
