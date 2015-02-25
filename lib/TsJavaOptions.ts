@@ -22,7 +22,7 @@ interface TsJavaOptions {
 
   promisesPath?: string;
     // The path for the .d.ts file for the promises library.
-    // Defaults to 'typings/bluebird/bluebird.d.ts'.
+    // Defaults to '../bluebird/bluebird.d.ts'.
     // Promises libraries other than bluebird are currently not supported, though might work.
 }
 

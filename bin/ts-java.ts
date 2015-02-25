@@ -59,7 +59,7 @@ class Main {
     }
     if (!this.options.promisesPath) {
       // TODO: Provide more control over promises
-      this.options.promisesPath = '../typings/bluebird/bluebird.d.ts';
+      this.options.promisesPath = '../bluebird/bluebird.d.ts';
     }
   }
 
