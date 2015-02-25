@@ -52,6 +52,8 @@ I want to understand how to use Java array types in Typescript.
     var clazz: Java.java.lang.Class = something.getClassSync();
     var methods: Java.java.lang.reflect.Method[] = clazz.getDeclaredMethodsSync();
     assert.ok(_.isArray(methods));
+    assert.ok(methods.length > 0);
+    _.forEach(methods, (method: Java.Method) => assert.ok(java.instanceOf(method, 'java.lang.reflect.Method')));
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
