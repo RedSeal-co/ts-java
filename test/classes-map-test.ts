@@ -9,7 +9,7 @@
 
 'use strict';
 
-declare function require(name: string);
+declare function require(name: string): any;
 require('source-map-support').install();
 
 import _ = require('lodash');
@@ -24,7 +24,7 @@ import Work = require('../lib/work');
 describe('ClassesMap', () => {
   var expect = chai.expect;
 
-  var classesMap;
+  var classesMap: ClassesMap;
 
   before(() => {
     var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
@@ -205,14 +205,14 @@ describe('ClassesMap', () => {
       var expected = { name: 'hashCode',
         declared: 'java.lang.Object',
         returns: 'int',
-        paramTypes: [],
-        paramNames: [],
+        paramTypes: new Array<string>(),
+        paramNames: new Array<string>(),
         isVarArgs: false,
         isStatic: false,
         generic_proto: 'public native int java.lang.Object.hashCode()',
         plain_proto: 'public native int java.lang.Object.hashCode()',
         signature: 'hashCode()I',
-        tsParamTypes: [],
+        tsParamTypes: new Array<string>(),
         tsReturns: 'number'
       };
       expect(methodMap).to.deep.equal(expected);

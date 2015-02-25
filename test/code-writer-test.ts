@@ -10,7 +10,7 @@
 
 'use strict';
 
-declare function require(name: string);
+declare function require(name: string): any;
 require('source-map-support').install();
 
 import _ = require('lodash');
@@ -23,14 +23,23 @@ import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
 import path = require('path');
+import stream = require('stream');
 
 BluePromise.longStackTraces();
+
+interface StreamFunction {
+  (data: string): Promise<void>;
+}
+
+interface EndFunction {
+  (): Promise<void>;
+}
 
 describe('CodeWriter', () => {
   var expect = chai.expect;
 
-  var classesMap;
-  var theWriter;
+  var classesMap: ClassesMap;
+  var theWriter: CodeWriter;
 
   before(() => {
     var globPath = path.join('tinkerpop', 'target', 'dependency', '**', '*.jar');
@@ -48,23 +57,23 @@ describe('CodeWriter', () => {
       });
   });
 
-  var streamFn;
-  var endFn;
-  var resultPromise;
+  var streamFn: StreamFunction;
+  var endFn: EndFunction;
+  var resultPromise: Promise<any>;
 
   beforeEach(() => {
-    var memstream;
+    var memstream: stream.Writable;
     resultPromise = new BluePromise(function (resolve: () => void, reject: (error: any) => void) {
       memstream = concat({}, resolve);
     });
-    streamFn = function (data: string) {
+    streamFn = (data: string): Promise<any> => {
       return new BluePromise(function (resolve: () => void, reject: (error: any) => void) {
         memstream.write(data, 'utf8', () => {
           resolve();
         });
       });
     };
-    endFn = () => {
+    endFn = (): Promise<any> => {
       return new BluePromise(function (resolve: () => void, reject: (error: any) => void) {
         memstream.end();
         resolve();

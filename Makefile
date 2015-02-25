@@ -18,7 +18,7 @@ LIBS_SRC=$(filter-out %.d.ts,$(wildcard lib/*.ts))
 LIBS_OBJS=$(patsubst %.ts,%.js,$(LIBS_SRC))
 
 TSC=./node_modules/.bin/tsc
-TSC_OPTS=--module commonjs --target ES5 --sourceMap --noEmitOnError
+TSC_OPTS=--module commonjs --target ES5 --sourceMap --noEmitOnError --noImplicitAny
 
 %.js: %.ts
 	$(TSC) $(TSC_OPTS) $< || (rm -f $@ && false)
