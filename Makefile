@@ -111,6 +111,7 @@ documentation :
 	node_modules/groc/bin/groc --except "**/node_modules/**" --except "o/**" --except "**/*.d.ts" "**/*.ts" README.md
 
 test: unittest cucumber
+	diff -q lib/java.d.ts reflection/java.d.ts
 
 unittest: $(UNIT_TEST_RAN)
 
