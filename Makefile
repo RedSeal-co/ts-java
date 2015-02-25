@@ -111,7 +111,12 @@ documentation :
 	node_modules/groc/bin/groc --except "**/node_modules/**" --except "o/**" --except "**/*.d.ts" "**/*.ts" README.md
 
 test: unittest cucumber
+	# Test that lib/java.d.ts is up to date. If there are differences, manually update using 'make lib-java-dts'.
 	diff -q lib/java.d.ts reflection/java.d.ts
+
+lib-java-dts:
+	cp reflection/java.d.ts lib/java.d.ts
+	$(MAKE) test
 
 unittest: $(UNIT_TEST_RAN)
 
