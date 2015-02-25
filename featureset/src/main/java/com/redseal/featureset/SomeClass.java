@@ -12,6 +12,13 @@ public class SomeClass extends SomeAbstractClass {
         theList = new String[]{"a", "b", "c"};
 
         theArray = new int[][]{{1, 2, 3}, {4, 5, 6}};
+
+        theThings = new Thing[2][3];
+        for (int i=0; i<2; ++i) {
+            for (int j=0; j<3; ++j) {
+                theThings[i][j] = new Thing(i*3 + j);
+            }
+        }
     }
 
     public SomeClass(int x, long y, String z, boolean b, double d) {
@@ -29,6 +36,7 @@ public class SomeClass extends SomeAbstractClass {
     private double theDouble;
     private String[] theList;
     private int[][] theArray;
+    private Thing[][] theThings;
 
     public int getInt() { return theInt; }
     public long getLong() { return theLong; }
@@ -56,6 +64,14 @@ public class SomeClass extends SomeAbstractClass {
 
     public void setArray(int[][] x) {
         theArray = x;
+    }
+
+    public Thing[][] getThings() {
+        return theThings;
+    }
+
+    public void setThings(Thing[][] things) {
+        theThings = things;
     }
 
 }

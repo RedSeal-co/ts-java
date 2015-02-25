@@ -261,9 +261,9 @@ class ClassesMap {
     assert.ok(ext.length % 2 === 0);  // ext must be sequence of zero or more '[]'.
     if (ext === '') {
       // A scalar type, nothing to do here
-    } else if (context === ParamContext.eReturn && isPrimitiveType) {
-      // Functions that return an array of a primitive type are thunked by node-java to return a
-      // javascript array of the corresponding javascript primitive type.
+    } else if (context === ParamContext.eReturn) {
+      // Functions that return a Java array are thunked by node-java to return a
+      // javascript array of the corresponding type.
       // This seems to work even for multidimensional arrays.
       typeName = typeName + ext;
     } else if (ext === '[]') {
