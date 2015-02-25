@@ -69,8 +69,8 @@ I want to understand how to use Java array types in Typescript.
     assert.strictEqual(thing1d.length, 3);
 
     var thingStrs: string[][] = _.map(things,
-      (thing1d: Java.Thing[]) => _.map(thing1d,
-        (thing: Java.Thing) => thing.toStringSync()
+      (thing1d: Java.Thing[]): string[] => _.map(thing1d,
+        (thing: Java.Thing): string => thing.toStringSync()
       )
     );
     assert.deepEqual(thingStrs, [ [ 'Thing0', 'Thing1', 'Thing2' ], [ 'Thing3', 'Thing4', 'Thing5' ] ]);
