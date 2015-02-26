@@ -14,9 +14,6 @@
     "lodash/lodash.d.ts": {
       "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
     },
-    "assert/assert.d.ts": {
-      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
-    },
     "node/node.d.ts": {
       "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
     },
@@ -46,6 +43,15 @@
     },
     "cucumber/cucumber.d.ts": {
       "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
+    },
+    "power-assert/power-assert.d.ts": {
+      "commit": "972aafed0b9fcc1dd861446d8659c96d6b7e0d7e"
+    },
+    "power-assert-formatter/power-assert-formatter.d.ts": {
+      "commit": "972aafed0b9fcc1dd861446d8659c96d6b7e0d7e"
+    },
+    "empower/empower.d.ts": {
+      "commit": "972aafed0b9fcc1dd861446d8659c96d6b7e0d7e"
     }
   }
 }

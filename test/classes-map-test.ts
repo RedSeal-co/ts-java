@@ -254,8 +254,10 @@ describe('ClassesMap', () => {
       expect(classMap).to.be.ok;
       expect(classMap).to.have.keys([
         'constructors',
+        'enumConstants',
         'fullName',
         'interfaces',
+        'isEnum',
         'isInterface',
         'isPrimitive',
         'methods',

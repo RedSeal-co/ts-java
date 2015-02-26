@@ -453,6 +453,7 @@ class ClassesMap {
 
     var isInterface = clazz.isInterfaceSync();
     var isPrimitive = clazz.isPrimitiveSync();
+    var isEnum = clazz.isEnumSync();
     var superclass: Java.Class = clazz.getSuperclassSync();
 
     function bySignature(a: MethodDefinition, b: MethodDefinition) {
@@ -463,6 +464,12 @@ class ClassesMap {
     if (superclass) {
       work.addTodo(superclass.getNameSync());
       tsInterfaces.unshift(this.fixClassPath(superclass.getNameSync()));
+    }
+
+    var enumConstants: string[] = [];
+    if (isEnum) {
+      var enums: Java.Object[] = clazz.getEnumConstantsSync();
+      enumConstants = _.map(enums, (e: Java.Object) => e.toStringSync());
     }
 
     var classMap: ClassDefinition = {
@@ -477,7 +484,9 @@ class ClassesMap {
       tsInterfaces: tsInterfaces,
       methods: methods.sort(bySignature),
       constructors: constructors.sort(this.compareVariants),
-      variants: this.groupMethods(methods)
+      variants: this.groupMethods(methods),
+      isEnum: isEnum,
+      enumConstants: enumConstants
     };
 
     return classMap;
@@ -553,9 +562,11 @@ module ClassesMap {
     superclass: string;                // null if no superclass, otherwise class name
     interfaces: Array<string>;         // [ 'java.util.function.Function' ]
     tsInterfaces: Array<string>;       // [ 'java.util.function_.Function' ]
-    methods: Array<MethodDefinition>; // definitions of all methods implemented by this class
+    methods: Array<MethodDefinition>;  // definitions of all methods implemented by this class
     constructors: Array<MethodDefinition>; // definitions of all constructors for this class, may be empty.
-    variants: VariantsMap;            // definitions of all methods, grouped by method name
+    variants: VariantsMap;             // definitions of all methods, grouped by method name
+    isEnum: boolean;                   // true for an Enum, false otherwise.
+    enumConstants: Array<string>;      // array of enum constants.
   }
 
   export interface ClassDefinitionMap {

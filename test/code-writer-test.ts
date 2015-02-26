@@ -116,6 +116,8 @@ describe('CodeWriter', () => {
         'methods: [object Object],[object Object],[object Object],[object Object]',
         'constructors: ',
         'variants: [object Object]',
+        'isEnum: false',
+        'enumConstants: ',
         ''
       ].join('\n');
       return BluePromise.all([runPromise, resultPromise])
