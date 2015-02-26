@@ -56,7 +56,16 @@ declare module Java {
     callStaticMethodSync(className: string, methodName: string, ...args: any[]): any;
     instanceOf(javaObject: any, className: string): boolean;
 
-    {{#hasClass 'java.lang.ClassLoader'}}getClassLoader(): ClassLoader;
+    {{#hasClass 'java.lang.Short'}}newShort(val: number): java.lang.Short;
+    {{/hasClass}}
+    {{#hasClass 'java.lang.Long'}}newLong(val: number): java.lang.Long;
+    {{/hasClass}}
+    {{#hasClass 'java.lang.Float'}}newFloat(val: number): java.lang.Float;
+    {{/hasClass}}
+    {{#hasClass 'java.lang.Double'}}newDouble(val: number): java.lang.Double;
+    {{/hasClass}}
+
+    {{#hasClass 'java.lang.ClassLoader'}}getClassLoader(): java.lang.ClassLoader;
     {{/hasClass}}
 
     {{#each this}}

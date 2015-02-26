@@ -10,7 +10,10 @@
       "com.redseal.featureset.SomeClass",
       "com.redseal.featureset.AnEnum",
       "java.lang.Double",
+      "java.lang.Float",
       "java.lang.Integer",
+      "java.lang.Long",
+      "java.lang.Short",
       "java.util.Arrays",
       "java.util.List"
     ],
