@@ -127,6 +127,9 @@ declare module Java {
         {{/if}}
         {{/each}}
         {{/each}}
+        {{#each enumConstants}}
+        {{this}}: {{../shortName}};
+        {{/each}}
       }
     }
   }

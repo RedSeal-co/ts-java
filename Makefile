@@ -108,7 +108,7 @@ all:
 	$(MAKE) test documentation
 
 documentation :
-	node_modules/groc/bin/groc --except "**/node_modules/**" --except "o/**" --except "**/*.d.ts" "**/*.ts" README.md
+	node_modules/groc/bin/groc --except "**/node_modules/**" --except "o/**" --except "**/o/**" --except "**/*.d.ts" "**/*.ts" README.md
 
 test: unittest cucumber
 	# Test that lib/java.d.ts is up to date. If there are differences, manually update using 'make lib-java-dts'.

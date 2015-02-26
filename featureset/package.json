@@ -8,6 +8,7 @@
     ],
     "seedClasses": [
       "com.redseal.featureset.SomeClass",
+      "com.redseal.featureset.AnEnum",
       "java.lang.Double",
       "java.lang.Integer",
       "java.util.Arrays",
