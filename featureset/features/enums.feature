@@ -50,6 +50,21 @@ I want to understand how to use Java enum types in Typescript.
     Then it compiles and lints cleanly
     And it runs and produces no output
 
+  Scenario: must use java Object.equals to compare enum values
+    Given the above boilerplate with following scenario snippet:
+    """
+    var miles: Java.AnEnum = AnEnum.valueOfSync('miles');
+    var milesAgain: Java.AnEnum = AnEnum.valueOfSync('miles');
+
+    var sameWithJavaObjectEquals: boolean = miles.equalsSync(milesAgain);
+    assert( sameWithJavaObjectEquals );
+
+    var sameWithJavascriptEquals: boolean = miles === milesAgain;
+    assert( !sameWithJavascriptEquals );
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
   Scenario: valueOf()
     Given the above boilerplate with following scenario snippet:
     """
