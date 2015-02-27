@@ -253,6 +253,7 @@ describe('ClassesMap', () => {
       var classMap = classesMap.mapClass(className, work);
       expect(classMap).to.be.ok;
       expect(classMap).to.have.keys([
+        'alias',
         'constructors',
         'enumConstants',
         'fullName',
@@ -266,6 +267,7 @@ describe('ClassesMap', () => {
         'superclass',
         'tsInterfaces',
         'tsType',
+        'useAlias',
         'variants'
       ]);
       expect(classMap.fullName).to.equal(className);

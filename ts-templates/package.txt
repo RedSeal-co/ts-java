@@ -101,7 +101,9 @@ declare module Java {
   }
 
   {{#each this}}
-  export import {{shortName}} = {{packageName}}.{{shortName}};
+  {{#if useAlias}}
+  export import {{alias}} = {{packageName}}.{{shortName}};
+  {{/if}}
   {{/each}}
 
   {{#each this}}

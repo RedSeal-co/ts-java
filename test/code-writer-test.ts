@@ -107,6 +107,8 @@ describe('CodeWriter', () => {
         'packageName: java.util',
         'fullName: java.util.Iterator',
         'shortName: Iterator',
+        'alias: Iterator',
+        'useAlias: true',
         'tsType: Iterator',
         'isInterface: true',
         'isPrimitive: false',

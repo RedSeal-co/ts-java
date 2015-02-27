@@ -25,6 +25,10 @@ var alwaysExcludeClasses: string[] = [
   // TODO: remove it if it remains unused.
 ];
 
+var reservedShortNames: Dictionary = {
+  'Number': null
+};
+
 import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 import MethodDefinition = ClassesMap.MethodDefinition;
@@ -46,6 +50,7 @@ class ClassesMap {
   private classes: ClassDefinitionMap;
   private includedPatterns: Immutable.Set<RegExp>;
   private excludedPatterns: Immutable.Set<RegExp>;
+  private shortToLongNameMap: Dictionary;
 
   constructor(java: Java.Singleton,
               includedPatterns: Immutable.Set<RegExp>,
@@ -58,6 +63,7 @@ class ClassesMap {
     assert.ok(includedPatterns instanceof Immutable.Set);
     this.includedPatterns = includedPatterns;
     this.excludedPatterns = excludedPatterns ? excludedPatterns : Immutable.Set<RegExp>();
+    this.shortToLongNameMap = {};
 
     var requiredPatterns = _.map(requiredSeedClasses, (s: string) => {
       var pattern = '^' + s.replace(/\./g, '\\.') + '$';
@@ -252,9 +258,13 @@ class ClassesMap {
     if (isJavaLangType) {
       typeName = javaTypeToTypescriptType[typeName];
     } else if (this.inWhiteList(typeName)) {
-      // TODO: we should only return shortName if we know there are no ambiguous cases.
-      // Pivotal story 88154024
-      typeName = this.shortClassName(typeName);
+      // Use just the short class name if it doesn't cause name conflicts.
+      // This test isn't quite right yet, because we need to check if the short name conflicts
+      // with classes we haven't processed yet. Some refactoring is required.
+      var shortName = this.shortClassName(typeName);
+      if (!(shortName in reservedShortNames)) {
+        typeName = shortName;
+      }
     } else {
       dlog('Unhandled type:', typeName);
       this.unhandledTypes = this.unhandledTypes.add(typeName);
@@ -451,6 +461,28 @@ class ClassesMap {
 
     var constructors: Array<MethodDefinition> = this.mapClassConstructors(className, clazz, work);
 
+    var shortName: string = this.shortClassName(className);
+    var alias: string = shortName;
+    var useAlias: boolean = true;
+
+    if (shortName in this.shortToLongNameMap) {
+      alias = className;
+      useAlias = false;
+      // We have a conflict, two or more unique class paths ending with the same class name.
+      var otherClassName: string = this.shortToLongNameMap[shortName];
+      if (otherClassName !== null) {
+        var otherClass: ClassDefinition = this.classes[otherClassName];
+        otherClass.alias = otherClassName;
+        otherClass.useAlias = false;
+        this.shortToLongNameMap[shortName] = null;
+      }
+    } else if (shortName in reservedShortNames) {
+      alias = className;
+      useAlias = false;
+    } else {
+        this.shortToLongNameMap[shortName] = className;
+    }
+
     var isInterface = clazz.isInterfaceSync();
     var isPrimitive = clazz.isPrimitiveSync();
     var isEnum = clazz.isEnumSync();
@@ -475,7 +507,9 @@ class ClassesMap {
     var classMap: ClassDefinition = {
       packageName: this.packageName(this.fixClassPath(className)),
       fullName: className,
-      shortName: this.shortClassName(className),
+      shortName: shortName,
+      alias: alias,
+      useAlias: useAlias,
       tsType: this.tsTypeName(className),
       isInterface: isInterface,
       isPrimitive: isPrimitive,
@@ -556,6 +590,9 @@ module ClassesMap {
     packageName: string;               // 'java.util'
     fullName: string;                  // 'java.util.Iterator'
     shortName: string;                 // 'Iterator'
+    alias: string;                     // This will be shortName, unless two classes have the same short name,
+                                       // of if the short name conflicts with a Javascript type (e.g. Number).
+    useAlias: boolean;                 // true if alias is the shortName.
     tsType: string;                    // For primitive wrappers, the ts type, e.g. 'java.lang.String' -> 'string'
     isInterface: boolean;              // true if this is an interface, false for class or primitive type.
     isPrimitive: boolean;              // true for a primitive type, false otherwise.
@@ -567,6 +604,7 @@ module ClassesMap {
     variants: VariantsMap;             // definitions of all methods, grouped by method name
     isEnum: boolean;                   // true for an Enum, false otherwise.
     enumConstants: Array<string>;      // array of enum constants.
+
   }
 
   export interface ClassDefinitionMap {
