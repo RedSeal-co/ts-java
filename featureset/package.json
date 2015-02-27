@@ -9,6 +9,7 @@
     "seedClasses": [
       "com.redseal.featureset.SomeClass",
       "com.redseal.featureset.AnEnum",
+      "java.lang.Boolean",
       "java.lang.Double",
       "java.lang.Float",
       "java.lang.Integer",
