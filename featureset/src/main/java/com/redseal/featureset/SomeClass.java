@@ -74,4 +74,20 @@ public class SomeClass extends SomeAbstractClass {
         theThings = things;
     }
 
+    public Object getStringObject() {
+        return "A String";
+    }
+
+    public Object getShortObject() {
+        final short theAnswer = (short) 42;
+        return new Short(theAnswer);
+    }
+
+    public Object getLongObject() {
+        return new Long(java.lang.Long.MAX_VALUE);
+    }
+
+    public Object getDoubleObject() {
+        return new Double(java.lang.Math.PI);
+    }
 }

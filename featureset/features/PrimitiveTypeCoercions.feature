@@ -7,10 +7,12 @@ So I can understand how to primitive types and be aware of some limitations.
   Background:
     Given this boilerplate to intialize node-java:
     """
+    /// <reference path='../../typings/power-assert/power-assert.d.ts' />
     /// <reference path='../../typings/node/node.d.ts' />
     /// <reference path='../../typings/glob/glob.d.ts' />
     /// <reference path='../../featureset/java.d.ts'/>
 
+    import assert = require('power-assert');
     import glob = require('glob');
     import java = require('java');
 
@@ -138,6 +140,41 @@ So I can understand how to primitive types and be aware of some limitations.
     number 2.71828
 
     """
+
+  Scenario: Object function results will be converted to primitive types when appropriate.
+    Given the above boilerplate with following scenario snippet:
+    """
+    var result: Java.object_t;
+
+    // Each of the getFooObjectSync() methods below is declared to return a java.lang.Object,
+    // but actually returns a specific type that can be coerced to a javascript type.
+    // The special type Java.object_t makes it easy to work with such results.
+    // Note that Java.object_t is declared as:
+    // type object_t = java.lang.Object | string | number | longValue_t;
+
+    result = something.getStringObjectSync();
+    assert.strictEqual(typeof result, 'string');
+    assert.strictEqual(result, 'A String');
+
+    result = something.getShortObjectSync();
+    assert.strictEqual(typeof result, 'number');
+    assert.strictEqual(result, 42);
+
+    result = something.getDoubleObjectSync();
+    assert.strictEqual(typeof result, 'number');
+    assert.strictEqual(result, 3.141592653589793);
+
+    result = something.getLongObjectSync();
+    assert.strictEqual(typeof result, 'object');
+    assert.strictEqual((<longValue_t>result).longValue, '9223372036854775807');
+    assert.equal(result, 9223372036854776000);
+
+    import util = require('util');
+    var formatted: string = util.inspect(result);
+    assert.strictEqual(formatted, '{ [Number: 9223372036854776000] longValue: \'9223372036854775807\' }');
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
 
   Scenario: newArray returns java object wrapper for the array.
     Given the above boilerplate with following scenario snippet:
