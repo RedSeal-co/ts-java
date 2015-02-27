@@ -19,5 +19,10 @@ public interface SomeInterface {
     void setArray(int[][] x);
     void setThings(Thing[][] things);
 
+    Object getStringObject();
+    Object getShortObject();
+    Object getLongObject();
+    Object getDoubleObject();
+
     String joinList(String sep);
 }

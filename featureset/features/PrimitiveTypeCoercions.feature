@@ -7,10 +7,12 @@ So I can understand how to primitive types and be aware of some limitations.
   Background:
     Given this boilerplate to intialize node-java:
     """
+    /// <reference path='../../typings/power-assert/power-assert.d.ts' />
     /// <reference path='../../typings/node/node.d.ts' />
     /// <reference path='../../typings/glob/glob.d.ts' />
     /// <reference path='../../featureset/java.d.ts'/>
 
+    import assert = require('power-assert');
     import glob = require('glob');
     import java = require('java');
 
@@ -26,96 +28,78 @@ So I can understand how to primitive types and be aware of some limitations.
     Given the above boilerplate with following scenario snippet:
     """
     var str: string = something.getStringSync();
-    console.log(typeof str, str);
+    assert.strictEqual(typeof str, 'string');
+    assert.strictEqual(str, 'Just some class.');
     """
     Then it compiles and lints cleanly
-    And it runs and produces output:
-    """
-    string Just some class.
-
-    """
+    And it runs and produces no output
 
   Scenario: Java functions taking java.lang.String values accept javascript strings.
     Given the above boilerplate with following scenario snippet:
     """
     something.setStringSync('foo');
     var str: string = something.getStringSync();
-    console.log(typeof str, str);
+    assert.strictEqual(typeof str, 'string');
+    assert.strictEqual(str, 'foo');
     """
     Then it compiles and lints cleanly
-    And it runs and produces output:
-    """
-    string foo
-
-    """
+    And it runs and produces no output
 
   Scenario: Java functions returning int values return javascript numbers.
     Given the above boilerplate with following scenario snippet:
     """
     var num: number = something.getIntSync();
-    console.log(typeof num, num);
+    assert.strictEqual(typeof num, 'number');
+    assert.strictEqual(num, 42);
     """
     Then it compiles and lints cleanly
-    And it runs and produces output:
-    """
-    number 42
-
-    """
+    And it runs and produces no output
 
   Scenario: Java functions taking int values accept javascript numbers.
     Given the above boilerplate with following scenario snippet:
     """
     something.setIntSync(999);
     var num: number = something.getIntSync();
-    console.log(typeof num, num);
+    assert.strictEqual(typeof num, 'number');
+    assert.strictEqual(num, 999);
     """
     Then it compiles and lints cleanly
-    And it runs and produces output:
-    """
-    number 999
-
-    """
+    And it runs and produces no output
 
   Scenario: Java functions returning long values return javascript objects containing both a number and a string.
     Given the above boilerplate with following scenario snippet:
     """
     var num: longValue_t = something.getLongSync();
-    console.log(typeof num, num);
-    console.log(typeof num.longValue, num.longValue); // longValue is a string showing the full 64-bit long integer
+    assert.strictEqual(typeof num, 'object');
+    assert.strictEqual(num.longValue, '9223372036854775807');
+    assert.equal(num, 9223372036854776000);
+
+    import util = require('util');
+    var formatted: string = util.inspect(num);
+    assert.strictEqual(formatted, '{ [Number: 9223372036854776000] longValue: \'9223372036854775807\' }');
     """
     Then it compiles and lints cleanly
-    And it runs and produces output:
-    """
-    object { [Number: 9223372036854776000] longValue: '9223372036854775807' }
-    string 9223372036854775807
-
-    """
+    And it runs and produces no output
 
   Scenario: Java functions returning boolean values return javascript booleans.
     Given the above boilerplate with following scenario snippet:
     """
     var val: boolean = something.getBooleanSync();
-    console.log(typeof val, val);
+    assert.strictEqual(typeof val, 'boolean');
+    assert.strictEqual(val, true);
     """
     Then it compiles and lints cleanly
-    And it runs and produces output:
-    """
-    boolean true
-
-    """
+    And it runs and produces no output
 
   Scenario: Java functions returning double values return javascript numbers.
     Given the above boilerplate with following scenario snippet:
     """
     var val: number = something.getDoubleSync();
-    console.log(typeof val, val);
+    assert.strictEqual(typeof val, 'number');
+    assert.strictEqual(val, 3.141592653589793);
     """
     Then it compiles and lints cleanly
-    And it runs and produces output:
-    """
-    number 3.141592653589793
-
-    """
+    And it runs and produces no output
 
   Scenario: Node-java always converts wrapped primitives to javascript primitives.
     Given the above boilerplate with following scenario snippet:
@@ -123,21 +107,55 @@ So I can understand how to primitive types and be aware of some limitations.
     // Node-java always converts wrapper class instances for primitive types to
     // the corresponding primitive types, even via newInstance().
     var str: string = java.newInstanceSync('java.lang.String', 'hello');
-    console.log(typeof str, str);
+    assert.strictEqual(typeof str, 'string');
+    assert.strictEqual(str, 'hello');
 
     var num: number = java.newInstanceSync('java.lang.Integer', 42);
-    console.log(typeof num, num);
+    assert.strictEqual(typeof num, 'number');
+    assert.strictEqual(num, 42);
 
-    java.newInstance('java.lang.Double', 2.71828, (err: Error, num: number) => console.log(typeof num, num));
+    java.newInstance('java.lang.Double', 2.71828, (err: Error, num: number) => {
+      assert.strictEqual(typeof num, 'number');
+      assert.strictEqual(num, 2.71828);
+    });
     """
     Then it compiles and lints cleanly
-    And it runs and produces output:
-    """
-    string hello
-    number 42
-    number 2.71828
+    And it runs and produces no output
 
+  Scenario: Object function results will be converted to primitive types when appropriate.
+    Given the above boilerplate with following scenario snippet:
     """
+    var result: Java.object_t;
+
+    // Each of the getFooObjectSync() methods below is declared to return a java.lang.Object,
+    // but actually returns a specific type that can be coerced to a javascript type.
+    // The special type Java.object_t makes it easy to work with such results.
+    // Note that Java.object_t is declared as:
+    // type object_t = java.lang.Object | string | number | longValue_t;
+
+    result = something.getStringObjectSync();
+    assert.strictEqual(typeof result, 'string');
+    assert.strictEqual(result, 'A String');
+
+    result = something.getShortObjectSync();
+    assert.strictEqual(typeof result, 'number');
+    assert.strictEqual(result, 42);
+
+    result = something.getDoubleObjectSync();
+    assert.strictEqual(typeof result, 'number');
+    assert.strictEqual(result, 3.141592653589793);
+
+    result = something.getLongObjectSync();
+    assert.strictEqual(typeof result, 'object');
+    assert.strictEqual((<longValue_t>result).longValue, '9223372036854775807');
+    assert.equal(result, 9223372036854776000);
+
+    import util = require('util');
+    var formatted: string = util.inspect(result);
+    assert.strictEqual(formatted, '{ [Number: 9223372036854776000] longValue: \'9223372036854775807\' }');
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
 
   Scenario: newArray returns java object wrapper for the array.
     Given the above boilerplate with following scenario snippet:

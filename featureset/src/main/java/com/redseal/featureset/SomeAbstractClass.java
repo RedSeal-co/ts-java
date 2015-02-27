@@ -21,6 +21,11 @@ public abstract class SomeAbstractClass implements SomeInterface {
     public abstract void setArray(int[][] x);
     public abstract void setThings(Thing[][] things);
 
+    public abstract Object getStringObject();
+    public abstract Object getShortObject();
+    public abstract Object getLongObject();
+    public abstract Object getDoubleObject();
+
     // Here is one method we implement in the abstract class
     public String joinList(String sep) {
         return String.join(sep, getList());
