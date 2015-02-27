@@ -16,7 +16,7 @@ declare module Java {
 
   // Java methods that take java.lang.Object parameters implicitly will take a java.lang.String.
   // But string_t is not sufficient for this case, we need object_t.
-  export type object_t = string | java.lang.Object;
+  export type object_t = java.lang.Object | string | number | longValue_t;
 
   // Java methods that take long or java.lang.Long parameters may take javascript numbers,
   // longValue_t (see above) or java.lang.Long.
