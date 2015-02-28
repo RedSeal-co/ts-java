@@ -69,7 +69,7 @@ So I can understand how to primitive types and be aware of some limitations.
   Scenario: Java functions returning long values return javascript objects containing both a number and a string.
     Given the above boilerplate with following scenario snippet:
     """
-    var num: longValue_t = something.getLongSync();
+    var num: Java.longValue_t = something.getLongSync();
     assert.strictEqual(typeof num, 'object');
     assert.strictEqual(num.longValue, '9223372036854775807');
     assert.equal(num, 9223372036854776000);
@@ -147,7 +147,7 @@ So I can understand how to primitive types and be aware of some limitations.
 
     result = something.getLongObjectSync();
     assert.strictEqual(typeof result, 'object');
-    assert.strictEqual((<longValue_t>result).longValue, '9223372036854775807');
+    assert.strictEqual((<Java.longValue_t>result).longValue, '9223372036854775807');
     assert.equal(result, 9223372036854776000);
 
     import util = require('util');

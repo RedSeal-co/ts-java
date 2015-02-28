@@ -3,13 +3,13 @@ declare module 'java' {
   export = Java;
 }
 
-// Node-java has special handling for methods that return long or java.lang.Long,
-// returning a Javascript Number but with an additional property longValue.
-interface longValue_t extends Number {
-  longValue: string;
-}
-
 declare module Java {
+  // Node-java has special handling for methods that return long or java.lang.Long,
+  // returning a Javascript Number but with an additional property longValue.
+  interface longValue_t extends Number {
+    longValue: string;
+  }
+
   // Node-java can automatically coerce a javascript string into a java.lang.String.
   // This special type alias allows to declare that possiblity to Typescript.
   export type string_t = string | java.lang.String;
