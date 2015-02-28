@@ -258,15 +258,12 @@ class ClassesMap {
       'java.lang.Integer': context === ParamContext.eInput ? 'integer_t' : 'number',
       'java.lang.Long':    context === ParamContext.eInput ? 'long_t' : 'longValue_t',
       'java.lang.Number':  context === ParamContext.eInput ? 'number_t' : 'number',
-      'java.lang.Object':  context === ParamContext.eInput ? 'object_t' : 'java.lang.Object', // special case
+      'java.lang.Object':  context === ParamContext.eInput ? 'object_t' : 'object_t', // special case
       'java.lang.Short':   context === ParamContext.eInput ? 'short_t' : 'number',
       'java.lang.String':  context === ParamContext.eInput ? 'string_t' : 'string'
     };
 
-    var isJavaLangType: boolean = typeName in javaTypeToTypescriptType;
-    var isPrimitiveType: boolean = isJavaLangType && typeName !== 'java.lang.Object';
-
-    if (isJavaLangType) {
+    if (typeName in javaTypeToTypescriptType) {
       typeName = javaTypeToTypescriptType[typeName];
     } else if (this.inWhiteList(typeName)) {
       // Use the short class name if it doesn't cause name conflicts.
@@ -501,8 +498,10 @@ class ClassesMap {
 
     var enumConstants: string[] = [];
     if (isEnum) {
-      var enums: Java.Object[] = clazz.getEnumConstantsSync();
-      enumConstants = _.map(enums, (e: Java.Object) => e.toStringSync());
+      // TODO: We have to use object_t here right now, which forces the use of the typecast.
+      // We may be able to improve this when we implement generics.
+      var enums: Java.object_t[] = clazz.getEnumConstantsSync();
+      enumConstants = _.map(enums, (e: Java.object_t) => (<Java.Object>e).toStringSync());
     }
 
     var classMap: ClassDefinition = {
@@ -570,7 +569,6 @@ class ClassesMap {
     // Conflicts are recorded by using null for the longName.
     this.shortToLongNameMap = {};
     this.fullClassList.forEach((longName: string): any => {
-      dlog(longName);
       var shortName = this.shortClassName(longName);
       if (shortName in reservedShortNames || shortName in this.shortToLongNameMap) {
         // We have a conflict

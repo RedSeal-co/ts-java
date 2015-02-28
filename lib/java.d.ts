@@ -136,7 +136,7 @@ declare module Java {
     newInstance(className: 'java.lang.StringBuffer', arg0: string_t, cb: Callback<StringBuffer>): void;
     newInstance(className: 'java.lang.StringBuffer', arg0: integer_t, cb: Callback<StringBuffer>): void;
     newInstance(className: 'java.lang.StringBuffer', cb: Callback<StringBuffer>): void;
-    newInstance(className: 'java.lang.Object', cb: Callback<java.lang.Object>): void;
+    newInstance(className: 'java.lang.Object', cb: Callback<object_t>): void;
     newInstance(className: 'java.lang.StringBuilder', arg0: CharSequence, cb: Callback<StringBuilder>): void;
     newInstance(className: 'java.lang.StringBuilder', arg0: string_t, cb: Callback<StringBuilder>): void;
     newInstance(className: 'java.lang.StringBuilder', arg0: integer_t, cb: Callback<StringBuilder>): void;
@@ -162,7 +162,7 @@ declare module Java {
     newInstanceSync(className: 'java.lang.StringBuffer', arg0: string_t): StringBuffer;
     newInstanceSync(className: 'java.lang.StringBuffer', arg0: integer_t): StringBuffer;
     newInstanceSync(className: 'java.lang.StringBuffer'): StringBuffer;
-    newInstanceSync(className: 'java.lang.Object'): java.lang.Object;
+    newInstanceSync(className: 'java.lang.Object'): object_t;
     newInstanceSync(className: 'java.lang.StringBuilder', arg0: CharSequence): StringBuilder;
     newInstanceSync(className: 'java.lang.StringBuilder', arg0: string_t): StringBuilder;
     newInstanceSync(className: 'java.lang.StringBuilder', arg0: integer_t): StringBuilder;
@@ -188,7 +188,7 @@ declare module Java {
     newInstancePromise(className: 'java.lang.StringBuffer', arg0: string_t): Promise<StringBuffer>;
     newInstancePromise(className: 'java.lang.StringBuffer', arg0: integer_t): Promise<StringBuffer>;
     newInstancePromise(className: 'java.lang.StringBuffer'): Promise<StringBuffer>;
-    newInstancePromise(className: 'java.lang.Object'): Promise<java.lang.Object>;
+    newInstancePromise(className: 'java.lang.Object'): Promise<object_t>;
     newInstancePromise(className: 'java.lang.StringBuilder', arg0: CharSequence): Promise<StringBuilder>;
     newInstancePromise(className: 'java.lang.StringBuilder', arg0: string_t): Promise<StringBuilder>;
     newInstancePromise(className: 'java.lang.StringBuilder', arg0: integer_t): Promise<StringBuilder>;
@@ -246,19 +246,19 @@ declare module Java {
       getParentPromise(): Promise<ClassLoader>;
       // getResource
       // public java.net.URL java.lang.ClassLoader.getResource(java.lang.String)
-      getResource(arg0: string_t, cb: Callback<java.lang.Object>): void;
-      getResourceSync(arg0: string_t): java.lang.Object;
-      getResourcePromise(arg0: string_t): Promise<java.lang.Object>;
+      getResource(arg0: string_t, cb: Callback<object_t>): void;
+      getResourceSync(arg0: string_t): object_t;
+      getResourcePromise(arg0: string_t): Promise<object_t>;
       // getResourceAsStream
       // public java.io.InputStream java.lang.ClassLoader.getResourceAsStream(java.lang.String)
-      getResourceAsStream(arg0: string_t, cb: Callback<java.lang.Object>): void;
-      getResourceAsStreamSync(arg0: string_t): java.lang.Object;
-      getResourceAsStreamPromise(arg0: string_t): Promise<java.lang.Object>;
+      getResourceAsStream(arg0: string_t, cb: Callback<object_t>): void;
+      getResourceAsStreamSync(arg0: string_t): object_t;
+      getResourceAsStreamPromise(arg0: string_t): Promise<object_t>;
       // getResources
       // public java.util.Enumeration<java.net.URL> java.lang.ClassLoader.getResources(java.lang.String) throws java.io.IOException
-      getResources(arg0: string_t, cb: Callback<java.lang.Object>): void;
-      getResourcesSync(arg0: string_t): java.lang.Object;
-      getResourcesPromise(arg0: string_t): Promise<java.lang.Object>;
+      getResources(arg0: string_t, cb: Callback<object_t>): void;
+      getResourcesSync(arg0: string_t): object_t;
+      getResourcesPromise(arg0: string_t): Promise<object_t>;
       // getSystemClassLoader
       // public static java.lang.ClassLoader java.lang.ClassLoader.getSystemClassLoader()
       // static method, see .Static
@@ -332,17 +332,17 @@ declare module Java {
         getSystemClassLoaderSync(): ClassLoader;
         getSystemClassLoaderPromise(): Promise<ClassLoader>;
         // public static java.net.URL java.lang.ClassLoader.getSystemResource(java.lang.String)
-        getSystemResource(arg0: string_t, cb: Callback<java.lang.Object>): void;
-        getSystemResourceSync(arg0: string_t): java.lang.Object;
-        getSystemResourcePromise(arg0: string_t): Promise<java.lang.Object>;
+        getSystemResource(arg0: string_t, cb: Callback<object_t>): void;
+        getSystemResourceSync(arg0: string_t): object_t;
+        getSystemResourcePromise(arg0: string_t): Promise<object_t>;
         // public static java.io.InputStream java.lang.ClassLoader.getSystemResourceAsStream(java.lang.String)
-        getSystemResourceAsStream(arg0: string_t, cb: Callback<java.lang.Object>): void;
-        getSystemResourceAsStreamSync(arg0: string_t): java.lang.Object;
-        getSystemResourceAsStreamPromise(arg0: string_t): Promise<java.lang.Object>;
+        getSystemResourceAsStream(arg0: string_t, cb: Callback<object_t>): void;
+        getSystemResourceAsStreamSync(arg0: string_t): object_t;
+        getSystemResourceAsStreamPromise(arg0: string_t): Promise<object_t>;
         // public static java.util.Enumeration<java.net.URL> java.lang.ClassLoader.getSystemResources(java.lang.String) throws java.io.IOException
-        getSystemResources(arg0: string_t, cb: Callback<java.lang.Object>): void;
-        getSystemResourcesSync(arg0: string_t): java.lang.Object;
-        getSystemResourcesPromise(arg0: string_t): Promise<java.lang.Object>;
+        getSystemResources(arg0: string_t, cb: Callback<object_t>): void;
+        getSystemResourcesSync(arg0: string_t): object_t;
+        getSystemResourcesPromise(arg0: string_t): Promise<object_t>;
       }
     }
   }
@@ -351,14 +351,14 @@ declare module Java {
     export interface String extends java.lang.Object,java.lang.Comparable,java.lang.CharSequence {
       // charAt
       // public char java.lang.String.charAt(int)
-      charAt(arg0: integer_t, cb: Callback<java.lang.Object>): void;
-      charAtSync(arg0: integer_t): java.lang.Object;
-      charAtPromise(arg0: integer_t): Promise<java.lang.Object>;
+      charAt(arg0: integer_t, cb: Callback<object_t>): void;
+      charAtSync(arg0: integer_t): object_t;
+      charAtPromise(arg0: integer_t): Promise<object_t>;
       // chars
       // public default java.util.stream.IntStream java.lang.CharSequence.chars()
-      chars( cb: Callback<java.lang.Object>): void;
-      charsSync(): java.lang.Object;
-      charsPromise(): Promise<java.lang.Object>;
+      chars( cb: Callback<object_t>): void;
+      charsSync(): object_t;
+      charsPromise(): Promise<object_t>;
       // codePointAt
       // public int java.lang.String.codePointAt(int)
       codePointAt(arg0: integer_t, cb: Callback<number>): void;
@@ -376,9 +376,9 @@ declare module Java {
       codePointCountPromise(arg0: integer_t, arg1: integer_t): Promise<number>;
       // codePoints
       // public default java.util.stream.IntStream java.lang.CharSequence.codePoints()
-      codePoints( cb: Callback<java.lang.Object>): void;
-      codePointsSync(): java.lang.Object;
-      codePointsPromise(): Promise<java.lang.Object>;
+      codePoints( cb: Callback<object_t>): void;
+      codePointsSync(): object_t;
+      codePointsPromise(): Promise<object_t>;
       // compareTo
       // public int java.lang.String.compareTo(java.lang.String)
       compareTo(arg0: string_t, cb: Callback<number>): void;
@@ -443,17 +443,17 @@ declare module Java {
       getBytesSync(arg0: integer_t, arg1: integer_t, arg2: array_t<object_t>, arg3: integer_t): void;
       getBytesPromise(arg0: integer_t, arg1: integer_t, arg2: array_t<object_t>, arg3: integer_t): Promise<void>;
       // public byte[] java.lang.String.getBytes(java.nio.charset.Charset)
-      getBytes(arg0: object_t, cb: Callback<java.lang.Object[]>): void;
-      getBytesSync(arg0: object_t): java.lang.Object[];
-      getBytesPromise(arg0: object_t): Promise<java.lang.Object[]>;
+      getBytes(arg0: object_t, cb: Callback<object_t[]>): void;
+      getBytesSync(arg0: object_t): object_t[];
+      getBytesPromise(arg0: object_t): Promise<object_t[]>;
       // public byte[] java.lang.String.getBytes(java.lang.String) throws java.io.UnsupportedEncodingException
-      getBytes(arg0: string_t, cb: Callback<java.lang.Object[]>): void;
-      getBytesSync(arg0: string_t): java.lang.Object[];
-      getBytesPromise(arg0: string_t): Promise<java.lang.Object[]>;
+      getBytes(arg0: string_t, cb: Callback<object_t[]>): void;
+      getBytesSync(arg0: string_t): object_t[];
+      getBytesPromise(arg0: string_t): Promise<object_t[]>;
       // public byte[] java.lang.String.getBytes()
-      getBytes( cb: Callback<java.lang.Object[]>): void;
-      getBytesSync(): java.lang.Object[];
-      getBytesPromise(): Promise<java.lang.Object[]>;
+      getBytes( cb: Callback<object_t[]>): void;
+      getBytesSync(): object_t[];
+      getBytesPromise(): Promise<object_t[]>;
       // getChars
       // public void java.lang.String.getChars(int,int,char[],int)
       getChars(arg0: integer_t, arg1: integer_t, arg2: array_t<object_t>, arg3: integer_t, cb: Callback<void>): void;
@@ -605,9 +605,9 @@ declare module Java {
       substringPromise(arg0: integer_t): Promise<string>;
       // toCharArray
       // public char[] java.lang.String.toCharArray()
-      toCharArray( cb: Callback<java.lang.Object[]>): void;
-      toCharArraySync(): java.lang.Object[];
-      toCharArrayPromise(): Promise<java.lang.Object[]>;
+      toCharArray( cb: Callback<object_t[]>): void;
+      toCharArraySync(): object_t[];
+      toCharArrayPromise(): Promise<object_t[]>;
       // toLowerCase
       // public java.lang.String java.lang.String.toLowerCase(java.util.Locale)
       toLowerCase(arg0: object_t, cb: Callback<string>): void;
@@ -759,9 +759,9 @@ declare module Java {
       asSubclassPromise(arg0: Class): Promise<Class>;
       // cast
       // public T java.lang.Class.cast(java.lang.Object)
-      cast(arg0: object_t, cb: Callback<java.lang.Object>): void;
-      castSync(arg0: object_t): java.lang.Object;
-      castPromise(arg0: object_t): Promise<java.lang.Object>;
+      cast(arg0: object_t, cb: Callback<object_t>): void;
+      castSync(arg0: object_t): object_t;
+      castPromise(arg0: object_t): Promise<object_t>;
       // desiredAssertionStatus
       // public boolean java.lang.Class.desiredAssertionStatus()
       desiredAssertionStatus( cb: Callback<boolean>): void;
@@ -909,9 +909,9 @@ declare module Java {
       getEnclosingMethodPromise(): Promise<Method>;
       // getEnumConstants
       // public T[] java.lang.Class.getEnumConstants()
-      getEnumConstants( cb: Callback<java.lang.Object[]>): void;
-      getEnumConstantsSync(): java.lang.Object[];
-      getEnumConstantsPromise(): Promise<java.lang.Object[]>;
+      getEnumConstants( cb: Callback<object_t[]>): void;
+      getEnumConstantsSync(): object_t[];
+      getEnumConstantsPromise(): Promise<object_t[]>;
       // getField
       // public java.lang.reflect.Field java.lang.Class.getField(java.lang.String) throws java.lang.NoSuchFieldException,java.lang.SecurityException
       getField(arg0: string_t, cb: Callback<Field>): void;
@@ -964,24 +964,24 @@ declare module Java {
       getPackagePromise(): Promise<Package>;
       // getProtectionDomain
       // public java.security.ProtectionDomain java.lang.Class.getProtectionDomain()
-      getProtectionDomain( cb: Callback<java.lang.Object>): void;
-      getProtectionDomainSync(): java.lang.Object;
-      getProtectionDomainPromise(): Promise<java.lang.Object>;
+      getProtectionDomain( cb: Callback<object_t>): void;
+      getProtectionDomainSync(): object_t;
+      getProtectionDomainPromise(): Promise<object_t>;
       // getResource
       // public java.net.URL java.lang.Class.getResource(java.lang.String)
-      getResource(arg0: string_t, cb: Callback<java.lang.Object>): void;
-      getResourceSync(arg0: string_t): java.lang.Object;
-      getResourcePromise(arg0: string_t): Promise<java.lang.Object>;
+      getResource(arg0: string_t, cb: Callback<object_t>): void;
+      getResourceSync(arg0: string_t): object_t;
+      getResourcePromise(arg0: string_t): Promise<object_t>;
       // getResourceAsStream
       // public java.io.InputStream java.lang.Class.getResourceAsStream(java.lang.String)
-      getResourceAsStream(arg0: string_t, cb: Callback<java.lang.Object>): void;
-      getResourceAsStreamSync(arg0: string_t): java.lang.Object;
-      getResourceAsStreamPromise(arg0: string_t): Promise<java.lang.Object>;
+      getResourceAsStream(arg0: string_t, cb: Callback<object_t>): void;
+      getResourceAsStreamSync(arg0: string_t): object_t;
+      getResourceAsStreamPromise(arg0: string_t): Promise<object_t>;
       // getSigners
       // public native java.lang.Object[] java.lang.Class.getSigners()
-      getSigners( cb: Callback<java.lang.Object[]>): void;
-      getSignersSync(): java.lang.Object[];
-      getSignersPromise(): Promise<java.lang.Object[]>;
+      getSigners( cb: Callback<object_t[]>): void;
+      getSignersSync(): object_t[];
+      getSignersPromise(): Promise<object_t[]>;
       // getSimpleName
       // public java.lang.String java.lang.Class.getSimpleName()
       getSimpleName( cb: Callback<string>): void;
@@ -1069,9 +1069,9 @@ declare module Java {
       isSyntheticPromise(): Promise<boolean>;
       // newInstance
       // public T java.lang.Class.newInstance() throws java.lang.InstantiationException,java.lang.IllegalAccessException
-      newInstance( cb: Callback<java.lang.Object>): void;
-      newInstanceSync(): java.lang.Object;
-      newInstancePromise(): Promise<java.lang.Object>;
+      newInstance( cb: Callback<object_t>): void;
+      newInstanceSync(): object_t;
+      newInstancePromise(): Promise<object_t>;
       // notify
       // public final native void java.lang.Object.notify()
       notify( cb: Callback<void>): void;
@@ -1255,14 +1255,14 @@ declare module Java {
       capacityPromise(): Promise<number>;
       // charAt
       // public synchronized char java.lang.StringBuffer.charAt(int)
-      charAt(arg0: integer_t, cb: Callback<java.lang.Object>): void;
-      charAtSync(arg0: integer_t): java.lang.Object;
-      charAtPromise(arg0: integer_t): Promise<java.lang.Object>;
+      charAt(arg0: integer_t, cb: Callback<object_t>): void;
+      charAtSync(arg0: integer_t): object_t;
+      charAtPromise(arg0: integer_t): Promise<object_t>;
       // chars
       // public default java.util.stream.IntStream java.lang.CharSequence.chars()
-      chars( cb: Callback<java.lang.Object>): void;
-      charsSync(): java.lang.Object;
-      charsPromise(): Promise<java.lang.Object>;
+      chars( cb: Callback<object_t>): void;
+      charsSync(): object_t;
+      charsPromise(): Promise<object_t>;
       // codePointAt
       // public synchronized int java.lang.StringBuffer.codePointAt(int)
       codePointAt(arg0: integer_t, cb: Callback<number>): void;
@@ -1280,9 +1280,9 @@ declare module Java {
       codePointCountPromise(arg0: integer_t, arg1: integer_t): Promise<number>;
       // codePoints
       // public default java.util.stream.IntStream java.lang.CharSequence.codePoints()
-      codePoints( cb: Callback<java.lang.Object>): void;
-      codePointsSync(): java.lang.Object;
-      codePointsPromise(): Promise<java.lang.Object>;
+      codePoints( cb: Callback<object_t>): void;
+      codePointsSync(): object_t;
+      codePointsPromise(): Promise<object_t>;
       // delete
       // public java.lang.AbstractStringBuilder java.lang.StringBuffer.delete(int,int)
       delete(arg0: integer_t, arg1: integer_t, cb: Callback<AbstractStringBuilder>): void;
@@ -1546,14 +1546,14 @@ declare module Java {
       forEachPromise(arg0: object_t): Promise<void>;
       // iterator
       // public abstract java.util.Iterator<T> java.lang.Iterable.iterator()
-      iterator( cb: Callback<java.lang.Object>): void;
-      iteratorSync(): java.lang.Object;
-      iteratorPromise(): Promise<java.lang.Object>;
+      iterator( cb: Callback<object_t>): void;
+      iteratorSync(): object_t;
+      iteratorPromise(): Promise<object_t>;
       // spliterator
       // public default java.util.Spliterator<T> java.lang.Iterable.spliterator()
-      spliterator( cb: Callback<java.lang.Object>): void;
-      spliteratorSync(): java.lang.Object;
-      spliteratorPromise(): Promise<java.lang.Object>;
+      spliterator( cb: Callback<object_t>): void;
+      spliteratorSync(): object_t;
+      spliteratorPromise(): Promise<object_t>;
     }
     export module Iterable {
       export interface Static {
@@ -1630,9 +1630,9 @@ declare module Java {
       getDeclaringClassPromise(): Promise<Class>;
       // getDefaultValue
       // public java.lang.Object java.lang.reflect.Method.getDefaultValue()
-      getDefaultValue( cb: Callback<java.lang.Object>): void;
-      getDefaultValueSync(): java.lang.Object;
-      getDefaultValuePromise(): Promise<java.lang.Object>;
+      getDefaultValue( cb: Callback<object_t>): void;
+      getDefaultValueSync(): object_t;
+      getDefaultValuePromise(): Promise<object_t>;
       // getExceptionTypes
       // public java.lang.Class<?>[] java.lang.reflect.Method.getExceptionTypes()
       getExceptionTypes( cb: Callback<Class[]>): void;
@@ -1700,9 +1700,9 @@ declare module Java {
       hashCodePromise(): Promise<number>;
       // invoke
       // public java.lang.Object java.lang.reflect.Method.invoke(java.lang.Object,java.lang.Object...) throws java.lang.IllegalAccessException,java.lang.IllegalArgumentException,java.lang.reflect.InvocationTargetException
-      invoke(arg0: object_t, arg1: array_t<object_t>, cb: Callback<java.lang.Object>): void;
-      invokeSync(arg0: object_t, arg1: array_t<object_t>): java.lang.Object;
-      invokePromise(arg0: object_t, arg1: array_t<object_t>): Promise<java.lang.Object>;
+      invoke(arg0: object_t, arg1: array_t<object_t>, cb: Callback<object_t>): void;
+      invokeSync(arg0: object_t, arg1: array_t<object_t>): object_t;
+      invokePromise(arg0: object_t, arg1: array_t<object_t>): Promise<object_t>;
       // isAccessible
       // public boolean java.lang.reflect.AccessibleObject.isAccessible()
       isAccessible( cb: Callback<boolean>): void;
@@ -2040,19 +2040,19 @@ declare module Java {
     export interface CharSequence extends java.lang.Object {
       // charAt
       // public abstract char java.lang.CharSequence.charAt(int)
-      charAt(arg0: integer_t, cb: Callback<java.lang.Object>): void;
-      charAtSync(arg0: integer_t): java.lang.Object;
-      charAtPromise(arg0: integer_t): Promise<java.lang.Object>;
+      charAt(arg0: integer_t, cb: Callback<object_t>): void;
+      charAtSync(arg0: integer_t): object_t;
+      charAtPromise(arg0: integer_t): Promise<object_t>;
       // chars
       // public default java.util.stream.IntStream java.lang.CharSequence.chars()
-      chars( cb: Callback<java.lang.Object>): void;
-      charsSync(): java.lang.Object;
-      charsPromise(): Promise<java.lang.Object>;
+      chars( cb: Callback<object_t>): void;
+      charsSync(): object_t;
+      charsPromise(): Promise<object_t>;
       // codePoints
       // public default java.util.stream.IntStream java.lang.CharSequence.codePoints()
-      codePoints( cb: Callback<java.lang.Object>): void;
-      codePointsSync(): java.lang.Object;
-      codePointsPromise(): Promise<java.lang.Object>;
+      codePoints( cb: Callback<object_t>): void;
+      codePointsSync(): object_t;
+      codePointsPromise(): Promise<object_t>;
       // length
       // public abstract int java.lang.CharSequence.length()
       length( cb: Callback<number>): void;
@@ -2613,14 +2613,14 @@ declare module Java {
       capacityPromise(): Promise<number>;
       // charAt
       // public char java.lang.AbstractStringBuilder.charAt(int)
-      charAt(arg0: integer_t, cb: Callback<java.lang.Object>): void;
-      charAtSync(arg0: integer_t): java.lang.Object;
-      charAtPromise(arg0: integer_t): Promise<java.lang.Object>;
+      charAt(arg0: integer_t, cb: Callback<object_t>): void;
+      charAtSync(arg0: integer_t): object_t;
+      charAtPromise(arg0: integer_t): Promise<object_t>;
       // chars
       // public default java.util.stream.IntStream java.lang.CharSequence.chars()
-      chars( cb: Callback<java.lang.Object>): void;
-      charsSync(): java.lang.Object;
-      charsPromise(): Promise<java.lang.Object>;
+      chars( cb: Callback<object_t>): void;
+      charsSync(): object_t;
+      charsPromise(): Promise<object_t>;
       // codePointAt
       // public int java.lang.AbstractStringBuilder.codePointAt(int)
       codePointAt(arg0: integer_t, cb: Callback<number>): void;
@@ -2638,9 +2638,9 @@ declare module Java {
       codePointCountPromise(arg0: integer_t, arg1: integer_t): Promise<number>;
       // codePoints
       // public default java.util.stream.IntStream java.lang.CharSequence.codePoints()
-      codePoints( cb: Callback<java.lang.Object>): void;
-      codePointsSync(): java.lang.Object;
-      codePointsPromise(): Promise<java.lang.Object>;
+      codePoints( cb: Callback<object_t>): void;
+      codePointsSync(): object_t;
+      codePointsPromise(): Promise<object_t>;
       // delete
       // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.delete(int,int)
       delete(arg0: integer_t, arg1: integer_t, cb: Callback<AbstractStringBuilder>): void;
@@ -2971,9 +2971,9 @@ declare module Java {
       isVarArgsPromise(): Promise<boolean>;
       // newInstance
       // public T java.lang.reflect.Constructor.newInstance(java.lang.Object...) throws java.lang.InstantiationException,java.lang.IllegalAccessException,java.lang.IllegalArgumentException,java.lang.reflect.InvocationTargetException
-      newInstance(arg0: array_t<object_t>, cb: Callback<java.lang.Object>): void;
-      newInstanceSync(arg0: array_t<object_t>): java.lang.Object;
-      newInstancePromise(arg0: array_t<object_t>): Promise<java.lang.Object>;
+      newInstance(arg0: array_t<object_t>, cb: Callback<object_t>): void;
+      newInstanceSync(arg0: array_t<object_t>): object_t;
+      newInstancePromise(arg0: array_t<object_t>): Promise<object_t>;
       // notify
       // public final native void java.lang.Object.notify()
       notify( cb: Callback<void>): void;
@@ -3034,9 +3034,9 @@ declare module Java {
       equalsPromise(arg0: object_t): Promise<boolean>;
       // get
       // public java.lang.Object java.lang.reflect.Field.get(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      get(arg0: object_t, cb: Callback<java.lang.Object>): void;
-      getSync(arg0: object_t): java.lang.Object;
-      getPromise(arg0: object_t): Promise<java.lang.Object>;
+      get(arg0: object_t, cb: Callback<object_t>): void;
+      getSync(arg0: object_t): object_t;
+      getPromise(arg0: object_t): Promise<object_t>;
       // getAnnotatedType
       // public java.lang.reflect.AnnotatedType java.lang.reflect.Field.getAnnotatedType()
       getAnnotatedType( cb: Callback<AnnotatedType>): void;
@@ -3064,14 +3064,14 @@ declare module Java {
       getBooleanPromise(arg0: object_t): Promise<boolean>;
       // getByte
       // public byte java.lang.reflect.Field.getByte(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      getByte(arg0: object_t, cb: Callback<java.lang.Object>): void;
-      getByteSync(arg0: object_t): java.lang.Object;
-      getBytePromise(arg0: object_t): Promise<java.lang.Object>;
+      getByte(arg0: object_t, cb: Callback<object_t>): void;
+      getByteSync(arg0: object_t): object_t;
+      getBytePromise(arg0: object_t): Promise<object_t>;
       // getChar
       // public char java.lang.reflect.Field.getChar(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      getChar(arg0: object_t, cb: Callback<java.lang.Object>): void;
-      getCharSync(arg0: object_t): java.lang.Object;
-      getCharPromise(arg0: object_t): Promise<java.lang.Object>;
+      getChar(arg0: object_t, cb: Callback<object_t>): void;
+      getCharSync(arg0: object_t): object_t;
+      getCharPromise(arg0: object_t): Promise<object_t>;
       // getClass
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClass( cb: Callback<Class>): void;
@@ -3398,14 +3398,14 @@ declare module Java {
       capacityPromise(): Promise<number>;
       // charAt
       // public char java.lang.StringBuilder.charAt(int)
-      charAt(arg0: integer_t, cb: Callback<java.lang.Object>): void;
-      charAtSync(arg0: integer_t): java.lang.Object;
-      charAtPromise(arg0: integer_t): Promise<java.lang.Object>;
+      charAt(arg0: integer_t, cb: Callback<object_t>): void;
+      charAtSync(arg0: integer_t): object_t;
+      charAtPromise(arg0: integer_t): Promise<object_t>;
       // chars
       // public default java.util.stream.IntStream java.lang.CharSequence.chars()
-      chars( cb: Callback<java.lang.Object>): void;
-      charsSync(): java.lang.Object;
-      charsPromise(): Promise<java.lang.Object>;
+      chars( cb: Callback<object_t>): void;
+      charsSync(): object_t;
+      charsPromise(): Promise<object_t>;
       // codePointAt
       // public int java.lang.StringBuilder.codePointAt(int)
       codePointAt(arg0: integer_t, cb: Callback<number>): void;
@@ -3423,9 +3423,9 @@ declare module Java {
       codePointCountPromise(arg0: integer_t, arg1: integer_t): Promise<number>;
       // codePoints
       // public default java.util.stream.IntStream java.lang.CharSequence.codePoints()
-      codePoints( cb: Callback<java.lang.Object>): void;
-      codePointsSync(): java.lang.Object;
-      codePointsPromise(): Promise<java.lang.Object>;
+      codePoints( cb: Callback<object_t>): void;
+      codePointsSync(): object_t;
+      codePointsPromise(): Promise<object_t>;
       // delete
       // public java.lang.AbstractStringBuilder java.lang.StringBuilder.delete(int,int)
       delete(arg0: integer_t, arg1: integer_t, cb: Callback<AbstractStringBuilder>): void;
