@@ -50,8 +50,14 @@ class ClassesMap {
   private classes: ClassDefinitionMap;
   private includedPatterns: Immutable.Set<RegExp>;
   private excludedPatterns: Immutable.Set<RegExp>;
+
+  // shortToLongNameMap is used to detect whether a class name unambiguously identifies one class path.
+  // Currently it is populated after making one full pass over all classes, and then used in a second full pass.
+  // TODO: refactor so the first pass does only the work to find all classes, without creating ClassDefinitions.
   private shortToLongNameMap: Dictionary;
 
+  // fullClassList is the list of all classes that are reachable from the seedClasses and allowed by
+  // the includedPatterns/excludedPatterns filtering.
   private fullClassList: Immutable.Set<string>;
 
   constructor(java: Java.Singleton,
@@ -66,7 +72,9 @@ class ClassesMap {
     assert.ok(includedPatterns instanceof Immutable.Set);
     this.includedPatterns = includedPatterns;
     this.excludedPatterns = excludedPatterns ? excludedPatterns : Immutable.Set<RegExp>();
-    this.shortToLongNameMap = {};
+
+    // We create this after the first pass.
+    this.shortToLongNameMap = null;
 
     var requiredPatterns = _.map(requiredSeedClasses, (s: string) => {
       var pattern = '^' + s.replace(/\./g, '\\.') + '$';
@@ -261,11 +269,12 @@ class ClassesMap {
     if (isJavaLangType) {
       typeName = javaTypeToTypescriptType[typeName];
     } else if (this.inWhiteList(typeName)) {
-      // Use just the short class name if it doesn't cause name conflicts.
-      // This test isn't quite right yet, because we need to check if the short name conflicts
-      // with classes we haven't processed yet. Some refactoring is required.
+      // Use the short class name if it doesn't cause name conflicts.
+      // This can only be done correctly in our 2nd pass, when this.shortToLongNameMap has been populated.
+      // However, conflicts are very rare, and unit tests currently don't run two passes,
+      // so it is convenient to always map to the short name in the first pass.
       var shortName = this.shortClassName(typeName);
-      if (!(shortName in reservedShortNames)) {
+      if (!this.shortToLongNameMap || this.shortToLongNameMap[shortName] === typeName) {
         typeName = shortName;
       }
     } else {
@@ -468,22 +477,11 @@ class ClassesMap {
     var alias: string = shortName;
     var useAlias: boolean = true;
 
-    if (shortName in this.shortToLongNameMap) {
+    if (this.shortToLongNameMap === null) {
+      // First pass, don't do this work yet
+    } else if (this.shortToLongNameMap[shortName] !== className) {
       alias = className;
       useAlias = false;
-      // We have a conflict, two or more unique class paths ending with the same class name.
-      var otherClassName: string = this.shortToLongNameMap[shortName];
-      if (otherClassName !== null) {
-        var otherClass: ClassDefinition = this.classes[otherClassName];
-        otherClass.alias = otherClassName;
-        otherClass.useAlias = false;
-        this.shortToLongNameMap[shortName] = null;
-      }
-    } else if (shortName in reservedShortNames) {
-      alias = className;
-      useAlias = false;
-    } else {
-        this.shortToLongNameMap[shortName] = className;
     }
 
     var isInterface = clazz.isInterfaceSync();
@@ -568,8 +566,23 @@ class ClassesMap {
     var work1 = this.loadAllClasses(seedClasses);
     this.fullClassList = work1.getDone();
 
-    this.classes = {};
+    // Now we can create a valid map of short names to long names
+    // Conflicts are recorded by using null for the longName.
     this.shortToLongNameMap = {};
+    this.fullClassList.forEach((longName: string): any => {
+      dlog(longName);
+      var shortName = this.shortClassName(longName);
+      if (shortName in reservedShortNames || shortName in this.shortToLongNameMap) {
+        // We have a conflict
+        this.shortToLongNameMap[shortName] = null;
+      } else {
+        // No conflict yet
+        this.shortToLongNameMap[shortName] = longName;
+      }
+    });
+
+    // Now erase our ClassDefinitionMap so that we can recreate it.
+    this.classes = {};
     var work2 = this.loadAllClasses(seedClasses);
     var checkClassList = work2.getDone();
 
