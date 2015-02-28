@@ -9,6 +9,8 @@
     "seedClasses": [
       "com.redseal.featureset.SomeClass",
       "com.redseal.featureset.AnEnum",
+      "com.redseal.featureset.Thing",
+      "com.redseal.featureset.ambiguous.Thing",
       "java.lang.Boolean",
       "java.lang.Double",
       "java.lang.Float",
