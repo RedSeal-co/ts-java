@@ -52,12 +52,15 @@ class ClassesMap {
   private excludedPatterns: Immutable.Set<RegExp>;
   private shortToLongNameMap: Dictionary;
 
+  private fullClassList: Immutable.Set<string>;
+
   constructor(java: Java.Singleton,
               includedPatterns: Immutable.Set<RegExp>,
               excludedPatterns?: Immutable.Set<RegExp>) {
     this.java = java;
     this.classes = {};
     this.unhandledTypes = Immutable.Set<string>();
+    this.fullClassList = Immutable.Set<string>();
 
     assert.ok(includedPatterns);
     assert.ok(includedPatterns instanceof Immutable.Set);
@@ -550,7 +553,27 @@ class ClassesMap {
 
   // *initialize()*: fully initialize from seedClasses.
   initialize(seedClasses: Array<string>) {
-    this.loadAllClasses(seedClasses);
+    // HACK Alert
+    // In the implementation below, we make two complete passes across all the classes.
+    // The first pass is done to discover the complete list of classes that are reachable
+    // from the seedClasses and allowed by the whiteList/blackList filters.
+    // During that pass, more work is done than necessary, and the work may be incorrect.
+    // The second pass then does all the work again, but now has the virtue of knowning
+    // the complete set of classes. This allows us to deterministically handle cases
+    // where two distinct class paths have the same class name, so that we don't try to
+    // generate short name aliases for those classes.
+    // TODO: Refactor so that the first pass just crawls all the classes and builds up
+    // the class list, without generating ClassDefinitions.
+
+    var work1 = this.loadAllClasses(seedClasses);
+    this.fullClassList = work1.getDone();
+
+    this.classes = {};
+    this.shortToLongNameMap = {};
+    var work2 = this.loadAllClasses(seedClasses);
+    var checkClassList = work2.getDone();
+
+    assert(this.fullClassList.size === checkClassList.size);
   }
 
 }
