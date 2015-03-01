@@ -11,4 +11,8 @@ public class Thing {
     public String toString() {
         return "Thing" + Integer.toString(theValue);
     }
+
+    public void set(int value) {
+        theValue = value;
+    }
 }

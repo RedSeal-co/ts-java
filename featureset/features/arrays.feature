@@ -62,16 +62,21 @@ I want to understand how to use Java array types in Typescript.
   Scenario: Getting 2d array of non-primitive type
     Given the above boilerplate with following scenario snippet:
     """
-    var things: Java.Thing[][] = something.getThingsSync();
+    // We intentionally have two different classes named Thing, so it is necessary to refer
+    // to the specific class we want with the full class path. But Typescript makes it easy
+    // to declare a type alias, which shortens the code below.
+    import Thing = Java.com.redseal.featureset.Thing;
+
+    var things: Thing[][] = something.getThingsSync();
     assert.ok(_.isArray(things));
     assert.strictEqual(things.length, 2);
-    var thing1d: Java.Thing[] = things[1];
+    var thing1d: Thing[] = things[1];
     assert.ok(_.isArray(thing1d));
     assert.strictEqual(thing1d.length, 3);
 
     var thingStrs: string[][] = _.map(things,
-      (thing1d: Java.Thing[]): string[] => _.map(thing1d,
-        (thing: Java.Thing): string => thing.toStringSync()
+      (thing1d: Thing[]): string[] => _.map(thing1d,
+        (thing: Thing): string => thing.toStringSync()
       )
     );
     assert.deepEqual(thingStrs, [ [ 'Thing0', 'Thing1', 'Thing2' ], [ 'Thing3', 'Thing4', 'Thing5' ] ]);

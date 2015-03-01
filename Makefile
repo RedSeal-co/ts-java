@@ -79,7 +79,7 @@ ALL_CUCUMBER_FEATURES=$(wildcard */features/*.feature)
 ALL_CUCUMBER_FEATURES_RAN=$(patsubst %.feature,o/%.lastran,$(ALL_CUCUMBER_FEATURES))
 
 # A rule to make sure that every feature file is run
-$(ALL_CUCUMBER_FEATURES_RAN): o/%.lastran : %.feature $(STEPS_OBJS) $(LIBS_OBJS) $(JAVAPKGS_JAVADTS)
+$(ALL_CUCUMBER_FEATURES_RAN): o/%.lastran : %.feature $(STEPS_OBJS) $(LIBS_OBJS) $(JAVAPKGS_JAVADTS) $(UNIT_TEST_RAN)
 	./node_modules/.bin/cucumber-js --tags '~@todo' --require features/step_definitions $<
 	mkdir -p $(dir $@) && touch  $@
 
@@ -98,7 +98,7 @@ UNIT_TESTS=$(filter-out %.d.ts, $(wildcard test/*.ts))
 UNIT_TEST_OBJS=$(patsubst %.ts,%.js,$(UNIT_TESTS))
 UNIT_TEST_RAN=$(patsubst %.ts,o/%.lastran,$(UNIT_TESTS))
 
-$(UNIT_TEST_RAN): o/%.lastran: %.js
+$(UNIT_TEST_RAN): o/%.lastran: %.js $(LIBS_OBJS)
 	node_modules/mocha/bin/mocha --timeout 10s --reporter=spec --ui tdd $<
 	mkdir -p $(dir $@) && touch  $@
 
@@ -159,7 +159,7 @@ update-tsd:
 bin/ts-java.sh: bin/ts-java.js lib/java.d.ts
 	touch $@
 
-bin/ts-java.js : $(LIBS_SRC)
+bin/ts-java.js : $(LIBS_OBJS)
 
 lib/classes-map.js : lib/work.ts lib/paramcontext.ts
 

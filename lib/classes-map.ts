@@ -25,6 +25,10 @@ var alwaysExcludeClasses: string[] = [
   // TODO: remove it if it remains unused.
 ];
 
+var reservedShortNames: Dictionary = {
+  'Number': null
+};
+
 import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 import MethodDefinition = ClassesMap.MethodDefinition;
@@ -47,17 +51,30 @@ class ClassesMap {
   private includedPatterns: Immutable.Set<RegExp>;
   private excludedPatterns: Immutable.Set<RegExp>;
 
+  // shortToLongNameMap is used to detect whether a class name unambiguously identifies one class path.
+  // Currently it is populated after making one full pass over all classes, and then used in a second full pass.
+  // TODO: refactor so the first pass does only the work to find all classes, without creating ClassDefinitions.
+  private shortToLongNameMap: Dictionary;
+
+  // fullClassList is the list of all classes that are reachable from the seedClasses and allowed by
+  // the includedPatterns/excludedPatterns filtering.
+  private fullClassList: Immutable.Set<string>;
+
   constructor(java: Java.Singleton,
               includedPatterns: Immutable.Set<RegExp>,
               excludedPatterns?: Immutable.Set<RegExp>) {
     this.java = java;
     this.classes = {};
     this.unhandledTypes = Immutable.Set<string>();
+    this.fullClassList = Immutable.Set<string>();
 
     assert.ok(includedPatterns);
     assert.ok(includedPatterns instanceof Immutable.Set);
     this.includedPatterns = includedPatterns;
     this.excludedPatterns = excludedPatterns ? excludedPatterns : Immutable.Set<RegExp>();
+
+    // We create this after the first pass.
+    this.shortToLongNameMap = null;
 
     var requiredPatterns = _.map(requiredSeedClasses, (s: string) => {
       var pattern = '^' + s.replace(/\./g, '\\.') + '$';
@@ -241,20 +258,22 @@ class ClassesMap {
       'java.lang.Integer': context === ParamContext.eInput ? 'integer_t' : 'number',
       'java.lang.Long':    context === ParamContext.eInput ? 'long_t' : 'longValue_t',
       'java.lang.Number':  context === ParamContext.eInput ? 'number_t' : 'number',
-      'java.lang.Object':  context === ParamContext.eInput ? 'object_t' : 'java.lang.Object', // special case
+      'java.lang.Object':  context === ParamContext.eInput ? 'object_t' : 'object_t', // special case
       'java.lang.Short':   context === ParamContext.eInput ? 'short_t' : 'number',
       'java.lang.String':  context === ParamContext.eInput ? 'string_t' : 'string'
     };
 
-    var isJavaLangType: boolean = typeName in javaTypeToTypescriptType;
-    var isPrimitiveType: boolean = isJavaLangType && typeName !== 'java.lang.Object';
-
-    if (isJavaLangType) {
+    if (typeName in javaTypeToTypescriptType) {
       typeName = javaTypeToTypescriptType[typeName];
     } else if (this.inWhiteList(typeName)) {
-      // TODO: we should only return shortName if we know there are no ambiguous cases.
-      // Pivotal story 88154024
-      typeName = this.shortClassName(typeName);
+      // Use the short class name if it doesn't cause name conflicts.
+      // This can only be done correctly in our 2nd pass, when this.shortToLongNameMap has been populated.
+      // However, conflicts are very rare, and unit tests currently don't run two passes,
+      // so it is convenient to always map to the short name in the first pass.
+      var shortName = this.shortClassName(typeName);
+      if (!this.shortToLongNameMap || this.shortToLongNameMap[shortName] === typeName) {
+        typeName = shortName;
+      }
     } else {
       dlog('Unhandled type:', typeName);
       this.unhandledTypes = this.unhandledTypes.add(typeName);
@@ -451,6 +470,17 @@ class ClassesMap {
 
     var constructors: Array<MethodDefinition> = this.mapClassConstructors(className, clazz, work);
 
+    var shortName: string = this.shortClassName(className);
+    var alias: string = shortName;
+    var useAlias: boolean = true;
+
+    if (this.shortToLongNameMap === null) {
+      // First pass, don't do this work yet
+    } else if (this.shortToLongNameMap[shortName] !== className) {
+      alias = className;
+      useAlias = false;
+    }
+
     var isInterface = clazz.isInterfaceSync();
     var isPrimitive = clazz.isPrimitiveSync();
     var isEnum = clazz.isEnumSync();
@@ -468,14 +498,18 @@ class ClassesMap {
 
     var enumConstants: string[] = [];
     if (isEnum) {
-      var enums: Java.Object[] = clazz.getEnumConstantsSync();
-      enumConstants = _.map(enums, (e: Java.Object) => e.toStringSync());
+      // TODO: We have to use object_t here right now, which forces the use of the typecast.
+      // We may be able to improve this when we implement generics.
+      var enums: Java.object_t[] = clazz.getEnumConstantsSync();
+      enumConstants = _.map(enums, (e: Java.object_t) => (<Java.Object>e).toStringSync());
     }
 
     var classMap: ClassDefinition = {
       packageName: this.packageName(this.fixClassPath(className)),
       fullName: className,
-      shortName: this.shortClassName(className),
+      shortName: shortName,
+      alias: alias,
+      useAlias: useAlias,
       tsType: this.tsTypeName(className),
       isInterface: isInterface,
       isPrimitive: isPrimitive,
@@ -516,7 +550,41 @@ class ClassesMap {
 
   // *initialize()*: fully initialize from seedClasses.
   initialize(seedClasses: Array<string>) {
-    this.loadAllClasses(seedClasses);
+    // HACK Alert
+    // In the implementation below, we make two complete passes across all the classes.
+    // The first pass is done to discover the complete list of classes that are reachable
+    // from the seedClasses and allowed by the whiteList/blackList filters.
+    // During that pass, more work is done than necessary, and the work may be incorrect.
+    // The second pass then does all the work again, but now has the virtue of knowning
+    // the complete set of classes. This allows us to deterministically handle cases
+    // where two distinct class paths have the same class name, so that we don't try to
+    // generate short name aliases for those classes.
+    // TODO: Refactor so that the first pass just crawls all the classes and builds up
+    // the class list, without generating ClassDefinitions.
+
+    var work1 = this.loadAllClasses(seedClasses);
+    this.fullClassList = work1.getDone();
+
+    // Now we can create a valid map of short names to long names
+    // Conflicts are recorded by using null for the longName.
+    this.shortToLongNameMap = {};
+    this.fullClassList.forEach((longName: string): any => {
+      var shortName = this.shortClassName(longName);
+      if (shortName in reservedShortNames || shortName in this.shortToLongNameMap) {
+        // We have a conflict
+        this.shortToLongNameMap[shortName] = null;
+      } else {
+        // No conflict yet
+        this.shortToLongNameMap[shortName] = longName;
+      }
+    });
+
+    // Now erase our ClassDefinitionMap so that we can recreate it.
+    this.classes = {};
+    var work2 = this.loadAllClasses(seedClasses);
+    var checkClassList = work2.getDone();
+
+    assert(this.fullClassList.size === checkClassList.size);
   }
 
 }
@@ -556,6 +624,9 @@ module ClassesMap {
     packageName: string;               // 'java.util'
     fullName: string;                  // 'java.util.Iterator'
     shortName: string;                 // 'Iterator'
+    alias: string;                     // This will be shortName, unless two classes have the same short name,
+                                       // of if the short name conflicts with a Javascript type (e.g. Number).
+    useAlias: boolean;                 // true if alias is the shortName.
     tsType: string;                    // For primitive wrappers, the ts type, e.g. 'java.lang.String' -> 'string'
     isInterface: boolean;              // true if this is an interface, false for class or primitive type.
     isPrimitive: boolean;              // true for a primitive type, false otherwise.
@@ -567,6 +638,7 @@ module ClassesMap {
     variants: VariantsMap;             // definitions of all methods, grouped by method name
     isEnum: boolean;                   // true for an Enum, false otherwise.
     enumConstants: Array<string>;      // array of enum constants.
+
   }
 
   export interface ClassDefinitionMap {

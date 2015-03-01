@@ -10,14 +10,22 @@
       "com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph",
       "com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory",
       "com.tinkerpop.gremlin.process.computer.util.ScriptEngineLambda",
+      "java.lang.Boolean",
       "java.lang.ClassLoader",
+      "java.lang.Double",
+      "java.lang.Float",
+      "java.lang.Integer",
       "java.lang.Long",
-      "java.util.ArrayList"
+      "java.lang.Short",
+      "java.util.ArrayList",
+      "java.util.Arrays",
+      "java.util.List"
     ],
     "whiteList": [
-      "java.util.",
+      "com.tinkerpop.gremlin.",
+      "java.lang.",
       "java.math.",
-      "com.tinkerpop.gremlin."
+      "java.util."
     ]
   }
 }
