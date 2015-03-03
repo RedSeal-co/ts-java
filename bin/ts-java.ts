@@ -137,11 +137,7 @@ class Main {
       return new RegExp(str);
     });
     var classesMap = new ClassesMap(java, Immutable.Set(regExpWhiteList));
-
-    return BluePromise.resolve().then(() => {
-      classesMap.initialize(this.options.seedClasses);
-      return classesMap;
-    });
+    return classesMap.initialize(this.options.seedClasses).then(() => classesMap);
   }
 }
 

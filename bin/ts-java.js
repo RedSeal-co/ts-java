@@ -95,7 +95,6 @@ var Main = (function () {
         });
     };
     Main.prototype.loadClasses = function () {
-        var _this = this;
         var regExpWhiteList = _.map(this.options.whiteList, function (str) {
             // We used to have true regular expressions in source code.
             // Now we get the white list from the package.json, and convert the strings to RegExps.
@@ -105,10 +104,7 @@ var Main = (function () {
             return new RegExp(str);
         });
         var classesMap = new ClassesMap(java, Immutable.Set(regExpWhiteList));
-        return BluePromise.resolve().then(function () {
-            classesMap.initialize(_this.options.seedClasses);
-            return classesMap;
-        });
+        return classesMap.initialize(this.options.seedClasses).then(function () { return classesMap; });
     };
     return Main;
 })();

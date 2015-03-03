@@ -1,4 +1,5 @@
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts' />
+/// <reference path='../typings/bluebird/bluebird.d.ts' />
 /// <reference path="../typings/debug/debug.d.ts"/>
 /// <reference path="../typings/lodash/lodash.d.ts" />
 /// <reference path='../typings/node/node.d.ts' />
@@ -8,6 +9,7 @@
 
 import _ = require('lodash');
 import assert = require('assert');
+import BluePromise = require('bluebird');
 import debug = require('debug');
 import Immutable = require('immutable');
 import ParamContext = require('./paramcontext');
@@ -550,7 +552,7 @@ class ClassesMap {
 
 
   // *initialize()*: fully initialize from seedClasses.
-  initialize(seedClasses: Array<string>) {
+  initialize(seedClasses: Array<string>): BluePromise<void> {
     // HACK Alert
     // In the implementation below, we make two complete passes across all the classes.
     // The first pass is done to discover the complete list of classes that are reachable
@@ -563,29 +565,32 @@ class ClassesMap {
     // TODO: Refactor so that the first pass just crawls all the classes and builds up
     // the class list, without generating ClassDefinitions.
 
-    var work1 = this.loadAllClasses(seedClasses);
-    this.fullClassList = work1.getDone();
+    return BluePromise.resolve()
+      .then(() => {
+        var work1 = this.loadAllClasses(seedClasses);
+        this.fullClassList = work1.getDone();
 
-    // Now we can create a valid map of short names to long names
-    // Conflicts are recorded by using null for the longName.
-    this.shortToLongNameMap = {};
-    this.fullClassList.forEach((longName: string): any => {
-      var shortName = this.shortClassName(longName);
-      if (shortName in reservedShortNames || shortName in this.shortToLongNameMap) {
-        // We have a conflict
-        this.shortToLongNameMap[shortName] = null;
-      } else {
-        // No conflict yet
-        this.shortToLongNameMap[shortName] = longName;
-      }
-    });
+        // Now we can create a valid map of short names to long names
+        // Conflicts are recorded by using null for the longName.
+        this.shortToLongNameMap = {};
+        this.fullClassList.forEach((longName: string): any => {
+          var shortName = this.shortClassName(longName);
+          if (shortName in reservedShortNames || shortName in this.shortToLongNameMap) {
+            // We have a conflict
+            this.shortToLongNameMap[shortName] = null;
+          } else {
+            // No conflict yet
+            this.shortToLongNameMap[shortName] = longName;
+          }
+        });
 
-    // Now erase our ClassDefinitionMap so that we can recreate it.
-    this.classes = {};
-    var work2 = this.loadAllClasses(seedClasses);
-    var checkClassList = work2.getDone();
+        // Now erase our ClassDefinitionMap so that we can recreate it.
+        this.classes = {};
+        var work2 = this.loadAllClasses(seedClasses);
+        var checkClassList = work2.getDone();
 
-    assert(this.fullClassList.size === checkClassList.size);
+        assert(this.fullClassList.size === checkClassList.size);
+      });
   }
 
 }
