@@ -36,6 +36,7 @@ var error = chalk.bold.red;
 var Main = (function () {
     function Main(options) {
         this.options = options;
+        this.classpath = [];
         if (this.options.granularity !== 'class') {
             this.options.granularity = 'package';
         }
@@ -85,10 +86,12 @@ var Main = (function () {
         return mkdirpPromise(path.dirname(this.options.outputPath)).then(function () { return tsWriter.writePackageFile(_this.options); }).then(function () { return dlog('writePackageFiles() completed'); });
     };
     Main.prototype.initJava = function () {
+        var _this = this;
         return BluePromise.all(_.map(this.options.classpath, function (globExpr) { return globPromise(globExpr); })).then(function (pathsArray) { return _.flatten(pathsArray); }).then(function (paths) {
             _.forEach(paths, function (path) {
                 dlog('Adding to classpath:', path);
                 java.classpath.push(path);
+                _this.classpath.push(path);
             });
         });
     };

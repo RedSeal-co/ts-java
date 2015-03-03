@@ -48,9 +48,11 @@ var error = chalk.bold.red;
 class Main {
 
   private options: TsJavaOptions;
+  private classpath: Array<string>;
 
   constructor(options: TsJavaOptions) {
     this.options = options;
+    this.classpath = [];
     if (this.options.granularity !== 'class') {
       this.options.granularity = 'package';
     }
@@ -120,6 +122,7 @@ class Main {
         _.forEach(paths, (path: string) => {
           dlog('Adding to classpath:', path);
           java.classpath.push(path);
+          this.classpath.push(path);
         });
       });
   }
