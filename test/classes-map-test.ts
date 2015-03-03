@@ -90,14 +90,16 @@ describe('ClassesMap', () => {
   describe('mapClassInterfaces', () => {
     it('should find no interfaces for java.lang.Object', () => {
       var className = 'java.lang.Object';
-      var work = new Work([className]);
+      var work = new Work();
+      work.addTodo(className);
       var clazz = classesMap.loadClass(className);
       var interfaces = classesMap.mapClassInterfaces(className, clazz, work);
       expect(interfaces).to.deep.equal([]);
     });
     it('should find one interface for java.util.Iterator', () => {
       var className = 'java.util.Iterator';
-      var work = new Work([className]);
+      var work = new Work();
+      work.addTodo(className);
       var clazz = classesMap.loadClass(className);
       var interfaces = classesMap.mapClassInterfaces(className, clazz, work);
       var expected = ['java.lang.Object'];
@@ -107,7 +109,8 @@ describe('ClassesMap', () => {
     });
     it('should find the interfaces of com.tinkerpop.gremlin.structure.Edge', () => {
       var className = 'com.tinkerpop.gremlin.structure.Edge';
-      var work = new Work([className]);
+      var work = new Work();
+      work.addTodo(className);
       var clazz = classesMap.loadClass(className);
       var interfaces = classesMap.mapClassInterfaces(className, clazz, work);
       var expected = [
@@ -194,7 +197,8 @@ describe('ClassesMap', () => {
   describe('mapMethod', () => {
     it('should map java.lang.Object:hashCode', () => {
       var className = 'java.lang.Object';
-      var work = new Work([className]);
+      var work = new Work();
+      work.addTodo(className);
       var clazz = classesMap.loadClass(className);
       expect(clazz).to.be.ok;
       var methods = clazz.getDeclaredMethodsSync();
@@ -222,7 +226,8 @@ describe('ClassesMap', () => {
   describe('mapClassMethods', () => {
     it('should load all methods of java.lang.Object', () => {
       var className = 'java.lang.Object';
-      var work = new Work([className]);
+      var work = new Work();
+      work.addTodo(className);
       var clazz = classesMap.loadClass(className);
       var methods = classesMap.mapClassMethods(className, clazz, work);
       expect(methods).to.be.an('array');
@@ -249,7 +254,8 @@ describe('ClassesMap', () => {
   describe('mapClass', () => {
     it('should map the properties of java.util.Iterator', () => {
       var className = 'java.util.Iterator';
-      var work = new Work([className]);
+      var work = new Work();
+      work.addTodo(className);
       var classMap = classesMap.mapClass(className, work);
       expect(classMap).to.be.ok;
       expect(classMap).to.have.keys([
