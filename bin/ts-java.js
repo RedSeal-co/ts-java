@@ -50,8 +50,7 @@ var Main = (function () {
     }
     Main.prototype.run = function () {
         var _this = this;
-        return this.initJava().then(function () {
-            var classesMap = _this.loadClasses();
+        return this.initJava().then(function () { return _this.loadClasses(); }).then(function (classesMap) {
             return BluePromise.join(_this.writeJsons(classesMap.getClasses()), _this.writeInterpolatedFiles(classesMap)).then(function () { return dlog('run() completed.'); }).then(function () { return classesMap; });
         });
     };
@@ -96,6 +95,7 @@ var Main = (function () {
         });
     };
     Main.prototype.loadClasses = function () {
+        var _this = this;
         var regExpWhiteList = _.map(this.options.whiteList, function (str) {
             // We used to have true regular expressions in source code.
             // Now we get the white list from the package.json, and convert the strings to RegExps.
@@ -105,8 +105,10 @@ var Main = (function () {
             return new RegExp(str);
         });
         var classesMap = new ClassesMap(java, Immutable.Set(regExpWhiteList));
-        classesMap.initialize(this.options.seedClasses);
-        return classesMap;
+        return BluePromise.resolve().then(function () {
+            classesMap.initialize(_this.options.seedClasses);
+            return classesMap;
+        });
     };
     return Main;
 })();

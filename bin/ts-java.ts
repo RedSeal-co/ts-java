@@ -67,8 +67,8 @@ class Main {
 
   run(): BluePromise<ClassesMap> {
     return this.initJava()
-      .then(() => {
-        var classesMap = this.loadClasses();
+      .then(() => this.loadClasses())
+      .then((classesMap: ClassesMap) => {
         return BluePromise.join(this.writeJsons(classesMap.getClasses()), this.writeInterpolatedFiles(classesMap))
           .then(() => dlog('run() completed.'))
           .then(() => classesMap);
@@ -127,7 +127,7 @@ class Main {
       });
   }
 
-  private loadClasses(): ClassesMap {
+  private loadClasses(): BluePromise<ClassesMap> {
     var regExpWhiteList = _.map(this.options.whiteList, (str: string) => {
       // We used to have true regular expressions in source code.
       // Now we get the white list from the package.json, and convert the strings to RegExps.
@@ -137,8 +137,11 @@ class Main {
       return new RegExp(str);
     });
     var classesMap = new ClassesMap(java, Immutable.Set(regExpWhiteList));
-    classesMap.initialize(this.options.seedClasses);
-    return classesMap;
+
+    return BluePromise.resolve().then(() => {
+      classesMap.initialize(this.options.seedClasses);
+      return classesMap;
+    });
   }
 }
 
