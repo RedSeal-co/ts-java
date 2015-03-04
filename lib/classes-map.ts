@@ -15,6 +15,7 @@ import BluePromise = require('bluebird');
 import debug = require('debug');
 import Immutable = require('immutable');
 import ParamContext = require('./paramcontext');
+import TsJavaOptions = require('./TsJavaOptions');
 import Work = require('./work');
 
 var dlog = debug('ts-java:classes-map');
@@ -582,7 +583,7 @@ class ClassesMap {
 
   // *preScanAllClasses()*: scan all jars in the class path and find all classes matching our filter.
   // The result is stored in the member variable this.allClasses and returned as the function result
-  preScanAllClasses(classpath: Array<string>): BluePromise<Immutable.Set<string>> {
+  preScanAllClasses(classpath: Array<string>, options: TsJavaOptions): BluePromise<Immutable.Set<string>> {
     return BluePromise.reduce(classpath, (allSoFar: Immutable.Set<string>, jarpath: string) => {
       return this.getWhitedListedClassesInJar(jarpath)
         .then((classes: Array<string>) => {
@@ -590,6 +591,10 @@ class ClassesMap {
         });
     }, Immutable.Set<string>())
     .then((allSoFar: Immutable.Set<string>) => {
+      // We don't have java.lang classes in the scan of jars in the class path.
+      // We'll get them from these two sources of seed classes.
+      allSoFar = allSoFar.union(options.seedClasses);
+      allSoFar = allSoFar.union(requiredSeedClasses);
       this.allClasses = allSoFar;
       return allSoFar;
     });

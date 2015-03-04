@@ -105,7 +105,7 @@ var Main = (function () {
             return new RegExp(str);
         });
         var classesMap = new ClassesMap(java, Immutable.Set(regExpWhiteList));
-        return classesMap.preScanAllClasses(this.classpath).then(function (allClasses) {
+        return classesMap.preScanAllClasses(this.classpath, this.options).then(function (allClasses) {
             allClasses = allClasses.union(_this.options.seedClasses);
             var seeds = allClasses.toArray();
             console.log('Prescan delivered all of these classes:', seeds);

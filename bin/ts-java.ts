@@ -137,7 +137,7 @@ class Main {
       return new RegExp(str);
     });
     var classesMap = new ClassesMap(java, Immutable.Set(regExpWhiteList));
-    return classesMap.preScanAllClasses(this.classpath)
+    return classesMap.preScanAllClasses(this.classpath, this.options)
       .then((allClasses: Immutable.Set<string>) => {
         allClasses = allClasses.union(this.options.seedClasses);
         var seeds: Array<string> = allClasses.toArray();
