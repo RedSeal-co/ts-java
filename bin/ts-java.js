@@ -86,18 +86,22 @@ var Main = (function () {
     };
     Main.prototype.initJava = function () {
         var _this = this;
-        this.classpath = [];
+        var classpath = [];
         return BluePromise.all(_.map(this.options.classpath, function (globExpr) { return globPromise(globExpr); })).then(function (pathsArray) { return _.flatten(pathsArray); }).then(function (paths) {
             _.forEach(paths, function (path) {
                 dlog('Adding to classpath:', path);
                 java.classpath.push(path);
-                _this.classpath.push(path);
+                classpath.push(path);
             });
+        }).then(function () {
+            // The classpath in options is an array of glob expressions.
+            // It is convenient to replace it here with the equivalent expanded array jar file paths.
+            _this.options.classpath = classpath;
         });
     };
     Main.prototype.loadClasses = function () {
         var _this = this;
-        return this.classesMap.preScanAllClasses(this.classpath, this.options).then(function (allClasses) {
+        return this.classesMap.preScanAllClasses(this.options).then(function (allClasses) {
             allClasses = allClasses.union(_this.options.seedClasses);
             var seeds = allClasses.toArray();
             console.log('Prescan delivered all of these classes:', seeds);

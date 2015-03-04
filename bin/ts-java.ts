@@ -48,7 +48,6 @@ var error = chalk.bold.red;
 class Main {
 
   private options: TsJavaOptions;
-  private classpath: Array<string>;
   private classesMap: ClassesMap;
 
   constructor(options: TsJavaOptions) {
@@ -117,20 +116,25 @@ class Main {
   }
 
   private initJava(): BluePromise<void> {
-    this.classpath = [];
+    var classpath: Array<string> = [];
     return BluePromise.all(_.map(this.options.classpath, (globExpr: string) => globPromise(globExpr)))
       .then((pathsArray: Array<Array<string>>) => _.flatten(pathsArray))
       .then((paths: Array<string>) => {
         _.forEach(paths, (path: string) => {
           dlog('Adding to classpath:', path);
           java.classpath.push(path);
-          this.classpath.push(path);
+          classpath.push(path);
         });
+      })
+      .then(() => {
+        // The classpath in options is an array of glob expressions.
+        // It is convenient to replace it here with the equivalent expanded array jar file paths.
+        this.options.classpath = classpath;
       });
   }
 
   private loadClasses(): BluePromise<ClassesMap> {
-    return this.classesMap.preScanAllClasses(this.classpath, this.options)
+    return this.classesMap.preScanAllClasses(this.options)
       .then((allClasses: Immutable.Set<string>) => {
         allClasses = allClasses.union(this.options.seedClasses);
         var seeds: Array<string> = allClasses.toArray();

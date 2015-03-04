@@ -571,8 +571,8 @@ class ClassesMap {
 
   // *preScanAllClasses()*: scan all jars in the class path and find all classes matching our filter.
   // The result is stored in the member variable this.allClasses and returned as the function result
-  preScanAllClasses(classpath: Array<string>, options: TsJavaOptions): BluePromise<Immutable.Set<string>> {
-    return BluePromise.reduce(classpath, (allSoFar: Immutable.Set<string>, jarpath: string) => {
+  preScanAllClasses(options: TsJavaOptions): BluePromise<Immutable.Set<string>> {
+    return BluePromise.reduce(options.classpath, (allSoFar: Immutable.Set<string>, jarpath: string) => {
       return this.getWhitedListedClassesInJar(jarpath)
         .then((classes: Array<string>) => {
           return BluePromise.reduce(classes, (allSoFar: Immutable.Set<string>, className: string) => allSoFar.add(className), allSoFar);
