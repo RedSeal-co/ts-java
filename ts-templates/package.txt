@@ -1,5 +1,5 @@
 declare module 'java' {
-  var Java: Java.Singleton;
+  var Java: Java.NodeAPI;
   export = Java;
 }
 
@@ -47,8 +47,8 @@ declare module Java {
     promisify: Function;
   }
 
-  // *Singleton* declares methods & members exported by the node java module.
-  interface Singleton {
+  // *NodeAPI* declares methods & members exported by the node java module.
+  interface NodeAPI {
     classpath: string[];
     asyncOptions: AsyncOptions;
     callMethod(instance: any, className: string, methodName: string, args: any[], callback: Callback<any>): void;

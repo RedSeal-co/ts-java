@@ -114,7 +114,7 @@ describe('CodeWriter', () => {
         'isPrimitive: false',
         'superclass: ',
         'interfaces: java.lang.Object',
-        'tsInterfaces: java.lang.Object',
+        'tsInterfaces: Java.java.lang.Object',
         'methods: [object Object],[object Object],[object Object],[object Object]',
         'constructors: ',
         'variants: [object Object]',

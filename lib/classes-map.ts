@@ -51,7 +51,7 @@ class ClassesMap {
 
   public unhandledTypes: Immutable.Set<string>;
 
-  private java: Java.Singleton;
+  private java: Java.NodeAPI;
   private classes: ClassDefinitionMap;
   private includedPatterns: Immutable.Set<RegExp>;
   private excludedPatterns: Immutable.Set<RegExp>;
@@ -69,7 +69,7 @@ class ClassesMap {
   // the includedPatterns/excludedPatterns filtering.
   private fullClassList: Immutable.Set<string>;
 
-  constructor(java: Java.Singleton,
+  constructor(java: Java.NodeAPI,
               includedPatterns: Immutable.Set<RegExp>,
               excludedPatterns?: Immutable.Set<RegExp>) {
     this.java = java;
@@ -506,6 +506,14 @@ class ClassesMap {
       tsInterfaces.unshift(this.fixClassPath(superclass.getNameSync()));
     }
 
+    // tsInterfaces is used in the extends clause of an interface declaration.
+    // Each intf is an interface name is a fully scoped java path, but in typescript
+    // these paths are all relative paths under the output module Java.
+    // In most cases it is not necessary to include the 'Java.' module in the interface
+    // name, but in few cases leaving it out causes naming conflicts, most notably
+    // between java.lang and groovy.lang.
+    tsInterfaces = _.map(tsInterfaces, (intf: string) => { return 'Java.' + intf; });
+
     var enumConstants: string[] = [];
     if (isEnum) {
       // TODO: We have to use object_t here right now, which forces the use of the typecast.
@@ -567,7 +575,8 @@ class ClassesMap {
         var classNames: Array<string> = _.map(classFilePaths, (path: string) => {
           return path.slice(0, -'.class'.length).replace(/\//g, '.');
         });
-        return _.filter(classNames, (name: string) => this.inWhiteList(name));
+        var result: Array<string> = _.filter(classNames, (name: string) => this.inWhiteList(name));
+        return result;
       });
   }
 
