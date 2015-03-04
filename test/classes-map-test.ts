@@ -19,6 +19,7 @@ import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
 import ParamContext = require('../lib/paramcontext');
+import TsJavaOptions = require('../lib/TsJavaOptions');
 import Work = require('../lib/work');
 
 describe('ClassesMap', () => {
@@ -31,19 +32,31 @@ describe('ClassesMap', () => {
     _.forEach(filenames, (name: string) => { java.classpath.push(name); });
   });
 
+  var options: TsJavaOptions = {
+    'promisesPath': '../typings/bluebird/bluebird.d.ts',
+    'outputPath': './java.d.ts',
+    'classpath': [
+      'tinkerpop/target/dependency/**/*.jar'
+    ],
+    'seedClasses': [
+      'java.lang.Boolean',
+      'java.lang.Double',
+      'java.lang.Float',
+      'java.lang.Integer',
+      'java.lang.Long',
+      'java.lang.Short',
+      'java.util.Iterator',
+      'java.lang.Number',
+      'java.lang.Enum'
+    ],
+    'whiteList': [
+      'com.tinkerpop.gremlin.',
+      'java.util.function.',
+    ]
+  };
+
   beforeEach(() => {
-    classesMap = new ClassesMap(java, Immutable.Set([
-      /^java\.util\.Iterator$/,
-      /^java\.util\.function\./,
-      /^java\.lang\.Boolean$/,
-      /^java\.lang\.Short$/,
-      /^java\.lang\.Integer$/,
-      /^java\.lang\.Long$/,
-      /^java\.lang\.Double$/,
-      /^java\.lang\.Float$/,
-      /^java\.lang\.Number$/,
-      /^com\.tinkerpop\.gremlin\./
-    ]));
+    classesMap = new ClassesMap(java, options);
   });
 
   describe('initialize', () => {

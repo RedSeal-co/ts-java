@@ -25,11 +25,6 @@ var requiredSeedClasses: string[] = [
   'java.lang.String',
 ];
 
-var alwaysExcludeClasses: string[] = [
-  // We are currently not using this feature.
-  // TODO: remove it if it remains unused.
-];
-
 var reservedShortNames: Dictionary = {
   'Number': null
 };
@@ -53,9 +48,10 @@ class ClassesMap {
   public unhandledTypes: Immutable.Set<string>;
 
   private java: Java.NodeAPI;
+  private options: TsJavaOptions;
+
   private classes: ClassDefinitionMap;
   private includedPatterns: Immutable.Set<RegExp>;
-  private excludedPatterns: Immutable.Set<RegExp>;
 
   // shortToLongNameMap is used to detect whether a class name unambiguously identifies one class path.
   // Currently it is populated after making one full pass over all classes, and then used in a second full pass.
@@ -67,45 +63,37 @@ class ClassesMap {
   private allClasses: Immutable.Set<string>;
 
   // fullClassList is the list of all classes that are reachable from the seedClasses and allowed by
-  // the includedPatterns/excludedPatterns filtering.
+  // the includedPatterns filtering.
   private fullClassList: Immutable.Set<string>;
 
-  constructor(java: Java.NodeAPI,
-              includedPatterns: Immutable.Set<RegExp>,
-              excludedPatterns?: Immutable.Set<RegExp>) {
+  constructor(java: Java.NodeAPI, options: TsJavaOptions) {
     this.java = java;
+    this.options = options;
+
     this.classes = {};
     this.unhandledTypes = Immutable.Set<string>();
     this.allClasses = Immutable.Set<string>();
     this.fullClassList = Immutable.Set<string>();
 
-    assert.ok(includedPatterns);
-    assert.ok(includedPatterns instanceof Immutable.Set);
-    this.includedPatterns = includedPatterns;
-    this.excludedPatterns = excludedPatterns ? excludedPatterns : Immutable.Set<RegExp>();
-
     // We create this after the first pass.
     this.shortToLongNameMap = null;
 
-    var requiredPatterns = _.map(requiredSeedClasses, (s: string) => {
-      var pattern = '^' + s.replace(/\./g, '\\.') + '$';
-      return new RegExp(pattern);
-    });
-    this.includedPatterns = this.includedPatterns.merge(requiredPatterns);
+    this.includedPatterns = Immutable.Set(_.map(this.options.whiteList, (str: string) => {
+      return new RegExp(str);
+    }));
 
-    var excludedPats = _.map(alwaysExcludeClasses, (s: string) => {
-      var pattern = '^' + s.replace(/\./g, '\\.') + '$';
-      return new RegExp(pattern);
+    var seeds = Immutable.Set(requiredSeedClasses).merge(options.seedClasses);
+    seeds.forEach((className: string) => {
+      if (!this.inWhiteList(className)) {
+        var pattern = new RegExp('^' + className.replace(/\./g, '\\.') + '$');
+        this.includedPatterns = this.includedPatterns.add(pattern);
+      }
     });
-    this.excludedPatterns = this.excludedPatterns.merge(excludedPats);
   }
 
-  // *inWhiteList()*: Return true for classes of iterest.
+  // *inWhiteList()*: Return true for classes of interest.
   inWhiteList(className: string): boolean {
-    var result =
-      this.includedPatterns.find((ns: RegExp) => { return className.match(ns) !== null; }) !== undefined &&
-      this.excludedPatterns.find((ns: RegExp) => { return className.match(ns) !== null; }) === undefined;
-    return result;
+    return this.includedPatterns.find((ns: RegExp) => { return className.match(ns) !== null; }) !== undefined;
   }
 
 

@@ -24,6 +24,7 @@ import Immutable = require('immutable');
 import java = require('java');
 import path = require('path');
 import stream = require('stream');
+import TsJavaOptions = require('../lib/TsJavaOptions');
 
 BluePromise.longStackTraces();
 
@@ -41,16 +42,35 @@ describe('CodeWriter', () => {
   var classesMap: ClassesMap;
   var theWriter: CodeWriter;
 
+  var options: TsJavaOptions = {
+    'promisesPath': '../typings/bluebird/bluebird.d.ts',
+    'outputPath': './java.d.ts',
+    'classpath': [
+      'tinkerpop/target/dependency/**/*.jar'
+    ],
+    'seedClasses': [
+      'java.lang.Boolean',
+      'java.lang.Double',
+      'java.lang.Float',
+      'java.lang.Integer',
+      'java.lang.Long',
+      'java.lang.Short',
+      'java.util.Iterator',
+      'java.lang.Number',
+      'java.lang.Enum'
+    ],
+    'whiteList': [
+      'com.tinkerpop.gremlin.',
+      'java.util.function.',
+    ]
+  };
+
   before(() => {
     var globPath = path.join('tinkerpop', 'target', 'dependency', '**', '*.jar');
     return BluePromise.promisify(glob)(globPath)
       .then((filenames: Array<string>) => {
         _.forEach(filenames, (name: string) => { java.classpath.push(name); });
-        var classesMap = new ClassesMap(java, Immutable.Set([
-          /^java\.util\.Iterator$/,
-          /^java\.util\.function\./,
-          /^com\.tinkerpop\.gremlin\./
-        ]));
+        var classesMap = new ClassesMap(java, options);
         classesMap.initialize(['com.tinkerpop.gremlin.structure.Graph']);
         var templatesDirPath = path.resolve(__dirname, 'templates');
         theWriter = new CodeWriter(classesMap, templatesDirPath);

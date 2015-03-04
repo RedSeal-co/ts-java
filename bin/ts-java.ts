@@ -49,10 +49,10 @@ class Main {
 
   private options: TsJavaOptions;
   private classpath: Array<string>;
+  private classesMap: ClassesMap;
 
   constructor(options: TsJavaOptions) {
     this.options = options;
-    this.classpath = [];
     if (this.options.granularity !== 'class') {
       this.options.granularity = 'package';
     }
@@ -67,19 +67,20 @@ class Main {
 
   run(): BluePromise<ClassesMap> {
     return this.initJava()
+      .then(() => { this.classesMap = new ClassesMap(java, this.options); })
       .then(() => this.loadClasses())
-      .then((classesMap: ClassesMap) => {
-        return BluePromise.join(this.writeJsons(classesMap.getClasses()), this.writeInterpolatedFiles(classesMap))
-          .then(() => dlog('run() completed.'))
-          .then(() => classesMap);
-      });
+      .then(() => BluePromise.join(this.writeJsons(), this.writeInterpolatedFiles()))
+      .then(() => dlog('run() completed.'))
+      .then(() => this.classesMap);
   }
 
-  private writeInterpolatedFiles(classesMap: ClassesMap) : BluePromise<void> {
+  private writeInterpolatedFiles() : BluePromise<void> {
+    var classesMap: ClassesMap = this.classesMap;
     return this.options.granularity === 'class' ? this.writeClassFiles(classesMap) : this.writePackageFiles(classesMap);
   }
 
-  private writeJsons(classes: ClassDefinitionMap): BluePromise<void> {
+  private writeJsons(): BluePromise<void> {
+    var classes: ClassDefinitionMap = this.classesMap.getClasses();
     dlog('writeJsons() entered');
     return mkdirpPromise('o/json')
       .then(() => {
@@ -116,6 +117,7 @@ class Main {
   }
 
   private initJava(): BluePromise<void> {
+    this.classpath = [];
     return BluePromise.all(_.map(this.options.classpath, (globExpr: string) => globPromise(globExpr)))
       .then((pathsArray: Array<Array<string>>) => _.flatten(pathsArray))
       .then((paths: Array<string>) => {
@@ -128,23 +130,14 @@ class Main {
   }
 
   private loadClasses(): BluePromise<ClassesMap> {
-    var regExpWhiteList = _.map(this.options.whiteList, (str: string) => {
-      // We used to have true regular expressions in source code.
-      // Now we get the white list from the package.json, and convert the strings to RegExps.
-      // But writing correct regular expressions in .json files is messy, due to json parser behavior.
-      // See e.g. http://stackoverflow.com/questions/17597238/escaping-regex-to-get-valid-json
-      // TODO: change the white list to be lists of packages and classes to be included.
-      return new RegExp(str);
-    });
-    var classesMap = new ClassesMap(java, Immutable.Set(regExpWhiteList));
-    return classesMap.preScanAllClasses(this.classpath, this.options)
+    return this.classesMap.preScanAllClasses(this.classpath, this.options)
       .then((allClasses: Immutable.Set<string>) => {
         allClasses = allClasses.union(this.options.seedClasses);
         var seeds: Array<string> = allClasses.toArray();
         console.log('Prescan delivered all of these classes:', seeds);
-        classesMap.initialize(seeds);
+        this.classesMap.initialize(seeds);
       })
-      .then(() => classesMap);
+      .then(() => this.classesMap);
   }
 }
 
