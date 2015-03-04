@@ -3,7 +3,7 @@
 /// <reference path='../typings/bluebird/bluebird.d.ts' />
 
 declare module 'java' {
-  var Java: Java.Singleton;
+  var Java: Java.NodeAPI;
   export = Java;
 }
 
@@ -51,8 +51,8 @@ declare module Java {
     promisify: Function;
   }
 
-  // *Singleton* declares methods & members exported by the node java module.
-  interface Singleton {
+  // *NodeAPI* declares methods & members exported by the node java module.
+  interface NodeAPI {
     classpath: string[];
     asyncOptions: AsyncOptions;
     callMethod(instance: any, className: string, methodName: string, args: any[], callback: Callback<any>): void;
@@ -223,7 +223,7 @@ declare module Java {
   export import Type = java.lang.reflect.Type;
 
   export module java.lang {
-    export interface ClassLoader extends java.lang.Object {
+    export interface ClassLoader extends Java.java.lang.Object {
       // clearAssertionStatus
       // public void java.lang.ClassLoader.clearAssertionStatus()
       clearAssertionStatus( cb: Callback<void>): void;
@@ -348,7 +348,7 @@ declare module Java {
   }
 
   export module java.lang {
-    export interface String extends java.lang.Object,java.lang.Comparable,java.lang.CharSequence {
+    export interface String extends Java.java.lang.Object,Java.java.lang.Comparable,Java.java.lang.CharSequence {
       // charAt
       // public char java.lang.String.charAt(int)
       charAt(arg0: integer_t, cb: Callback<object_t>): void;
@@ -751,7 +751,7 @@ declare module Java {
   }
 
   export module java.lang {
-    export interface Class extends java.lang.Object,java.lang.reflect.GenericDeclaration,java.lang.reflect.Type,java.lang.reflect.AnnotatedElement {
+    export interface Class extends Java.java.lang.Object,Java.java.lang.reflect.GenericDeclaration,Java.java.lang.reflect.Type,Java.java.lang.reflect.AnnotatedElement {
       // asSubclass
       // public <U> java.lang.Class<? extends U> java.lang.Class.asSubclass(java.lang.Class<U>)
       asSubclass(arg0: Class, cb: Callback<Class>): void;
@@ -1121,7 +1121,7 @@ declare module Java {
   }
 
   export module java.lang {
-    export interface StringBuffer extends java.lang.AbstractStringBuilder,java.lang.CharSequence {
+    export interface StringBuffer extends Java.java.lang.AbstractStringBuilder,Java.java.lang.CharSequence {
       // append
       // public java.lang.AbstractStringBuilder java.lang.StringBuffer.append(java.lang.CharSequence,int,int)
       append(arg0: CharSequence, arg1: integer_t, arg2: integer_t, cb: Callback<AbstractStringBuilder>): void;
@@ -1538,7 +1538,7 @@ declare module Java {
   }
 
   export module java.lang {
-    export interface Iterable extends java.lang.Object {
+    export interface Iterable extends Java.java.lang.Object {
       // forEach
       // public default void java.lang.Iterable.forEach(java.util.function.Consumer<? super T>)
       forEach(arg0: object_t, cb: Callback<void>): void;
@@ -1562,7 +1562,7 @@ declare module Java {
   }
 
   export module java.lang.reflect {
-    export interface Method extends java.lang.reflect.Executable {
+    export interface Method extends Java.java.lang.reflect.Executable {
       // equals
       // public boolean java.lang.reflect.Method.equals(java.lang.Object)
       equals(arg0: object_t, cb: Callback<boolean>): void;
@@ -1785,7 +1785,7 @@ declare module Java {
   }
 
   export module java.lang.reflect {
-    export interface Parameter extends java.lang.Object,java.lang.reflect.AnnotatedElement {
+    export interface Parameter extends Java.java.lang.Object,Java.java.lang.reflect.AnnotatedElement {
       // equals
       // public boolean java.lang.reflect.Parameter.equals(java.lang.Object)
       equals(arg0: object_t, cb: Callback<boolean>): void;
@@ -1922,7 +1922,7 @@ declare module Java {
   }
 
   export module java.lang.reflect {
-    export interface GenericDeclaration extends java.lang.reflect.AnnotatedElement {
+    export interface GenericDeclaration extends Java.java.lang.reflect.AnnotatedElement {
       // getAnnotation
       // public abstract <T> T java.lang.reflect.AnnotatedElement.getAnnotation(java.lang.Class<T>)
       getAnnotation(arg0: Class, cb: Callback<Annotation>): void;
@@ -1971,7 +1971,7 @@ declare module Java {
   }
 
   export module java.lang {
-    export interface Appendable extends java.lang.Object {
+    export interface Appendable extends Java.java.lang.Object {
       // append
       // public abstract java.lang.Appendable java.lang.Appendable.append(java.lang.CharSequence,int,int) throws java.io.IOException
       append(arg0: CharSequence, arg1: integer_t, arg2: integer_t, cb: Callback<Appendable>): void;
@@ -1993,7 +1993,7 @@ declare module Java {
   }
 
   export module java.lang.reflect {
-    export interface AnnotatedElement extends java.lang.Object {
+    export interface AnnotatedElement extends Java.java.lang.Object {
       // getAnnotation
       // public abstract <T> T java.lang.reflect.AnnotatedElement.getAnnotation(java.lang.Class<T>)
       getAnnotation(arg0: Class, cb: Callback<Annotation>): void;
@@ -2037,7 +2037,7 @@ declare module Java {
   }
 
   export module java.lang {
-    export interface CharSequence extends java.lang.Object {
+    export interface CharSequence extends Java.java.lang.Object {
       // charAt
       // public abstract char java.lang.CharSequence.charAt(int)
       charAt(arg0: integer_t, cb: Callback<object_t>): void;
@@ -2076,7 +2076,7 @@ declare module Java {
   }
 
   export module java.lang.reflect {
-    export interface AnnotatedType extends java.lang.reflect.AnnotatedElement {
+    export interface AnnotatedType extends Java.java.lang.reflect.AnnotatedElement {
       // getAnnotation
       // public abstract <T> T java.lang.reflect.AnnotatedElement.getAnnotation(java.lang.Class<T>)
       getAnnotation(arg0: Class, cb: Callback<Annotation>): void;
@@ -2125,7 +2125,7 @@ declare module Java {
   }
 
   export module java.lang {
-    export interface Comparable extends java.lang.Object {
+    export interface Comparable extends Java.java.lang.Object {
       // compareTo
       // public abstract int java.lang.Comparable.compareTo(T)
       compareTo(arg0: object_t, cb: Callback<number>): void;
@@ -2139,7 +2139,7 @@ declare module Java {
   }
 
   export module java.lang.reflect {
-    export interface Executable extends java.lang.reflect.AccessibleObject,java.lang.reflect.Member,java.lang.reflect.GenericDeclaration {
+    export interface Executable extends Java.java.lang.reflect.AccessibleObject,Java.java.lang.reflect.Member,Java.java.lang.reflect.GenericDeclaration {
       // equals
       // public boolean java.lang.Object.equals(java.lang.Object)
       equals(arg0: object_t, cb: Callback<boolean>): void;
@@ -2332,7 +2332,7 @@ declare module Java {
   }
 
   export module java.lang {
-    export interface Package extends java.lang.Object,java.lang.reflect.AnnotatedElement {
+    export interface Package extends Java.java.lang.Object,Java.java.lang.reflect.AnnotatedElement {
       // equals
       // public boolean java.lang.Object.equals(java.lang.Object)
       equals(arg0: object_t, cb: Callback<boolean>): void;
@@ -2535,7 +2535,7 @@ declare module Java {
   }
 
   export module java.lang {
-    export interface AbstractStringBuilder extends java.lang.Object,java.lang.Appendable,java.lang.CharSequence {
+    export interface AbstractStringBuilder extends Java.java.lang.Object,Java.java.lang.Appendable,Java.java.lang.CharSequence {
       // append
       // public java.lang.AbstractStringBuilder java.lang.AbstractStringBuilder.append(java.lang.CharSequence,int,int)
       append(arg0: CharSequence, arg1: integer_t, arg2: integer_t, cb: Callback<AbstractStringBuilder>): void;
@@ -2828,7 +2828,7 @@ declare module Java {
   }
 
   export module java.lang.reflect {
-    export interface Constructor extends java.lang.reflect.Executable {
+    export interface Constructor extends Java.java.lang.reflect.Executable {
       // equals
       // public boolean java.lang.reflect.Constructor.equals(java.lang.Object)
       equals(arg0: object_t, cb: Callback<boolean>): void;
@@ -3026,7 +3026,7 @@ declare module Java {
   }
 
   export module java.lang.reflect {
-    export interface Field extends java.lang.reflect.AccessibleObject,java.lang.reflect.Member {
+    export interface Field extends Java.java.lang.reflect.AccessibleObject,Java.java.lang.reflect.Member {
       // equals
       // public boolean java.lang.reflect.Field.equals(java.lang.Object)
       equals(arg0: object_t, cb: Callback<boolean>): void;
@@ -3264,7 +3264,7 @@ declare module Java {
   }
 
   export module java.lang {
-    export interface StringBuilder extends java.lang.AbstractStringBuilder,java.lang.CharSequence {
+    export interface StringBuilder extends Java.java.lang.AbstractStringBuilder,Java.java.lang.CharSequence {
       // append
       // public java.lang.AbstractStringBuilder java.lang.StringBuilder.append(java.lang.CharSequence,int,int)
       append(arg0: CharSequence, arg1: integer_t, arg2: integer_t, cb: Callback<AbstractStringBuilder>): void;
@@ -3681,7 +3681,7 @@ declare module Java {
   }
 
   export module java.lang.annotation {
-    export interface Annotation extends java.lang.Object {
+    export interface Annotation extends Java.java.lang.Object {
       // annotationType
       // public abstract java.lang.Class<? extends java.lang.annotation.Annotation> java.lang.annotation.Annotation.annotationType()
       annotationType( cb: Callback<Class>): void;
@@ -3710,7 +3710,7 @@ declare module Java {
   }
 
   export module java.lang.reflect {
-    export interface AccessibleObject extends java.lang.Object,java.lang.reflect.AnnotatedElement {
+    export interface AccessibleObject extends Java.java.lang.Object,Java.java.lang.reflect.AnnotatedElement {
       // equals
       // public boolean java.lang.Object.equals(java.lang.Object)
       equals(arg0: object_t, cb: Callback<boolean>): void;
@@ -3813,7 +3813,7 @@ declare module Java {
   }
 
   export module java.lang.reflect {
-    export interface TypeVariable extends java.lang.reflect.Type,java.lang.reflect.AnnotatedElement {
+    export interface TypeVariable extends Java.java.lang.reflect.Type,Java.java.lang.reflect.AnnotatedElement {
       // getAnnotatedBounds
       // public abstract java.lang.reflect.AnnotatedType[] java.lang.reflect.TypeVariable.getAnnotatedBounds()
       getAnnotatedBounds( cb: Callback<AnnotatedType[]>): void;
@@ -3882,7 +3882,7 @@ declare module Java {
   }
 
   export module java.lang.reflect {
-    export interface Member extends java.lang.Object {
+    export interface Member extends Java.java.lang.Object {
       // getDeclaringClass
       // public abstract java.lang.Class<?> java.lang.reflect.Member.getDeclaringClass()
       getDeclaringClass( cb: Callback<Class>): void;
@@ -3911,7 +3911,7 @@ declare module Java {
   }
 
   export module java.lang.reflect {
-    export interface Type extends java.lang.Object {
+    export interface Type extends Java.java.lang.Object {
       // getTypeName
       // public default java.lang.String java.lang.reflect.Type.getTypeName()
       getTypeName( cb: Callback<string>): void;
