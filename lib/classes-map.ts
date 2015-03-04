@@ -3,11 +3,13 @@
 /// <reference path="../typings/debug/debug.d.ts"/>
 /// <reference path="../typings/lodash/lodash.d.ts" />
 /// <reference path='../typings/node/node.d.ts' />
+/// <reference path='./ls-archive.d.ts' />
 /// <reference path='./java.d.ts' />
 
 'use strict';
 
 import _ = require('lodash');
+import archive = require('ls-archive');
 import assert = require('assert');
 import BluePromise = require('bluebird');
 import debug = require('debug');
@@ -31,6 +33,7 @@ var reservedShortNames: Dictionary = {
   'Number': null
 };
 
+import ArchiveEntry = archive.ArchiveEntry;
 import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 import MethodDefinition = ClassesMap.MethodDefinition;
@@ -58,6 +61,10 @@ class ClassesMap {
   // TODO: refactor so the first pass does only the work to find all classes, without creating ClassDefinitions.
   private shortToLongNameMap: Dictionary;
 
+  // allClasses is the list of all classes found by scanning the jars in the class path and applying
+  // the inWhiteList() filter.
+  private allClasses: Immutable.Set<string>;
+
   // fullClassList is the list of all classes that are reachable from the seedClasses and allowed by
   // the includedPatterns/excludedPatterns filtering.
   private fullClassList: Immutable.Set<string>;
@@ -68,6 +75,7 @@ class ClassesMap {
     this.java = java;
     this.classes = {};
     this.unhandledTypes = Immutable.Set<string>();
+    this.allClasses = Immutable.Set<string>();
     this.fullClassList = Immutable.Set<string>();
 
     assert.ok(includedPatterns);
@@ -550,6 +558,33 @@ class ClassesMap {
     return this.classes;
   }
 
+  getWhitedListedClassesInJar(jarpath: string): BluePromise<Array<string>> {
+    var listArchive = BluePromise.promisify(archive.list, archive);
+    return listArchive(jarpath)
+      .then((entries: Array<ArchiveEntry>) => {
+        var allPaths: Array<string> = _.map(entries, (entry: ArchiveEntry) => entry.getPath());
+        var classFilePaths: Array<string> = _.filter(allPaths, (path: string) => /.class$/.test(path));
+        var classNames: Array<string> = _.map(classFilePaths, (path: string) => {
+          return path.slice(0, -'.class'.length).replace(/\//g, '.');
+        });
+        return _.filter(classNames, (name: string) => this.inWhiteList(name));
+      });
+  }
+
+  // *preScanAllClasses()*: scan all jars in the class path and find all classes matching our filter.
+  // The result is stored in the member variable this.allClasses and returned as the function result
+  preScanAllClasses(classpath: Array<string>): BluePromise<Immutable.Set<string>> {
+    return BluePromise.reduce(classpath, (allSoFar: Immutable.Set<string>, jarpath: string) => {
+      return this.getWhitedListedClassesInJar(jarpath)
+        .then((classes: Array<string>) => {
+          return BluePromise.reduce(classes, (allSoFar: Immutable.Set<string>, className: string) => allSoFar.add(className), allSoFar);
+        });
+    }, Immutable.Set<string>())
+    .then((allSoFar: Immutable.Set<string>) => {
+      this.allClasses = allSoFar;
+      return allSoFar;
+    });
+  }
 
   // *initialize()*: fully initialize from seedClasses.
   initialize(seedClasses: Array<string>): BluePromise<void> {
