@@ -95,6 +95,7 @@ var Main = (function () {
         });
     };
     Main.prototype.loadClasses = function () {
+        var _this = this;
         var regExpWhiteList = _.map(this.options.whiteList, function (str) {
             // We used to have true regular expressions in source code.
             // Now we get the white list from the package.json, and convert the strings to RegExps.
@@ -104,7 +105,12 @@ var Main = (function () {
             return new RegExp(str);
         });
         var classesMap = new ClassesMap(java, Immutable.Set(regExpWhiteList));
-        return classesMap.initialize(this.options.seedClasses).then(function () { return classesMap; });
+        return classesMap.preScanAllClasses(this.classpath).then(function (allClasses) {
+            allClasses = allClasses.union(_this.options.seedClasses);
+            var seeds = allClasses.toArray();
+            console.log('Prescan delivered all of these classes:', seeds);
+            classesMap.initialize(seeds);
+        }).then(function () { return classesMap; });
     };
     return Main;
 })();
