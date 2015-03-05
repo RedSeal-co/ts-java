@@ -1,6 +1,7 @@
 // work-test.ts
 ///<reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 ///<reference path="../typings/chai/chai.d.ts"/>
+///<reference path="../typings/lodash/lodash.d.ts" />
 ///<reference path="../typings/mocha/mocha.d.ts"/>
 ///<reference path="../typings/node/node.d.ts"/>
 
@@ -9,6 +10,7 @@
 declare function require(name: string): any;
 require('source-map-support').install();
 
+import _ = require('lodash');
 import Work = require('../lib/work');
 import chai = require('chai');
 import Immutable = require('immutable');
@@ -102,7 +104,8 @@ describe('Work', () => {
     it('should deplete the work queue when called repeatedly in a next/setDone loop', () => {
       var todo = ['x', 'a', 'z', 'b'];
       var original = Immutable.Set(todo);
-      work = new Work(todo);
+      work = new Work();
+      _.forEach(todo, (className: string) => work.addTodo(className));
       var count = 0;
       while (!work.isDone()) {
         var item = work.next();

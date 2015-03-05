@@ -1,4 +1,2 @@
-Inherited interfaces for class {{this.fullName}}:
-{{#intf interfaces}}
-o {{this}}
-{{/intf}}
+Inherited interfaces for class {{this.fullName}}: 
+{{this.tsInterfaces}}

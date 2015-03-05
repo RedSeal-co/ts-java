@@ -24,6 +24,7 @@ import Immutable = require('immutable');
 import java = require('java');
 import path = require('path');
 import stream = require('stream');
+import TsJavaOptions = require('../lib/TsJavaOptions');
 
 BluePromise.longStackTraces();
 
@@ -41,19 +42,39 @@ describe('CodeWriter', () => {
   var classesMap: ClassesMap;
   var theWriter: CodeWriter;
 
+  var options: TsJavaOptions = {
+    'promisesPath': '../typings/bluebird/bluebird.d.ts',
+    'outputPath': './java.d.ts',
+    'classpath': null,  // initialized below
+    'seedClasses': [
+      'java.lang.Boolean',
+      'java.lang.Double',
+      'java.lang.Float',
+      'java.lang.Integer',
+      'java.lang.Long',
+      'java.lang.Short',
+      'java.util.Iterator',
+      'java.lang.Number',
+      'java.lang.Enum',
+      'com.redseal.featureset.SomeClass',
+    ],
+    'whiteList': [
+      'com.redseal.featureset.',
+      'java.util.function.',
+    ]
+  };
+
   before(() => {
-    var globPath = path.join('tinkerpop', 'target', 'dependency', '**', '*.jar');
+    var globPath = path.join('featureset', '**', '*.jar');
     return BluePromise.promisify(glob)(globPath)
       .then((filenames: Array<string>) => {
+        options.classpath = filenames;
         _.forEach(filenames, (name: string) => { java.classpath.push(name); });
-        var classesMap = new ClassesMap(java, Immutable.Set([
-          /^java\.util\.Iterator$/,
-          /^java\.util\.function\./,
-          /^com\.tinkerpop\.gremlin\./
-        ]));
-        classesMap.initialize(['com.tinkerpop.gremlin.structure.Graph']);
-        var templatesDirPath = path.resolve(__dirname, 'templates');
-        theWriter = new CodeWriter(classesMap, templatesDirPath);
+        var classesMap = new ClassesMap(java, options);
+        return classesMap.initialize().then(() => {
+          var templatesDirPath = path.resolve(__dirname, 'templates');
+          theWriter = new CodeWriter(classesMap, templatesDirPath);
+        });
       });
   });
 
@@ -114,7 +135,7 @@ describe('CodeWriter', () => {
         'isPrimitive: false',
         'superclass: ',
         'interfaces: java.lang.Object',
-        'tsInterfaces: java.lang.Object',
+        'tsInterfaces: Java.java.lang.Object',
         'methods: [object Object],[object Object],[object Object],[object Object]',
         'constructors: ',
         'variants: [object Object]',
@@ -144,12 +165,11 @@ describe('CodeWriter', () => {
         });
     });
     it('should write expected given template interfaces', () => {
-      var className = 'com.tinkerpop.gremlin.structure.Edge';
+      var className = 'com.redseal.featureset.SomeAbstractClass';
       var runPromise = theWriter.streamLibraryClassFile(className, 'interfaces', streamFn, endFn).then(endFn);
       var expectedData = [
-        'Inherited interfaces for class com.tinkerpop.gremlin.structure.Edge:',
-        'o Element',
-        'o EdgeTraversal',
+        'Inherited interfaces for class com.redseal.featureset.SomeAbstractClass: ',
+        'Java.java.lang.Object,Java.com.redseal.featureset.SomeInterface',
         '',
       ].join('\n');
       return BluePromise.all([runPromise, resultPromise])

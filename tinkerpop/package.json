@@ -22,10 +22,7 @@
       "java.util.List"
     ],
     "whiteList": [
-      "com.tinkerpop.gremlin.",
-      "java.lang.",
-      "java.math.",
-      "java.util."
+      "com.tinkerpop.gremlin."
     ]
   }
 }

@@ -14,8 +14,8 @@ class Work {
   // *done* is the set of finished items of work
   private done: Immutable.Set<string>;
 
-  constructor(_todo: Array<string> = []) {
-    this.todo = Immutable.Set<string>(_todo);
+  constructor() {
+    this.todo = Immutable.Set<string>();
     this.done = Immutable.Set<string>();
   }
 

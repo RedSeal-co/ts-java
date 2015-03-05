@@ -4,6 +4,8 @@
 interface TsJavaOptions {
   classpath: Array<string>;
     // The java class path, i.e. an array paths to .jars or .class files.
+    // Note: ts-java allows glob expressions here, e.g. 'target/**/*.jar'.
+    // However ClassesMap expects this to be an expanded array of file paths.
 
   seedClasses: Array<string>;
     // The set of java classes from which to start crawling, bringing in all java classes

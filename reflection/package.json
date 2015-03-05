@@ -3,15 +3,22 @@
     "promisesPath": "../typings/bluebird/bluebird.d.ts",
     "outputPath": "./java.d.ts",
     "classpath": [
-      "target/dependency/**/*.jar"
+      "target/**/*.jar"
     ],
     "seedClasses": [
+      "java.lang.Boolean",
+      "java.lang.Class",
       "java.lang.ClassLoader",
+      "java.lang.Integer",
+      "java.lang.reflect.AccessibleObject",
       "java.lang.reflect.Constructor",
-      "java.lang.reflect.Method"
+      "java.lang.reflect.Executable",
+      "java.lang.reflect.Field",
+      "java.lang.reflect.Method",
+      "java.lang.reflect.Parameter",
+      "java.lang.reflect.Type"
     ],
     "whiteList": [
-      "java.lang."
     ]
   }
 }

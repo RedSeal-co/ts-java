@@ -19,6 +19,7 @@ import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
 import ParamContext = require('../lib/paramcontext');
+import TsJavaOptions = require('../lib/TsJavaOptions');
 import Work = require('../lib/work');
 
 describe('ClassesMap', () => {
@@ -31,19 +32,31 @@ describe('ClassesMap', () => {
     _.forEach(filenames, (name: string) => { java.classpath.push(name); });
   });
 
+  var options: TsJavaOptions = {
+    'promisesPath': '../typings/bluebird/bluebird.d.ts',
+    'outputPath': './java.d.ts',
+    'classpath': [
+      'tinkerpop/target/dependency/**/*.jar'
+    ],
+    'seedClasses': [
+      'java.lang.Boolean',
+      'java.lang.Double',
+      'java.lang.Float',
+      'java.lang.Integer',
+      'java.lang.Long',
+      'java.lang.Short',
+      'java.util.Iterator',
+      'java.lang.Number',
+      'java.lang.Enum'
+    ],
+    'whiteList': [
+      'com.tinkerpop.gremlin.',
+      'java.util.function.',
+    ]
+  };
+
   beforeEach(() => {
-    classesMap = new ClassesMap(java, Immutable.Set([
-      /^java\.util\.Iterator$/,
-      /^java\.util\.function\./,
-      /^java\.lang\.Boolean$/,
-      /^java\.lang\.Short$/,
-      /^java\.lang\.Integer$/,
-      /^java\.lang\.Long$/,
-      /^java\.lang\.Double$/,
-      /^java\.lang\.Float$/,
-      /^java\.lang\.Number$/,
-      /^com\.tinkerpop\.gremlin\./
-    ]));
+    classesMap = new ClassesMap(java, options);
   });
 
   describe('initialize', () => {
@@ -90,14 +103,16 @@ describe('ClassesMap', () => {
   describe('mapClassInterfaces', () => {
     it('should find no interfaces for java.lang.Object', () => {
       var className = 'java.lang.Object';
-      var work = new Work([className]);
+      var work = new Work();
+      work.addTodo(className);
       var clazz = classesMap.loadClass(className);
       var interfaces = classesMap.mapClassInterfaces(className, clazz, work);
       expect(interfaces).to.deep.equal([]);
     });
     it('should find one interface for java.util.Iterator', () => {
       var className = 'java.util.Iterator';
-      var work = new Work([className]);
+      var work = new Work();
+      work.addTodo(className);
       var clazz = classesMap.loadClass(className);
       var interfaces = classesMap.mapClassInterfaces(className, clazz, work);
       var expected = ['java.lang.Object'];
@@ -107,7 +122,8 @@ describe('ClassesMap', () => {
     });
     it('should find the interfaces of com.tinkerpop.gremlin.structure.Edge', () => {
       var className = 'com.tinkerpop.gremlin.structure.Edge';
-      var work = new Work([className]);
+      var work = new Work();
+      work.addTodo(className);
       var clazz = classesMap.loadClass(className);
       var interfaces = classesMap.mapClassInterfaces(className, clazz, work);
       var expected = [
@@ -194,7 +210,8 @@ describe('ClassesMap', () => {
   describe('mapMethod', () => {
     it('should map java.lang.Object:hashCode', () => {
       var className = 'java.lang.Object';
-      var work = new Work([className]);
+      var work = new Work();
+      work.addTodo(className);
       var clazz = classesMap.loadClass(className);
       expect(clazz).to.be.ok;
       var methods = clazz.getDeclaredMethodsSync();
@@ -222,7 +239,8 @@ describe('ClassesMap', () => {
   describe('mapClassMethods', () => {
     it('should load all methods of java.lang.Object', () => {
       var className = 'java.lang.Object';
-      var work = new Work([className]);
+      var work = new Work();
+      work.addTodo(className);
       var clazz = classesMap.loadClass(className);
       var methods = classesMap.mapClassMethods(className, clazz, work);
       expect(methods).to.be.an('array');
@@ -249,7 +267,8 @@ describe('ClassesMap', () => {
   describe('mapClass', () => {
     it('should map the properties of java.util.Iterator', () => {
       var className = 'java.util.Iterator';
-      var work = new Work([className]);
+      var work = new Work();
+      work.addTodo(className);
       var classMap = classesMap.mapClass(className, work);
       expect(classMap).to.be.ok;
       expect(classMap).to.have.keys([

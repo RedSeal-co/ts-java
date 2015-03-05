@@ -1,16 +1,21 @@
 /// <reference path='../node_modules/immutable/dist/immutable.d.ts' />
+/// <reference path='../typings/bluebird/bluebird.d.ts' />
 /// <reference path="../typings/debug/debug.d.ts"/>
 /// <reference path="../typings/lodash/lodash.d.ts" />
 /// <reference path='../typings/node/node.d.ts' />
+/// <reference path='./ls-archive.d.ts' />
 /// <reference path='./java.d.ts' />
 
 'use strict';
 
 import _ = require('lodash');
+import archive = require('ls-archive');
 import assert = require('assert');
+import BluePromise = require('bluebird');
 import debug = require('debug');
 import Immutable = require('immutable');
 import ParamContext = require('./paramcontext');
+import TsJavaOptions = require('./TsJavaOptions');
 import Work = require('./work');
 
 var dlog = debug('ts-java:classes-map');
@@ -20,15 +25,11 @@ var requiredSeedClasses: string[] = [
   'java.lang.String',
 ];
 
-var alwaysExcludeClasses: string[] = [
-  // We are currently not using this feature.
-  // TODO: remove it if it remains unused.
-];
-
 var reservedShortNames: Dictionary = {
   'Number': null
 };
 
+import ArchiveEntry = archive.ArchiveEntry;
 import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 import MethodDefinition = ClassesMap.MethodDefinition;
@@ -46,55 +47,48 @@ class ClassesMap {
 
   public unhandledTypes: Immutable.Set<string>;
 
-  private java: Java.Singleton;
+  private java: Java.NodeAPI;
+  private options: TsJavaOptions;
+
   private classes: ClassDefinitionMap;
   private includedPatterns: Immutable.Set<RegExp>;
-  private excludedPatterns: Immutable.Set<RegExp>;
 
   // shortToLongNameMap is used to detect whether a class name unambiguously identifies one class path.
   // Currently it is populated after making one full pass over all classes, and then used in a second full pass.
   // TODO: refactor so the first pass does only the work to find all classes, without creating ClassDefinitions.
   private shortToLongNameMap: Dictionary;
 
-  // fullClassList is the list of all classes that are reachable from the seedClasses and allowed by
-  // the includedPatterns/excludedPatterns filtering.
-  private fullClassList: Immutable.Set<string>;
+  // allClasses is the list of all classes found by scanning the jars in the class path and applying
+  // the inWhiteList() filter.
+  private allClasses: Immutable.Set<string>;
 
-  constructor(java: Java.Singleton,
-              includedPatterns: Immutable.Set<RegExp>,
-              excludedPatterns?: Immutable.Set<RegExp>) {
+  constructor(java: Java.NodeAPI, options: TsJavaOptions) {
     this.java = java;
+    this.options = options;
+
     this.classes = {};
     this.unhandledTypes = Immutable.Set<string>();
-    this.fullClassList = Immutable.Set<string>();
-
-    assert.ok(includedPatterns);
-    assert.ok(includedPatterns instanceof Immutable.Set);
-    this.includedPatterns = includedPatterns;
-    this.excludedPatterns = excludedPatterns ? excludedPatterns : Immutable.Set<RegExp>();
+    this.allClasses = Immutable.Set<string>();
 
     // We create this after the first pass.
     this.shortToLongNameMap = null;
 
-    var requiredPatterns = _.map(requiredSeedClasses, (s: string) => {
-      var pattern = '^' + s.replace(/\./g, '\\.') + '$';
-      return new RegExp(pattern);
-    });
-    this.includedPatterns = this.includedPatterns.merge(requiredPatterns);
+    this.includedPatterns = Immutable.Set(_.map(this.options.whiteList, (str: string) => {
+      return new RegExp(str);
+    }));
 
-    var excludedPats = _.map(alwaysExcludeClasses, (s: string) => {
-      var pattern = '^' + s.replace(/\./g, '\\.') + '$';
-      return new RegExp(pattern);
+    var seeds = Immutable.Set(requiredSeedClasses).merge(options.seedClasses);
+    seeds.forEach((className: string) => {
+      if (!this.inWhiteList(className)) {
+        var pattern = new RegExp('^' + className.replace(/\./g, '\\.') + '$');
+        this.includedPatterns = this.includedPatterns.add(pattern);
+      }
     });
-    this.excludedPatterns = this.excludedPatterns.merge(excludedPats);
   }
 
-  // *inWhiteList()*: Return true for classes of iterest.
+  // *inWhiteList()*: Return true for classes of interest.
   inWhiteList(className: string): boolean {
-    var result =
-      this.includedPatterns.find((ns: RegExp) => { return className.match(ns) !== null; }) !== undefined &&
-      this.excludedPatterns.find((ns: RegExp) => { return className.match(ns) !== null; }) === undefined;
-    return result;
+    return this.includedPatterns.find((ns: RegExp) => { return className.match(ns) !== null; }) !== undefined;
   }
 
 
@@ -484,7 +478,19 @@ class ClassesMap {
     var isInterface = clazz.isInterfaceSync();
     var isPrimitive = clazz.isPrimitiveSync();
     var isEnum = clazz.isEnumSync();
+
+    // Get the superclass of the class, if it exists, and is in our white list.
+    // If the immediate type is not in the whitelist, we ascend up the ancestry
+    // until we find a whitelisted superclass. If none exists, we declare the
+    // class to not have a superclass, even though it does.
+    // The developer may want to include the superclass in the seed classes.
+    // TODO: implement better diagnostics so it will be clear to the developer
+    // that s/he needs to decide whether the superclass needs to be included.
     var superclass: Java.Class = clazz.getSuperclassSync();
+    while (superclass && !this.inWhiteList(superclass.getNameSync())) {
+      this.unhandledTypes = this.unhandledTypes.add(superclass.getNameSync());
+      superclass = superclass.getSuperclassSync();
+    }
 
     function bySignature(a: MethodDefinition, b: MethodDefinition) {
       return a.signature.localeCompare(b.signature);
@@ -495,6 +501,14 @@ class ClassesMap {
       work.addTodo(superclass.getNameSync());
       tsInterfaces.unshift(this.fixClassPath(superclass.getNameSync()));
     }
+
+    // tsInterfaces is used in the extends clause of an interface declaration.
+    // Each intf is an interface name is a fully scoped java path, but in typescript
+    // these paths are all relative paths under the output module Java.
+    // In most cases it is not necessary to include the 'Java.' module in the interface
+    // name, but in few cases leaving it out causes naming conflicts, most notably
+    // between java.lang and groovy.lang.
+    tsInterfaces = _.map(tsInterfaces, (intf: string) => { return 'Java.' + intf; });
 
     var enumConstants: string[] = [];
     if (isEnum) {
@@ -529,7 +543,8 @@ class ClassesMap {
 
   // *loadAllClasses()*: load and map all classes of interest
   loadAllClasses(seedClasses: Array<string>): Work {
-    var work = new Work(seedClasses);
+    var work = new Work();
+    _.forEach(seedClasses, (className: string) => work.addTodo(className));
     _.forEach(requiredSeedClasses, (className: string) => work.addTodo(className));
 
     while (!work.isDone()) {
@@ -547,44 +562,82 @@ class ClassesMap {
     return this.classes;
   }
 
+  getWhitedListedClassesInJar(jarpath: string): BluePromise<Array<string>> {
+    var listArchive = BluePromise.promisify(archive.list, archive);
+    return listArchive(jarpath)
+      .then((entries: Array<ArchiveEntry>) => {
+        var allPaths: Array<string> = _.map(entries, (entry: ArchiveEntry) => entry.getPath());
+        var classFilePaths: Array<string> = _.filter(allPaths, (path: string) => /.class$/.test(path));
+        var classNames: Array<string> = _.map(classFilePaths, (path: string) => {
+          return path.slice(0, -'.class'.length).replace(/\//g, '.');
+        });
+        var result: Array<string> = _.filter(classNames, (name: string) => this.inWhiteList(name));
+        return result;
+      });
+  }
 
   // *initialize()*: fully initialize from seedClasses.
-  initialize(seedClasses: Array<string>) {
-    // HACK Alert
-    // In the implementation below, we make two complete passes across all the classes.
-    // The first pass is done to discover the complete list of classes that are reachable
-    // from the seedClasses and allowed by the whiteList/blackList filters.
-    // During that pass, more work is done than necessary, and the work may be incorrect.
-    // The second pass then does all the work again, but now has the virtue of knowning
-    // the complete set of classes. This allows us to deterministically handle cases
-    // where two distinct class paths have the same class name, so that we don't try to
-    // generate short name aliases for those classes.
-    // TODO: Refactor so that the first pass just crawls all the classes and builds up
-    // the class list, without generating ClassDefinitions.
+  initialize(): BluePromise<void> {
+    return this.preScanAllClasses()
+      .then(() => {
+        while (true) {
+          // We assume this.allClasses now contains a complete list of all classes
+          // that we will process. We scan it now to create the shortToLongNameMap,
+          // which allows us to discover class names conflicts.
+          // Conflicts are recorded by using null for the longName.
+          this.shortToLongNameMap = {};
+          this.allClasses.forEach((longName: string): any => {
+            var shortName = this.shortClassName(longName);
+            if (shortName in reservedShortNames || shortName in this.shortToLongNameMap) {
+              // We have a conflict
+              this.shortToLongNameMap[shortName] = null;
+            } else {
+              // No conflict yet
+              this.shortToLongNameMap[shortName] = longName;
+            }
+          });
 
-    var work1 = this.loadAllClasses(seedClasses);
-    this.fullClassList = work1.getDone();
+          // Reset our ClassDefinitionMap in case we are recreating it.
+          this.classes = {};
+          var seeds: Array<string> = this.allClasses.toArray();
+          var work = this.loadAllClasses(seeds);
 
-    // Now we can create a valid map of short names to long names
-    // Conflicts are recorded by using null for the longName.
-    this.shortToLongNameMap = {};
-    this.fullClassList.forEach((longName: string): any => {
-      var shortName = this.shortClassName(longName);
-      if (shortName in reservedShortNames || shortName in this.shortToLongNameMap) {
-        // We have a conflict
-        this.shortToLongNameMap[shortName] = null;
-      } else {
-        // No conflict yet
-        this.shortToLongNameMap[shortName] = longName;
-      }
+          // We must now check to see if additional classes were processed beyond those
+          // in this.allClasses at the start of the loop. This only happens if the TsJavaOptions
+          // whiteList includes java.lang or java.util packages and results in classes being
+          // added that were not specified in the seed classes.
+          var checkClassList = work.getDone();
+          assert(this.allClasses.size <= checkClassList.size);
+          var unexpected = checkClassList.subtract(this.allClasses);
+          if (unexpected.size === 0) {
+            break;
+          } else {
+            console.error('These classes should be added to the tsjava.seedClasses list:', unexpected);
+            this.allClasses = checkClassList;
+          }
+        }
+
+      });
+  }
+
+  // *preScanAllClasses()*: scan all jars in the class path and find all classes matching our filter.
+  // The result is stored in the member variable this.allClasses and returned as the function result
+  private preScanAllClasses(): BluePromise<Immutable.Set<string>> {
+    var options = this.options;
+    return BluePromise.reduce(options.classpath, (allSoFar: Immutable.Set<string>, jarpath: string) => {
+      return this.getWhitedListedClassesInJar(jarpath)
+        .then((classes: Array<string>) => {
+          return BluePromise.reduce(classes, (allSoFar: Immutable.Set<string>, className: string) => allSoFar.add(className), allSoFar);
+        });
+    }, Immutable.Set<string>())
+    .then((allSoFar: Immutable.Set<string>) => {
+      // We don't have java.lang classes in the scan of jars in the class path.
+      // We'll get them from these two sources of seed classes.
+      allSoFar = allSoFar.union(options.seedClasses);
+      allSoFar = allSoFar.union(requiredSeedClasses);
+      this.allClasses = allSoFar;
+      return allSoFar;
     });
-
-    // Now erase our ClassDefinitionMap so that we can recreate it.
-    this.classes = {};
-    var work2 = this.loadAllClasses(seedClasses);
-    var checkClassList = work2.getDone();
-
-    assert(this.fullClassList.size === checkClassList.size);
   }
 
 }

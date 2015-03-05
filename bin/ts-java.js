@@ -19,7 +19,6 @@ var CodeWriter = require('../lib/code-writer');
 var debug = require('debug');
 var fs = require('fs');
 var glob = require('glob');
-var Immutable = require('immutable');
 var java = require('java');
 var jsonfile = require('jsonfile');
 var mkdirp = require('mkdirp');
@@ -50,14 +49,15 @@ var Main = (function () {
     Main.prototype.run = function () {
         var _this = this;
         return this.initJava().then(function () {
-            var classesMap = _this.loadClasses();
-            return BluePromise.join(_this.writeJsons(classesMap.getClasses()), _this.writeInterpolatedFiles(classesMap)).then(function () { return dlog('run() completed.'); }).then(function () { return classesMap; });
-        });
+            _this.classesMap = new ClassesMap(java, _this.options);
+        }).then(function () { return _this.loadClasses(); }).then(function () { return BluePromise.join(_this.writeJsons(), _this.writeInterpolatedFiles()); }).then(function () { return dlog('run() completed.'); }).then(function () { return _this.classesMap; });
     };
-    Main.prototype.writeInterpolatedFiles = function (classesMap) {
+    Main.prototype.writeInterpolatedFiles = function () {
+        var classesMap = this.classesMap;
         return this.options.granularity === 'class' ? this.writeClassFiles(classesMap) : this.writePackageFiles(classesMap);
     };
-    Main.prototype.writeJsons = function (classes) {
+    Main.prototype.writeJsons = function () {
+        var classes = this.classesMap.getClasses();
         dlog('writeJsons() entered');
         return mkdirpPromise('o/json').then(function () {
             return _.map(_.keys(classes), function (className) {
@@ -85,25 +85,23 @@ var Main = (function () {
         return mkdirpPromise(path.dirname(this.options.outputPath)).then(function () { return tsWriter.writePackageFile(_this.options); }).then(function () { return dlog('writePackageFiles() completed'); });
     };
     Main.prototype.initJava = function () {
+        var _this = this;
+        var classpath = [];
         return BluePromise.all(_.map(this.options.classpath, function (globExpr) { return globPromise(globExpr); })).then(function (pathsArray) { return _.flatten(pathsArray); }).then(function (paths) {
             _.forEach(paths, function (path) {
                 dlog('Adding to classpath:', path);
                 java.classpath.push(path);
+                classpath.push(path);
             });
+        }).then(function () {
+            // The classpath in options is an array of glob expressions.
+            // It is convenient to replace it here with the equivalent expanded array jar file paths.
+            _this.options.classpath = classpath;
         });
     };
     Main.prototype.loadClasses = function () {
-        var regExpWhiteList = _.map(this.options.whiteList, function (str) {
-            // We used to have true regular expressions in source code.
-            // Now we get the white list from the package.json, and convert the strings to RegExps.
-            // But writing correct regular expressions in .json files is messy, due to json parser behavior.
-            // See e.g. http://stackoverflow.com/questions/17597238/escaping-regex-to-get-valid-json
-            // TODO: change the white list to be lists of packages and classes to be included.
-            return new RegExp(str);
-        });
-        var classesMap = new ClassesMap(java, Immutable.Set(regExpWhiteList));
-        classesMap.initialize(this.options.seedClasses);
-        return classesMap;
+        var _this = this;
+        return this.classesMap.initialize().then(function () { return _this.classesMap; });
     };
     return Main;
 })();

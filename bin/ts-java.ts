@@ -48,6 +48,7 @@ var error = chalk.bold.red;
 class Main {
 
   private options: TsJavaOptions;
+  private classesMap: ClassesMap;
 
   constructor(options: TsJavaOptions) {
     this.options = options;
@@ -65,19 +66,20 @@ class Main {
 
   run(): BluePromise<ClassesMap> {
     return this.initJava()
-      .then(() => {
-        var classesMap = this.loadClasses();
-        return BluePromise.join(this.writeJsons(classesMap.getClasses()), this.writeInterpolatedFiles(classesMap))
-          .then(() => dlog('run() completed.'))
-          .then(() => classesMap);
-      });
+      .then(() => { this.classesMap = new ClassesMap(java, this.options); })
+      .then(() => this.loadClasses())
+      .then(() => BluePromise.join(this.writeJsons(), this.writeInterpolatedFiles()))
+      .then(() => dlog('run() completed.'))
+      .then(() => this.classesMap);
   }
 
-  private writeInterpolatedFiles(classesMap: ClassesMap) : BluePromise<void> {
+  private writeInterpolatedFiles() : BluePromise<void> {
+    var classesMap: ClassesMap = this.classesMap;
     return this.options.granularity === 'class' ? this.writeClassFiles(classesMap) : this.writePackageFiles(classesMap);
   }
 
-  private writeJsons(classes: ClassDefinitionMap): BluePromise<void> {
+  private writeJsons(): BluePromise<void> {
+    var classes: ClassDefinitionMap = this.classesMap.getClasses();
     dlog('writeJsons() entered');
     return mkdirpPromise('o/json')
       .then(() => {
@@ -114,28 +116,26 @@ class Main {
   }
 
   private initJava(): BluePromise<void> {
+    var classpath: Array<string> = [];
     return BluePromise.all(_.map(this.options.classpath, (globExpr: string) => globPromise(globExpr)))
       .then((pathsArray: Array<Array<string>>) => _.flatten(pathsArray))
       .then((paths: Array<string>) => {
         _.forEach(paths, (path: string) => {
           dlog('Adding to classpath:', path);
           java.classpath.push(path);
+          classpath.push(path);
         });
+      })
+      .then(() => {
+        // The classpath in options is an array of glob expressions.
+        // It is convenient to replace it here with the equivalent expanded array jar file paths.
+        this.options.classpath = classpath;
       });
   }
 
-  private loadClasses(): ClassesMap {
-    var regExpWhiteList = _.map(this.options.whiteList, (str: string) => {
-      // We used to have true regular expressions in source code.
-      // Now we get the white list from the package.json, and convert the strings to RegExps.
-      // But writing correct regular expressions in .json files is messy, due to json parser behavior.
-      // See e.g. http://stackoverflow.com/questions/17597238/escaping-regex-to-get-valid-json
-      // TODO: change the white list to be lists of packages and classes to be included.
-      return new RegExp(str);
-    });
-    var classesMap = new ClassesMap(java, Immutable.Set(regExpWhiteList));
-    classesMap.initialize(this.options.seedClasses);
-    return classesMap;
+  private loadClasses(): BluePromise<ClassesMap> {
+    return this.classesMap.initialize()
+      .then(() => this.classesMap);
   }
 }
 
