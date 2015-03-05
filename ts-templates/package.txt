@@ -122,6 +122,11 @@ declare module Java {
       {{/if}}
       {{/each}}
       {{/each}}
+      {{#each fields}}
+      {{#if isStatic}}{{else}}
+      {{name}}: {{{tsType}}};
+      {{/if}}
+      {{/each}}
     }
     export module {{shortName}} {
       export interface Static {
@@ -138,8 +143,10 @@ declare module Java {
         {{/if}}
         {{/each}}
         {{/each}}
-        {{#each enumConstants}}
-        {{this}}: {{../shortName}};
+        {{#each fields}}
+        {{#if isStatic}}
+        {{name}}: {{{tsType}}};
+        {{/if}}
         {{/each}}
       }
     }

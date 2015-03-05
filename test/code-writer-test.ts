@@ -140,7 +140,7 @@ describe('CodeWriter', () => {
         'constructors: ',
         'variants: [object Object]',
         'isEnum: false',
-        'enumConstants: ',
+        'fields: ',
         ''
       ].join('\n');
       return BluePromise.all([runPromise, resultPromise])
