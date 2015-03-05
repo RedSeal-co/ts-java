@@ -73,12 +73,6 @@ class CodeWriter {
 
   // *registerHandlebarHelpers()*
   registerHandlebarHelpers() : void {
-    handlebars.registerHelper('intf', (interfaces: Array<string>, options: HandlebarHelperOptions) => {
-      return _.reduce(interfaces, (out: string, intf: string) => {
-        var interfaceMap = this.classes[intf];
-        return out + options.fn(interfaceMap.shortName);
-      }, '');
-    });
     handlebars.registerHelper('margs', (method: ClassesMap.MethodDefinition, options: HandlebarHelperOptions) => {
       var tsParamTypes = method.tsParamTypes;
       var names = method.paramNames;

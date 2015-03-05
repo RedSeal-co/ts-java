@@ -101,12 +101,7 @@ var Main = (function () {
     };
     Main.prototype.loadClasses = function () {
         var _this = this;
-        return this.classesMap.preScanAllClasses(this.options).then(function (allClasses) {
-            allClasses = allClasses.union(_this.options.seedClasses);
-            var seeds = allClasses.toArray();
-            console.log('Prescan delivered all of these classes:', seeds);
-            _this.classesMap.initialize(seeds);
-        }).then(function () { return _this.classesMap; });
+        return this.classesMap.initialize().then(function () { return _this.classesMap; });
     };
     return Main;
 })();

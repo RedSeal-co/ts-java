@@ -134,13 +134,7 @@ class Main {
   }
 
   private loadClasses(): BluePromise<ClassesMap> {
-    return this.classesMap.preScanAllClasses(this.options)
-      .then((allClasses: Immutable.Set<string>) => {
-        allClasses = allClasses.union(this.options.seedClasses);
-        var seeds: Array<string> = allClasses.toArray();
-        console.log('Prescan delivered all of these classes:', seeds);
-        this.classesMap.initialize(seeds);
-      })
+    return this.classesMap.initialize()
       .then(() => this.classesMap);
   }
 }

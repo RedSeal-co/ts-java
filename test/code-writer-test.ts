@@ -45,9 +45,7 @@ describe('CodeWriter', () => {
   var options: TsJavaOptions = {
     'promisesPath': '../typings/bluebird/bluebird.d.ts',
     'outputPath': './java.d.ts',
-    'classpath': [
-      'tinkerpop/target/dependency/**/*.jar'
-    ],
+    'classpath': null,  // initialized below
     'seedClasses': [
       'java.lang.Boolean',
       'java.lang.Double',
@@ -57,23 +55,26 @@ describe('CodeWriter', () => {
       'java.lang.Short',
       'java.util.Iterator',
       'java.lang.Number',
-      'java.lang.Enum'
+      'java.lang.Enum',
+      'com.redseal.featureset.SomeClass',
     ],
     'whiteList': [
-      'com.tinkerpop.gremlin.',
+      'com.redseal.featureset.',
       'java.util.function.',
     ]
   };
 
   before(() => {
-    var globPath = path.join('tinkerpop', 'target', 'dependency', '**', '*.jar');
+    var globPath = path.join('featureset', '**', '*.jar');
     return BluePromise.promisify(glob)(globPath)
       .then((filenames: Array<string>) => {
+        options.classpath = filenames;
         _.forEach(filenames, (name: string) => { java.classpath.push(name); });
         var classesMap = new ClassesMap(java, options);
-        classesMap.initialize(['com.tinkerpop.gremlin.structure.Graph']);
-        var templatesDirPath = path.resolve(__dirname, 'templates');
-        theWriter = new CodeWriter(classesMap, templatesDirPath);
+        return classesMap.initialize().then(() => {
+          var templatesDirPath = path.resolve(__dirname, 'templates');
+          theWriter = new CodeWriter(classesMap, templatesDirPath);
+        });
       });
   });
 
@@ -164,12 +165,11 @@ describe('CodeWriter', () => {
         });
     });
     it('should write expected given template interfaces', () => {
-      var className = 'com.tinkerpop.gremlin.structure.Edge';
+      var className = 'com.redseal.featureset.SomeAbstractClass';
       var runPromise = theWriter.streamLibraryClassFile(className, 'interfaces', streamFn, endFn).then(endFn);
       var expectedData = [
-        'Inherited interfaces for class com.tinkerpop.gremlin.structure.Edge:',
-        'o Element',
-        'o EdgeTraversal',
+        'Inherited interfaces for class com.redseal.featureset.SomeAbstractClass: ',
+        'Java.java.lang.Object,Java.com.redseal.featureset.SomeInterface',
         '',
       ].join('\n');
       return BluePromise.all([runPromise, resultPromise])
