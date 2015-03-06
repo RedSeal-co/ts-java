@@ -46,3 +46,63 @@ I want to understand how to use public fields in Typescript.
     Then it compiles and lints cleanly
     And it runs and produces no output
 
+  Scenario: private static fields are not made visible
+    Given the above boilerplate with following scenario snippet:
+    """
+    var x: number = Thing.mPrivateStaticInt;
+    """
+    When compiled it produces this error containing this snippet:
+    """
+    error TS2339: Property 'mPrivateStaticInt' does not exist on type 'Static'.
+    """
+
+  Scenario: protected static fields are not made visible
+    Given the above boilerplate with following scenario snippet:
+    """
+    var x: number = Thing.mProtectedStaticInt;
+    """
+    When compiled it produces this error containing this snippet:
+    """
+    error TS2339: Property 'mProtectedStaticInt' does not exist on type 'Static'.
+    """
+
+  Scenario: package scope static fields are not made visible
+    Given the above boilerplate with following scenario snippet:
+    """
+    var x: number = Thing.mPackageStaticInt;
+    """
+    When compiled it produces this error containing this snippet:
+    """
+    error TS2339: Property 'mPackageStaticInt' does not exist on type 'Static'.
+    """
+
+  Scenario: private instance fields are not made visible
+    Given the above boilerplate with following scenario snippet:
+    """
+    var x: number = thing.mPrivateInt;
+    """
+    When compiled it produces this error containing this snippet:
+    """
+    error TS2339: Property 'mPrivateInt' does not exist on type 'Thing'.
+    """
+
+  Scenario: protected instance fields are not made visible
+    Given the above boilerplate with following scenario snippet:
+    """
+    var x: number = thing.mProtectedInt;
+    """
+    When compiled it produces this error containing this snippet:
+    """
+    error TS2339: Property 'mProtectedInt' does not exist on type 'Thing'.
+    """
+
+  Scenario: package scope instance fields are not made visible
+    Given the above boilerplate with following scenario snippet:
+    """
+    var x: number = thing.mPackageInt;
+    """
+    When compiled it produces this error containing this snippet:
+    """
+    error TS2339: Property 'mPackageInt' does not exist on type 'Thing'.
+    """
+
