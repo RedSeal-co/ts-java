@@ -19,4 +19,20 @@ public class Thing {
     public void set(String value) {
         theValue = value;
     }
+
+    public Nested newNested(int x) {
+      return new Nested(x);
+    }
+
+    public class Nested {
+      Nested(int x) {
+        theX = x;
+      }
+
+      public String toString() {
+          return "Ambiguous Thing.Nested " + Integer.toString(theX);
+      }
+
+      private int theX;
+    }
 }
