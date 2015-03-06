@@ -6,6 +6,7 @@ public class Thing {
 
     public Thing(int value) {
         theValue = value;
+        theInstanceField = "instance thingy";
     }
 
     public String toString() {
@@ -15,4 +16,14 @@ public class Thing {
     public void set(int value) {
         theValue = value;
     }
+
+    public String theInstanceField;
+
+    public static String theStaticField;
+
+    static
+    {
+        theStaticField = "static thingy";
+    }
+
 }
