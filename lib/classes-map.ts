@@ -81,7 +81,7 @@ class ClassesMap {
     var seeds = Immutable.Set(requiredSeedClasses).merge(options.seedClasses);
     seeds.forEach((className: string) => {
       if (!this.inWhiteList(className)) {
-        var pattern = new RegExp('^' + className.replace(/\./g, '\\.') + '$');
+        var pattern = new RegExp('^' + className.replace(/([\.\$])/g, '\\$1') + '$');
         this.includedPatterns = this.includedPatterns.add(pattern);
       }
     });

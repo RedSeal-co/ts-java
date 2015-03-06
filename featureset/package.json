@@ -8,8 +8,11 @@
     ],
     "seedClasses": [
       "com.redseal.featureset.ambiguous.Thing",
+      "com.redseal.featureset.ambiguous.Thing$Nested",
       "com.redseal.featureset.AnEnum",
+      "com.redseal.featureset.SomeAbstractClass",
       "com.redseal.featureset.SomeClass",
+      "com.redseal.featureset.SomeInterface",
       "com.redseal.featureset.Thing",
       "java.lang.Boolean",
       "java.lang.Class",
@@ -23,7 +26,6 @@
       "java.util.List"
     ],
     "whiteList": [
-      "com.redseal.featureset."
     ]
   }
 }
