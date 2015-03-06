@@ -1080,6 +1080,7 @@ declare module Java {
         valueOf(arg0: object_t, cb: Callback<string>): void;
         valueOfSync(arg0: object_t): string;
         valueOfPromise(arg0: object_t): Promise<string>;
+        CASE_INSENSITIVE_ORDER: object_t;
       }
     }
   }
@@ -1303,6 +1304,8 @@ declare module Java {
         setAccessible(arg0: array_t<AccessibleObject>, arg1: boolean_t, cb: Callback<void>): void;
         setAccessibleSync(arg0: array_t<AccessibleObject>, arg1: boolean_t): void;
         setAccessiblePromise(arg0: array_t<AccessibleObject>, arg1: boolean_t): Promise<void>;
+        PUBLIC: number;
+        DECLARED: number;
       }
     }
   }
@@ -1645,6 +1648,11 @@ declare module Java {
         valueOf(arg0: integer_t, cb: Callback<number>): void;
         valueOfSync(arg0: integer_t): number;
         valueOfPromise(arg0: integer_t): Promise<number>;
+        MIN_VALUE: number;
+        MAX_VALUE: number;
+        TYPE: Class;
+        SIZE: number;
+        BYTES: number;
       }
     }
   }
@@ -1838,6 +1846,8 @@ declare module Java {
         setAccessible(arg0: array_t<AccessibleObject>, arg1: boolean_t, cb: Callback<void>): void;
         setAccessibleSync(arg0: array_t<AccessibleObject>, arg1: boolean_t): void;
         setAccessiblePromise(arg0: array_t<AccessibleObject>, arg1: boolean_t): Promise<void>;
+        PUBLIC: number;
+        DECLARED: number;
       }
     }
   }
@@ -2026,6 +2036,9 @@ declare module Java {
         valueOf(arg0: boolean_t, cb: Callback<boolean>): void;
         valueOfSync(arg0: boolean_t): boolean;
         valueOfPromise(arg0: boolean_t): Promise<boolean>;
+        TRUE: boolean;
+        FALSE: boolean;
+        TYPE: Class;
       }
     }
   }
@@ -2224,6 +2237,8 @@ declare module Java {
         setAccessible(arg0: array_t<AccessibleObject>, arg1: boolean_t, cb: Callback<void>): void;
         setAccessibleSync(arg0: array_t<AccessibleObject>, arg1: boolean_t): void;
         setAccessiblePromise(arg0: array_t<AccessibleObject>, arg1: boolean_t): Promise<void>;
+        PUBLIC: number;
+        DECLARED: number;
       }
     }
   }
@@ -2462,6 +2477,8 @@ declare module Java {
         setAccessible(arg0: array_t<AccessibleObject>, arg1: boolean_t, cb: Callback<void>): void;
         setAccessibleSync(arg0: array_t<AccessibleObject>, arg1: boolean_t): void;
         setAccessiblePromise(arg0: array_t<AccessibleObject>, arg1: boolean_t): Promise<void>;
+        PUBLIC: number;
+        DECLARED: number;
       }
     }
   }

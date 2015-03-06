@@ -32,6 +32,7 @@ var reservedShortNames: Dictionary = {
 import ArchiveEntry = archive.ArchiveEntry;
 import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
+import FieldDefinition = ClassesMap.FieldDefinition;
 import MethodDefinition = ClassesMap.MethodDefinition;
 import VariantsMap = ClassesMap.VariantsMap;
 
@@ -315,6 +316,20 @@ class ClassesMap {
     return [typeName, ext];
   }
 
+  addToTheToDoList(canonicalTypeName: string, work: Work): void {
+    // We expect various type names here, 4 general categories:
+    // 1) primitive types such as int, long, char
+    // 2) arrays of primitive types, such as int[]
+    // 3) class names such as java.util.Iterator
+    // 4) array-of-class names such as java.util.Iterator[]
+    // We only add to the todo list for the last two, and only in the non-array form.
+    var parts: [string, string] = this.baseType(canonicalTypeName);
+    canonicalTypeName = parts[0];
+    if (this.inWhiteList(canonicalTypeName)) {
+        work.addTodo(canonicalTypeName);
+    }
+  }
+
 
   // *mapMethod()*: return a map of useful properties of a method or constructor.
   // For our purposes, we can treat constructors as methods except for the handling of return type.
@@ -351,26 +366,10 @@ class ClassesMap {
       signature: signature
     };
 
-    var addToTheToDoList = (canonicalTypeName: string) => {
-      // We expect various type names here, 4 general categories:
-      // 1) primitive types such as int, long, char
-      // 2) arrays of primitive types, such as int[]
-      // 3) class names such as java.util.Iterator
-      // 4) array-of-class names such as java.util.Iterator[]
-      // We only add to the todo list for the last two, and only in the non-array form.
-      var parts: [string, string] = this.baseType(canonicalTypeName);
-      canonicalTypeName = parts[0];
-      if (this.inWhiteList(canonicalTypeName)) {
-        if (!work.alreadyAdded(canonicalTypeName)) {
-          work.addTodo(canonicalTypeName);
-        }
-      }
-    };
-
-    addToTheToDoList(methodMap.declared);
-    addToTheToDoList(methodMap.returns);
+    this.addToTheToDoList(methodMap.declared, work);
+    this.addToTheToDoList(methodMap.returns, work);
     _.forEach(methodMap.paramTypes, (p: string) => {
-      addToTheToDoList(p);
+      this.addToTheToDoList(p, work);
     });
 
     return methodMap;
@@ -380,6 +379,44 @@ class ClassesMap {
   // *mapClassMethods()*: return a methodMap array for the methods of a class
   mapClassMethods(className: string, clazz: Java.Class, work: Work): Array<MethodDefinition> {
     return _.map(clazz.getMethodsSync(), function (m: Java.Method) { return this.mapMethod(m, work); }, this);
+  }
+
+  // *mapField()*: return a map of useful properties of a field.
+  mapField(field: Java.Field, work: Work): FieldDefinition {
+    var name: string = field.getNameSync();
+    var fieldType: Java.Class = field.getTypeSync();
+    var fieldTypeName: string = fieldType.getNameSync();
+    var declaredIn: string = field.getDeclaringClassSync().getNameSync();
+    var tsType: string = this.tsTypeName(fieldTypeName, ParamContext.eReturn);
+
+    if (this.inWhiteList(fieldTypeName)) {
+      this.addToTheToDoList(fieldTypeName, work);
+    }
+
+    var modifiers: number = field.getModifiersSync();
+    var isStatic: boolean = (modifiers & 8) === 8;
+    var isSynthetic: boolean = field.isSyntheticSync();
+
+    var fieldDefinition: FieldDefinition = {
+      name: name,
+      tsType: tsType,
+      isStatic: isStatic,
+      isSynthetic: isSynthetic,
+      modifiers: modifiers,
+      declaredIn: declaredIn
+    };
+
+    return fieldDefinition;
+  }
+
+
+  // *mapClassFields()*: return a FieldDefinition array for the fields of a class
+  mapClassFields(className: string, clazz: Java.Class, work: Work): Array<FieldDefinition> {
+    // For reasons I don't understand, it seems that getFields() can return duplicates.
+    // TODO: Figure out why there are duplicates, as perhaps there is a better fix.
+    // In the meantime, we dedup here.
+    var allFields: Array<FieldDefinition> = _.map(clazz.getFieldsSync(), function (f: Java.Field) { return this.mapField(f, work); }, this);
+    return _.uniq(allFields, false, 'name');
   }
 
   // *mapClassConstructors()*: return a methodMap array for the constructors of a class
@@ -461,6 +498,7 @@ class ClassesMap {
 
     var interfaces = this.mapClassInterfaces(className, clazz, work);
     var methods: Array<MethodDefinition> = this.mapClassMethods(className, clazz, work);
+    var fields: Array<FieldDefinition> = this.mapClassFields(className, clazz, work);
 
     var constructors: Array<MethodDefinition> = this.mapClassConstructors(className, clazz, work);
 
@@ -510,14 +548,6 @@ class ClassesMap {
     // between java.lang and groovy.lang.
     tsInterfaces = _.map(tsInterfaces, (intf: string) => { return 'Java.' + intf; });
 
-    var enumConstants: string[] = [];
-    if (isEnum) {
-      // TODO: We have to use object_t here right now, which forces the use of the typecast.
-      // We may be able to improve this when we implement generics.
-      var enums: Java.object_t[] = clazz.getEnumConstantsSync();
-      enumConstants = _.map(enums, (e: Java.object_t) => (<Java.Object>e).toStringSync());
-    }
-
     var classMap: ClassDefinition = {
       packageName: this.packageName(this.fixClassPath(className)),
       fullName: className,
@@ -534,7 +564,7 @@ class ClassesMap {
       constructors: constructors.sort(this.compareVariants),
       variants: this.groupMethods(methods),
       isEnum: isEnum,
-      enumConstants: enumConstants
+      fields: fields
     };
 
     return classMap;
@@ -671,6 +701,15 @@ module ClassesMap {
       [index: string]: Array<MethodDefinition>;
   }
 
+  export interface FieldDefinition {
+    name: string;
+    tsType: string;
+    isStatic: boolean;
+    isSynthetic: boolean;
+    modifiers: number;
+    declaredIn: string;
+  }
+
   // ### ClassDefinition
   // All of the properties on interest for a class.
   export interface ClassDefinition {
@@ -690,7 +729,7 @@ module ClassesMap {
     constructors: Array<MethodDefinition>; // definitions of all constructors for this class, may be empty.
     variants: VariantsMap;             // definitions of all methods, grouped by method name
     isEnum: boolean;                   // true for an Enum, false otherwise.
-    enumConstants: Array<string>;      // array of enum constants.
+    fields: Array<FieldDefinition>;    // array of FieldDefinitions for public fields.
 
   }
 

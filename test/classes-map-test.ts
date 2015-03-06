@@ -274,7 +274,7 @@ describe('ClassesMap', () => {
       expect(classMap).to.have.keys([
         'alias',
         'constructors',
-        'enumConstants',
+        'fields',
         'fullName',
         'interfaces',
         'isEnum',
