@@ -123,9 +123,10 @@ declare module Java {
       {{/each}}
       {{/each}}
       {{#each fields}}
-      {{#if isStatic}}{{else}}
+      {{~#if isStatic~}}
+      {{~else}}
       {{name}}: {{{tsType}}};
-      {{/if}}
+      {{/if~}}
       {{/each}}
     }
     export module {{shortName}} {
@@ -144,9 +145,9 @@ declare module Java {
         {{/each}}
         {{/each}}
         {{#each fields}}
-        {{#if isStatic}}
+        {{~#if isStatic}}
         {{name}}: {{{tsType}}};
-        {{/if}}
+        {{/if~}}
         {{/each}}
       }
     }

@@ -1002,7 +1002,7 @@ declare module Java {
       wait( cb: Callback<void>): void;
       waitSync(): void;
       waitPromise(): Promise<void>;
-          }
+    }
     export module String {
       export interface Static {
         new (arg0: array_t<object_t>, arg1: integer_t, arg2: integer_t, arg3: object_t): java.lang.String;
@@ -1297,7 +1297,7 @@ declare module Java {
       wait( cb: Callback<void>): void;
       waitSync(): void;
       waitPromise(): Promise<void>;
-                }
+    }
     export module Method {
       export interface Static {
         // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
@@ -1495,7 +1495,7 @@ declare module Java {
       wait( cb: Callback<void>): void;
       waitSync(): void;
       waitPromise(): Promise<void>;
-                                  }
+    }
     export module Integer {
       export interface Static {
         new (arg0: string_t): java.lang.Integer;
@@ -1839,7 +1839,7 @@ declare module Java {
       wait( cb: Callback<void>): void;
       waitSync(): void;
       waitPromise(): Promise<void>;
-                }
+    }
     export module Executable {
       export interface Static {
         // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
@@ -1991,7 +1991,7 @@ declare module Java {
       wait( cb: Callback<void>): void;
       waitSync(): void;
       waitPromise(): Promise<void>;
-                      }
+    }
     export module Boolean {
       export interface Static {
         new (arg0: string_t): java.lang.Boolean;
@@ -2230,7 +2230,7 @@ declare module Java {
       wait( cb: Callback<void>): void;
       waitSync(): void;
       waitPromise(): Promise<void>;
-                }
+    }
     export module Constructor {
       export interface Static {
         // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
@@ -2470,7 +2470,7 @@ declare module Java {
       wait( cb: Callback<void>): void;
       waitSync(): void;
       waitPromise(): Promise<void>;
-                }
+    }
     export module Field {
       export interface Static {
         // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
