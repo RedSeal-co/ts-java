@@ -8,7 +8,7 @@
 /// <reference path='../typings/lodash/lodash.d.ts' />
 /// <reference path='../typings/mkdirp/mkdirp.d.ts' />
 /// <reference path='../typings/node/node.d.ts' />
-/// <reference path='../lib/jsonfile.d.ts' />
+/// <reference path='../lib/read-package-json.d.ts' />
 
 'use strict';
 
@@ -25,7 +25,7 @@ import fs = require('fs');
 import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
-import jsonfile = require('jsonfile');
+import readJson = require('read-package-json');
 import mkdirp = require('mkdirp');
 import path = require('path');
 import program = require('commander');
@@ -39,7 +39,7 @@ BluePromise.longStackTraces();
 var writeFilePromise = BluePromise.promisify(fs.writeFile);
 var readFilePromise = BluePromise.promisify(fs.readFile);
 var mkdirpPromise = BluePromise.promisify(mkdirp);
-var readJsonPromise = BluePromise.promisify(jsonfile.readFile);
+var readJsonPromise = BluePromise.promisify(readJson);
 var globPromise = BluePromise.promisify(glob);
 
 var dlog = debug('ts-java:main');
@@ -165,7 +165,7 @@ program.on('--help', () => {
 program.parse(process.argv);
 
 var packageJsonPath = './package.json';
-readJsonPromise(packageJsonPath)
+readJsonPromise(packageJsonPath, console.error, false)
   .then((packageContents: any) => {
 
     if (!('tsjava' in packageContents)) {
