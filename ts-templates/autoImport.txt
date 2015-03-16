@@ -2,16 +2,20 @@ import java = require('java');
 
 export = autoImport;
 
+interface Dictionary {
+  [index: string]: string;
+}
+
 {{#each this}}
 {{#if useAlias}}
-function autoImport(shortName: "{{alias}}"): Java.{{packageName}}.{{shortName}};
+function autoImport(shortName: "{{alias}}"): Java.{{packageName}}.{{shortName}}.Static;
 {{/if}}
 {{/each}}
 function autoImport(shortName: string): any;
 
 function autoImport(shortName: string): any {
 
-  var shortToLongNameMap = {
+  var shortToLongNameMap: Dictionary = {
     {{#each this}}
     {{#if useAlias}}
     "{{alias}}": "{{packageName}}.{{shortName}}",
@@ -19,6 +23,9 @@ function autoImport(shortName: string): any {
     {{/each}}
   };
   
-  var longName: string = shortToLongNameMap[shortName];
-  return java.import(longName);
+  if (shortName in shortToLongNameMap) {
+    return java.import(shortToLongNameMap[shortName]);
+  } else {
+    throw new Error('autoImport unable to import short name:' + shortName);
+  }
 }

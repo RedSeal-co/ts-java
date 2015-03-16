@@ -9,17 +9,18 @@ Feature: Auto import
   will write the source file defining the autoImport function.
 
   Background:
+      Given that ts-java has been run and autoImport.ts has compiled cleanly.
       Given this boilerplate to intialize node-java:
       """
       /// <reference path='../../typings/glob/glob.d.ts' />
       /// <reference path='../../typings/node/node.d.ts' />
       /// <reference path='../../typings/power-assert/power-assert.d.ts' />
-      /// <reference path='../../featureset/java.d.ts'/>
+      /// <reference path='../java.d.ts' />
 
       import assert = require('power-assert');
       import glob = require('glob');
       import java = require('java');
-      import autoImport = require('./featureset/o/autoImport');
+      import autoImport = require('../../featureset/o/autoImport');
 
       var filenames = glob.sync('featureset/target/**/*.jar');
       filenames.forEach((name: string) => { java.classpath.push(name); });
@@ -27,21 +28,19 @@ Feature: Auto import
 
       """
 
-  @todo
   Scenario: Nominal
   Given the above boilerplate with following scenario snippet:
   """
-  var Foo: Java.Foo.Static = autoImport('Foo');
-  var foo: Java.Foo = new Foo();
+  var SomeClass: Java.SomeClass.Static = autoImport('SomeClass');
+  var something: Java.SomeClass = new SomeClass();
   """
   Then it compiles and lints cleanly
   And it runs and produces no output
 
-  @todo
   Scenario: Ambiguous
   Given the above boilerplate with following scenario snippet:
   """
-  assert.throws(() => autoImport('Thing'), Error, /something about ambiguous class/);
+  assert.throws(() => autoImport('Thing'), /autoImport unable to import short name/);
   """
   Then it compiles and lints cleanly
   And it runs and produces no output
