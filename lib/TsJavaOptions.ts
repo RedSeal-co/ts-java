@@ -26,6 +26,9 @@ interface TsJavaOptions {
     // The path for the .d.ts file for the promises library.
     // Defaults to '../bluebird/bluebird.d.ts'.
     // Promises libraries other than bluebird are currently not supported, though might work.
+
+  autoImportPath?: string;
+    // The path where ts-java will write a source file defining the autoImport function.
 }
 
 export = TsJavaOptions;

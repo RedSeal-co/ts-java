@@ -1,7 +1,8 @@
 {
   "tsjava": {
     "promisesPath": "../typings/bluebird/bluebird.d.ts",
-    "outputPath": "./java.d.ts",
+    "outputPath": "java.d.ts",
+    "autoImportPath": "o/autoImport.ts",
     "classpath": [
       "target/*.jar",
       "target/dependency/*.jar"

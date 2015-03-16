@@ -6,6 +6,7 @@
 /// <reference path="../../typings/debug/debug.d.ts"/>
 /// <reference path="../../typings/handlebars/handlebars.d.ts"/>
 /// <reference path="../../typings/node/node.d.ts"/>
+/// <reference path='../../lib/read-package-json.d.ts' />
 
 'use strict';
 
@@ -17,9 +18,12 @@ import debug = require('debug');
 import fs = require('fs');
 import handlebars = require('handlebars');
 import path = require('path');
+import readJson = require('read-package-json');
 
 // Generic Cucumber step callback interface.
 import Callback = cucumber.StepCallback;
+
+var readJsonPromise = BluePromise.promisify(readJson);
 
 // ### World
 // Interface to the "world" for these steps.
@@ -27,6 +31,7 @@ interface World {
   scenarioName: string;
   scenarioUri: string;
   sampleProgramPath: string;
+  testPackageName: string;
 
   child: childProcess.ChildProcess;
   error: Error;
@@ -96,6 +101,8 @@ function wrapper() {
     // ]
     expect(dirParts[dirParts.length - 2]).to.equal('features');
     // Now we only need the initial directory name to construct our path.
+
+    world.testPackageName = dirParts[0];
 
     // Create a sample program source file each scenario.
     world.sampleProgramPath = path.join(dirParts[0], 'o', name);
@@ -178,6 +185,23 @@ function wrapper() {
       expect(world.stderr).to.equal('');
       callback();
     });
+  });
+
+  this.Given(/^that ts\-java has been run and autoImport\.ts has compiled cleanly\.$/, function (callback: Callback) {
+    var world = <World> this;
+    var packageJsonPath = world.testPackageName + '/package.json';
+    readJsonPromise(packageJsonPath, console.error, false)
+      .then((json: any) => {
+        var compileCmd: string = './node_modules/.bin/tsc --module commonjs --target ES5 --noImplicitAny --sourceMap '
+                               + world.testPackageName + '/' + json.tsjava.autoImportPath;
+        execChild(world, compileCmd, () => {
+          expect(world.error).to.equal(null);
+          expect(world.stdout).to.equal('');
+          expect(world.stderr).to.equal('');
+          callback();
+        });
+      });
+
   });
 }
 

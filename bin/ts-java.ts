@@ -8,7 +8,7 @@
 /// <reference path='../typings/lodash/lodash.d.ts' />
 /// <reference path='../typings/mkdirp/mkdirp.d.ts' />
 /// <reference path='../typings/node/node.d.ts' />
-/// <reference path='../lib/jsonfile.d.ts' />
+/// <reference path='../lib/read-package-json.d.ts' />
 
 'use strict';
 
@@ -25,7 +25,7 @@ import fs = require('fs');
 import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
-import jsonfile = require('jsonfile');
+import readJson = require('read-package-json');
 import mkdirp = require('mkdirp');
 import path = require('path');
 import program = require('commander');
@@ -39,7 +39,7 @@ BluePromise.longStackTraces();
 var writeFilePromise = BluePromise.promisify(fs.writeFile);
 var readFilePromise = BluePromise.promisify(fs.readFile);
 var mkdirpPromise = BluePromise.promisify(mkdirp);
-var readJsonPromise = BluePromise.promisify(jsonfile.readFile);
+var readJsonPromise = BluePromise.promisify(readJson);
 var globPromise = BluePromise.promisify(glob);
 
 var dlog = debug('ts-java:main');
@@ -68,7 +68,7 @@ class Main {
     return this.initJava()
       .then(() => { this.classesMap = new ClassesMap(java, this.options); })
       .then(() => this.loadClasses())
-      .then(() => BluePromise.join(this.writeJsons(), this.writeInterpolatedFiles()))
+      .then(() => BluePromise.join(this.writeJsons(), this.writeInterpolatedFiles(), this.writeAutoImport()))
       .then(() => dlog('run() completed.'))
       .then(() => this.classesMap);
   }
@@ -115,6 +115,20 @@ class Main {
       .then(() => dlog('writePackageFiles() completed'));
   }
 
+  private writeAutoImport(): BluePromise<void> {
+    dlog('writeAutoImport() entered');
+    if (this.options.autoImportPath === undefined) {
+      return BluePromise.resolve();
+    } else {
+      var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
+      var tsWriter = new CodeWriter(this.classesMap, templatesDirPath);
+      var classes: ClassDefinitionMap = this.classesMap.getClasses();
+      return mkdirpPromise(path.dirname(this.options.autoImportPath))
+        .then(() => tsWriter.writeAutoImportFile(this.options))
+        .then(() => dlog('writeAutoImport() completed'));
+    }
+  }
+
   private initJava(): BluePromise<void> {
     var classpath: Array<string> = [];
     return BluePromise.all(_.map(this.options.classpath, (globExpr: string) => globPromise(globExpr)))
@@ -151,7 +165,7 @@ program.on('--help', () => {
 program.parse(process.argv);
 
 var packageJsonPath = './package.json';
-readJsonPromise(packageJsonPath)
+readJsonPromise(packageJsonPath, console.error, false)
   .then((packageContents: any) => {
 
     if (!('tsjava' in packageContents)) {

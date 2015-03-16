@@ -8,7 +8,7 @@
 /// <reference path='../typings/lodash/lodash.d.ts' />
 /// <reference path='../typings/mkdirp/mkdirp.d.ts' />
 /// <reference path='../typings/node/node.d.ts' />
-/// <reference path='../lib/jsonfile.d.ts' />
+/// <reference path='../lib/read-package-json.d.ts' />
 'use strict';
 require('source-map-support').install();
 var _ = require('lodash');
@@ -20,7 +20,7 @@ var debug = require('debug');
 var fs = require('fs');
 var glob = require('glob');
 var java = require('java');
-var jsonfile = require('jsonfile');
+var readJson = require('read-package-json');
 var mkdirp = require('mkdirp');
 var path = require('path');
 var program = require('commander');
@@ -28,7 +28,7 @@ BluePromise.longStackTraces();
 var writeFilePromise = BluePromise.promisify(fs.writeFile);
 var readFilePromise = BluePromise.promisify(fs.readFile);
 var mkdirpPromise = BluePromise.promisify(mkdirp);
-var readJsonPromise = BluePromise.promisify(jsonfile.readFile);
+var readJsonPromise = BluePromise.promisify(readJson);
 var globPromise = BluePromise.promisify(glob);
 var dlog = debug('ts-java:main');
 var error = chalk.bold.red;
@@ -50,7 +50,7 @@ var Main = (function () {
         var _this = this;
         return this.initJava().then(function () {
             _this.classesMap = new ClassesMap(java, _this.options);
-        }).then(function () { return _this.loadClasses(); }).then(function () { return BluePromise.join(_this.writeJsons(), _this.writeInterpolatedFiles()); }).then(function () { return dlog('run() completed.'); }).then(function () { return _this.classesMap; });
+        }).then(function () { return _this.loadClasses(); }).then(function () { return BluePromise.join(_this.writeJsons(), _this.writeInterpolatedFiles(), _this.writeAutoImport()); }).then(function () { return dlog('run() completed.'); }).then(function () { return _this.classesMap; });
     };
     Main.prototype.writeInterpolatedFiles = function () {
         var classesMap = this.classesMap;
@@ -84,6 +84,19 @@ var Main = (function () {
         var classes = classesMap.getClasses();
         return mkdirpPromise(path.dirname(this.options.outputPath)).then(function () { return tsWriter.writePackageFile(_this.options); }).then(function () { return dlog('writePackageFiles() completed'); });
     };
+    Main.prototype.writeAutoImport = function () {
+        var _this = this;
+        dlog('writeAutoImport() entered');
+        if (this.options.autoImportPath === undefined) {
+            return BluePromise.resolve();
+        }
+        else {
+            var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
+            var tsWriter = new CodeWriter(this.classesMap, templatesDirPath);
+            var classes = this.classesMap.getClasses();
+            return mkdirpPromise(path.dirname(this.options.autoImportPath)).then(function () { return tsWriter.writeAutoImportFile(_this.options); }).then(function () { return dlog('writeAutoImport() completed'); });
+        }
+    };
     Main.prototype.initJava = function () {
         var _this = this;
         var classpath = [];
@@ -114,7 +127,7 @@ program.on('--help', function () {
 });
 program.parse(process.argv);
 var packageJsonPath = './package.json';
-readJsonPromise(packageJsonPath).then(function (packageContents) {
+readJsonPromise(packageJsonPath, console.error, false).then(function (packageContents) {
     if (!('tsjava' in packageContents)) {
         console.error(error('package.json does not contain a tsjava property'));
         program.help();
