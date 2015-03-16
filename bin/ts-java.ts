@@ -68,7 +68,7 @@ class Main {
     return this.initJava()
       .then(() => { this.classesMap = new ClassesMap(java, this.options); })
       .then(() => this.loadClasses())
-      .then(() => BluePromise.join(this.writeJsons(), this.writeInterpolatedFiles()))
+      .then(() => BluePromise.join(this.writeJsons(), this.writeInterpolatedFiles(), this.writeAutoImport()))
       .then(() => dlog('run() completed.'))
       .then(() => this.classesMap);
   }
@@ -113,6 +113,20 @@ class Main {
     return mkdirpPromise(path.dirname(this.options.outputPath))
       .then(() => tsWriter.writePackageFile(this.options))
       .then(() => dlog('writePackageFiles() completed'));
+  }
+
+  private writeAutoImport(): BluePromise<void> {
+    dlog('writeAutoImport() entered');
+    if (this.options.autoImportPath === undefined) {
+      return BluePromise.resolve();
+    } else {
+      var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
+      var tsWriter = new CodeWriter(this.classesMap, templatesDirPath);
+      var classes: ClassDefinitionMap = this.classesMap.getClasses();
+      return mkdirpPromise(path.dirname(this.options.autoImportPath))
+        .then(() => tsWriter.writeAutoImportFile(this.options))
+        .then(() => dlog('writeAutoImport() completed'));
+    }
   }
 
   private initJava(): BluePromise<void> {

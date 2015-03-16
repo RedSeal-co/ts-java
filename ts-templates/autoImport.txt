@@ -1,0 +1,24 @@
+import java = require('java');
+
+export = autoImport;
+
+{{#each this}}
+{{#if useAlias}}
+function autoImport(shortName: "{{alias}}"): Java.{{packageName}}.{{shortName}};
+{{/if}}
+{{/each}}
+function autoImport(shortName: string): any;
+
+function autoImport(shortName: string): any {
+
+  var shortToLongNameMap = {
+    {{#each this}}
+    {{#if useAlias}}
+    "{{alias}}": "{{packageName}}.{{shortName}}",
+    {{/if}}
+    {{/each}}
+  };
+  
+  var longName: string = shortToLongNameMap[shortName];
+  return java.import(longName);
+}

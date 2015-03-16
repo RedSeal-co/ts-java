@@ -50,7 +50,7 @@ var Main = (function () {
         var _this = this;
         return this.initJava().then(function () {
             _this.classesMap = new ClassesMap(java, _this.options);
-        }).then(function () { return _this.loadClasses(); }).then(function () { return BluePromise.join(_this.writeJsons(), _this.writeInterpolatedFiles()); }).then(function () { return dlog('run() completed.'); }).then(function () { return _this.classesMap; });
+        }).then(function () { return _this.loadClasses(); }).then(function () { return BluePromise.join(_this.writeJsons(), _this.writeInterpolatedFiles(), _this.writeAutoImport()); }).then(function () { return dlog('run() completed.'); }).then(function () { return _this.classesMap; });
     };
     Main.prototype.writeInterpolatedFiles = function () {
         var classesMap = this.classesMap;
@@ -83,6 +83,19 @@ var Main = (function () {
         var tsWriter = new CodeWriter(classesMap, templatesDirPath);
         var classes = classesMap.getClasses();
         return mkdirpPromise(path.dirname(this.options.outputPath)).then(function () { return tsWriter.writePackageFile(_this.options); }).then(function () { return dlog('writePackageFiles() completed'); });
+    };
+    Main.prototype.writeAutoImport = function () {
+        var _this = this;
+        dlog('writeAutoImport() entered');
+        if (this.options.autoImportPath === undefined) {
+            return BluePromise.resolve();
+        }
+        else {
+            var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
+            var tsWriter = new CodeWriter(this.classesMap, templatesDirPath);
+            var classes = this.classesMap.getClasses();
+            return mkdirpPromise(path.dirname(this.options.autoImportPath)).then(function () { return tsWriter.writeAutoImportFile(_this.options); }).then(function () { return dlog('writeAutoImport() completed'); });
+        }
     };
     Main.prototype.initJava = function () {
         var _this = this;
