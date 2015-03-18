@@ -254,8 +254,8 @@ declare module Java {
       // getConstructor
       // public java.lang.reflect.Constructor<T> java.lang.Class.getConstructor(java.lang.Class<?>...) throws java.lang.NoSuchMethodException,java.lang.SecurityException
       getConstructor(arg0: array_t<Class>, cb: Callback<Constructor>): void;
-      getConstructorSync(arg0: array_t<Class>): Constructor;
-      getConstructorPromise(arg0: array_t<Class>): Promise<Constructor>;
+      getConstructorSync(...arg0: Class[]): Constructor;
+      getConstructorPromise(...arg0: Class[]): Promise<Constructor>;
       // getConstructors
       // public java.lang.reflect.Constructor<?>[] java.lang.Class.getConstructors() throws java.lang.SecurityException
       getConstructors( cb: Callback<Constructor[]>): void;
@@ -284,8 +284,8 @@ declare module Java {
       // getDeclaredConstructor
       // public java.lang.reflect.Constructor<T> java.lang.Class.getDeclaredConstructor(java.lang.Class<?>...) throws java.lang.NoSuchMethodException,java.lang.SecurityException
       getDeclaredConstructor(arg0: array_t<Class>, cb: Callback<Constructor>): void;
-      getDeclaredConstructorSync(arg0: array_t<Class>): Constructor;
-      getDeclaredConstructorPromise(arg0: array_t<Class>): Promise<Constructor>;
+      getDeclaredConstructorSync(...arg0: Class[]): Constructor;
+      getDeclaredConstructorPromise(...arg0: Class[]): Promise<Constructor>;
       // getDeclaredConstructors
       // public java.lang.reflect.Constructor<?>[] java.lang.Class.getDeclaredConstructors() throws java.lang.SecurityException
       getDeclaredConstructors( cb: Callback<Constructor[]>): void;
@@ -304,8 +304,8 @@ declare module Java {
       // getDeclaredMethod
       // public java.lang.reflect.Method java.lang.Class.getDeclaredMethod(java.lang.String,java.lang.Class<?>...) throws java.lang.NoSuchMethodException,java.lang.SecurityException
       getDeclaredMethod(arg0: string_t, arg1: array_t<Class>, cb: Callback<Method>): void;
-      getDeclaredMethodSync(arg0: string_t, arg1: array_t<Class>): Method;
-      getDeclaredMethodPromise(arg0: string_t, arg1: array_t<Class>): Promise<Method>;
+      getDeclaredMethodSync(arg0: string_t, ...arg1: Class[]): Method;
+      getDeclaredMethodPromise(arg0: string_t, ...arg1: Class[]): Promise<Method>;
       // getDeclaredMethods
       // public java.lang.reflect.Method[] java.lang.Class.getDeclaredMethods() throws java.lang.SecurityException
       getDeclaredMethods( cb: Callback<Method[]>): void;
@@ -364,8 +364,8 @@ declare module Java {
       // getMethod
       // public java.lang.reflect.Method java.lang.Class.getMethod(java.lang.String,java.lang.Class<?>...) throws java.lang.NoSuchMethodException,java.lang.SecurityException
       getMethod(arg0: string_t, arg1: array_t<Class>, cb: Callback<Method>): void;
-      getMethodSync(arg0: string_t, arg1: array_t<Class>): Method;
-      getMethodPromise(arg0: string_t, arg1: array_t<Class>): Promise<Method>;
+      getMethodSync(arg0: string_t, ...arg1: Class[]): Method;
+      getMethodPromise(arg0: string_t, ...arg1: Class[]): Promise<Method>;
       // getMethods
       // public java.lang.reflect.Method[] java.lang.Class.getMethods() throws java.lang.SecurityException
       getMethods( cb: Callback<Method[]>): void;
@@ -1030,16 +1030,16 @@ declare module Java {
         copyValueOfPromise(arg0: array_t<object_t>): Promise<string>;
         // public static java.lang.String java.lang.String.format(java.util.Locale,java.lang.String,java.lang.Object...)
         format(arg0: object_t, arg1: string_t, arg2: array_t<object_t>, cb: Callback<string>): void;
-        formatSync(arg0: object_t, arg1: string_t, arg2: array_t<object_t>): string;
-        formatPromise(arg0: object_t, arg1: string_t, arg2: array_t<object_t>): Promise<string>;
+        formatSync(arg0: object_t, arg1: string_t, ...arg2: object_t[]): string;
+        formatPromise(arg0: object_t, arg1: string_t, ...arg2: object_t[]): Promise<string>;
         // public static java.lang.String java.lang.String.format(java.lang.String,java.lang.Object...)
         format(arg0: string_t, arg1: array_t<object_t>, cb: Callback<string>): void;
-        formatSync(arg0: string_t, arg1: array_t<object_t>): string;
-        formatPromise(arg0: string_t, arg1: array_t<object_t>): Promise<string>;
+        formatSync(arg0: string_t, ...arg1: object_t[]): string;
+        formatPromise(arg0: string_t, ...arg1: object_t[]): Promise<string>;
         // public static java.lang.String java.lang.String.join(java.lang.CharSequence,java.lang.CharSequence...)
         join(arg0: object_t, arg1: array_t<object_t>, cb: Callback<string>): void;
-        joinSync(arg0: object_t, arg1: array_t<object_t>): string;
-        joinPromise(arg0: object_t, arg1: array_t<object_t>): Promise<string>;
+        joinSync(arg0: object_t, ...arg1: object_t[]): string;
+        joinPromise(arg0: object_t, ...arg1: object_t[]): Promise<string>;
         // public static java.lang.String java.lang.String.join(java.lang.CharSequence,java.lang.Iterable<? extends java.lang.CharSequence>)
         join(arg0: object_t, arg1: object_t, cb: Callback<string>): void;
         joinSync(arg0: object_t, arg1: object_t): string;
@@ -1225,8 +1225,8 @@ declare module Java {
       // invoke
       // public java.lang.Object java.lang.reflect.Method.invoke(java.lang.Object,java.lang.Object...) throws java.lang.IllegalAccessException,java.lang.IllegalArgumentException,java.lang.reflect.InvocationTargetException
       invoke(arg0: object_t, arg1: array_t<object_t>, cb: Callback<object_t>): void;
-      invokeSync(arg0: object_t, arg1: array_t<object_t>): object_t;
-      invokePromise(arg0: object_t, arg1: array_t<object_t>): Promise<object_t>;
+      invokeSync(arg0: object_t, ...arg1: object_t[]): object_t;
+      invokePromise(arg0: object_t, ...arg1: object_t[]): Promise<object_t>;
       // isAccessible
       // public boolean java.lang.reflect.AccessibleObject.isAccessible()
       isAccessible( cb: Callback<boolean>): void;
@@ -2188,8 +2188,8 @@ declare module Java {
       // newInstance
       // public T java.lang.reflect.Constructor.newInstance(java.lang.Object...) throws java.lang.InstantiationException,java.lang.IllegalAccessException,java.lang.IllegalArgumentException,java.lang.reflect.InvocationTargetException
       newInstance(arg0: array_t<object_t>, cb: Callback<object_t>): void;
-      newInstanceSync(arg0: array_t<object_t>): object_t;
-      newInstancePromise(arg0: array_t<object_t>): Promise<object_t>;
+      newInstanceSync(...arg0: object_t[]): object_t;
+      newInstancePromise(...arg0: object_t[]): Promise<object_t>;
       // notify
       // public final native void java.lang.Object.notify()
       notify( cb: Callback<void>): void;
