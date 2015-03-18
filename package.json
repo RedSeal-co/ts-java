@@ -26,7 +26,7 @@
     "glob": "^4.3.2",
     "handlebars": "^2.0.0",
     "immutable": "^3.3.0",
-    "java": "^0.4.4",
+    "java": "git://github.com/RedSeal-co/node-java.git#varargs.r1",
     "lodash": "^2.4.1",
     "ls-archive": "^1.0.3",
     "mkdirp": "^0.5.0",

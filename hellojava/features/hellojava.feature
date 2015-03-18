@@ -23,6 +23,8 @@ in the Background section.
     import glob = require('glob');
     import java = require('java');
     java.asyncOptions = {
+      syncSuffix: 'Sync',
+      asyncSuffix: '',
       promiseSuffix: 'Promise',
       promisify: require('bluebird').promisify
     };

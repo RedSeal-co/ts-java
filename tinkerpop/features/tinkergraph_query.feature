@@ -15,6 +15,8 @@ So that I can use promises in my application.
     import java = require('java');
 
     java.asyncOptions = {
+      syncSuffix: 'Sync',
+      asyncSuffix: '',
       promiseSuffix: 'Promise',
       promisify: require('bluebird').promisify
     };
