@@ -37,7 +37,7 @@ if an invalid type is passed where a varags array parameter is expected.
   Scenario: Varargs with no args
     Given the above boilerplate with following scenario snippet:
     """
-    something.setListSync();
+    something.setListVarArgsSync();
     assert.strictEqual(something.joinListSync('--'), '');
     """
     Then it compiles and lints cleanly
@@ -46,7 +46,7 @@ if an invalid type is passed where a varags array parameter is expected.
   Scenario: Varargs with one argument
     Given the above boilerplate with following scenario snippet:
     """
-    something.setListSync('hello');
+    something.setListVarArgsSync('hello');
     assert.strictEqual(something.joinListSync('--'), 'hello');
     """
     Then it compiles and lints cleanly
@@ -55,7 +55,7 @@ if an invalid type is passed where a varags array parameter is expected.
   Scenario: Varargs with two arguments
     Given the above boilerplate with following scenario snippet:
     """
-    something.setListSync('hello', 'world');
+    something.setListVarArgsSync('hello', 'world');
     assert.strictEqual(something.joinListSync('--'), 'hello--world');
     """
     Then it compiles and lints cleanly
@@ -64,7 +64,7 @@ if an invalid type is passed where a varags array parameter is expected.
   Scenario: Varargs with many arguments
     Given the above boilerplate with following scenario snippet:
     """
-    something.setListSync('a', 'b', 'c', 'd', 'e');
+    something.setListVarArgsSync('a', 'b', 'c', 'd', 'e');
     assert.strictEqual(something.joinListSync('--'), 'a--b--c--d--e');
     """
     Then it compiles and lints cleanly

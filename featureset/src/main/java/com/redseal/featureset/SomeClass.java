@@ -54,7 +54,11 @@ public class SomeClass extends SomeAbstractClass {
         return theList;
     }
 
-    public void setList(String... args) {
+    public void setList(String[] args) {
+        theList = args;
+    }
+
+    public void setListVarArgs(String... args) {
         theList = args;
     }
 

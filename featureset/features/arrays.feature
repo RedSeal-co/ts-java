@@ -88,7 +88,17 @@ I want to understand how to use Java array types in Typescript.
     # see also varargs.feature
     Given the above boilerplate with following scenario snippet:
     """
-    something.setListSync('foo', 'bar');
+    something.setListVarArgsSync('foo', 'bar');
+    var arr: string[] = something.getListSync();
+    assert.deepEqual(arr, ['foo', 'bar']);
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
+  Scenario: Setting a 1d array requires newArray
+    Given the above boilerplate with following scenario snippet:
+    """
+    something.setListSync(java.newArray('java.lang.String', ['foo', 'bar']));
     var arr: string[] = something.getListSync();
     assert.deepEqual(arr, ['foo', 'bar']);
     """

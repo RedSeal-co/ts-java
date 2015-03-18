@@ -17,7 +17,8 @@ public abstract class SomeAbstractClass implements SomeInterface {
     public abstract void setString(String x);
     public abstract void setBoolean(boolean x);
     public abstract void setDouble(double x);
-    public abstract void setList(String... args);
+    public abstract void setList(String[] args);
+    public abstract void setListVarArgs(String... args);
     public abstract void setArray(int[][] x);
     public abstract void setThings(Thing[][] things);
 

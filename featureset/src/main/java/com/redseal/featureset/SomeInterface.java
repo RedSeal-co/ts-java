@@ -15,7 +15,8 @@ public interface SomeInterface {
     void setString(String x);
     void setBoolean(boolean x);
     void setDouble(double x);
-    void setList(String... args);
+    void setList(String[] args);
+    void setListVarArgs(String... args);
     void setArray(int[][] x);
     void setThings(Thing[][] things);
 
