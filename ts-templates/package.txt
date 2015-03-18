@@ -80,7 +80,7 @@ declare module Java {
 
     {{#each this}}
     {{#each constructors}}
-    newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}, cb: Callback<{{{tsReturns}}}>): void;
+    newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this cb=true}}}{{/if}}, cb: Callback<{{{tsReturns}}}>): void;
     {{/each}}
     {{/each}}
     newInstance(className: string, ...args: any[]): void;
@@ -116,7 +116,7 @@ declare module Java {
       {{#if isStatic}}
       // static method, see {{shortName}}.Static
       {{else}}
-      {{name}}({{#if tsParamTypes}}{{{margs this}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
+      {{name}}({{#if tsParamTypes}}{{{margs this cb=true}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
       {{name}}Sync({{{margs this}}}): {{{tsReturns}}};
       {{name}}Promise({{{margs this}}}): Promise<{{{tsReturns}}}>;
       {{/if}}
@@ -138,7 +138,7 @@ declare module Java {
         {{#each this}}
         {{#if isStatic}}
         // {{{generic_proto}}}
-        {{name}}({{#if tsParamTypes}}{{{margs this}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
+        {{name}}({{#if tsParamTypes}}{{{margs this cb=true}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
         {{name}}Sync({{{margs this}}}): {{{tsReturns}}};
         {{name}}Promise({{{margs this}}}): Promise<{{{tsReturns}}}>;
         {{/if}}
