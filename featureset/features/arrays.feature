@@ -84,28 +84,13 @@ I want to understand how to use Java array types in Typescript.
     Then it compiles and lints cleanly
     And it runs and produces no output
 
-  Scenario: Setting 1d array of primitive type fails without newArray
-    # We'd like to be able to pass in a javascript array for a java array parameter,
-    # at least in the case where the array element type is a typed mapped by node-java.
-    # Unfortunately, this is not possible with the current implementation of node-java.
+  Scenario: Special case passing an array as rest arguments to a java varargs methods
+    # see also varargs.feature
     Given the above boilerplate with following scenario snippet:
     """
-    something.setListSync(['foo', 'bar']);
-    """
-    When compiled it produces this error containing this snippet:
-    """
-    error TS2345: Argument of type 'string[]' is not assignable to parameter of type 'array_t<string | String>'
-    """
-
-  Scenario: Setting 1d array of primitive type using newArray.
-    Given the above boilerplate with following scenario snippet:
-    """
-    var someData: string[] = ['foo', 'bar'];
-    var x: Java.array_t<Java.java.lang.String> = java.newArray('java.lang.String', someData);
-    something.setListSync(x);
-
+    something.setListSync('foo', 'bar');
     var arr: string[] = something.getListSync();
-    assert.deepEqual(arr, someData);
+    assert.deepEqual(arr, ['foo', 'bar']);
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
