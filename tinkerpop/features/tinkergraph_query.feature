@@ -15,8 +15,8 @@ So I can leverage my knowledge of the Java TinkerPop API to write programs in Ty
     import java = require('java');
 
     java.asyncOptions = {
-      syncSuffix: 'Sync',
-      promiseSuffix: 'Promise',
+      syncSuffix: '',
+      promiseSuffix: 'P',
       promisify: require('bluebird').promisify
     };
 
@@ -37,12 +37,12 @@ So I can leverage my knowledge of the Java TinkerPop API to write programs in Ty
     // build up the traversal, and then a promise only for the final step to execute the traversal.
     // Furthermore we declare a variable travP for a GraphTraversal promise, to demonstrate
     // Typescript types that will normally be implicit.
-    TinkerFactory.createClassicPromise()
+    TinkerFactory.createClassicP()
       .then((g: Java.TinkerGraph) => {
-        var travP: Promise<Java.GraphTraversal> = g.VPromise();
-        travP = travP.then((trav: Java.GraphTraversal) => trav.valuesPromise('name', 'age'));
-        travP.then((trav: Java.GraphTraversal) => trav.toListPromise())
-          .then((vertList: Java.List) => console.log(vertList.toStringSync()));
+        var travP: Promise<Java.GraphTraversal> = g.VP();
+        travP = travP.then((trav: Java.GraphTraversal) => trav.valuesP('name', 'age'));
+        travP.then((trav: Java.GraphTraversal) => trav.toListP())
+          .then((vertList: Java.List) => console.log(vertList.toString()));
       });
     """
     Then it compiles and lints cleanly
@@ -56,9 +56,9 @@ So I can leverage my knowledge of the Java TinkerPop API to write programs in Ty
     Given the above boilerplate with following scenario snippet:
     """
     // This is the same query, rewritten using the more typical idioms.
-    var g: Java.TinkerGraph = TinkerFactory.createClassicSync();
-    g.VSync().valuesSync('name', 'age').toListPromise()
-      .then((vertList: Java.List) => console.log(vertList.toStringSync()));
+    var g: Java.TinkerGraph = TinkerFactory.createClassic();
+    g.V().values('name', 'age').toListP()
+      .then((vertList: Java.List) => console.log(vertList.toString()));
     """
     Then it compiles and lints cleanly
     And it runs and produces output:
