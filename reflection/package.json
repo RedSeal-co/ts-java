@@ -19,6 +19,9 @@
       "java.lang.reflect.Type"
     ],
     "whiteList": [
-    ]
+    ],
+    "asyncOptions": {
+      "syncSuffix": "Sync"
+    }
   }
 }

@@ -27,6 +27,11 @@
       "java.util.List"
     ],
     "whiteList": [
-    ]
+    ],
+    "asyncOptions": {
+      "syncSuffix": "Sync",
+      "asyncSuffix": "",
+      "promiseSuffix": "Promise"
+    }
   }
 }
