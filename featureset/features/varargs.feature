@@ -17,10 +17,12 @@ if an invalid type is passed where a varags array parameter is expected.
   Background:
     Given this boilerplate to intialize node-java:
     """
-    /// <reference path='../../typings/node/node.d.ts' />
-    /// <reference path='../../typings/glob/glob.d.ts' />
     /// <reference path='../../featureset/java.d.ts'/>
+    /// <reference path='../../typings/glob/glob.d.ts' />
+    /// <reference path='../../typings/node/node.d.ts' />
+    /// <reference path='../../typings/power-assert/power-assert.d.ts' />
 
+    import assert = require('power-assert');
     import glob = require('glob');
     import java = require('java');
 
@@ -32,54 +34,38 @@ if an invalid type is passed where a varags array parameter is expected.
 
     """
 
-  Scenario: Varargs example
+  Scenario: Varargs with no args
     Given the above boilerplate with following scenario snippet:
     """
-    // We'd like to be able to do this:
-    // something.setListSync('hello', 'world');
-
-    // But for now we have to do this instead:
-    var list: Java.array_t<Java.String> = java.newArray<Java.String>('java.lang.String', ['hello', 'world']);
-    something.setListSync(list);
-
-    console.log(something.joinListSync('--'));
+    something.setListVarArgsSync();
+    assert.strictEqual(something.joinListSync('--'), '');
     """
     Then it compiles and lints cleanly
-    And it runs and produces output:
-    """
-    hello--world
+    And it runs and produces no output
 
-    """
-
-  Scenario: Varargs Negative Test -- No args
+  Scenario: Varargs with one argument
     Given the above boilerplate with following scenario snippet:
     """
-    // We'd like to be able to do this, but unfortunately, node-java doesn't yet properly support varags:
-    something.setListSync();
+    something.setListVarArgsSync('hello');
+    assert.strictEqual(something.joinListSync('--'), 'hello');
     """
-    When compiled it produces this error containing this snippet:
-    """
-    error TS2346: Supplied parameters do not match any signature of call target
-    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
 
-  Scenario: Varargs Negative Test -- One argument, but not an array
+  Scenario: Varargs with two arguments
     Given the above boilerplate with following scenario snippet:
     """
-    // We'd like to be able to do this, but unfortunately, node-java doesn't yet properly support varags:
-    something.setListSync('hello');
+    something.setListVarArgsSync('hello', 'world');
+    assert.strictEqual(something.joinListSync('--'), 'hello--world');
     """
-    When compiled it produces this error containing this snippet:
-    """
-    error TS2345: Argument of type 'string' is not assignable to parameter of type
-    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
 
-  Scenario: Varargs Negative Test -- Two or more arguments, not an array
+  Scenario: Varargs with many arguments
     Given the above boilerplate with following scenario snippet:
     """
-    // We'd like to be able to do this, but unfortunately, node-java doesn't yet properly support varags:
-    something.setListSync('hello', 'world');
+    something.setListVarArgsSync('a', 'b', 'c', 'd', 'e');
+    assert.strictEqual(something.joinListSync('--'), 'a--b--c--d--e');
     """
-    When compiled it produces this error containing this snippet:
-    """
-    error TS2346: Supplied parameters do not match any signature of call target
-    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output

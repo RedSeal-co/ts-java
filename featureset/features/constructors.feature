@@ -55,6 +55,8 @@ Feature: Constructors
     """
     // Note, we can set asyncOptions here only because the boilerplate hand't yet finalized java initilization.
     java.asyncOptions = {
+      syncSuffix: 'Sync',
+      asyncSuffix: '',
       promiseSuffix: 'Promise',
       promisify: require('bluebird').promisify
     };

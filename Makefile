@@ -17,13 +17,13 @@ STEPS_OBJS=$(patsubst %.ts,%.js,$(STEPS_SRC))
 LIBS_SRC=$(filter-out %.d.ts,$(wildcard lib/*.ts))
 LIBS_OBJS=$(patsubst %.ts,%.js,$(LIBS_SRC))
 
+LINT=./node_modules/.bin/tslint --config tslint.json --file
+
 TSC=./node_modules/.bin/tsc
 TSC_OPTS=--module commonjs --target ES5 --sourceMap --noEmitOnError --noImplicitAny
 
 %.js: %.ts
-	$(TSC) $(TSC_OPTS) $< || (rm -f $@ && false)
-	stat $@ > /dev/null
-	node_modules/tslint/bin/tslint --config tslint.json --file $<
+	($(TSC) $(TSC_OPTS) $< && $(LINT) $<) || (rm -f $@ && false)
 
 ######
 # JAVAPKGS are directories containing a pom.xml and a package.json in which ts-java will be run

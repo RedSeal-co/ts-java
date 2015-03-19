@@ -14,6 +14,8 @@ I want to understand how Typescript offers type saftey.
     import java = require('java');
 
     java.asyncOptions = {
+      syncSuffix: 'Sync',
+      asyncSuffix: '',
       promiseSuffix: 'Promise',
       promisify: require('bluebird').promisify
     };
