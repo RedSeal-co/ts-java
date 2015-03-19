@@ -1,3 +1,5 @@
+{{#with classes}}
+
 declare module 'java' {
   var Java: Java.NodeAPI;
   export = Java;
@@ -110,16 +112,19 @@ declare module Java {
   export module {{packageName}} {
     export interface {{shortName}} {{#if tsInterfaces}}extends {{tsInterfaces}}{{/if}} {
       {{#each variants}}
-      // {{@key}}
       {{#each this}}
+      {{#unless isStatic}}
       // {{{generic_proto}}}
-      {{#if isStatic}}
-      // static method, see {{shortName}}.Static
-      {{else}}
-      {{name}}({{#if tsParamTypes}}{{{margs this cb=true}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
-      {{name}}Sync({{{margs this}}}): {{{tsReturns}}};
-      {{name}}Promise({{{margs this}}}): Promise<{{{tsReturns}}}>;
-      {{/if}}
+      {{#ifdef @root.opts.asyncSuffix}}
+      {{name}}{{@root.opts.asyncSuffix}}({{#if tsParamTypes}}{{{margs this cb=true}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
+      {{/ifdef~}}
+      {{#ifdef @root.opts.syncSuffix}}
+      {{name}}{{@root.opts.syncSuffix}}({{{margs this}}}): {{{tsReturns}}};
+      {{/ifdef~}}
+      {{#ifdef @root.opts.promiseSuffix}}
+      {{name}}{{@root.opts.promiseSuffix}}({{{margs this}}}): Promise<{{{tsReturns}}}>;
+      {{/ifdef~}}
+      {{/unless}}
       {{/each}}
       {{/each}}
       {{#each fields}}
@@ -138,9 +143,15 @@ declare module Java {
         {{#each this}}
         {{#if isStatic}}
         // {{{generic_proto}}}
-        {{name}}({{#if tsParamTypes}}{{{margs this cb=true}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
-        {{name}}Sync({{{margs this}}}): {{{tsReturns}}};
-        {{name}}Promise({{{margs this}}}): Promise<{{{tsReturns}}}>;
+        {{#ifdef @root.opts.asyncSuffix}}
+        {{name}}{{@root.opts.asyncSuffix}}({{#if tsParamTypes}}{{{margs this cb=true}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
+        {{/ifdef~}}
+        {{#ifdef @root.opts.syncSuffix}}
+        {{name}}{{@root.opts.syncSuffix}}({{{margs this}}}): {{{tsReturns}}};
+        {{/ifdef~}}
+        {{#ifdef @root.opts.promiseSuffix}}
+        {{name}}{{@root.opts.promiseSuffix}}({{{margs this}}}): Promise<{{{tsReturns}}}>;
+        {{/ifdef~}}
         {{/if}}
         {{/each}}
         {{/each}}
@@ -155,3 +166,4 @@ declare module Java {
 
   {{/each}}
 }
+{{/with}}

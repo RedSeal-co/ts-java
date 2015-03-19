@@ -23,6 +23,10 @@
     ],
     "whiteList": [
       "com.tinkerpop.gremlin."
-    ]
+    ],
+    "asyncOptions": {
+      "syncSuffix": "",
+      "promiseSuffix": "P"
+    }
   }
 }

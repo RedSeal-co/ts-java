@@ -10,6 +10,11 @@
       "com.redseal.hellojava.HelloJava"
     ],
     "whiteList": [
-    ]
+    ],
+    "asyncOptions": {
+      "syncSuffix": "Sync",
+      "asyncSuffix": "",
+      "promiseSuffix": "Promise"
+    }
   }
 }

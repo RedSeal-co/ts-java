@@ -1,5 +1,9 @@
 'use strict';
 
+import AsyncOptions = require('./AsyncOptions');
+
+// ### TsJavaOptions
+
 // TsJavaOptions is the json structure we expect to find in package.json under the key 'tsjava'
 interface TsJavaOptions {
   classpath: Array<string>;
@@ -29,6 +33,11 @@ interface TsJavaOptions {
 
   autoImportPath?: string;
     // The path where ts-java will write a source file defining the autoImport function.
+
+  asyncOptions?: AsyncOptions;
+    // The asyncOptions which will be used to initalize Java.
+    // Note, currently it is up to the developer to ensure the options specified here match
+    // the options used to initalize the java module.
 }
 
 export = TsJavaOptions;
