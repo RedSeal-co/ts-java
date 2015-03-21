@@ -207,6 +207,7 @@ declare module Java {
       getComponentTypeSync(): Class;
       // public java.lang.reflect.Constructor<T> java.lang.Class.getConstructor(java.lang.Class<?>...) throws java.lang.NoSuchMethodException,java.lang.SecurityException
       getConstructorSync(...arg0: Class[]): Constructor;
+      getConstructorSync(arg0: array_t<Class>): Constructor;
       // public java.lang.reflect.Constructor<?>[] java.lang.Class.getConstructors() throws java.lang.SecurityException
       getConstructorsSync(): Constructor[];
       // public <A> A java.lang.Class.getDeclaredAnnotation(java.lang.Class<A>)
@@ -219,6 +220,7 @@ declare module Java {
       getDeclaredClassesSync(): Class[];
       // public java.lang.reflect.Constructor<T> java.lang.Class.getDeclaredConstructor(java.lang.Class<?>...) throws java.lang.NoSuchMethodException,java.lang.SecurityException
       getDeclaredConstructorSync(...arg0: Class[]): Constructor;
+      getDeclaredConstructorSync(arg0: array_t<Class>): Constructor;
       // public java.lang.reflect.Constructor<?>[] java.lang.Class.getDeclaredConstructors() throws java.lang.SecurityException
       getDeclaredConstructorsSync(): Constructor[];
       // public java.lang.reflect.Field java.lang.Class.getDeclaredField(java.lang.String) throws java.lang.NoSuchFieldException,java.lang.SecurityException
@@ -227,6 +229,7 @@ declare module Java {
       getDeclaredFieldsSync(): Field[];
       // public java.lang.reflect.Method java.lang.Class.getDeclaredMethod(java.lang.String,java.lang.Class<?>...) throws java.lang.NoSuchMethodException,java.lang.SecurityException
       getDeclaredMethodSync(arg0: string_t, ...arg1: Class[]): Method;
+      getDeclaredMethodSync(arg0: string_t, arg1: array_t<Class>): Method;
       // public java.lang.reflect.Method[] java.lang.Class.getDeclaredMethods() throws java.lang.SecurityException
       getDeclaredMethodsSync(): Method[];
       // public java.lang.Class<?> java.lang.Class.getDeclaringClass() throws java.lang.SecurityException
@@ -251,6 +254,7 @@ declare module Java {
       getInterfacesSync(): Class[];
       // public java.lang.reflect.Method java.lang.Class.getMethod(java.lang.String,java.lang.Class<?>...) throws java.lang.NoSuchMethodException,java.lang.SecurityException
       getMethodSync(arg0: string_t, ...arg1: Class[]): Method;
+      getMethodSync(arg0: string_t, arg1: array_t<Class>): Method;
       // public java.lang.reflect.Method[] java.lang.Class.getMethods() throws java.lang.SecurityException
       getMethodsSync(): Method[];
       // public native int java.lang.Class.getModifiers()
@@ -537,10 +541,13 @@ declare module Java {
         copyValueOfSync(arg0: array_t<object_t>): string;
         // public static java.lang.String java.lang.String.format(java.util.Locale,java.lang.String,java.lang.Object...)
         formatSync(arg0: object_t, arg1: string_t, ...arg2: object_t[]): string;
+        formatSync(arg0: object_t, arg1: string_t, arg2: array_t<object_t>): string;
         // public static java.lang.String java.lang.String.format(java.lang.String,java.lang.Object...)
         formatSync(arg0: string_t, ...arg1: object_t[]): string;
+        formatSync(arg0: string_t, arg1: array_t<object_t>): string;
         // public static java.lang.String java.lang.String.join(java.lang.CharSequence,java.lang.CharSequence...)
         joinSync(arg0: object_t, ...arg1: object_t[]): string;
+        joinSync(arg0: object_t, arg1: array_t<object_t>): string;
         // public static java.lang.String java.lang.String.join(java.lang.CharSequence,java.lang.Iterable<? extends java.lang.CharSequence>)
         joinSync(arg0: object_t, arg1: object_t): string;
         // public static java.lang.String java.lang.String.valueOf(char[],int,int)
@@ -624,6 +631,7 @@ declare module Java {
       hashCodeSync(): number;
       // public java.lang.Object java.lang.reflect.Method.invoke(java.lang.Object,java.lang.Object...) throws java.lang.IllegalAccessException,java.lang.IllegalArgumentException,java.lang.reflect.InvocationTargetException
       invokeSync(arg0: object_t, ...arg1: object_t[]): object_t;
+      invokeSync(arg0: object_t, arg1: array_t<object_t>): object_t;
       // public boolean java.lang.reflect.AccessibleObject.isAccessible()
       isAccessibleSync(): boolean;
       // public boolean java.lang.reflect.AccessibleObject.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)
@@ -1018,6 +1026,7 @@ declare module Java {
       isVarArgsSync(): boolean;
       // public T java.lang.reflect.Constructor.newInstance(java.lang.Object...) throws java.lang.InstantiationException,java.lang.IllegalAccessException,java.lang.IllegalArgumentException,java.lang.reflect.InvocationTargetException
       newInstanceSync(...arg0: object_t[]): object_t;
+      newInstanceSync(arg0: array_t<object_t>): object_t;
       // public final native void java.lang.Object.notify()
       notifySync(): void;
       // public final native void java.lang.Object.notifyAll()
