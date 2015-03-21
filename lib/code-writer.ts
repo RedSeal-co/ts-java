@@ -79,7 +79,7 @@ class CodeWriter {
       var names = method.paramNames;
       var args = _.map(names, (name: string, i: number) => {
         var isLastParam: boolean = i === tsParamTypes.length - 1;
-        if (options.hash.cb || !method.isVarArgs || !isLastParam) {
+        if (options.hash.norest || !method.isVarArgs || !isLastParam) {
           return util.format('%s: %s', name, tsParamTypes[i]);
         } else {
           var argType: string = tsParamTypes[i];
