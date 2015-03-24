@@ -20,6 +20,8 @@ public interface SomeInterface {
     void setArray(int[][] x);
     void setThings(Thing[][] things);
 
+    String setObjects(Object[] args);
+
     Object getStringObject();
     Object getShortObject();
     Object getLongObject();

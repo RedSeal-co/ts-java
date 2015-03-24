@@ -21,6 +21,7 @@ public abstract class SomeAbstractClass implements SomeInterface {
     public abstract void setListVarArgs(String... args);
     public abstract void setArray(int[][] x);
     public abstract void setThings(Thing[][] things);
+    public abstract String setObjects(Object[] args);
 
     public abstract Object getStringObject();
     public abstract Object getShortObject();

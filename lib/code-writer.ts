@@ -79,14 +79,18 @@ class CodeWriter {
       var names = method.paramNames;
       var args = _.map(names, (name: string, i: number) => {
         var isLastParam: boolean = i === tsParamTypes.length - 1;
+        var argType: string = tsParamTypes[i];
+        var m = argType.match(/^array_t<(.+)>$/);
+        if (m) {
+          argType = m[1] + '[]';
+        }
         if (options.hash.norest || !method.isVarArgs || !isLastParam) {
-          return util.format('%s: %s', name, tsParamTypes[i]);
-        } else {
-          var argType: string = tsParamTypes[i];
-          var m = argType.match(/^array_t<(.+)>$/);
-          if (m) {
-            argType = m[1] + '[]';
+          if (m && m[1] === 'object_t') {
+            return util.format('%s: (array_t<java.lang.Object> | object_t[])', name);
+          } else {
+            return util.format('%s: %s', name, tsParamTypes[i]);
           }
+        } else {
           return util.format('...%s: %s', name, argType);
         }
       });

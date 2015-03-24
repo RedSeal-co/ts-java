@@ -95,7 +95,26 @@ I want to understand how to use Java array types in Typescript.
     Then it compiles and lints cleanly
     And it runs and produces no output
 
-  Scenario: Setting a 1d array requires newArray
+  Scenario: A javascript array can be passed to a Java method taking an Object[] array.
+    Given the above boilerplate with following scenario snippet:
+    """
+    var result: string = something.setObjectsSync(['foo', 'bar']);
+    assert.strictEqual(result, 'Ack from setObjects(Object[] args)');
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
+  Scenario: It is an error to pass a Javascript array to a Java array if the base type is not Object
+    Given the above boilerplate with following scenario snippet:
+    """
+    something.setListSync(['foo', 'bar']);
+    """
+    When compiled it produces this error containing this snippet:
+    """
+    error TS2345: Argument of type 'string[]' is not assignable to parameter of type 'array_t<string | String>'.
+    """
+
+  Scenario: Setting a 1d array of any other type requires newArray
     Given the above boilerplate with following scenario snippet:
     """
     something.setListSync(java.newArray('java.lang.String', ['foo', 'bar']));
