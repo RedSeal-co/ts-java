@@ -97,7 +97,7 @@ class CodeWriter {
           // It this parameter an array of object_t?
           if (m && m[1] === 'object_t') {
             // Yes we do. This is a special case, where we can accept either array_t<Object> or object_t[]
-            return util.format('%s: (array_t<java.lang.Object> | object_t[])', name);
+            return util.format('%s: object_array_t', name);
           } else {
             // Not an array of object_t, the type tsParamTypes[i] is the correct type (whether an array or not)
             return util.format('%s: %s', name, tsParamTypes[i]);

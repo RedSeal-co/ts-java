@@ -40,6 +40,8 @@ declare module Java {
     __dummy: T;
   }
 
+  export type object_array_t = array_t<java.lang.Object> | object_t[];
+
   interface Callback<T> {
     (err: Error, result: T): void;
   }
