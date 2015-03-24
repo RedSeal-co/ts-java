@@ -48,8 +48,10 @@ declare module Java {
   }
 
   interface AsyncOptions {
-    promiseSuffix: string;
-    promisify: Function;
+    syncSuffix: string;
+    asyncSuffix?: string;
+    promiseSuffix?: string;
+    promisify?: Function;
   }
 
   // *NodeAPI* declares methods & members exported by the node java module.
