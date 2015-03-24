@@ -3,16 +3,14 @@ Feature: Varargs
 As a Node.js + TypeScript + node-java developer
 I want to understand how node-java + typescript handle java varags.
 
-To a large degree, the Typescript API produced for Java classes is a
-direct mapping from Java to Typescript, with one significant exception.
-While both Java and Typescript have similar syntax for function variadic arguments,
-node-java currently transforms methods using varargs to a method signature
-where the variable arguments are expressed as an array argument of the specified type.
-This prevents Typescript from use 'rest' arguments, and forces developers
-to explicitly gather the variable arguments into a Java array using newArray.
-The first example below illustrates how to do this.
-The second example shows that the Typescript compiler will yield an error
-if an invalid type is passed where a varags array parameter is expected.
+Java varargs map to Typescript 'rest' parameters in a natural way. There is no need to
+create an explicit array parameter. However, it may sometimes be convenient to pass an
+explict array parameter for the varargs arguments. In that case, it is typically necessary
+to use the java API function newArray(className: string, elements: T[]) to create the array.
+However, there is a special case for vararg parameters of type Object..., since node-java
+will automatically create a Java Object[] array from a Javascript array.
+
+See also arrays.feature.
 
   Background:
     Given this boilerplate to intialize node-java:
@@ -71,9 +69,6 @@ if an invalid type is passed where a varags array parameter is expected.
     And it runs and produces no output
 
   Scenario: Explicit empty array passed to varargs parameter requires newArray when array type is not Object
-    # An explicit javascript array will be seen in the JVM as an Object[].
-    # If a method requires a more specific type, such as String[], then newArray must be used.
-    # While this is ugly, remember that calls to varargs methods can simply omit the empty array.
     Given the above boilerplate with following scenario snippet:
     """
     var empty = java.newArray('java.lang.String', []);
@@ -84,9 +79,6 @@ if an invalid type is passed where a varags array parameter is expected.
     And it runs and produces no output
 
   Scenario: Plain empty array passed to varargs parameter yields error when array type is not Object
-    # An explicit javascript array will be seen in the JVM as an Object[].
-    # If a method requires a more specific type, such as String[], then newArray must be used.
-    # While this is ugly, remember that calls to varargs methods can simply omit the empty array.
     Given the above boilerplate with following scenario snippet:
     """
     something.setListVarArgsSync([]);
@@ -97,9 +89,6 @@ if an invalid type is passed where a varags array parameter is expected.
     """
 
   Scenario: Explicit non-empty array passed to varargs parameter requires newArray when array type is not Object
-    # An explicit javascript array will be seen in the JVM as an Object[].
-    # If a method requires a more specific type, such as String[], then newArray must be used.
-    # While this is ugly, remember that calls to varargs methods can simply pass the elements, as the tests above.
     Given the above boilerplate with following scenario snippet:
     """
     var arr = java.newArray('java.lang.String', ['hello', 'world']);
@@ -110,9 +99,6 @@ if an invalid type is passed where a varags array parameter is expected.
     And it runs and produces no output
 
   Scenario: Plain non-empty array passed to varargs parameter yields error when array type is not Object
-    # An explicit javascript array will be seen in the JVM as an Object[].
-    # If a method requires a more specific type, such as String[], then newArray must be used.
-    # While this is ugly, remember that calls to varargs methods can simply omit the empty array.
     Given the above boilerplate with following scenario snippet:
     """
     something.setListVarArgsSync(['hello', 'world']);

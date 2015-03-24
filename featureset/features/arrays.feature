@@ -3,6 +3,19 @@ Feature: Arrays
 As a Node.js + TypeScript + node-java developer
 I want to understand how to use Java array types in Typescript.
 
+For Java methods that return arrays, the result will be a Javascript array.
+If the array elements map to Javascript primitive types, the array will be a pure Javascript array.
+If the array elements do not map to Javascript primitives, the array will be an array of Java objects.
+
+For Java methods that accept 1d array arguments, there are different uses cases depending on the
+declared type of the array parameter. Whenever a Javascript array is passed to a method,
+node-java creates a Java array of type Object[].
+If the method parameter is declared to be of type Object[], the method call should succeed.
+If the method parameter is declared to be of a more specific type, then it is necessary to
+create a Java array using the node-java API function newArray(className: string, elements: T[]).
+
+It is currently not possible to pass a 2d (or higher dimension) array from Javascript to Java.
+
   Background:
     Given this boilerplate to intialize node-java:
     """
