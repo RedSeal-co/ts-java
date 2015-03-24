@@ -62,6 +62,10 @@ public class SomeClass extends SomeAbstractClass {
         theList = args;
     }
 
+    public String setObjects(Object[] args) {
+        return "Ack from setObjects(Object[] args)";
+    }
+
     public int[][] getArray() {
         return theArray;
     }

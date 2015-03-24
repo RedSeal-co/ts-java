@@ -3,6 +3,19 @@ Feature: Arrays
 As a Node.js + TypeScript + node-java developer
 I want to understand how to use Java array types in Typescript.
 
+For Java methods that return arrays, the result will be a Javascript array.
+If the array elements map to Javascript primitive types, the array will be a pure Javascript array.
+If the array elements do not map to Javascript primitives, the array will be an array of Java objects.
+
+For Java methods that accept 1d array arguments, there are different uses cases depending on the
+declared type of the array parameter. Whenever a Javascript array is passed to a method,
+node-java creates a Java array of type Object[].
+If the method parameter is declared to be of type Object[], the method call should succeed.
+If the method parameter is declared to be of a more specific type, then it is necessary to
+create a Java array using the node-java API function newArray(className: string, elements: T[]).
+
+It is currently not possible to pass a 2d (or higher dimension) array from Javascript to Java.
+
   Background:
     Given this boilerplate to intialize node-java:
     """
@@ -95,7 +108,26 @@ I want to understand how to use Java array types in Typescript.
     Then it compiles and lints cleanly
     And it runs and produces no output
 
-  Scenario: Setting a 1d array requires newArray
+  Scenario: A javascript array can be passed to a Java method taking an Object[] array.
+    Given the above boilerplate with following scenario snippet:
+    """
+    var result: string = something.setObjectsSync(['foo', 'bar']);
+    assert.strictEqual(result, 'Ack from setObjects(Object[] args)');
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
+  Scenario: It is an error to pass a Javascript array to a Java array if the base type is not Object
+    Given the above boilerplate with following scenario snippet:
+    """
+    something.setListSync(['foo', 'bar']);
+    """
+    When compiled it produces this error containing this snippet:
+    """
+    error TS2345: Argument of type 'string[]' is not assignable to parameter of type 'array_t<string | String>'.
+    """
+
+  Scenario: Setting a 1d array of any other type requires newArray
     Given the above boilerplate with following scenario snippet:
     """
     something.setListSync(java.newArray('java.lang.String', ['foo', 'bar']));

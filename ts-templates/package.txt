@@ -40,13 +40,17 @@ declare module Java {
     __dummy: T;
   }
 
+  export type object_array_t = array_t<java.lang.Object> | object_t[];
+
   interface Callback<T> {
     (err: Error, result: T): void;
   }
 
   interface AsyncOptions {
-    promiseSuffix: string;
-    promisify: Function;
+    syncSuffix: string;
+    asyncSuffix?: string;
+    promiseSuffix?: string;
+    promisify?: Function;
   }
 
   // *NodeAPI* declares methods & members exported by the node java module.
@@ -82,7 +86,7 @@ declare module Java {
 
     {{#each this}}
     {{#each constructors}}
-    newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this cb=true}}}{{/if}}, cb: Callback<{{{tsReturns}}}>): void;
+    newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this norest=true}}}{{/if}}, cb: Callback<{{{tsReturns}}}>): void;
     {{/each}}
     {{/each}}
     newInstance(className: string, ...args: any[]): void;
@@ -116,13 +120,19 @@ declare module Java {
       {{#unless isStatic}}
       // {{{generic_proto}}}
       {{#ifdef @root.opts.asyncSuffix}}
-      {{name}}{{@root.opts.asyncSuffix}}({{#if tsParamTypes}}{{{margs this cb=true}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
+      {{name}}{{@root.opts.asyncSuffix}}({{#if tsParamTypes}}{{{margs this norest=true}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
       {{/ifdef~}}
       {{#ifdef @root.opts.syncSuffix}}
       {{name}}{{@root.opts.syncSuffix}}({{{margs this}}}): {{{tsReturns}}};
+      {{#if isVarArgs}}
+      {{name}}{{@root.opts.syncSuffix}}({{{margs this norest=true}}}): {{{tsReturns}}};
+      {{/if}}
       {{/ifdef~}}
       {{#ifdef @root.opts.promiseSuffix}}
       {{name}}{{@root.opts.promiseSuffix}}({{{margs this}}}): Promise<{{{tsReturns}}}>;
+      {{#if isVarArgs}}
+      {{name}}{{@root.opts.promiseSuffix}}({{{margs this norest=true}}}): {{{tsReturns}}};
+      {{/if}}
       {{/ifdef~}}
       {{/unless}}
       {{/each}}
@@ -144,13 +154,19 @@ declare module Java {
         {{#if isStatic}}
         // {{{generic_proto}}}
         {{#ifdef @root.opts.asyncSuffix}}
-        {{name}}{{@root.opts.asyncSuffix}}({{#if tsParamTypes}}{{{margs this cb=true}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
+        {{name}}{{@root.opts.asyncSuffix}}({{#if tsParamTypes}}{{{margs this norest=true}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
         {{/ifdef~}}
         {{#ifdef @root.opts.syncSuffix}}
         {{name}}{{@root.opts.syncSuffix}}({{{margs this}}}): {{{tsReturns}}};
+        {{#if isVarArgs}}
+        {{name}}{{@root.opts.syncSuffix}}({{{margs this norest=true}}}): {{{tsReturns}}};
+        {{/if}}
         {{/ifdef~}}
         {{#ifdef @root.opts.promiseSuffix}}
         {{name}}{{@root.opts.promiseSuffix}}({{{margs this}}}): Promise<{{{tsReturns}}}>;
+        {{#if isVarArgs}}
+        {{name}}{{@root.opts.promiseSuffix}}({{{margs this norest=true}}}): {{{tsReturns}}};
+        {{/if}}
         {{/ifdef~}}
         {{/if}}
         {{/each}}
