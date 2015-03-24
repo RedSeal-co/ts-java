@@ -43,6 +43,8 @@ declare module Java {
     __dummy: T;
   }
 
+  export type object_array_t = array_t<java.lang.Object> | object_t[];
+
   interface Callback<T> {
     (err: Error, result: T): void;
   }
@@ -96,20 +98,20 @@ declare module Java {
     import(className: 'java.lang.reflect.Type'): java.lang.reflect.Type.Static;
     import(className: string): any;
 
-    newInstance(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t, arg3: object_t, cb: Callback<string>): void;
-    newInstance(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t, arg3: string_t, cb: Callback<string>): void;
-    newInstance(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t, arg3: integer_t, cb: Callback<string>): void;
+    newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: object_t, cb: Callback<string>): void;
+    newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: string_t, cb: Callback<string>): void;
+    newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: integer_t, cb: Callback<string>): void;
     newInstance(className: 'java.lang.String', arg0: array_t<integer_t>, arg1: integer_t, arg2: integer_t, cb: Callback<string>): void;
-    newInstance(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t, cb: Callback<string>): void;
-    newInstance(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t, cb: Callback<string>): void;
-    newInstance(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: object_t, cb: Callback<string>): void;
-    newInstance(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: string_t, cb: Callback<string>): void;
-    newInstance(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, cb: Callback<string>): void;
+    newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, cb: Callback<string>): void;
+    newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, cb: Callback<string>): void;
+    newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, cb: Callback<string>): void;
+    newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: string_t, cb: Callback<string>): void;
+    newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, cb: Callback<string>): void;
     newInstance(className: 'java.lang.String', arg0: object_t, cb: Callback<string>): void;
     newInstance(className: 'java.lang.String', arg0: object_t, cb: Callback<string>): void;
     newInstance(className: 'java.lang.String', arg0: string_t, cb: Callback<string>): void;
-    newInstance(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), cb: Callback<string>): void;
-    newInstance(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), cb: Callback<string>): void;
+    newInstance(className: 'java.lang.String', arg0: object_array_t, cb: Callback<string>): void;
+    newInstance(className: 'java.lang.String', arg0: object_array_t, cb: Callback<string>): void;
     newInstance(className: 'java.lang.String', cb: Callback<string>): void;
     newInstance(className: 'java.lang.Integer', arg0: string_t, cb: Callback<number>): void;
     newInstance(className: 'java.lang.Integer', arg0: integer_t, cb: Callback<number>): void;
@@ -118,20 +120,20 @@ declare module Java {
     newInstance(className: 'java.lang.Boolean', arg0: boolean_t, cb: Callback<boolean>): void;
     newInstance(className: string, ...args: any[]): void;
 
-    newInstanceSync(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t, arg3: object_t): string;
-    newInstanceSync(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t, arg3: string_t): string;
-    newInstanceSync(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t, arg3: integer_t): string;
+    newInstanceSync(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: object_t): string;
+    newInstanceSync(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: string_t): string;
+    newInstanceSync(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: integer_t): string;
     newInstanceSync(className: 'java.lang.String', arg0: array_t<integer_t>, arg1: integer_t, arg2: integer_t): string;
-    newInstanceSync(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t): string;
-    newInstanceSync(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t): string;
-    newInstanceSync(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: object_t): string;
-    newInstanceSync(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: string_t): string;
-    newInstanceSync(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t): string;
+    newInstanceSync(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t): string;
+    newInstanceSync(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t): string;
+    newInstanceSync(className: 'java.lang.String', arg0: object_array_t, arg1: object_t): string;
+    newInstanceSync(className: 'java.lang.String', arg0: object_array_t, arg1: string_t): string;
+    newInstanceSync(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t): string;
     newInstanceSync(className: 'java.lang.String', arg0: object_t): string;
     newInstanceSync(className: 'java.lang.String', arg0: object_t): string;
     newInstanceSync(className: 'java.lang.String', arg0: string_t): string;
-    newInstanceSync(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[])): string;
-    newInstanceSync(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[])): string;
+    newInstanceSync(className: 'java.lang.String', arg0: object_array_t): string;
+    newInstanceSync(className: 'java.lang.String', arg0: object_array_t): string;
     newInstanceSync(className: 'java.lang.String'): string;
     newInstanceSync(className: 'java.lang.Integer', arg0: string_t): number;
     newInstanceSync(className: 'java.lang.Integer', arg0: integer_t): number;
@@ -140,20 +142,20 @@ declare module Java {
     newInstanceSync(className: 'java.lang.Boolean', arg0: boolean_t): boolean;
     newInstanceSync(className: string, ...args: any[]): any;
 
-    newInstancePromise(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t, arg3: object_t): Promise<string>;
-    newInstancePromise(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t, arg3: string_t): Promise<string>;
-    newInstancePromise(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t, arg3: integer_t): Promise<string>;
+    newInstancePromise(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: object_t): Promise<string>;
+    newInstancePromise(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: string_t): Promise<string>;
+    newInstancePromise(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: integer_t): Promise<string>;
     newInstancePromise(className: 'java.lang.String', arg0: array_t<integer_t>, arg1: integer_t, arg2: integer_t): Promise<string>;
-    newInstancePromise(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t): Promise<string>;
-    newInstancePromise(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t): Promise<string>;
-    newInstancePromise(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: object_t): Promise<string>;
-    newInstancePromise(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: string_t): Promise<string>;
-    newInstancePromise(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t): Promise<string>;
+    newInstancePromise(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t): Promise<string>;
+    newInstancePromise(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t): Promise<string>;
+    newInstancePromise(className: 'java.lang.String', arg0: object_array_t, arg1: object_t): Promise<string>;
+    newInstancePromise(className: 'java.lang.String', arg0: object_array_t, arg1: string_t): Promise<string>;
+    newInstancePromise(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t): Promise<string>;
     newInstancePromise(className: 'java.lang.String', arg0: object_t): Promise<string>;
     newInstancePromise(className: 'java.lang.String', arg0: object_t): Promise<string>;
     newInstancePromise(className: 'java.lang.String', arg0: string_t): Promise<string>;
-    newInstancePromise(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[])): Promise<string>;
-    newInstancePromise(className: 'java.lang.String', arg0: (array_t<java.lang.Object> | object_t[])): Promise<string>;
+    newInstancePromise(className: 'java.lang.String', arg0: object_array_t): Promise<string>;
+    newInstancePromise(className: 'java.lang.String', arg0: object_array_t): Promise<string>;
     newInstancePromise(className: 'java.lang.String'): Promise<string>;
     newInstancePromise(className: 'java.lang.Integer', arg0: string_t): Promise<number>;
     newInstancePromise(className: 'java.lang.Integer', arg0: integer_t): Promise<number>;
@@ -430,7 +432,7 @@ declare module Java {
       // public boolean java.lang.String.equalsIgnoreCase(java.lang.String)
       equalsIgnoreCaseSync(arg0: string_t): boolean;
       // public void java.lang.String.getBytes(int,int,byte[],int)
-      getBytesSync(arg0: integer_t, arg1: integer_t, arg2: (array_t<java.lang.Object> | object_t[]), arg3: integer_t): void;
+      getBytesSync(arg0: integer_t, arg1: integer_t, arg2: object_array_t, arg3: integer_t): void;
       // public byte[] java.lang.String.getBytes(java.nio.charset.Charset)
       getBytesSync(arg0: object_t): object_t[];
       // public byte[] java.lang.String.getBytes(java.lang.String) throws java.io.UnsupportedEncodingException
@@ -438,7 +440,7 @@ declare module Java {
       // public byte[] java.lang.String.getBytes()
       getBytesSync(): object_t[];
       // public void java.lang.String.getChars(int,int,char[],int)
-      getCharsSync(arg0: integer_t, arg1: integer_t, arg2: (array_t<java.lang.Object> | object_t[]), arg3: integer_t): void;
+      getCharsSync(arg0: integer_t, arg1: integer_t, arg2: object_array_t, arg3: integer_t): void;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClassSync(): Class;
       // public int java.lang.String.hashCode()
@@ -522,42 +524,42 @@ declare module Java {
     }
     export module String {
       export interface Static {
-        new (arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t, arg3: object_t): java.lang.String;
-        new (arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t, arg3: string_t): java.lang.String;
-        new (arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t, arg3: integer_t): java.lang.String;
+        new (arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: object_t): java.lang.String;
+        new (arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: string_t): java.lang.String;
+        new (arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: integer_t): java.lang.String;
         new (arg0: array_t<integer_t>, arg1: integer_t, arg2: integer_t): java.lang.String;
-        new (arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t): java.lang.String;
-        new (arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t): java.lang.String;
-        new (arg0: (array_t<java.lang.Object> | object_t[]), arg1: object_t): java.lang.String;
-        new (arg0: (array_t<java.lang.Object> | object_t[]), arg1: string_t): java.lang.String;
-        new (arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t): java.lang.String;
+        new (arg0: object_array_t, arg1: integer_t, arg2: integer_t): java.lang.String;
+        new (arg0: object_array_t, arg1: integer_t, arg2: integer_t): java.lang.String;
+        new (arg0: object_array_t, arg1: object_t): java.lang.String;
+        new (arg0: object_array_t, arg1: string_t): java.lang.String;
+        new (arg0: object_array_t, arg1: integer_t): java.lang.String;
         new (arg0: object_t): java.lang.String;
         new (arg0: object_t): java.lang.String;
         new (arg0: string_t): java.lang.String;
-        new (arg0: (array_t<java.lang.Object> | object_t[])): java.lang.String;
-        new (arg0: (array_t<java.lang.Object> | object_t[])): java.lang.String;
+        new (arg0: object_array_t): java.lang.String;
+        new (arg0: object_array_t): java.lang.String;
         new (): java.lang.String;
         // public static java.lang.String java.lang.String.copyValueOf(char[],int,int)
-        copyValueOfSync(arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t): string;
+        copyValueOfSync(arg0: object_array_t, arg1: integer_t, arg2: integer_t): string;
         // public static java.lang.String java.lang.String.copyValueOf(char[])
-        copyValueOfSync(arg0: (array_t<java.lang.Object> | object_t[])): string;
+        copyValueOfSync(arg0: object_array_t): string;
         // public static java.lang.String java.lang.String.format(java.util.Locale,java.lang.String,java.lang.Object...)
         formatSync(arg0: object_t, arg1: string_t, ...arg2: object_t[]): string;
-        formatSync(arg0: object_t, arg1: string_t, arg2: (array_t<java.lang.Object> | object_t[])): string;
+        formatSync(arg0: object_t, arg1: string_t, arg2: object_array_t): string;
         // public static java.lang.String java.lang.String.format(java.lang.String,java.lang.Object...)
         formatSync(arg0: string_t, ...arg1: object_t[]): string;
-        formatSync(arg0: string_t, arg1: (array_t<java.lang.Object> | object_t[])): string;
+        formatSync(arg0: string_t, arg1: object_array_t): string;
         // public static java.lang.String java.lang.String.join(java.lang.CharSequence,java.lang.CharSequence...)
         joinSync(arg0: object_t, ...arg1: object_t[]): string;
-        joinSync(arg0: object_t, arg1: (array_t<java.lang.Object> | object_t[])): string;
+        joinSync(arg0: object_t, arg1: object_array_t): string;
         // public static java.lang.String java.lang.String.join(java.lang.CharSequence,java.lang.Iterable<? extends java.lang.CharSequence>)
         joinSync(arg0: object_t, arg1: object_t): string;
         // public static java.lang.String java.lang.String.valueOf(char[],int,int)
-        valueOfSync(arg0: (array_t<java.lang.Object> | object_t[]), arg1: integer_t, arg2: integer_t): string;
+        valueOfSync(arg0: object_array_t, arg1: integer_t, arg2: integer_t): string;
         // public static java.lang.String java.lang.String.valueOf(java.lang.Object)
         valueOfSync(arg0: object_t): string;
         // public static java.lang.String java.lang.String.valueOf(char[])
-        valueOfSync(arg0: (array_t<java.lang.Object> | object_t[])): string;
+        valueOfSync(arg0: object_array_t): string;
         // public static java.lang.String java.lang.String.valueOf(boolean)
         valueOfSync(arg0: boolean_t): string;
         // public static java.lang.String java.lang.String.valueOf(long)
@@ -633,7 +635,7 @@ declare module Java {
       hashCodeSync(): number;
       // public java.lang.Object java.lang.reflect.Method.invoke(java.lang.Object,java.lang.Object...) throws java.lang.IllegalAccessException,java.lang.IllegalArgumentException,java.lang.reflect.InvocationTargetException
       invokeSync(arg0: object_t, ...arg1: object_t[]): object_t;
-      invokeSync(arg0: object_t, arg1: (array_t<java.lang.Object> | object_t[])): object_t;
+      invokeSync(arg0: object_t, arg1: object_array_t): object_t;
       // public boolean java.lang.reflect.AccessibleObject.isAccessible()
       isAccessibleSync(): boolean;
       // public boolean java.lang.reflect.AccessibleObject.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)
@@ -1028,7 +1030,7 @@ declare module Java {
       isVarArgsSync(): boolean;
       // public T java.lang.reflect.Constructor.newInstance(java.lang.Object...) throws java.lang.InstantiationException,java.lang.IllegalAccessException,java.lang.IllegalArgumentException,java.lang.reflect.InvocationTargetException
       newInstanceSync(...arg0: object_t[]): object_t;
-      newInstanceSync(arg0: (array_t<java.lang.Object> | object_t[])): object_t;
+      newInstanceSync(arg0: object_array_t): object_t;
       // public final native void java.lang.Object.notify()
       notifySync(): void;
       // public final native void java.lang.Object.notifyAll()
