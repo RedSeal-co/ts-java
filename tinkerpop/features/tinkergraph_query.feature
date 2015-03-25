@@ -12,7 +12,7 @@ So I can leverage my knowledge of the Java TinkerPop API to write programs in Ty
     /// <reference path='../../typings/glob/glob.d.ts' />
 
     import glob = require('glob');
-    import java = require('java');
+    import java = require('redseal-java');
 
     java.asyncOptions = {
       syncSuffix: '',

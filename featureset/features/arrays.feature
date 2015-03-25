@@ -27,7 +27,7 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
 
     import _ = require('lodash');
     import glob = require('glob');
-    import java = require('java');
+    import java = require('redseal-java');
     import assert = require('power-assert');
 
     var filenames = glob.sync('featureset/target/**/*.jar');
