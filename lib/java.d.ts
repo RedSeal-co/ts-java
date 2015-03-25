@@ -3,6 +3,11 @@
 /// <reference path='../typings/bluebird/bluebird.d.ts' />
 
 
+declare module 'redseal-java' {
+  var Java: Java.NodeAPI;
+  export = Java;
+}
+
 declare module 'java' {
   var Java: Java.NodeAPI;
   export = Java;
