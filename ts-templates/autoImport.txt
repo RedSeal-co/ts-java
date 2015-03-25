@@ -1,4 +1,4 @@
-import java = require('java');
+import java = require('redseal-java');
 
 export = autoImport;
 
