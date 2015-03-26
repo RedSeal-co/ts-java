@@ -15,7 +15,7 @@ Feature: Constructors
     /// <reference path='../../featureset/java.d.ts'/>
 
     import glob = require('glob');
-    import java = require('java');
+    import java = require('redseal-java');
 
     var filenames = glob.sync('featureset/target/**/*.jar');
     filenames.forEach((name: string) => { java.classpath.push(name); });

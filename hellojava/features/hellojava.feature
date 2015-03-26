@@ -21,7 +21,7 @@ in the Background section.
     /// <reference path='../../hellojava/java.d.ts'/>
 
     import glob = require('glob');
-    import java = require('java');
+    import java = require('redseal-java');
     java.asyncOptions = {
       syncSuffix: 'Sync',
       asyncSuffix: '',

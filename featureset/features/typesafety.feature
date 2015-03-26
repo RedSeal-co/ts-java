@@ -11,7 +11,7 @@ I want to understand how Typescript offers type saftey.
     /// <reference path='../../featureset/java.d.ts'/>
 
     import glob = require('glob');
-    import java = require('java');
+    import java = require('redseal-java');
 
     java.asyncOptions = {
       syncSuffix: 'Sync',

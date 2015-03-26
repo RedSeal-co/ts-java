@@ -14,7 +14,7 @@ I want to understand how to use nested classes in Typescript.
 
     import _ = require('lodash');
     import glob = require('glob');
-    import java = require('java');
+    import java = require('redseal-java');
     import assert = require('power-assert');
 
     var filenames = glob.sync('featureset/target/**/*.jar');

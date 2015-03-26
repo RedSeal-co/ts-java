@@ -19,7 +19,7 @@ Feature: Auto import
 
       import assert = require('power-assert');
       import glob = require('glob');
-      import java = require('java');
+      import java = require('redseal-java');
       import autoImport = require('../../featureset/o/autoImport');
 
       var filenames = glob.sync('featureset/target/**/*.jar');
