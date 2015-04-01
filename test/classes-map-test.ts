@@ -282,6 +282,7 @@ describe('ClassesMap', () => {
         'isPrimitive',
         'methods',
         'packageName',
+        'quotedPkgName',
         'shortName',
         'superclass',
         'tsInterfaces',

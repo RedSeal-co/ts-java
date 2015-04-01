@@ -549,7 +549,8 @@ class ClassesMap {
     tsInterfaces = _.map(tsInterfaces, (intf: string) => { return 'Java.' + intf; });
 
     var classMap: ClassDefinition = {
-      packageName: this.packageName(this.fixClassPath(className)),
+      quotedPkgName: this.packageName(this.fixClassPath(className)),
+      packageName: this.packageName(className),
       fullName: className,
       shortName: shortName,
       alias: alias,
@@ -713,7 +714,8 @@ module ClassesMap {
   // ### ClassDefinition
   // All of the properties on interest for a class.
   export interface ClassDefinition {
-    packageName: string;               // 'java.util'
+    quotedPkgName: string;             // 'java.util.function_'
+    packageName: string;               // 'java.util.function'
     fullName: string;                  // 'java.util.Iterator'
     shortName: string;                 // 'Iterator'
     alias: string;                     // This will be shortName, unless two classes have the same short name,

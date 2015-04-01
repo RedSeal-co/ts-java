@@ -80,12 +80,12 @@ declare module Java {
     {{/hasClass}}
 
     {{#each this}}
-    newArray(className: '{{packageName}}.{{shortName}}', arg: {{tsType}}[]): array_t<{{packageName}}.{{shortName}}>;
+    newArray(className: '{{packageName}}.{{shortName}}', arg: {{tsType}}[]): array_t<{{quotedPkgName}}.{{shortName}}>;
     {{/each}}
     newArray<T>(className: string, arg: any[]): array_t<T>;
 
     {{#each this}}
-    import(className: '{{packageName}}.{{shortName}}'): {{packageName}}.{{shortName}}.Static;
+    import(className: '{{packageName}}.{{shortName}}'): {{quotedPkgName}}.{{shortName}}.Static;
     {{/each}}
     import(className: string): any;
 
@@ -113,12 +113,12 @@ declare module Java {
 
   {{#each this}}
   {{#if useAlias}}
-  export import {{alias}} = {{packageName}}.{{shortName}};
+  export import {{alias}} = {{quotedPkgName}}.{{shortName}};
   {{/if}}
   {{/each}}
 
   {{#each this}}
-  export module {{packageName}} {
+  export module {{quotedPkgName}} {
     export interface {{shortName}} {{#if tsInterfaces}}extends {{tsInterfaces}}{{/if}} {
       {{#each variants}}
       {{#each this}}
@@ -152,7 +152,7 @@ declare module Java {
     export module {{shortName}} {
       export interface Static {
         {{#each constructors}}
-        new ({{{margs this}}}): {{../packageName}}.{{../shortName}};
+        new ({{{margs this}}}): {{../quotedPkgName}}.{{../shortName}};
         {{/each}}
         {{#each variants}}
         {{#each this}}
