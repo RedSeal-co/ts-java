@@ -54,13 +54,13 @@ describe('CodeWriter', () => {
       'java.lang.Long',
       'java.lang.Short',
       'java.util.Iterator',
+      'java.util.function.Function',
       'java.lang.Number',
       'java.lang.Enum',
       'com.redseal.featureset.SomeClass',
     ],
     'whiteList': [
-      'com.redseal.featureset.',
-      'java.util.function.',
+      'com.redseal.featureset.'
     ]
   };
 
@@ -121,16 +121,17 @@ describe('CodeWriter', () => {
 
   describe('streamLibraryClassFile', () => {
     it('should write expected given template class_summary', () => {
-      var className = 'java.util.Iterator';
+      var className = 'java.util.function.Function';
       var runPromise = theWriter.streamLibraryClassFile(className, 'class_summary', streamFn, endFn).then(endFn);
       var expectedData = [
-        'Class Definition for class java.util.Iterator:',
-        'packageName: java.util',
-        'fullName: java.util.Iterator',
-        'shortName: Iterator',
-        'alias: Iterator',
+        'Class Definition for class java.util.function.Function:',
+        'quotedPkgName: java.util.function_',
+        'packageName: java.util.function',
+        'fullName: java.util.function.Function',
+        'shortName: Function',
+        'alias: Function',
         'useAlias: true',
-        'tsType: Iterator',
+        'tsType: Function',
         'isInterface: true',
         'isPrimitive: false',
         'superclass: ',
