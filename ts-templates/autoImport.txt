@@ -8,7 +8,7 @@ interface Dictionary {
 
 {{#each this}}
 {{#if useAlias}}
-function autoImport(shortName: "{{alias}}"): Java.{{packageName}}.{{shortName}}.Static;
+function autoImport(shortName: "{{alias}}"): Java.{{quotedPkgName}}.{{shortName}}.Static;
 {{/if}}
 {{/each}}
 function autoImport(shortName: string): any;

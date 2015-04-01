@@ -44,3 +44,24 @@ Feature: Auto import
   """
   Then it compiles and lints cleanly
   And it runs and produces no output
+
+  Scenario: Reserved word in package namespace
+  # The package namespace java.util.function requires special handling since function is a reserved word
+  # in Typescript. The typescript module name is mapped to `function_` to avoid the conflict.
+  Given the above boilerplate with following scenario snippet:
+  """
+  var Function: Java.Function.Static = autoImport('Function');
+  var func: Java.java.util.function_.Function = Function.identitySync();
+  """
+  Then it compiles and lints cleanly
+  And it runs and produces no output
+
+  Scenario: import via full class path
+  Given the above boilerplate with following scenario snippet:
+  """
+  var Function: Java.Function.Static = java.import('java.util.function.Function');
+  var func: Java.java.util.function_.Function = Function.identitySync();
+  """
+  Then it compiles and lints cleanly
+  And it runs and produces no output
+
