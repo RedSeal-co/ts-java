@@ -17,10 +17,21 @@ I need to understand when ts-java declares short aliases for class paths.
     import java = require('redseal-java');
     import assert = require('power-assert');
 
-    var filenames = glob.sync('featureset/target/**/*.jar');
-    filenames.forEach((name: string) => { java.classpath.push(name); });
+    function before(done: Java.Callback<void>): void {
+      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
+        filenames.forEach((name: string) => { java.classpath.push(name); });
+        done();
+      });
+    }
 
-    {{{ scenario_snippet }}}
+    java.registerClient(before);
+
+    import Thing1 = Java.com.redseal.featureset.Thing;
+    import Thing2 = Java.com.redseal.featureset.ambiguous.Thing;
+
+    java.ensureJvm(() => {
+      {{{ scenario_snippet }}}
+    });
 
     """
 
@@ -42,16 +53,13 @@ I need to understand when ts-java declares short aliases for class paths.
     """
     Then it compiles and lints cleanly
 
-  Scenario: Can use Typescript alias when full class path when class name alone is ambiguous
+  Scenario: Can use Typescript alias with full class path when class name alone is ambiguous
     Given the above boilerplate with following scenario snippet:
     """
-
-    import Thing1 = Java.com.redseal.featureset.Thing;
     var thing1: Thing1 = java.newInstanceSync('com.redseal.featureset.Thing', 42);
     assert.equal(thing1.toStringSync(), 'Thing42');
     assert(java.instanceOf(thing1, 'com.redseal.featureset.Thing'));
 
-    import Thing2 = Java.com.redseal.featureset.ambiguous.Thing;
     var thing2: Thing2 = java.newInstanceSync('com.redseal.featureset.ambiguous.Thing', 'foo');
     assert.equal(thing2.toStringSync(), 'Ambiguous Thing foo');
     assert(java.instanceOf(thing2, 'com.redseal.featureset.ambiguous.Thing'));
@@ -62,8 +70,6 @@ I need to understand when ts-java declares short aliases for class paths.
   Scenario: Classes with same name with incompatible interfaces cannot be mixed
     Given the above boilerplate with following scenario snippet:
     """
-    import Thing1 = Java.com.redseal.featureset.Thing;
-    import Thing2 = Java.com.redseal.featureset.ambiguous.Thing;
     var thing1: Thing1 = java.newInstanceSync('com.redseal.featureset.Thing', 42);
     var thing2: Thing2 = java.newInstanceSync('com.redseal.featureset.ambiguous.Thing', 'foo');
     thing1 = thing2;

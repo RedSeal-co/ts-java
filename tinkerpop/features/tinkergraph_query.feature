@@ -7,26 +7,36 @@ So I can leverage my knowledge of the Java TinkerPop API to write programs in Ty
   Background:
     Given this boilerplate to intialize node-java:
     """
+    /// <reference path='../../typings/bluebird/bluebird.d.ts' />
     /// <reference path='../../tinkerpop/java.d.ts'/>
     /// <reference path='../../typings/node/node.d.ts' />
     /// <reference path='../../typings/glob/glob.d.ts' />
 
+    import autoImport = require('../../tinkerpop/o/autoImport');
     import glob = require('glob');
     import java = require('redseal-java');
+    import BluePromise = require('bluebird');
+    var promisify = require('bluebird').promisify;
 
     java.asyncOptions = {
       syncSuffix: '',
       promiseSuffix: 'P',
-      promisify: require('bluebird').promisify
+      promisify: promisify
     };
 
-    var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
-    filenames.forEach((name: string) => { java.classpath.push(name); });
+    function before(): Promise<void> {
+      var globP = promisify(glob);
+      return globP('tinkerpop/target/dependency/**/*.jar')
+        .then((filenames: string[]) => {
+          filenames.forEach((name: string) => { java.classpath.push(name); });
+        });
+    }
 
-    var tinkerFactoryClassName = 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory';
-    var TinkerFactory: Java.TinkerFactory.Static = java.import(tinkerFactoryClassName);
-
-    {{{ scenario_snippet }}}
+    java.registerClientP(before);
+    java.ensureJvm().then((): void => {
+      var TinkerFactory: Java.TinkerFactory.Static = autoImport('TinkerFactory');
+      {{{ scenario_snippet }}}
+    });
 
     """
 

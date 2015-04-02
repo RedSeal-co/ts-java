@@ -17,13 +17,20 @@ I want to understand how to use nested classes in Typescript.
     import java = require('redseal-java');
     import assert = require('power-assert');
 
-    var filenames = glob.sync('featureset/target/**/*.jar');
-    filenames.forEach((name: string) => { java.classpath.push(name); });
+    function before(done: Java.Callback<void>): void {
+      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
+        filenames.forEach((name: string) => { java.classpath.push(name); });
+        done();
+      });
+    }
 
-    var Thing = java.import('com.redseal.featureset.ambiguous.Thing');
-    var thing = new Thing('whatever');
+    java.registerClient(before);
 
-    {{{ scenario_snippet }}}
+    java.ensureJvm(() => {
+      var Thing = java.import('com.redseal.featureset.ambiguous.Thing');
+      var thing = new Thing('whatever');
+      {{{ scenario_snippet }}}
+    });
 
     """
 

@@ -50,8 +50,8 @@ declare module Java {
 
   export type object_array_t = array_t<java.lang.Object> | object_t[];
 
-  interface Callback<T> {
-    (err: Error, result: T): void;
+  export interface Callback<T> {
+    (err?: Error, result?: T): void;
   }
 
   interface AsyncOptions {
@@ -69,6 +69,10 @@ declare module Java {
     callMethodSync(instance: any, className: string, methodName: string, ...args: any[]): any;
     callStaticMethodSync(className: string, methodName: string, ...args: any[]): any;
     instanceOf(javaObject: any, className: string): boolean;
+    registerClient(before: (cb: Callback<void>) => void, after?: (cb: Callback<void>) => void): void;
+    registerClientP(beforeP: () => Promise<void>, afterP?: () => Promise<void>): void;
+    ensureJvm(done: Callback<void>): void;
+    ensureJvm(): Promise<void>;
 
                 
     getClassLoader(): java.lang.ClassLoader;

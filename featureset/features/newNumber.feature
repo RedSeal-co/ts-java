@@ -18,9 +18,18 @@ See also PrimitiveTypeCoercions.feature.
     import glob = require('glob');
     import java = require('redseal-java');
 
-    var filenames = glob.sync('featureset/target/**/*.jar');
-    filenames.forEach((name: string) => { java.classpath.push(name); });
-    {{{ scenario_snippet }}}
+    function before(done: Java.Callback<void>): void {
+      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
+        filenames.forEach((name: string) => { java.classpath.push(name); });
+        done();
+      });
+    }
+
+    java.registerClient(before);
+
+    java.ensureJvm(() => {
+      {{{ scenario_snippet }}}
+    });
 
     """
 

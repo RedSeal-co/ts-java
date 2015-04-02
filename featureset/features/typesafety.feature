@@ -20,11 +20,20 @@ I want to understand how Typescript offers type saftey.
       promisify: require('bluebird').promisify
     };
 
-    var filenames = glob.sync('featureset/target/**/*.jar');
-    filenames.forEach((name: string) => { java.classpath.push(name); });
-    var SomeClass = java.import('com.redseal.featureset.SomeClass');
-    var something: Java.SomeInterface = new SomeClass();
-    {{{ scenario_snippet }}}
+    function before(done: Java.Callback<void>): void {
+      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
+        filenames.forEach((name: string) => { java.classpath.push(name); });
+        done();
+      });
+    }
+
+    java.registerClient(before);
+
+    java.ensureJvm(() => {
+      var SomeClass = java.import('com.redseal.featureset.SomeClass');
+      var something: Java.SomeInterface = new SomeClass();
+      {{{ scenario_snippet }}}
+    });
 
     """
 
