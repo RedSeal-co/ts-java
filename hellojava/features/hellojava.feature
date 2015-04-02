@@ -16,23 +16,36 @@ in the Background section.
   Background:
     Given this boilerplate to intialize node-java:
     """
+    /// <reference path='../../typings/bluebird/bluebird.d.ts' />
     /// <reference path='../../typings/node/node.d.ts' />
     /// <reference path='../../typings/glob/glob.d.ts' />
     /// <reference path='../../hellojava/java.d.ts'/>
 
     import glob = require('glob');
     import java = require('redseal-java');
+    import BluePromise = require('bluebird');
+    var promisify = require('bluebird').promisify;
+
     java.asyncOptions = {
       syncSuffix: 'Sync',
       asyncSuffix: '',
       promiseSuffix: 'Promise',
-      promisify: require('bluebird').promisify
+      promisify: promisify
     };
 
-    var filenames = glob.sync('hellojava/target/**/*.jar');
-    filenames.forEach((name: string) => { java.classpath.push(name); });
-    var HelloJava = java.import('com.redseal.hellojava.HelloJava');
-    {{{ scenario_snippet }}}
+    function before(): Promise<void> {
+      var globP = promisify(glob);
+      return globP('hellojava/target/**/*.jar')
+        .then((filenames: string[]) => {
+          filenames.forEach((name: string) => { java.classpath.push(name); });
+        });
+    }
+
+    java.registerClientP(before);
+    java.ensureJvm().then((): void => {
+      var HelloJava = java.import('com.redseal.hellojava.HelloJava');
+      {{{ scenario_snippet }}}
+    });
 
     """
 
