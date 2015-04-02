@@ -30,14 +30,28 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
     import java = require('redseal-java');
     import assert = require('power-assert');
 
-    var filenames = glob.sync('featureset/target/**/*.jar');
-    filenames.forEach((name: string) => { java.classpath.push(name); });
+    // We intentionally have two different classes named Thing, so it is necessary to refer
+    // to the specific class we want with the full class path. But Typescript makes it easy
+    // to declare a type alias, which shortens some code in the scenarios code below.
+    // Unfortunately, Typescript does not allow import aliases in function scope.
+    import Thing = Java.com.redseal.featureset.Thing;
 
-    var Arrays = java.import('java.util.Arrays');
+    function before(done: Java.Callback<void>): void {
+      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
+        filenames.forEach((name: string) => { java.classpath.push(name); });
+        done();
+      });
+    }
 
-    var SomeClass = java.import('com.redseal.featureset.SomeClass');
-    var something: Java.SomeInterface = new SomeClass();
-    {{{ scenario_snippet }}}
+    java.registerClient(before);
+
+    java.ensureJvm(() => {
+      var Arrays = java.import('java.util.Arrays');
+
+      var SomeClass = java.import('com.redseal.featureset.SomeClass');
+      var something: Java.SomeInterface = new SomeClass();
+      {{{ scenario_snippet }}}
+    });
 
     """
 
@@ -75,11 +89,6 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
   Scenario: Getting 2d array of non-primitive type
     Given the above boilerplate with following scenario snippet:
     """
-    // We intentionally have two different classes named Thing, so it is necessary to refer
-    // to the specific class we want with the full class path. But Typescript makes it easy
-    // to declare a type alias, which shortens the code below.
-    import Thing = Java.com.redseal.featureset.Thing;
-
     var things: Thing[][] = something.getThingsSync();
     assert.ok(_.isArray(things));
     assert.strictEqual(things.length, 2);

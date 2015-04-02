@@ -15,12 +15,22 @@ So I can understand how to primitive types and be aware of some limitations.
     import assert = require('power-assert');
     import glob = require('glob');
     import java = require('redseal-java');
+    import util = require('util');
 
-    var filenames = glob.sync('featureset/target/**/*.jar');
-    filenames.forEach((name: string) => { java.classpath.push(name); });
-    var SomeClass = java.import('com.redseal.featureset.SomeClass');
-    var something: Java.SomeInterface = new SomeClass();
-    {{{ scenario_snippet }}}
+    function before(done: Java.Callback<void>): void {
+      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
+        filenames.forEach((name: string) => { java.classpath.push(name); });
+        done();
+      });
+    }
+
+    java.registerClient(before);
+
+    java.ensureJvm(() => {
+      var SomeClass = java.import('com.redseal.featureset.SomeClass');
+      var something: Java.SomeInterface = new SomeClass();
+      {{{ scenario_snippet }}}
+    });
 
     """
 
@@ -74,7 +84,6 @@ So I can understand how to primitive types and be aware of some limitations.
     assert.strictEqual(num.longValue, '9223372036854775807');
     assert.equal(num, 9223372036854776000);
 
-    import util = require('util');
     var formatted: string = util.inspect(num);
     assert.strictEqual(formatted, '{ [Number: 9223372036854776000] longValue: \'9223372036854775807\' }');
     """
@@ -150,7 +159,6 @@ So I can understand how to primitive types and be aware of some limitations.
     assert.strictEqual((<Java.longValue_t>result).longValue, '9223372036854775807');
     assert.equal(result, 9223372036854776000);
 
-    import util = require('util');
     var formatted: string = util.inspect(result);
     assert.strictEqual(formatted, '{ [Number: 9223372036854776000] longValue: \'9223372036854775807\' }');
     """

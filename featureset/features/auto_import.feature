@@ -9,24 +9,34 @@ Feature: Auto import
   will write the source file defining the autoImport function.
 
   Background:
-      Given that ts-java has been run and autoImport.ts has compiled cleanly.
-      Given this boilerplate to intialize node-java:
-      """
-      /// <reference path='../../typings/glob/glob.d.ts' />
-      /// <reference path='../../typings/node/node.d.ts' />
-      /// <reference path='../../typings/power-assert/power-assert.d.ts' />
-      /// <reference path='../java.d.ts' />
+    Given that ts-java has been run and autoImport.ts has compiled cleanly.
+    Given this boilerplate to intialize node-java:
+    """
+    /// <reference path='../../typings/glob/glob.d.ts' />
+    /// <reference path='../../typings/node/node.d.ts' />
+    /// <reference path='../../typings/power-assert/power-assert.d.ts' />
+    /// <reference path='../java.d.ts' />
 
-      import assert = require('power-assert');
-      import glob = require('glob');
-      import java = require('redseal-java');
-      import autoImport = require('../../featureset/o/autoImport');
+    import assert = require('power-assert');
+    import glob = require('glob');
+    import java = require('redseal-java');
+    import autoImport = require('../../featureset/o/autoImport');
 
-      var filenames = glob.sync('featureset/target/**/*.jar');
-      filenames.forEach((name: string) => { java.classpath.push(name); });
+    function before(done: Java.Callback<void>): void {
+      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
+        filenames.forEach((name: string) => { java.classpath.push(name); });
+        done();
+      });
+    }
+
+    java.registerClient(before);
+
+    java.ensureJvm(() => {
+      var Arrays = java.import('java.util.Arrays');
       {{{ scenario_snippet }}}
+    });
 
-      """
+    """
 
   Scenario: Nominal
   Given the above boilerplate with following scenario snippet:

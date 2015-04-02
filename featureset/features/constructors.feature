@@ -17,9 +17,25 @@ Feature: Constructors
     import glob = require('glob');
     import java = require('redseal-java');
 
-    var filenames = glob.sync('featureset/target/**/*.jar');
-    filenames.forEach((name: string) => { java.classpath.push(name); });
-    {{{ scenario_snippet }}}
+    function before(done: Java.Callback<void>): void {
+      java.asyncOptions = {
+        syncSuffix: 'Sync',
+        asyncSuffix: '',
+        promiseSuffix: 'Promise',
+        promisify: require('bluebird').promisify
+      };
+
+      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
+        filenames.forEach((name: string) => { java.classpath.push(name); });
+        done();
+      });
+    }
+
+    java.registerClient(before);
+
+    java.ensureJvm(() => {
+      {{{ scenario_snippet }}}
+    });
 
     """
 
@@ -53,18 +69,6 @@ Feature: Constructors
   Scenario: newInstancePromise
     Given the above boilerplate with following scenario snippet:
     """
-    // Note, we can set asyncOptions here only because the boilerplate hand't yet finalized java initilization.
-    java.asyncOptions = {
-      syncSuffix: 'Sync',
-      asyncSuffix: '',
-      promiseSuffix: 'Promise',
-      promisify: require('bluebird').promisify
-    };
-
-    // We do this only for its side-effect of forcing node-java to finalize its initialization.
-    // See note about initialization in https://github.com/joeferner/node-java#promises
-    java.import('java.lang.Object');
-
     java.newInstancePromise('com.redseal.featureset.SomeClass').then((something: Java.SomeClass) => {
       console.log(something.getStringSync());
     });

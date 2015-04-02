@@ -17,11 +17,19 @@ I want to understand how to use Java enum types in Typescript.
     import java = require('redseal-java');
     import assert = require('power-assert');
 
-    var filenames = glob.sync('featureset/target/**/*.jar');
-    filenames.forEach((name: string) => { java.classpath.push(name); });
+    function before(done: Java.Callback<void>): void {
+      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
+        filenames.forEach((name: string) => { java.classpath.push(name); });
+        done();
+      });
+    }
 
-    var AnEnum = java.import('com.redseal.featureset.AnEnum');
-    {{{ scenario_snippet }}}
+    java.registerClient(before);
+
+    java.ensureJvm(() => {
+      var AnEnum = java.import('com.redseal.featureset.AnEnum');
+      {{{ scenario_snippet }}}
+    });
 
     """
 

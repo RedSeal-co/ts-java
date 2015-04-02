@@ -17,12 +17,20 @@ I want to understand how to use public fields in Typescript.
     import java = require('redseal-java');
     import assert = require('power-assert');
 
-    var filenames = glob.sync('featureset/target/**/*.jar');
-    filenames.forEach((name: string) => { java.classpath.push(name); });
+    function before(done: Java.Callback<void>): void {
+      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
+        filenames.forEach((name: string) => { java.classpath.push(name); });
+        done();
+      });
+    }
 
-    var Thing = java.import('com.redseal.featureset.Thing');
-    var thing = new Thing(777);
-    {{{ scenario_snippet }}}
+    java.registerClient(before);
+
+    java.ensureJvm(() => {
+      var Thing = java.import('com.redseal.featureset.Thing');
+      var thing = new Thing(777);
+      {{{ scenario_snippet }}}
+    });
 
     """
 
