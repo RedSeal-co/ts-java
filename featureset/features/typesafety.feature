@@ -6,10 +6,12 @@ I want to understand how Typescript offers type saftey.
   Background:
     Given this boilerplate to intialize node-java:
     """
+    /// <reference path='../../typings/bluebird/bluebird.d.ts' />
     /// <reference path='../../typings/node/node.d.ts' />
     /// <reference path='../../typings/glob/glob.d.ts' />
     /// <reference path='../../featureset/java.d.ts'/>
 
+    import BluePromise = require('bluebird');
     import glob = require('glob');
     import java = require('redseal-java');
 
@@ -17,7 +19,7 @@ I want to understand how Typescript offers type saftey.
       syncSuffix: 'Sync',
       asyncSuffix: '',
       promiseSuffix: 'Promise',
-      promisify: require('bluebird').promisify
+      promisify: BluePromise.promisify
     };
 
     function before(done: Java.Callback<void>): void {
