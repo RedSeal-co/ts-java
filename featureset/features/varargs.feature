@@ -16,13 +16,22 @@ See also arrays.feature.
     Given this boilerplate to intialize node-java:
     """
     /// <reference path='../../featureset/java.d.ts'/>
+    /// <reference path='../../typings/bluebird/bluebird.d.ts' />
     /// <reference path='../../typings/glob/glob.d.ts' />
     /// <reference path='../../typings/node/node.d.ts' />
     /// <reference path='../../typings/power-assert/power-assert.d.ts' />
 
     import assert = require('power-assert');
+    import BluePromise = require('bluebird');
     import glob = require('glob');
     import java = require('redseal-java');
+
+    java.asyncOptions = {
+      syncSuffix: 'Sync',
+      asyncSuffix: '',
+      promiseSuffix: 'Promise',
+      promisify: BluePromise.promisify
+    };
 
     function before(done: Java.Callback<void>): void {
       glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
@@ -116,3 +125,14 @@ See also arrays.feature.
     """
     error TS2345: Argument of type 'string[]' is not assignable to parameter of type 'array_t<string | String>'.
     """
+
+  Scenario: Bug 91797958
+    Given the above boilerplate with following scenario snippet:
+    """
+    something.setObjectsVarArgsPromise(['hello', 'world']).then((result: string) => {
+      assert.strictEqual(result, 'Ack from setObjectsVarArgs(Object... args)');
+    });
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
