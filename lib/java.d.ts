@@ -13,6 +13,14 @@ declare module 'java' {
   export = Java;
 }
 
+declare module JavaAsyncOptions {
+  // Promisify must be defined outside of the Java module, because inside the module
+  // Function may be redefined to be the interface for java.util.function.Function.
+  interface Promisify {
+    (funct: Function, receiver?: any): Function;
+  }
+}
+
 declare module Java {
   // Node-java has special handling for methods that return long or java.lang.Long,
   // returning a Javascript Number but with an additional property longValue.
@@ -26,7 +34,7 @@ declare module Java {
 
   // Java methods that take java.lang.Object parameters implicitly will take a java.lang.String.
   // But string_t is not sufficient for this case, we need object_t.
-  export type object_t = java.lang.Object | string | number | longValue_t;
+  export type object_t = java.lang.Object | string | boolean | number | longValue_t;
 
   // Java methods that take long or java.lang.Long parameters may take javascript numbers,
   // longValue_t (see above) or java.lang.Long.
@@ -58,7 +66,7 @@ declare module Java {
     syncSuffix: string;
     asyncSuffix?: string;
     promiseSuffix?: string;
-    promisify?: Function;
+    promisify?: JavaAsyncOptions.Promisify;
   }
 
   // *NodeAPI* declares methods & members exported by the node java module.
