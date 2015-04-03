@@ -148,7 +148,7 @@ declare module Java {
       {{#ifdef @root.opts.promiseSuffix}}
       {{name}}{{@root.opts.promiseSuffix}}({{{margs this}}}): Promise<{{{tsReturns}}}>;
       {{#if isVarArgs}}
-      {{name}}{{@root.opts.promiseSuffix}}({{{margs this norest=true}}}): {{{tsReturns}}};
+      {{name}}{{@root.opts.promiseSuffix}}({{{margs this norest=true}}}): Promise<{{{tsReturns}}}>;
       {{/if}}
       {{/ifdef~}}
       {{/unless}}
@@ -182,7 +182,7 @@ declare module Java {
         {{#ifdef @root.opts.promiseSuffix}}
         {{name}}{{@root.opts.promiseSuffix}}({{{margs this}}}): Promise<{{{tsReturns}}}>;
         {{#if isVarArgs}}
-        {{name}}{{@root.opts.promiseSuffix}}({{{margs this norest=true}}}): {{{tsReturns}}};
+        {{name}}{{@root.opts.promiseSuffix}}({{{margs this norest=true}}}): Promise<{{{tsReturns}}}>;
         {{/if}}
         {{/ifdef~}}
         {{/if}}

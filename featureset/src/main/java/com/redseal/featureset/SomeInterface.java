@@ -21,6 +21,7 @@ public interface SomeInterface {
     void setThings(Thing[][] things);
 
     String setObjects(Object[] args);
+    String setObjectsVarArgs(Object... args);
 
     Object getStringObject();
     Object getShortObject();
