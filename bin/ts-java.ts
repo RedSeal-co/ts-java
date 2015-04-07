@@ -109,7 +109,6 @@ class Main {
     dlog('writePackageFiles() entered');
     var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
     var tsWriter = new CodeWriter(classesMap, templatesDirPath);
-    var classes: ClassDefinitionMap = classesMap.getClasses();
     return mkdirpPromise(path.dirname(this.options.outputPath))
       .then(() => tsWriter.writePackageFile(this.options))
       .then(() => dlog('writePackageFiles() completed'));
@@ -122,7 +121,6 @@ class Main {
     } else {
       var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
       var tsWriter = new CodeWriter(this.classesMap, templatesDirPath);
-      var classes: ClassDefinitionMap = this.classesMap.getClasses();
       return mkdirpPromise(path.dirname(this.options.autoImportPath))
         .then(() => tsWriter.writeAutoImportFile(this.options))
         .then(() => dlog('writeAutoImport() completed'));

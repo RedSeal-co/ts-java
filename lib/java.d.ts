@@ -85,36 +85,41 @@ declare module Java {
                 
     getClassLoader(): java.lang.ClassLoader;
 
-    newArray(className: 'java.lang.Class', arg: Class[]): array_t<java.lang.Class>;
-    newArray(className: 'java.lang.reflect.Parameter', arg: Parameter[]): array_t<java.lang.reflect.Parameter>;
-    newArray(className: 'java.lang.String', arg: string_t[]): array_t<java.lang.String>;
-    newArray(className: 'java.lang.reflect.Method', arg: Method[]): array_t<java.lang.reflect.Method>;
-    newArray(className: 'java.lang.Integer', arg: integer_t[]): array_t<java.lang.Integer>;
-    newArray(className: 'java.lang.reflect.Executable', arg: Executable[]): array_t<java.lang.reflect.Executable>;
-    newArray(className: 'java.lang.Object', arg: object_t[]): array_t<java.lang.Object>;
     newArray(className: 'java.lang.Boolean', arg: boolean_t[]): array_t<java.lang.Boolean>;
-    newArray(className: 'java.lang.reflect.Constructor', arg: Constructor[]): array_t<java.lang.reflect.Constructor>;
-    newArray(className: 'java.lang.reflect.Field', arg: Field[]): array_t<java.lang.reflect.Field>;
+    newArray(className: 'java.lang.Class', arg: Class[]): array_t<java.lang.Class>;
     newArray(className: 'java.lang.ClassLoader', arg: ClassLoader[]): array_t<java.lang.ClassLoader>;
+    newArray(className: 'java.lang.Integer', arg: integer_t[]): array_t<java.lang.Integer>;
+    newArray(className: 'java.lang.Object', arg: object_t[]): array_t<java.lang.Object>;
     newArray(className: 'java.lang.reflect.AccessibleObject', arg: AccessibleObject[]): array_t<java.lang.reflect.AccessibleObject>;
+    newArray(className: 'java.lang.reflect.Constructor', arg: Constructor[]): array_t<java.lang.reflect.Constructor>;
+    newArray(className: 'java.lang.reflect.Executable', arg: Executable[]): array_t<java.lang.reflect.Executable>;
+    newArray(className: 'java.lang.reflect.Field', arg: Field[]): array_t<java.lang.reflect.Field>;
+    newArray(className: 'java.lang.reflect.Method', arg: Method[]): array_t<java.lang.reflect.Method>;
+    newArray(className: 'java.lang.reflect.Parameter', arg: Parameter[]): array_t<java.lang.reflect.Parameter>;
     newArray(className: 'java.lang.reflect.Type', arg: Type[]): array_t<java.lang.reflect.Type>;
+    newArray(className: 'java.lang.String', arg: string_t[]): array_t<java.lang.String>;
     newArray<T>(className: string, arg: any[]): array_t<T>;
 
-    import(className: 'java.lang.Class'): java.lang.Class.Static;
-    import(className: 'java.lang.reflect.Parameter'): java.lang.reflect.Parameter.Static;
-    import(className: 'java.lang.String'): java.lang.String.Static;
-    import(className: 'java.lang.reflect.Method'): java.lang.reflect.Method.Static;
-    import(className: 'java.lang.Integer'): java.lang.Integer.Static;
-    import(className: 'java.lang.reflect.Executable'): java.lang.reflect.Executable.Static;
-    import(className: 'java.lang.Object'): java.lang.Object.Static;
     import(className: 'java.lang.Boolean'): java.lang.Boolean.Static;
-    import(className: 'java.lang.reflect.Constructor'): java.lang.reflect.Constructor.Static;
-    import(className: 'java.lang.reflect.Field'): java.lang.reflect.Field.Static;
+    import(className: 'java.lang.Class'): java.lang.Class.Static;
     import(className: 'java.lang.ClassLoader'): java.lang.ClassLoader.Static;
+    import(className: 'java.lang.Integer'): java.lang.Integer.Static;
+    import(className: 'java.lang.Object'): java.lang.Object.Static;
     import(className: 'java.lang.reflect.AccessibleObject'): java.lang.reflect.AccessibleObject.Static;
+    import(className: 'java.lang.reflect.Constructor'): java.lang.reflect.Constructor.Static;
+    import(className: 'java.lang.reflect.Executable'): java.lang.reflect.Executable.Static;
+    import(className: 'java.lang.reflect.Field'): java.lang.reflect.Field.Static;
+    import(className: 'java.lang.reflect.Method'): java.lang.reflect.Method.Static;
+    import(className: 'java.lang.reflect.Parameter'): java.lang.reflect.Parameter.Static;
     import(className: 'java.lang.reflect.Type'): java.lang.reflect.Type.Static;
+    import(className: 'java.lang.String'): java.lang.String.Static;
     import(className: string): any;
 
+    newInstance(className: 'java.lang.Boolean', arg0: string_t, cb: Callback<boolean>): void;
+    newInstance(className: 'java.lang.Boolean', arg0: boolean_t, cb: Callback<boolean>): void;
+    newInstance(className: 'java.lang.Integer', arg0: string_t, cb: Callback<number>): void;
+    newInstance(className: 'java.lang.Integer', arg0: integer_t, cb: Callback<number>): void;
+    newInstance(className: 'java.lang.Object', cb: Callback<object_t>): void;
     newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: object_t, cb: Callback<string>): void;
     newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: string_t, cb: Callback<string>): void;
     newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: integer_t, cb: Callback<string>): void;
@@ -130,13 +135,13 @@ declare module Java {
     newInstance(className: 'java.lang.String', arg0: object_array_t, cb: Callback<string>): void;
     newInstance(className: 'java.lang.String', arg0: object_array_t, cb: Callback<string>): void;
     newInstance(className: 'java.lang.String', cb: Callback<string>): void;
-    newInstance(className: 'java.lang.Integer', arg0: string_t, cb: Callback<number>): void;
-    newInstance(className: 'java.lang.Integer', arg0: integer_t, cb: Callback<number>): void;
-    newInstance(className: 'java.lang.Object', cb: Callback<object_t>): void;
-    newInstance(className: 'java.lang.Boolean', arg0: string_t, cb: Callback<boolean>): void;
-    newInstance(className: 'java.lang.Boolean', arg0: boolean_t, cb: Callback<boolean>): void;
     newInstance(className: string, ...args: any[]): void;
 
+    newInstanceSync(className: 'java.lang.Boolean', arg0: string_t): boolean;
+    newInstanceSync(className: 'java.lang.Boolean', arg0: boolean_t): boolean;
+    newInstanceSync(className: 'java.lang.Integer', arg0: string_t): number;
+    newInstanceSync(className: 'java.lang.Integer', arg0: integer_t): number;
+    newInstanceSync(className: 'java.lang.Object'): object_t;
     newInstanceSync(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: object_t): string;
     newInstanceSync(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: string_t): string;
     newInstanceSync(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: integer_t): string;
@@ -152,13 +157,13 @@ declare module Java {
     newInstanceSync(className: 'java.lang.String', arg0: object_array_t): string;
     newInstanceSync(className: 'java.lang.String', arg0: object_array_t): string;
     newInstanceSync(className: 'java.lang.String'): string;
-    newInstanceSync(className: 'java.lang.Integer', arg0: string_t): number;
-    newInstanceSync(className: 'java.lang.Integer', arg0: integer_t): number;
-    newInstanceSync(className: 'java.lang.Object'): object_t;
-    newInstanceSync(className: 'java.lang.Boolean', arg0: string_t): boolean;
-    newInstanceSync(className: 'java.lang.Boolean', arg0: boolean_t): boolean;
     newInstanceSync(className: string, ...args: any[]): any;
 
+    newInstancePromise(className: 'java.lang.Boolean', arg0: string_t): Promise<boolean>;
+    newInstancePromise(className: 'java.lang.Boolean', arg0: boolean_t): Promise<boolean>;
+    newInstancePromise(className: 'java.lang.Integer', arg0: string_t): Promise<number>;
+    newInstancePromise(className: 'java.lang.Integer', arg0: integer_t): Promise<number>;
+    newInstancePromise(className: 'java.lang.Object'): Promise<object_t>;
     newInstancePromise(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: object_t): Promise<string>;
     newInstancePromise(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: string_t): Promise<string>;
     newInstancePromise(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: integer_t): Promise<string>;
@@ -174,27 +179,80 @@ declare module Java {
     newInstancePromise(className: 'java.lang.String', arg0: object_array_t): Promise<string>;
     newInstancePromise(className: 'java.lang.String', arg0: object_array_t): Promise<string>;
     newInstancePromise(className: 'java.lang.String'): Promise<string>;
-    newInstancePromise(className: 'java.lang.Integer', arg0: string_t): Promise<number>;
-    newInstancePromise(className: 'java.lang.Integer', arg0: integer_t): Promise<number>;
-    newInstancePromise(className: 'java.lang.Object'): Promise<object_t>;
-    newInstancePromise(className: 'java.lang.Boolean', arg0: string_t): Promise<boolean>;
-    newInstancePromise(className: 'java.lang.Boolean', arg0: boolean_t): Promise<boolean>;
     newInstancePromise(className: string, ...args: any[]): Promise<any>;
   }
 
-  export import Class = java.lang.Class;
-  export import Parameter = java.lang.reflect.Parameter;
-  export import String = java.lang.String;
-  export import Method = java.lang.reflect.Method;
-  export import Integer = java.lang.Integer;
-  export import Executable = java.lang.reflect.Executable;
-  export import Object = java.lang.Object;
   export import Boolean = java.lang.Boolean;
-  export import Constructor = java.lang.reflect.Constructor;
-  export import Field = java.lang.reflect.Field;
+  export import Class = java.lang.Class;
   export import ClassLoader = java.lang.ClassLoader;
+  export import Integer = java.lang.Integer;
+  export import Object = java.lang.Object;
   export import AccessibleObject = java.lang.reflect.AccessibleObject;
+  export import Constructor = java.lang.reflect.Constructor;
+  export import Executable = java.lang.reflect.Executable;
+  export import Field = java.lang.reflect.Field;
+  export import Method = java.lang.reflect.Method;
+  export import Parameter = java.lang.reflect.Parameter;
   export import Type = java.lang.reflect.Type;
+  export import String = java.lang.String;
+
+  export module java.lang {
+    export interface Boolean extends Java.java.lang.Object {
+      // public boolean java.lang.Boolean.booleanValue()
+      booleanValueSync(): boolean;
+      // public int java.lang.Boolean.compareTo(java.lang.Boolean)
+      compareToSync(arg0: boolean_t): number;
+      // public int java.lang.Boolean.compareTo(java.lang.Object)
+      compareToSync(arg0: object_t): number;
+      // public boolean java.lang.Boolean.equals(java.lang.Object)
+      equalsSync(arg0: object_t): boolean;
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClassSync(): Class;
+      // public int java.lang.Boolean.hashCode()
+      hashCodeSync(): number;
+      // public final native void java.lang.Object.notify()
+      notifySync(): void;
+      // public final native void java.lang.Object.notifyAll()
+      notifyAllSync(): void;
+      // public java.lang.String java.lang.Boolean.toString()
+      toStringSync(): string;
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      waitSync(arg0: object_t, arg1: integer_t): void;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      waitSync(arg0: object_t): void;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      waitSync(): void;
+    }
+    export module Boolean {
+      export interface Static {
+        new (arg0: string_t): java.lang.Boolean;
+        new (arg0: boolean_t): java.lang.Boolean;
+        // public static int java.lang.Boolean.compare(boolean,boolean)
+        compareSync(arg0: boolean_t, arg1: boolean_t): number;
+        // public static boolean java.lang.Boolean.getBoolean(java.lang.String)
+        getBooleanSync(arg0: string_t): boolean;
+        // public static int java.lang.Boolean.hashCode(boolean)
+        hashCodeSync(arg0: boolean_t): number;
+        // public static boolean java.lang.Boolean.logicalAnd(boolean,boolean)
+        logicalAndSync(arg0: boolean_t, arg1: boolean_t): boolean;
+        // public static boolean java.lang.Boolean.logicalOr(boolean,boolean)
+        logicalOrSync(arg0: boolean_t, arg1: boolean_t): boolean;
+        // public static boolean java.lang.Boolean.logicalXor(boolean,boolean)
+        logicalXorSync(arg0: boolean_t, arg1: boolean_t): boolean;
+        // public static boolean java.lang.Boolean.parseBoolean(java.lang.String)
+        parseBooleanSync(arg0: string_t): boolean;
+        // public static java.lang.String java.lang.Boolean.toString(boolean)
+        toStringSync(arg0: boolean_t): string;
+        // public static java.lang.Boolean java.lang.Boolean.valueOf(java.lang.String)
+        valueOfSync(arg0: string_t): boolean;
+        // public static java.lang.Boolean java.lang.Boolean.valueOf(boolean)
+        valueOfSync(arg0: boolean_t): boolean;
+        TRUE: boolean;
+        FALSE: boolean;
+        TYPE: Class;
+      }
+    }
+  }
 
   export module java.lang {
     export interface Class extends Java.java.lang.Object,Java.java.lang.reflect.Type {
@@ -353,6 +411,632 @@ declare module Java {
     }
   }
 
+  export module java.lang {
+    export interface ClassLoader extends Java.java.lang.Object {
+      // public void java.lang.ClassLoader.clearAssertionStatus()
+      clearAssertionStatusSync(): void;
+      // public boolean java.lang.Object.equals(java.lang.Object)
+      equalsSync(arg0: object_t): boolean;
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClassSync(): Class;
+      // public final java.lang.ClassLoader java.lang.ClassLoader.getParent()
+      getParentSync(): ClassLoader;
+      // public java.net.URL java.lang.ClassLoader.getResource(java.lang.String)
+      getResourceSync(arg0: string_t): object_t;
+      // public java.io.InputStream java.lang.ClassLoader.getResourceAsStream(java.lang.String)
+      getResourceAsStreamSync(arg0: string_t): object_t;
+      // public java.util.Enumeration<java.net.URL> java.lang.ClassLoader.getResources(java.lang.String) throws java.io.IOException
+      getResourcesSync(arg0: string_t): object_t;
+      // public native int java.lang.Object.hashCode()
+      hashCodeSync(): number;
+      // public java.lang.Class<?> java.lang.ClassLoader.loadClass(java.lang.String) throws java.lang.ClassNotFoundException
+      loadClassSync(arg0: string_t): Class;
+      // public final native void java.lang.Object.notify()
+      notifySync(): void;
+      // public final native void java.lang.Object.notifyAll()
+      notifyAllSync(): void;
+      // public void java.lang.ClassLoader.setClassAssertionStatus(java.lang.String,boolean)
+      setClassAssertionStatusSync(arg0: string_t, arg1: boolean_t): void;
+      // public void java.lang.ClassLoader.setDefaultAssertionStatus(boolean)
+      setDefaultAssertionStatusSync(arg0: boolean_t): void;
+      // public void java.lang.ClassLoader.setPackageAssertionStatus(java.lang.String,boolean)
+      setPackageAssertionStatusSync(arg0: string_t, arg1: boolean_t): void;
+      // public java.lang.String java.lang.Object.toString()
+      toStringSync(): string;
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      waitSync(arg0: object_t, arg1: integer_t): void;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      waitSync(arg0: object_t): void;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      waitSync(): void;
+    }
+    export module ClassLoader {
+      export interface Static {
+        // public static java.lang.ClassLoader java.lang.ClassLoader.getSystemClassLoader()
+        getSystemClassLoaderSync(): ClassLoader;
+        // public static java.net.URL java.lang.ClassLoader.getSystemResource(java.lang.String)
+        getSystemResourceSync(arg0: string_t): object_t;
+        // public static java.io.InputStream java.lang.ClassLoader.getSystemResourceAsStream(java.lang.String)
+        getSystemResourceAsStreamSync(arg0: string_t): object_t;
+        // public static java.util.Enumeration<java.net.URL> java.lang.ClassLoader.getSystemResources(java.lang.String) throws java.io.IOException
+        getSystemResourcesSync(arg0: string_t): object_t;
+      }
+    }
+  }
+
+  export module java.lang {
+    export interface Integer extends Java.java.lang.Object {
+      // public byte java.lang.Integer.byteValue()
+      byteValueSync(): object_t;
+      // public int java.lang.Integer.compareTo(java.lang.Integer)
+      compareToSync(arg0: integer_t): number;
+      // public int java.lang.Integer.compareTo(java.lang.Object)
+      compareToSync(arg0: object_t): number;
+      // public double java.lang.Integer.doubleValue()
+      doubleValueSync(): object_t;
+      // public boolean java.lang.Integer.equals(java.lang.Object)
+      equalsSync(arg0: object_t): boolean;
+      // public float java.lang.Integer.floatValue()
+      floatValueSync(): object_t;
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClassSync(): Class;
+      // public int java.lang.Integer.hashCode()
+      hashCodeSync(): number;
+      // public int java.lang.Integer.intValue()
+      intValueSync(): number;
+      // public long java.lang.Integer.longValue()
+      longValueSync(): object_t;
+      // public final native void java.lang.Object.notify()
+      notifySync(): void;
+      // public final native void java.lang.Object.notifyAll()
+      notifyAllSync(): void;
+      // public short java.lang.Integer.shortValue()
+      shortValueSync(): object_t;
+      // public java.lang.String java.lang.Integer.toString()
+      toStringSync(): string;
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      waitSync(arg0: object_t, arg1: integer_t): void;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      waitSync(arg0: object_t): void;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      waitSync(): void;
+    }
+    export module Integer {
+      export interface Static {
+        new (arg0: string_t): java.lang.Integer;
+        new (arg0: integer_t): java.lang.Integer;
+        // public static int java.lang.Integer.bitCount(int)
+        bitCountSync(arg0: integer_t): number;
+        // public static int java.lang.Integer.compare(int,int)
+        compareSync(arg0: integer_t, arg1: integer_t): number;
+        // public static int java.lang.Integer.compareUnsigned(int,int)
+        compareUnsignedSync(arg0: integer_t, arg1: integer_t): number;
+        // public static java.lang.Integer java.lang.Integer.decode(java.lang.String) throws java.lang.NumberFormatException
+        decodeSync(arg0: string_t): number;
+        // public static int java.lang.Integer.divideUnsigned(int,int)
+        divideUnsignedSync(arg0: integer_t, arg1: integer_t): number;
+        // public static java.lang.Integer java.lang.Integer.getInteger(java.lang.String,java.lang.Integer)
+        getIntegerSync(arg0: string_t, arg1: integer_t): number;
+        // public static java.lang.Integer java.lang.Integer.getInteger(java.lang.String,int)
+        getIntegerSync(arg0: string_t, arg1: integer_t): number;
+        // public static java.lang.Integer java.lang.Integer.getInteger(java.lang.String)
+        getIntegerSync(arg0: string_t): number;
+        // public static int java.lang.Integer.hashCode(int)
+        hashCodeSync(arg0: integer_t): number;
+        // public static int java.lang.Integer.highestOneBit(int)
+        highestOneBitSync(arg0: integer_t): number;
+        // public static int java.lang.Integer.lowestOneBit(int)
+        lowestOneBitSync(arg0: integer_t): number;
+        // public static int java.lang.Integer.max(int,int)
+        maxSync(arg0: integer_t, arg1: integer_t): number;
+        // public static int java.lang.Integer.min(int,int)
+        minSync(arg0: integer_t, arg1: integer_t): number;
+        // public static int java.lang.Integer.numberOfLeadingZeros(int)
+        numberOfLeadingZerosSync(arg0: integer_t): number;
+        // public static int java.lang.Integer.numberOfTrailingZeros(int)
+        numberOfTrailingZerosSync(arg0: integer_t): number;
+        // public static int java.lang.Integer.parseInt(java.lang.String,int) throws java.lang.NumberFormatException
+        parseIntSync(arg0: string_t, arg1: integer_t): number;
+        // public static int java.lang.Integer.parseInt(java.lang.String) throws java.lang.NumberFormatException
+        parseIntSync(arg0: string_t): number;
+        // public static int java.lang.Integer.parseUnsignedInt(java.lang.String,int) throws java.lang.NumberFormatException
+        parseUnsignedIntSync(arg0: string_t, arg1: integer_t): number;
+        // public static int java.lang.Integer.parseUnsignedInt(java.lang.String) throws java.lang.NumberFormatException
+        parseUnsignedIntSync(arg0: string_t): number;
+        // public static int java.lang.Integer.remainderUnsigned(int,int)
+        remainderUnsignedSync(arg0: integer_t, arg1: integer_t): number;
+        // public static int java.lang.Integer.reverse(int)
+        reverseSync(arg0: integer_t): number;
+        // public static int java.lang.Integer.reverseBytes(int)
+        reverseBytesSync(arg0: integer_t): number;
+        // public static int java.lang.Integer.rotateLeft(int,int)
+        rotateLeftSync(arg0: integer_t, arg1: integer_t): number;
+        // public static int java.lang.Integer.rotateRight(int,int)
+        rotateRightSync(arg0: integer_t, arg1: integer_t): number;
+        // public static int java.lang.Integer.signum(int)
+        signumSync(arg0: integer_t): number;
+        // public static int java.lang.Integer.sum(int,int)
+        sumSync(arg0: integer_t, arg1: integer_t): number;
+        // public static java.lang.String java.lang.Integer.toBinaryString(int)
+        toBinaryStringSync(arg0: integer_t): string;
+        // public static java.lang.String java.lang.Integer.toHexString(int)
+        toHexStringSync(arg0: integer_t): string;
+        // public static java.lang.String java.lang.Integer.toOctalString(int)
+        toOctalStringSync(arg0: integer_t): string;
+        // public static java.lang.String java.lang.Integer.toString(int,int)
+        toStringSync(arg0: integer_t, arg1: integer_t): string;
+        // public static java.lang.String java.lang.Integer.toString(int)
+        toStringSync(arg0: integer_t): string;
+        // public static long java.lang.Integer.toUnsignedLong(int)
+        toUnsignedLongSync(arg0: integer_t): object_t;
+        // public static java.lang.String java.lang.Integer.toUnsignedString(int,int)
+        toUnsignedStringSync(arg0: integer_t, arg1: integer_t): string;
+        // public static java.lang.String java.lang.Integer.toUnsignedString(int)
+        toUnsignedStringSync(arg0: integer_t): string;
+        // public static java.lang.Integer java.lang.Integer.valueOf(java.lang.String,int) throws java.lang.NumberFormatException
+        valueOfSync(arg0: string_t, arg1: integer_t): number;
+        // public static java.lang.Integer java.lang.Integer.valueOf(java.lang.String) throws java.lang.NumberFormatException
+        valueOfSync(arg0: string_t): number;
+        // public static java.lang.Integer java.lang.Integer.valueOf(int)
+        valueOfSync(arg0: integer_t): number;
+        MIN_VALUE: number;
+        MAX_VALUE: number;
+        TYPE: Class;
+        SIZE: number;
+        BYTES: number;
+      }
+    }
+  }
+
+  export module java.lang {
+    export interface Object  {
+      // public boolean java.lang.Object.equals(java.lang.Object)
+      equalsSync(arg0: object_t): boolean;
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClassSync(): Class;
+      // public native int java.lang.Object.hashCode()
+      hashCodeSync(): number;
+      // public final native void java.lang.Object.notify()
+      notifySync(): void;
+      // public final native void java.lang.Object.notifyAll()
+      notifyAllSync(): void;
+      // public java.lang.String java.lang.Object.toString()
+      toStringSync(): string;
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      waitSync(arg0: object_t, arg1: integer_t): void;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      waitSync(arg0: object_t): void;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      waitSync(): void;
+    }
+    export module Object {
+      export interface Static {
+        new (): java.lang.Object;
+      }
+    }
+  }
+
+  export module java.lang.reflect {
+    export interface AccessibleObject extends Java.java.lang.Object {
+      // public boolean java.lang.Object.equals(java.lang.Object)
+      equalsSync(arg0: object_t): boolean;
+      // public <T> T java.lang.reflect.AccessibleObject.getAnnotation(java.lang.Class<T>)
+      getAnnotationSync(arg0: Class): object_t;
+      // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
+      getAnnotationsSync(): object_t[];
+      // public <T> T[] java.lang.reflect.AccessibleObject.getAnnotationsByType(java.lang.Class<T>)
+      getAnnotationsByTypeSync(arg0: Class): object_t[];
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClassSync(): Class;
+      // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
+      getDeclaredAnnotationSync(arg0: Class): object_t;
+      // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getDeclaredAnnotations()
+      getDeclaredAnnotationsSync(): object_t[];
+      // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
+      getDeclaredAnnotationsByTypeSync(arg0: Class): object_t[];
+      // public native int java.lang.Object.hashCode()
+      hashCodeSync(): number;
+      // public boolean java.lang.reflect.AccessibleObject.isAccessible()
+      isAccessibleSync(): boolean;
+      // public boolean java.lang.reflect.AccessibleObject.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)
+      isAnnotationPresentSync(arg0: Class): boolean;
+      // public final native void java.lang.Object.notify()
+      notifySync(): void;
+      // public final native void java.lang.Object.notifyAll()
+      notifyAllSync(): void;
+      // public void java.lang.reflect.AccessibleObject.setAccessible(boolean) throws java.lang.SecurityException
+      setAccessibleSync(arg0: boolean_t): void;
+      // public java.lang.String java.lang.Object.toString()
+      toStringSync(): string;
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      waitSync(arg0: object_t, arg1: integer_t): void;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      waitSync(arg0: object_t): void;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      waitSync(): void;
+    }
+    export module AccessibleObject {
+      export interface Static {
+        // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
+        setAccessibleSync(arg0: array_t<AccessibleObject>, arg1: boolean_t): void;
+      }
+    }
+  }
+
+  export module java.lang.reflect {
+    export interface Constructor extends Java.java.lang.reflect.Executable {
+      // public boolean java.lang.reflect.Constructor.equals(java.lang.Object)
+      equalsSync(arg0: object_t): boolean;
+      // public java.lang.reflect.AnnotatedType[] java.lang.reflect.Executable.getAnnotatedExceptionTypes()
+      getAnnotatedExceptionTypesSync(): object_t[];
+      // public java.lang.reflect.AnnotatedType[] java.lang.reflect.Executable.getAnnotatedParameterTypes()
+      getAnnotatedParameterTypesSync(): object_t[];
+      // public java.lang.reflect.AnnotatedType java.lang.reflect.Constructor.getAnnotatedReceiverType()
+      getAnnotatedReceiverTypeSync(): object_t;
+      // public java.lang.reflect.AnnotatedType java.lang.reflect.Constructor.getAnnotatedReturnType()
+      getAnnotatedReturnTypeSync(): object_t;
+      // public <T> T java.lang.reflect.Constructor.getAnnotation(java.lang.Class<T>)
+      getAnnotationSync(arg0: Class): object_t;
+      // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
+      getAnnotationsSync(): object_t[];
+      // public <T> T[] java.lang.reflect.Executable.getAnnotationsByType(java.lang.Class<T>)
+      getAnnotationsByTypeSync(arg0: Class): object_t[];
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClassSync(): Class;
+      // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
+      getDeclaredAnnotationSync(arg0: Class): object_t;
+      // public java.lang.annotation.Annotation[] java.lang.reflect.Constructor.getDeclaredAnnotations()
+      getDeclaredAnnotationsSync(): object_t[];
+      // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
+      getDeclaredAnnotationsByTypeSync(arg0: Class): object_t[];
+      // public java.lang.Class<T> java.lang.reflect.Constructor.getDeclaringClass()
+      getDeclaringClassSync(): Class;
+      // public java.lang.Class<?>[] java.lang.reflect.Constructor.getExceptionTypes()
+      getExceptionTypesSync(): Class[];
+      // public java.lang.reflect.Type[] java.lang.reflect.Constructor.getGenericExceptionTypes()
+      getGenericExceptionTypesSync(): Type[];
+      // public java.lang.reflect.Type[] java.lang.reflect.Constructor.getGenericParameterTypes()
+      getGenericParameterTypesSync(): Type[];
+      // public int java.lang.reflect.Constructor.getModifiers()
+      getModifiersSync(): number;
+      // public java.lang.String java.lang.reflect.Constructor.getName()
+      getNameSync(): string;
+      // public java.lang.annotation.Annotation[][] java.lang.reflect.Constructor.getParameterAnnotations()
+      getParameterAnnotationsSync(): object_t[][];
+      // public int java.lang.reflect.Constructor.getParameterCount()
+      getParameterCountSync(): number;
+      // public java.lang.reflect.Parameter[] java.lang.reflect.Executable.getParameters()
+      getParametersSync(): Parameter[];
+      // public java.lang.Class<?>[] java.lang.reflect.Constructor.getParameterTypes()
+      getParameterTypesSync(): Class[];
+      // public java.lang.reflect.TypeVariable<java.lang.reflect.Constructor<T>>[] java.lang.reflect.Constructor.getTypeParameters()
+      getTypeParametersSync(): object_t[];
+      // public int java.lang.reflect.Constructor.hashCode()
+      hashCodeSync(): number;
+      // public boolean java.lang.reflect.AccessibleObject.isAccessible()
+      isAccessibleSync(): boolean;
+      // public boolean java.lang.reflect.AccessibleObject.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)
+      isAnnotationPresentSync(arg0: Class): boolean;
+      // public boolean java.lang.reflect.Constructor.isSynthetic()
+      isSyntheticSync(): boolean;
+      // public boolean java.lang.reflect.Constructor.isVarArgs()
+      isVarArgsSync(): boolean;
+      // public T java.lang.reflect.Constructor.newInstance(java.lang.Object...) throws java.lang.InstantiationException,java.lang.IllegalAccessException,java.lang.IllegalArgumentException,java.lang.reflect.InvocationTargetException
+      newInstanceSync(...arg0: object_t[]): object_t;
+      newInstanceSync(arg0: object_array_t): object_t;
+      // public final native void java.lang.Object.notify()
+      notifySync(): void;
+      // public final native void java.lang.Object.notifyAll()
+      notifyAllSync(): void;
+      // public void java.lang.reflect.AccessibleObject.setAccessible(boolean) throws java.lang.SecurityException
+      setAccessibleSync(arg0: boolean_t): void;
+      // public java.lang.String java.lang.reflect.Constructor.toGenericString()
+      toGenericStringSync(): string;
+      // public java.lang.String java.lang.reflect.Constructor.toString()
+      toStringSync(): string;
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      waitSync(arg0: object_t, arg1: integer_t): void;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      waitSync(arg0: object_t): void;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      waitSync(): void;
+    }
+    export module Constructor {
+      export interface Static {
+        // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
+        setAccessibleSync(arg0: array_t<AccessibleObject>, arg1: boolean_t): void;
+        PUBLIC: number;
+        DECLARED: number;
+      }
+    }
+  }
+
+  export module java.lang.reflect {
+    export interface Executable extends Java.java.lang.reflect.AccessibleObject {
+      // public boolean java.lang.Object.equals(java.lang.Object)
+      equalsSync(arg0: object_t): boolean;
+      // public java.lang.reflect.AnnotatedType[] java.lang.reflect.Executable.getAnnotatedExceptionTypes()
+      getAnnotatedExceptionTypesSync(): object_t[];
+      // public java.lang.reflect.AnnotatedType[] java.lang.reflect.Executable.getAnnotatedParameterTypes()
+      getAnnotatedParameterTypesSync(): object_t[];
+      // public java.lang.reflect.AnnotatedType java.lang.reflect.Executable.getAnnotatedReceiverType()
+      getAnnotatedReceiverTypeSync(): object_t;
+      // public abstract java.lang.reflect.AnnotatedType java.lang.reflect.Executable.getAnnotatedReturnType()
+      getAnnotatedReturnTypeSync(): object_t;
+      // public <T> T java.lang.reflect.Executable.getAnnotation(java.lang.Class<T>)
+      getAnnotationSync(arg0: Class): object_t;
+      // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
+      getAnnotationsSync(): object_t[];
+      // public <T> T[] java.lang.reflect.Executable.getAnnotationsByType(java.lang.Class<T>)
+      getAnnotationsByTypeSync(arg0: Class): object_t[];
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClassSync(): Class;
+      // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
+      getDeclaredAnnotationSync(arg0: Class): object_t;
+      // public java.lang.annotation.Annotation[] java.lang.reflect.Executable.getDeclaredAnnotations()
+      getDeclaredAnnotationsSync(): object_t[];
+      // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
+      getDeclaredAnnotationsByTypeSync(arg0: Class): object_t[];
+      // public abstract java.lang.Class<?> java.lang.reflect.Executable.getDeclaringClass()
+      getDeclaringClassSync(): Class;
+      // public abstract java.lang.Class<?>[] java.lang.reflect.Executable.getExceptionTypes()
+      getExceptionTypesSync(): Class[];
+      // public java.lang.reflect.Type[] java.lang.reflect.Executable.getGenericExceptionTypes()
+      getGenericExceptionTypesSync(): Type[];
+      // public java.lang.reflect.Type[] java.lang.reflect.Executable.getGenericParameterTypes()
+      getGenericParameterTypesSync(): Type[];
+      // public abstract int java.lang.reflect.Executable.getModifiers()
+      getModifiersSync(): number;
+      // public abstract java.lang.String java.lang.reflect.Executable.getName()
+      getNameSync(): string;
+      // public abstract java.lang.annotation.Annotation[][] java.lang.reflect.Executable.getParameterAnnotations()
+      getParameterAnnotationsSync(): object_t[][];
+      // public int java.lang.reflect.Executable.getParameterCount()
+      getParameterCountSync(): number;
+      // public java.lang.reflect.Parameter[] java.lang.reflect.Executable.getParameters()
+      getParametersSync(): Parameter[];
+      // public abstract java.lang.Class<?>[] java.lang.reflect.Executable.getParameterTypes()
+      getParameterTypesSync(): Class[];
+      // public abstract java.lang.reflect.TypeVariable<?>[] java.lang.reflect.Executable.getTypeParameters()
+      getTypeParametersSync(): object_t[];
+      // public native int java.lang.Object.hashCode()
+      hashCodeSync(): number;
+      // public boolean java.lang.reflect.AccessibleObject.isAccessible()
+      isAccessibleSync(): boolean;
+      // public boolean java.lang.reflect.AccessibleObject.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)
+      isAnnotationPresentSync(arg0: Class): boolean;
+      // public boolean java.lang.reflect.Executable.isSynthetic()
+      isSyntheticSync(): boolean;
+      // public boolean java.lang.reflect.Executable.isVarArgs()
+      isVarArgsSync(): boolean;
+      // public final native void java.lang.Object.notify()
+      notifySync(): void;
+      // public final native void java.lang.Object.notifyAll()
+      notifyAllSync(): void;
+      // public void java.lang.reflect.AccessibleObject.setAccessible(boolean) throws java.lang.SecurityException
+      setAccessibleSync(arg0: boolean_t): void;
+      // public abstract java.lang.String java.lang.reflect.Executable.toGenericString()
+      toGenericStringSync(): string;
+      // public java.lang.String java.lang.Object.toString()
+      toStringSync(): string;
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      waitSync(arg0: object_t, arg1: integer_t): void;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      waitSync(arg0: object_t): void;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      waitSync(): void;
+    }
+    export module Executable {
+      export interface Static {
+        // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
+        setAccessibleSync(arg0: array_t<AccessibleObject>, arg1: boolean_t): void;
+        PUBLIC: number;
+        DECLARED: number;
+      }
+    }
+  }
+
+  export module java.lang.reflect {
+    export interface Field extends Java.java.lang.reflect.AccessibleObject {
+      // public boolean java.lang.reflect.Field.equals(java.lang.Object)
+      equalsSync(arg0: object_t): boolean;
+      // public java.lang.Object java.lang.reflect.Field.get(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      getSync(arg0: object_t): object_t;
+      // public java.lang.reflect.AnnotatedType java.lang.reflect.Field.getAnnotatedType()
+      getAnnotatedTypeSync(): object_t;
+      // public <T> T java.lang.reflect.Field.getAnnotation(java.lang.Class<T>)
+      getAnnotationSync(arg0: Class): object_t;
+      // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
+      getAnnotationsSync(): object_t[];
+      // public <T> T[] java.lang.reflect.Field.getAnnotationsByType(java.lang.Class<T>)
+      getAnnotationsByTypeSync(arg0: Class): object_t[];
+      // public boolean java.lang.reflect.Field.getBoolean(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      getBooleanSync(arg0: object_t): boolean;
+      // public byte java.lang.reflect.Field.getByte(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      getByteSync(arg0: object_t): object_t;
+      // public char java.lang.reflect.Field.getChar(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      getCharSync(arg0: object_t): object_t;
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClassSync(): Class;
+      // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
+      getDeclaredAnnotationSync(arg0: Class): object_t;
+      // public java.lang.annotation.Annotation[] java.lang.reflect.Field.getDeclaredAnnotations()
+      getDeclaredAnnotationsSync(): object_t[];
+      // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
+      getDeclaredAnnotationsByTypeSync(arg0: Class): object_t[];
+      // public java.lang.Class<?> java.lang.reflect.Field.getDeclaringClass()
+      getDeclaringClassSync(): Class;
+      // public double java.lang.reflect.Field.getDouble(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      getDoubleSync(arg0: object_t): object_t;
+      // public float java.lang.reflect.Field.getFloat(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      getFloatSync(arg0: object_t): object_t;
+      // public java.lang.reflect.Type java.lang.reflect.Field.getGenericType()
+      getGenericTypeSync(): Type;
+      // public int java.lang.reflect.Field.getInt(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      getIntSync(arg0: object_t): number;
+      // public long java.lang.reflect.Field.getLong(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      getLongSync(arg0: object_t): object_t;
+      // public int java.lang.reflect.Field.getModifiers()
+      getModifiersSync(): number;
+      // public java.lang.String java.lang.reflect.Field.getName()
+      getNameSync(): string;
+      // public short java.lang.reflect.Field.getShort(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      getShortSync(arg0: object_t): object_t;
+      // public java.lang.Class<?> java.lang.reflect.Field.getType()
+      getTypeSync(): Class;
+      // public int java.lang.reflect.Field.hashCode()
+      hashCodeSync(): number;
+      // public boolean java.lang.reflect.AccessibleObject.isAccessible()
+      isAccessibleSync(): boolean;
+      // public boolean java.lang.reflect.AccessibleObject.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)
+      isAnnotationPresentSync(arg0: Class): boolean;
+      // public boolean java.lang.reflect.Field.isEnumConstant()
+      isEnumConstantSync(): boolean;
+      // public boolean java.lang.reflect.Field.isSynthetic()
+      isSyntheticSync(): boolean;
+      // public final native void java.lang.Object.notify()
+      notifySync(): void;
+      // public final native void java.lang.Object.notifyAll()
+      notifyAllSync(): void;
+      // public void java.lang.reflect.Field.set(java.lang.Object,java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      setSync(arg0: object_t, arg1: object_t): void;
+      // public void java.lang.reflect.AccessibleObject.setAccessible(boolean) throws java.lang.SecurityException
+      setAccessibleSync(arg0: boolean_t): void;
+      // public void java.lang.reflect.Field.setBoolean(java.lang.Object,boolean) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      setBooleanSync(arg0: object_t, arg1: boolean_t): void;
+      // public void java.lang.reflect.Field.setByte(java.lang.Object,byte) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      setByteSync(arg0: object_t, arg1: object_t): void;
+      // public void java.lang.reflect.Field.setChar(java.lang.Object,char) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      setCharSync(arg0: object_t, arg1: object_t): void;
+      // public void java.lang.reflect.Field.setDouble(java.lang.Object,double) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      setDoubleSync(arg0: object_t, arg1: object_t): void;
+      // public void java.lang.reflect.Field.setFloat(java.lang.Object,float) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      setFloatSync(arg0: object_t, arg1: object_t): void;
+      // public void java.lang.reflect.Field.setInt(java.lang.Object,int) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      setIntSync(arg0: object_t, arg1: integer_t): void;
+      // public void java.lang.reflect.Field.setLong(java.lang.Object,long) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      setLongSync(arg0: object_t, arg1: object_t): void;
+      // public void java.lang.reflect.Field.setShort(java.lang.Object,short) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
+      setShortSync(arg0: object_t, arg1: object_t): void;
+      // public java.lang.String java.lang.reflect.Field.toGenericString()
+      toGenericStringSync(): string;
+      // public java.lang.String java.lang.reflect.Field.toString()
+      toStringSync(): string;
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      waitSync(arg0: object_t, arg1: integer_t): void;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      waitSync(arg0: object_t): void;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      waitSync(): void;
+    }
+    export module Field {
+      export interface Static {
+        // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
+        setAccessibleSync(arg0: array_t<AccessibleObject>, arg1: boolean_t): void;
+        PUBLIC: number;
+        DECLARED: number;
+      }
+    }
+  }
+
+  export module java.lang.reflect {
+    export interface Method extends Java.java.lang.reflect.Executable {
+      // public boolean java.lang.reflect.Method.equals(java.lang.Object)
+      equalsSync(arg0: object_t): boolean;
+      // public java.lang.reflect.AnnotatedType[] java.lang.reflect.Executable.getAnnotatedExceptionTypes()
+      getAnnotatedExceptionTypesSync(): object_t[];
+      // public java.lang.reflect.AnnotatedType[] java.lang.reflect.Executable.getAnnotatedParameterTypes()
+      getAnnotatedParameterTypesSync(): object_t[];
+      // public java.lang.reflect.AnnotatedType java.lang.reflect.Executable.getAnnotatedReceiverType()
+      getAnnotatedReceiverTypeSync(): object_t;
+      // public java.lang.reflect.AnnotatedType java.lang.reflect.Method.getAnnotatedReturnType()
+      getAnnotatedReturnTypeSync(): object_t;
+      // public <T> T java.lang.reflect.Method.getAnnotation(java.lang.Class<T>)
+      getAnnotationSync(arg0: Class): object_t;
+      // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
+      getAnnotationsSync(): object_t[];
+      // public <T> T[] java.lang.reflect.Executable.getAnnotationsByType(java.lang.Class<T>)
+      getAnnotationsByTypeSync(arg0: Class): object_t[];
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClassSync(): Class;
+      // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
+      getDeclaredAnnotationSync(arg0: Class): object_t;
+      // public java.lang.annotation.Annotation[] java.lang.reflect.Method.getDeclaredAnnotations()
+      getDeclaredAnnotationsSync(): object_t[];
+      // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
+      getDeclaredAnnotationsByTypeSync(arg0: Class): object_t[];
+      // public java.lang.Class<?> java.lang.reflect.Method.getDeclaringClass()
+      getDeclaringClassSync(): Class;
+      // public java.lang.Object java.lang.reflect.Method.getDefaultValue()
+      getDefaultValueSync(): object_t;
+      // public java.lang.Class<?>[] java.lang.reflect.Method.getExceptionTypes()
+      getExceptionTypesSync(): Class[];
+      // public java.lang.reflect.Type[] java.lang.reflect.Method.getGenericExceptionTypes()
+      getGenericExceptionTypesSync(): Type[];
+      // public java.lang.reflect.Type[] java.lang.reflect.Method.getGenericParameterTypes()
+      getGenericParameterTypesSync(): Type[];
+      // public java.lang.reflect.Type java.lang.reflect.Method.getGenericReturnType()
+      getGenericReturnTypeSync(): Type;
+      // public int java.lang.reflect.Method.getModifiers()
+      getModifiersSync(): number;
+      // public java.lang.String java.lang.reflect.Method.getName()
+      getNameSync(): string;
+      // public java.lang.annotation.Annotation[][] java.lang.reflect.Method.getParameterAnnotations()
+      getParameterAnnotationsSync(): object_t[][];
+      // public int java.lang.reflect.Method.getParameterCount()
+      getParameterCountSync(): number;
+      // public java.lang.reflect.Parameter[] java.lang.reflect.Executable.getParameters()
+      getParametersSync(): Parameter[];
+      // public java.lang.Class<?>[] java.lang.reflect.Method.getParameterTypes()
+      getParameterTypesSync(): Class[];
+      // public java.lang.Class<?> java.lang.reflect.Method.getReturnType()
+      getReturnTypeSync(): Class;
+      // public java.lang.reflect.TypeVariable<java.lang.reflect.Method>[] java.lang.reflect.Method.getTypeParameters()
+      getTypeParametersSync(): object_t[];
+      // public int java.lang.reflect.Method.hashCode()
+      hashCodeSync(): number;
+      // public java.lang.Object java.lang.reflect.Method.invoke(java.lang.Object,java.lang.Object...) throws java.lang.IllegalAccessException,java.lang.IllegalArgumentException,java.lang.reflect.InvocationTargetException
+      invokeSync(arg0: object_t, ...arg1: object_t[]): object_t;
+      invokeSync(arg0: object_t, arg1: object_array_t): object_t;
+      // public boolean java.lang.reflect.AccessibleObject.isAccessible()
+      isAccessibleSync(): boolean;
+      // public boolean java.lang.reflect.AccessibleObject.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)
+      isAnnotationPresentSync(arg0: Class): boolean;
+      // public boolean java.lang.reflect.Method.isBridge()
+      isBridgeSync(): boolean;
+      // public boolean java.lang.reflect.Method.isDefault()
+      isDefaultSync(): boolean;
+      // public boolean java.lang.reflect.Method.isSynthetic()
+      isSyntheticSync(): boolean;
+      // public boolean java.lang.reflect.Method.isVarArgs()
+      isVarArgsSync(): boolean;
+      // public final native void java.lang.Object.notify()
+      notifySync(): void;
+      // public final native void java.lang.Object.notifyAll()
+      notifyAllSync(): void;
+      // public void java.lang.reflect.AccessibleObject.setAccessible(boolean) throws java.lang.SecurityException
+      setAccessibleSync(arg0: boolean_t): void;
+      // public java.lang.String java.lang.reflect.Method.toGenericString()
+      toGenericStringSync(): string;
+      // public java.lang.String java.lang.reflect.Method.toString()
+      toStringSync(): string;
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      waitSync(arg0: object_t, arg1: integer_t): void;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      waitSync(arg0: object_t): void;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      waitSync(): void;
+    }
+    export module Method {
+      export interface Static {
+        // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
+        setAccessibleSync(arg0: array_t<AccessibleObject>, arg1: boolean_t): void;
+        PUBLIC: number;
+        DECLARED: number;
+      }
+    }
+  }
+
   export module java.lang.reflect {
     export interface Parameter extends Java.java.lang.Object {
       // public boolean java.lang.reflect.Parameter.equals(java.lang.Object)
@@ -409,6 +1093,17 @@ declare module Java {
       waitSync(): void;
     }
     export module Parameter {
+      export interface Static {
+      }
+    }
+  }
+
+  export module java.lang.reflect {
+    export interface Type extends Java.java.lang.Object {
+      // public default java.lang.String java.lang.reflect.Type.getTypeName()
+      getTypeNameSync(): string;
+    }
+    export module Type {
       export interface Static {
       }
     }
@@ -590,701 +1285,6 @@ declare module Java {
         // public static java.lang.String java.lang.String.valueOf(char)
         valueOfSync(arg0: object_t): string;
         CASE_INSENSITIVE_ORDER: object_t;
-      }
-    }
-  }
-
-  export module java.lang.reflect {
-    export interface Method extends Java.java.lang.reflect.Executable {
-      // public boolean java.lang.reflect.Method.equals(java.lang.Object)
-      equalsSync(arg0: object_t): boolean;
-      // public java.lang.reflect.AnnotatedType[] java.lang.reflect.Executable.getAnnotatedExceptionTypes()
-      getAnnotatedExceptionTypesSync(): object_t[];
-      // public java.lang.reflect.AnnotatedType[] java.lang.reflect.Executable.getAnnotatedParameterTypes()
-      getAnnotatedParameterTypesSync(): object_t[];
-      // public java.lang.reflect.AnnotatedType java.lang.reflect.Executable.getAnnotatedReceiverType()
-      getAnnotatedReceiverTypeSync(): object_t;
-      // public java.lang.reflect.AnnotatedType java.lang.reflect.Method.getAnnotatedReturnType()
-      getAnnotatedReturnTypeSync(): object_t;
-      // public <T> T java.lang.reflect.Method.getAnnotation(java.lang.Class<T>)
-      getAnnotationSync(arg0: Class): object_t;
-      // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
-      getAnnotationsSync(): object_t[];
-      // public <T> T[] java.lang.reflect.Executable.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByTypeSync(arg0: Class): object_t[];
-      // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassSync(): Class;
-      // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotationSync(arg0: Class): object_t;
-      // public java.lang.annotation.Annotation[] java.lang.reflect.Method.getDeclaredAnnotations()
-      getDeclaredAnnotationsSync(): object_t[];
-      // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByTypeSync(arg0: Class): object_t[];
-      // public java.lang.Class<?> java.lang.reflect.Method.getDeclaringClass()
-      getDeclaringClassSync(): Class;
-      // public java.lang.Object java.lang.reflect.Method.getDefaultValue()
-      getDefaultValueSync(): object_t;
-      // public java.lang.Class<?>[] java.lang.reflect.Method.getExceptionTypes()
-      getExceptionTypesSync(): Class[];
-      // public java.lang.reflect.Type[] java.lang.reflect.Method.getGenericExceptionTypes()
-      getGenericExceptionTypesSync(): Type[];
-      // public java.lang.reflect.Type[] java.lang.reflect.Method.getGenericParameterTypes()
-      getGenericParameterTypesSync(): Type[];
-      // public java.lang.reflect.Type java.lang.reflect.Method.getGenericReturnType()
-      getGenericReturnTypeSync(): Type;
-      // public int java.lang.reflect.Method.getModifiers()
-      getModifiersSync(): number;
-      // public java.lang.String java.lang.reflect.Method.getName()
-      getNameSync(): string;
-      // public java.lang.annotation.Annotation[][] java.lang.reflect.Method.getParameterAnnotations()
-      getParameterAnnotationsSync(): object_t[][];
-      // public int java.lang.reflect.Method.getParameterCount()
-      getParameterCountSync(): number;
-      // public java.lang.reflect.Parameter[] java.lang.reflect.Executable.getParameters()
-      getParametersSync(): Parameter[];
-      // public java.lang.Class<?>[] java.lang.reflect.Method.getParameterTypes()
-      getParameterTypesSync(): Class[];
-      // public java.lang.Class<?> java.lang.reflect.Method.getReturnType()
-      getReturnTypeSync(): Class;
-      // public java.lang.reflect.TypeVariable<java.lang.reflect.Method>[] java.lang.reflect.Method.getTypeParameters()
-      getTypeParametersSync(): object_t[];
-      // public int java.lang.reflect.Method.hashCode()
-      hashCodeSync(): number;
-      // public java.lang.Object java.lang.reflect.Method.invoke(java.lang.Object,java.lang.Object...) throws java.lang.IllegalAccessException,java.lang.IllegalArgumentException,java.lang.reflect.InvocationTargetException
-      invokeSync(arg0: object_t, ...arg1: object_t[]): object_t;
-      invokeSync(arg0: object_t, arg1: object_array_t): object_t;
-      // public boolean java.lang.reflect.AccessibleObject.isAccessible()
-      isAccessibleSync(): boolean;
-      // public boolean java.lang.reflect.AccessibleObject.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)
-      isAnnotationPresentSync(arg0: Class): boolean;
-      // public boolean java.lang.reflect.Method.isBridge()
-      isBridgeSync(): boolean;
-      // public boolean java.lang.reflect.Method.isDefault()
-      isDefaultSync(): boolean;
-      // public boolean java.lang.reflect.Method.isSynthetic()
-      isSyntheticSync(): boolean;
-      // public boolean java.lang.reflect.Method.isVarArgs()
-      isVarArgsSync(): boolean;
-      // public final native void java.lang.Object.notify()
-      notifySync(): void;
-      // public final native void java.lang.Object.notifyAll()
-      notifyAllSync(): void;
-      // public void java.lang.reflect.AccessibleObject.setAccessible(boolean) throws java.lang.SecurityException
-      setAccessibleSync(arg0: boolean_t): void;
-      // public java.lang.String java.lang.reflect.Method.toGenericString()
-      toGenericStringSync(): string;
-      // public java.lang.String java.lang.reflect.Method.toString()
-      toStringSync(): string;
-      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
-      waitSync(arg0: object_t, arg1: integer_t): void;
-      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
-      waitSync(arg0: object_t): void;
-      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
-      waitSync(): void;
-    }
-    export module Method {
-      export interface Static {
-        // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
-        setAccessibleSync(arg0: array_t<AccessibleObject>, arg1: boolean_t): void;
-        PUBLIC: number;
-        DECLARED: number;
-      }
-    }
-  }
-
-  export module java.lang {
-    export interface Integer extends Java.java.lang.Object {
-      // public byte java.lang.Integer.byteValue()
-      byteValueSync(): object_t;
-      // public int java.lang.Integer.compareTo(java.lang.Integer)
-      compareToSync(arg0: integer_t): number;
-      // public int java.lang.Integer.compareTo(java.lang.Object)
-      compareToSync(arg0: object_t): number;
-      // public double java.lang.Integer.doubleValue()
-      doubleValueSync(): object_t;
-      // public boolean java.lang.Integer.equals(java.lang.Object)
-      equalsSync(arg0: object_t): boolean;
-      // public float java.lang.Integer.floatValue()
-      floatValueSync(): object_t;
-      // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassSync(): Class;
-      // public int java.lang.Integer.hashCode()
-      hashCodeSync(): number;
-      // public int java.lang.Integer.intValue()
-      intValueSync(): number;
-      // public long java.lang.Integer.longValue()
-      longValueSync(): object_t;
-      // public final native void java.lang.Object.notify()
-      notifySync(): void;
-      // public final native void java.lang.Object.notifyAll()
-      notifyAllSync(): void;
-      // public short java.lang.Integer.shortValue()
-      shortValueSync(): object_t;
-      // public java.lang.String java.lang.Integer.toString()
-      toStringSync(): string;
-      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
-      waitSync(arg0: object_t, arg1: integer_t): void;
-      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
-      waitSync(arg0: object_t): void;
-      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
-      waitSync(): void;
-    }
-    export module Integer {
-      export interface Static {
-        new (arg0: string_t): java.lang.Integer;
-        new (arg0: integer_t): java.lang.Integer;
-        // public static int java.lang.Integer.bitCount(int)
-        bitCountSync(arg0: integer_t): number;
-        // public static int java.lang.Integer.compare(int,int)
-        compareSync(arg0: integer_t, arg1: integer_t): number;
-        // public static int java.lang.Integer.compareUnsigned(int,int)
-        compareUnsignedSync(arg0: integer_t, arg1: integer_t): number;
-        // public static java.lang.Integer java.lang.Integer.decode(java.lang.String) throws java.lang.NumberFormatException
-        decodeSync(arg0: string_t): number;
-        // public static int java.lang.Integer.divideUnsigned(int,int)
-        divideUnsignedSync(arg0: integer_t, arg1: integer_t): number;
-        // public static java.lang.Integer java.lang.Integer.getInteger(java.lang.String,java.lang.Integer)
-        getIntegerSync(arg0: string_t, arg1: integer_t): number;
-        // public static java.lang.Integer java.lang.Integer.getInteger(java.lang.String,int)
-        getIntegerSync(arg0: string_t, arg1: integer_t): number;
-        // public static java.lang.Integer java.lang.Integer.getInteger(java.lang.String)
-        getIntegerSync(arg0: string_t): number;
-        // public static int java.lang.Integer.hashCode(int)
-        hashCodeSync(arg0: integer_t): number;
-        // public static int java.lang.Integer.highestOneBit(int)
-        highestOneBitSync(arg0: integer_t): number;
-        // public static int java.lang.Integer.lowestOneBit(int)
-        lowestOneBitSync(arg0: integer_t): number;
-        // public static int java.lang.Integer.max(int,int)
-        maxSync(arg0: integer_t, arg1: integer_t): number;
-        // public static int java.lang.Integer.min(int,int)
-        minSync(arg0: integer_t, arg1: integer_t): number;
-        // public static int java.lang.Integer.numberOfLeadingZeros(int)
-        numberOfLeadingZerosSync(arg0: integer_t): number;
-        // public static int java.lang.Integer.numberOfTrailingZeros(int)
-        numberOfTrailingZerosSync(arg0: integer_t): number;
-        // public static int java.lang.Integer.parseInt(java.lang.String,int) throws java.lang.NumberFormatException
-        parseIntSync(arg0: string_t, arg1: integer_t): number;
-        // public static int java.lang.Integer.parseInt(java.lang.String) throws java.lang.NumberFormatException
-        parseIntSync(arg0: string_t): number;
-        // public static int java.lang.Integer.parseUnsignedInt(java.lang.String,int) throws java.lang.NumberFormatException
-        parseUnsignedIntSync(arg0: string_t, arg1: integer_t): number;
-        // public static int java.lang.Integer.parseUnsignedInt(java.lang.String) throws java.lang.NumberFormatException
-        parseUnsignedIntSync(arg0: string_t): number;
-        // public static int java.lang.Integer.remainderUnsigned(int,int)
-        remainderUnsignedSync(arg0: integer_t, arg1: integer_t): number;
-        // public static int java.lang.Integer.reverse(int)
-        reverseSync(arg0: integer_t): number;
-        // public static int java.lang.Integer.reverseBytes(int)
-        reverseBytesSync(arg0: integer_t): number;
-        // public static int java.lang.Integer.rotateLeft(int,int)
-        rotateLeftSync(arg0: integer_t, arg1: integer_t): number;
-        // public static int java.lang.Integer.rotateRight(int,int)
-        rotateRightSync(arg0: integer_t, arg1: integer_t): number;
-        // public static int java.lang.Integer.signum(int)
-        signumSync(arg0: integer_t): number;
-        // public static int java.lang.Integer.sum(int,int)
-        sumSync(arg0: integer_t, arg1: integer_t): number;
-        // public static java.lang.String java.lang.Integer.toBinaryString(int)
-        toBinaryStringSync(arg0: integer_t): string;
-        // public static java.lang.String java.lang.Integer.toHexString(int)
-        toHexStringSync(arg0: integer_t): string;
-        // public static java.lang.String java.lang.Integer.toOctalString(int)
-        toOctalStringSync(arg0: integer_t): string;
-        // public static java.lang.String java.lang.Integer.toString(int,int)
-        toStringSync(arg0: integer_t, arg1: integer_t): string;
-        // public static java.lang.String java.lang.Integer.toString(int)
-        toStringSync(arg0: integer_t): string;
-        // public static long java.lang.Integer.toUnsignedLong(int)
-        toUnsignedLongSync(arg0: integer_t): object_t;
-        // public static java.lang.String java.lang.Integer.toUnsignedString(int,int)
-        toUnsignedStringSync(arg0: integer_t, arg1: integer_t): string;
-        // public static java.lang.String java.lang.Integer.toUnsignedString(int)
-        toUnsignedStringSync(arg0: integer_t): string;
-        // public static java.lang.Integer java.lang.Integer.valueOf(java.lang.String,int) throws java.lang.NumberFormatException
-        valueOfSync(arg0: string_t, arg1: integer_t): number;
-        // public static java.lang.Integer java.lang.Integer.valueOf(java.lang.String) throws java.lang.NumberFormatException
-        valueOfSync(arg0: string_t): number;
-        // public static java.lang.Integer java.lang.Integer.valueOf(int)
-        valueOfSync(arg0: integer_t): number;
-        MIN_VALUE: number;
-        MAX_VALUE: number;
-        TYPE: Class;
-        SIZE: number;
-        BYTES: number;
-      }
-    }
-  }
-
-  export module java.lang.reflect {
-    export interface Executable extends Java.java.lang.reflect.AccessibleObject {
-      // public boolean java.lang.Object.equals(java.lang.Object)
-      equalsSync(arg0: object_t): boolean;
-      // public java.lang.reflect.AnnotatedType[] java.lang.reflect.Executable.getAnnotatedExceptionTypes()
-      getAnnotatedExceptionTypesSync(): object_t[];
-      // public java.lang.reflect.AnnotatedType[] java.lang.reflect.Executable.getAnnotatedParameterTypes()
-      getAnnotatedParameterTypesSync(): object_t[];
-      // public java.lang.reflect.AnnotatedType java.lang.reflect.Executable.getAnnotatedReceiverType()
-      getAnnotatedReceiverTypeSync(): object_t;
-      // public abstract java.lang.reflect.AnnotatedType java.lang.reflect.Executable.getAnnotatedReturnType()
-      getAnnotatedReturnTypeSync(): object_t;
-      // public <T> T java.lang.reflect.Executable.getAnnotation(java.lang.Class<T>)
-      getAnnotationSync(arg0: Class): object_t;
-      // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
-      getAnnotationsSync(): object_t[];
-      // public <T> T[] java.lang.reflect.Executable.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByTypeSync(arg0: Class): object_t[];
-      // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassSync(): Class;
-      // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotationSync(arg0: Class): object_t;
-      // public java.lang.annotation.Annotation[] java.lang.reflect.Executable.getDeclaredAnnotations()
-      getDeclaredAnnotationsSync(): object_t[];
-      // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByTypeSync(arg0: Class): object_t[];
-      // public abstract java.lang.Class<?> java.lang.reflect.Executable.getDeclaringClass()
-      getDeclaringClassSync(): Class;
-      // public abstract java.lang.Class<?>[] java.lang.reflect.Executable.getExceptionTypes()
-      getExceptionTypesSync(): Class[];
-      // public java.lang.reflect.Type[] java.lang.reflect.Executable.getGenericExceptionTypes()
-      getGenericExceptionTypesSync(): Type[];
-      // public java.lang.reflect.Type[] java.lang.reflect.Executable.getGenericParameterTypes()
-      getGenericParameterTypesSync(): Type[];
-      // public abstract int java.lang.reflect.Executable.getModifiers()
-      getModifiersSync(): number;
-      // public abstract java.lang.String java.lang.reflect.Executable.getName()
-      getNameSync(): string;
-      // public abstract java.lang.annotation.Annotation[][] java.lang.reflect.Executable.getParameterAnnotations()
-      getParameterAnnotationsSync(): object_t[][];
-      // public int java.lang.reflect.Executable.getParameterCount()
-      getParameterCountSync(): number;
-      // public java.lang.reflect.Parameter[] java.lang.reflect.Executable.getParameters()
-      getParametersSync(): Parameter[];
-      // public abstract java.lang.Class<?>[] java.lang.reflect.Executable.getParameterTypes()
-      getParameterTypesSync(): Class[];
-      // public abstract java.lang.reflect.TypeVariable<?>[] java.lang.reflect.Executable.getTypeParameters()
-      getTypeParametersSync(): object_t[];
-      // public native int java.lang.Object.hashCode()
-      hashCodeSync(): number;
-      // public boolean java.lang.reflect.AccessibleObject.isAccessible()
-      isAccessibleSync(): boolean;
-      // public boolean java.lang.reflect.AccessibleObject.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)
-      isAnnotationPresentSync(arg0: Class): boolean;
-      // public boolean java.lang.reflect.Executable.isSynthetic()
-      isSyntheticSync(): boolean;
-      // public boolean java.lang.reflect.Executable.isVarArgs()
-      isVarArgsSync(): boolean;
-      // public final native void java.lang.Object.notify()
-      notifySync(): void;
-      // public final native void java.lang.Object.notifyAll()
-      notifyAllSync(): void;
-      // public void java.lang.reflect.AccessibleObject.setAccessible(boolean) throws java.lang.SecurityException
-      setAccessibleSync(arg0: boolean_t): void;
-      // public abstract java.lang.String java.lang.reflect.Executable.toGenericString()
-      toGenericStringSync(): string;
-      // public java.lang.String java.lang.Object.toString()
-      toStringSync(): string;
-      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
-      waitSync(arg0: object_t, arg1: integer_t): void;
-      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
-      waitSync(arg0: object_t): void;
-      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
-      waitSync(): void;
-    }
-    export module Executable {
-      export interface Static {
-        // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
-        setAccessibleSync(arg0: array_t<AccessibleObject>, arg1: boolean_t): void;
-        PUBLIC: number;
-        DECLARED: number;
-      }
-    }
-  }
-
-  export module java.lang {
-    export interface Object  {
-      // public boolean java.lang.Object.equals(java.lang.Object)
-      equalsSync(arg0: object_t): boolean;
-      // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassSync(): Class;
-      // public native int java.lang.Object.hashCode()
-      hashCodeSync(): number;
-      // public final native void java.lang.Object.notify()
-      notifySync(): void;
-      // public final native void java.lang.Object.notifyAll()
-      notifyAllSync(): void;
-      // public java.lang.String java.lang.Object.toString()
-      toStringSync(): string;
-      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
-      waitSync(arg0: object_t, arg1: integer_t): void;
-      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
-      waitSync(arg0: object_t): void;
-      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
-      waitSync(): void;
-    }
-    export module Object {
-      export interface Static {
-        new (): java.lang.Object;
-      }
-    }
-  }
-
-  export module java.lang {
-    export interface Boolean extends Java.java.lang.Object {
-      // public boolean java.lang.Boolean.booleanValue()
-      booleanValueSync(): boolean;
-      // public int java.lang.Boolean.compareTo(java.lang.Boolean)
-      compareToSync(arg0: boolean_t): number;
-      // public int java.lang.Boolean.compareTo(java.lang.Object)
-      compareToSync(arg0: object_t): number;
-      // public boolean java.lang.Boolean.equals(java.lang.Object)
-      equalsSync(arg0: object_t): boolean;
-      // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassSync(): Class;
-      // public int java.lang.Boolean.hashCode()
-      hashCodeSync(): number;
-      // public final native void java.lang.Object.notify()
-      notifySync(): void;
-      // public final native void java.lang.Object.notifyAll()
-      notifyAllSync(): void;
-      // public java.lang.String java.lang.Boolean.toString()
-      toStringSync(): string;
-      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
-      waitSync(arg0: object_t, arg1: integer_t): void;
-      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
-      waitSync(arg0: object_t): void;
-      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
-      waitSync(): void;
-    }
-    export module Boolean {
-      export interface Static {
-        new (arg0: string_t): java.lang.Boolean;
-        new (arg0: boolean_t): java.lang.Boolean;
-        // public static int java.lang.Boolean.compare(boolean,boolean)
-        compareSync(arg0: boolean_t, arg1: boolean_t): number;
-        // public static boolean java.lang.Boolean.getBoolean(java.lang.String)
-        getBooleanSync(arg0: string_t): boolean;
-        // public static int java.lang.Boolean.hashCode(boolean)
-        hashCodeSync(arg0: boolean_t): number;
-        // public static boolean java.lang.Boolean.logicalAnd(boolean,boolean)
-        logicalAndSync(arg0: boolean_t, arg1: boolean_t): boolean;
-        // public static boolean java.lang.Boolean.logicalOr(boolean,boolean)
-        logicalOrSync(arg0: boolean_t, arg1: boolean_t): boolean;
-        // public static boolean java.lang.Boolean.logicalXor(boolean,boolean)
-        logicalXorSync(arg0: boolean_t, arg1: boolean_t): boolean;
-        // public static boolean java.lang.Boolean.parseBoolean(java.lang.String)
-        parseBooleanSync(arg0: string_t): boolean;
-        // public static java.lang.String java.lang.Boolean.toString(boolean)
-        toStringSync(arg0: boolean_t): string;
-        // public static java.lang.Boolean java.lang.Boolean.valueOf(java.lang.String)
-        valueOfSync(arg0: string_t): boolean;
-        // public static java.lang.Boolean java.lang.Boolean.valueOf(boolean)
-        valueOfSync(arg0: boolean_t): boolean;
-        TRUE: boolean;
-        FALSE: boolean;
-        TYPE: Class;
-      }
-    }
-  }
-
-  export module java.lang.reflect {
-    export interface Constructor extends Java.java.lang.reflect.Executable {
-      // public boolean java.lang.reflect.Constructor.equals(java.lang.Object)
-      equalsSync(arg0: object_t): boolean;
-      // public java.lang.reflect.AnnotatedType[] java.lang.reflect.Executable.getAnnotatedExceptionTypes()
-      getAnnotatedExceptionTypesSync(): object_t[];
-      // public java.lang.reflect.AnnotatedType[] java.lang.reflect.Executable.getAnnotatedParameterTypes()
-      getAnnotatedParameterTypesSync(): object_t[];
-      // public java.lang.reflect.AnnotatedType java.lang.reflect.Constructor.getAnnotatedReceiverType()
-      getAnnotatedReceiverTypeSync(): object_t;
-      // public java.lang.reflect.AnnotatedType java.lang.reflect.Constructor.getAnnotatedReturnType()
-      getAnnotatedReturnTypeSync(): object_t;
-      // public <T> T java.lang.reflect.Constructor.getAnnotation(java.lang.Class<T>)
-      getAnnotationSync(arg0: Class): object_t;
-      // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
-      getAnnotationsSync(): object_t[];
-      // public <T> T[] java.lang.reflect.Executable.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByTypeSync(arg0: Class): object_t[];
-      // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassSync(): Class;
-      // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotationSync(arg0: Class): object_t;
-      // public java.lang.annotation.Annotation[] java.lang.reflect.Constructor.getDeclaredAnnotations()
-      getDeclaredAnnotationsSync(): object_t[];
-      // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByTypeSync(arg0: Class): object_t[];
-      // public java.lang.Class<T> java.lang.reflect.Constructor.getDeclaringClass()
-      getDeclaringClassSync(): Class;
-      // public java.lang.Class<?>[] java.lang.reflect.Constructor.getExceptionTypes()
-      getExceptionTypesSync(): Class[];
-      // public java.lang.reflect.Type[] java.lang.reflect.Constructor.getGenericExceptionTypes()
-      getGenericExceptionTypesSync(): Type[];
-      // public java.lang.reflect.Type[] java.lang.reflect.Constructor.getGenericParameterTypes()
-      getGenericParameterTypesSync(): Type[];
-      // public int java.lang.reflect.Constructor.getModifiers()
-      getModifiersSync(): number;
-      // public java.lang.String java.lang.reflect.Constructor.getName()
-      getNameSync(): string;
-      // public java.lang.annotation.Annotation[][] java.lang.reflect.Constructor.getParameterAnnotations()
-      getParameterAnnotationsSync(): object_t[][];
-      // public int java.lang.reflect.Constructor.getParameterCount()
-      getParameterCountSync(): number;
-      // public java.lang.reflect.Parameter[] java.lang.reflect.Executable.getParameters()
-      getParametersSync(): Parameter[];
-      // public java.lang.Class<?>[] java.lang.reflect.Constructor.getParameterTypes()
-      getParameterTypesSync(): Class[];
-      // public java.lang.reflect.TypeVariable<java.lang.reflect.Constructor<T>>[] java.lang.reflect.Constructor.getTypeParameters()
-      getTypeParametersSync(): object_t[];
-      // public int java.lang.reflect.Constructor.hashCode()
-      hashCodeSync(): number;
-      // public boolean java.lang.reflect.AccessibleObject.isAccessible()
-      isAccessibleSync(): boolean;
-      // public boolean java.lang.reflect.AccessibleObject.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)
-      isAnnotationPresentSync(arg0: Class): boolean;
-      // public boolean java.lang.reflect.Constructor.isSynthetic()
-      isSyntheticSync(): boolean;
-      // public boolean java.lang.reflect.Constructor.isVarArgs()
-      isVarArgsSync(): boolean;
-      // public T java.lang.reflect.Constructor.newInstance(java.lang.Object...) throws java.lang.InstantiationException,java.lang.IllegalAccessException,java.lang.IllegalArgumentException,java.lang.reflect.InvocationTargetException
-      newInstanceSync(...arg0: object_t[]): object_t;
-      newInstanceSync(arg0: object_array_t): object_t;
-      // public final native void java.lang.Object.notify()
-      notifySync(): void;
-      // public final native void java.lang.Object.notifyAll()
-      notifyAllSync(): void;
-      // public void java.lang.reflect.AccessibleObject.setAccessible(boolean) throws java.lang.SecurityException
-      setAccessibleSync(arg0: boolean_t): void;
-      // public java.lang.String java.lang.reflect.Constructor.toGenericString()
-      toGenericStringSync(): string;
-      // public java.lang.String java.lang.reflect.Constructor.toString()
-      toStringSync(): string;
-      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
-      waitSync(arg0: object_t, arg1: integer_t): void;
-      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
-      waitSync(arg0: object_t): void;
-      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
-      waitSync(): void;
-    }
-    export module Constructor {
-      export interface Static {
-        // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
-        setAccessibleSync(arg0: array_t<AccessibleObject>, arg1: boolean_t): void;
-        PUBLIC: number;
-        DECLARED: number;
-      }
-    }
-  }
-
-  export module java.lang.reflect {
-    export interface Field extends Java.java.lang.reflect.AccessibleObject {
-      // public boolean java.lang.reflect.Field.equals(java.lang.Object)
-      equalsSync(arg0: object_t): boolean;
-      // public java.lang.Object java.lang.reflect.Field.get(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      getSync(arg0: object_t): object_t;
-      // public java.lang.reflect.AnnotatedType java.lang.reflect.Field.getAnnotatedType()
-      getAnnotatedTypeSync(): object_t;
-      // public <T> T java.lang.reflect.Field.getAnnotation(java.lang.Class<T>)
-      getAnnotationSync(arg0: Class): object_t;
-      // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
-      getAnnotationsSync(): object_t[];
-      // public <T> T[] java.lang.reflect.Field.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByTypeSync(arg0: Class): object_t[];
-      // public boolean java.lang.reflect.Field.getBoolean(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      getBooleanSync(arg0: object_t): boolean;
-      // public byte java.lang.reflect.Field.getByte(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      getByteSync(arg0: object_t): object_t;
-      // public char java.lang.reflect.Field.getChar(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      getCharSync(arg0: object_t): object_t;
-      // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassSync(): Class;
-      // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotationSync(arg0: Class): object_t;
-      // public java.lang.annotation.Annotation[] java.lang.reflect.Field.getDeclaredAnnotations()
-      getDeclaredAnnotationsSync(): object_t[];
-      // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByTypeSync(arg0: Class): object_t[];
-      // public java.lang.Class<?> java.lang.reflect.Field.getDeclaringClass()
-      getDeclaringClassSync(): Class;
-      // public double java.lang.reflect.Field.getDouble(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      getDoubleSync(arg0: object_t): object_t;
-      // public float java.lang.reflect.Field.getFloat(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      getFloatSync(arg0: object_t): object_t;
-      // public java.lang.reflect.Type java.lang.reflect.Field.getGenericType()
-      getGenericTypeSync(): Type;
-      // public int java.lang.reflect.Field.getInt(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      getIntSync(arg0: object_t): number;
-      // public long java.lang.reflect.Field.getLong(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      getLongSync(arg0: object_t): object_t;
-      // public int java.lang.reflect.Field.getModifiers()
-      getModifiersSync(): number;
-      // public java.lang.String java.lang.reflect.Field.getName()
-      getNameSync(): string;
-      // public short java.lang.reflect.Field.getShort(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      getShortSync(arg0: object_t): object_t;
-      // public java.lang.Class<?> java.lang.reflect.Field.getType()
-      getTypeSync(): Class;
-      // public int java.lang.reflect.Field.hashCode()
-      hashCodeSync(): number;
-      // public boolean java.lang.reflect.AccessibleObject.isAccessible()
-      isAccessibleSync(): boolean;
-      // public boolean java.lang.reflect.AccessibleObject.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)
-      isAnnotationPresentSync(arg0: Class): boolean;
-      // public boolean java.lang.reflect.Field.isEnumConstant()
-      isEnumConstantSync(): boolean;
-      // public boolean java.lang.reflect.Field.isSynthetic()
-      isSyntheticSync(): boolean;
-      // public final native void java.lang.Object.notify()
-      notifySync(): void;
-      // public final native void java.lang.Object.notifyAll()
-      notifyAllSync(): void;
-      // public void java.lang.reflect.Field.set(java.lang.Object,java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      setSync(arg0: object_t, arg1: object_t): void;
-      // public void java.lang.reflect.AccessibleObject.setAccessible(boolean) throws java.lang.SecurityException
-      setAccessibleSync(arg0: boolean_t): void;
-      // public void java.lang.reflect.Field.setBoolean(java.lang.Object,boolean) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      setBooleanSync(arg0: object_t, arg1: boolean_t): void;
-      // public void java.lang.reflect.Field.setByte(java.lang.Object,byte) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      setByteSync(arg0: object_t, arg1: object_t): void;
-      // public void java.lang.reflect.Field.setChar(java.lang.Object,char) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      setCharSync(arg0: object_t, arg1: object_t): void;
-      // public void java.lang.reflect.Field.setDouble(java.lang.Object,double) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      setDoubleSync(arg0: object_t, arg1: object_t): void;
-      // public void java.lang.reflect.Field.setFloat(java.lang.Object,float) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      setFloatSync(arg0: object_t, arg1: object_t): void;
-      // public void java.lang.reflect.Field.setInt(java.lang.Object,int) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      setIntSync(arg0: object_t, arg1: integer_t): void;
-      // public void java.lang.reflect.Field.setLong(java.lang.Object,long) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      setLongSync(arg0: object_t, arg1: object_t): void;
-      // public void java.lang.reflect.Field.setShort(java.lang.Object,short) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
-      setShortSync(arg0: object_t, arg1: object_t): void;
-      // public java.lang.String java.lang.reflect.Field.toGenericString()
-      toGenericStringSync(): string;
-      // public java.lang.String java.lang.reflect.Field.toString()
-      toStringSync(): string;
-      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
-      waitSync(arg0: object_t, arg1: integer_t): void;
-      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
-      waitSync(arg0: object_t): void;
-      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
-      waitSync(): void;
-    }
-    export module Field {
-      export interface Static {
-        // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
-        setAccessibleSync(arg0: array_t<AccessibleObject>, arg1: boolean_t): void;
-        PUBLIC: number;
-        DECLARED: number;
-      }
-    }
-  }
-
-  export module java.lang {
-    export interface ClassLoader extends Java.java.lang.Object {
-      // public void java.lang.ClassLoader.clearAssertionStatus()
-      clearAssertionStatusSync(): void;
-      // public boolean java.lang.Object.equals(java.lang.Object)
-      equalsSync(arg0: object_t): boolean;
-      // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassSync(): Class;
-      // public final java.lang.ClassLoader java.lang.ClassLoader.getParent()
-      getParentSync(): ClassLoader;
-      // public java.net.URL java.lang.ClassLoader.getResource(java.lang.String)
-      getResourceSync(arg0: string_t): object_t;
-      // public java.io.InputStream java.lang.ClassLoader.getResourceAsStream(java.lang.String)
-      getResourceAsStreamSync(arg0: string_t): object_t;
-      // public java.util.Enumeration<java.net.URL> java.lang.ClassLoader.getResources(java.lang.String) throws java.io.IOException
-      getResourcesSync(arg0: string_t): object_t;
-      // public native int java.lang.Object.hashCode()
-      hashCodeSync(): number;
-      // public java.lang.Class<?> java.lang.ClassLoader.loadClass(java.lang.String) throws java.lang.ClassNotFoundException
-      loadClassSync(arg0: string_t): Class;
-      // public final native void java.lang.Object.notify()
-      notifySync(): void;
-      // public final native void java.lang.Object.notifyAll()
-      notifyAllSync(): void;
-      // public void java.lang.ClassLoader.setClassAssertionStatus(java.lang.String,boolean)
-      setClassAssertionStatusSync(arg0: string_t, arg1: boolean_t): void;
-      // public void java.lang.ClassLoader.setDefaultAssertionStatus(boolean)
-      setDefaultAssertionStatusSync(arg0: boolean_t): void;
-      // public void java.lang.ClassLoader.setPackageAssertionStatus(java.lang.String,boolean)
-      setPackageAssertionStatusSync(arg0: string_t, arg1: boolean_t): void;
-      // public java.lang.String java.lang.Object.toString()
-      toStringSync(): string;
-      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
-      waitSync(arg0: object_t, arg1: integer_t): void;
-      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
-      waitSync(arg0: object_t): void;
-      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
-      waitSync(): void;
-    }
-    export module ClassLoader {
-      export interface Static {
-        // public static java.lang.ClassLoader java.lang.ClassLoader.getSystemClassLoader()
-        getSystemClassLoaderSync(): ClassLoader;
-        // public static java.net.URL java.lang.ClassLoader.getSystemResource(java.lang.String)
-        getSystemResourceSync(arg0: string_t): object_t;
-        // public static java.io.InputStream java.lang.ClassLoader.getSystemResourceAsStream(java.lang.String)
-        getSystemResourceAsStreamSync(arg0: string_t): object_t;
-        // public static java.util.Enumeration<java.net.URL> java.lang.ClassLoader.getSystemResources(java.lang.String) throws java.io.IOException
-        getSystemResourcesSync(arg0: string_t): object_t;
-      }
-    }
-  }
-
-  export module java.lang.reflect {
-    export interface AccessibleObject extends Java.java.lang.Object {
-      // public boolean java.lang.Object.equals(java.lang.Object)
-      equalsSync(arg0: object_t): boolean;
-      // public <T> T java.lang.reflect.AccessibleObject.getAnnotation(java.lang.Class<T>)
-      getAnnotationSync(arg0: Class): object_t;
-      // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
-      getAnnotationsSync(): object_t[];
-      // public <T> T[] java.lang.reflect.AccessibleObject.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByTypeSync(arg0: Class): object_t[];
-      // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassSync(): Class;
-      // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotationSync(arg0: Class): object_t;
-      // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getDeclaredAnnotations()
-      getDeclaredAnnotationsSync(): object_t[];
-      // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByTypeSync(arg0: Class): object_t[];
-      // public native int java.lang.Object.hashCode()
-      hashCodeSync(): number;
-      // public boolean java.lang.reflect.AccessibleObject.isAccessible()
-      isAccessibleSync(): boolean;
-      // public boolean java.lang.reflect.AccessibleObject.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)
-      isAnnotationPresentSync(arg0: Class): boolean;
-      // public final native void java.lang.Object.notify()
-      notifySync(): void;
-      // public final native void java.lang.Object.notifyAll()
-      notifyAllSync(): void;
-      // public void java.lang.reflect.AccessibleObject.setAccessible(boolean) throws java.lang.SecurityException
-      setAccessibleSync(arg0: boolean_t): void;
-      // public java.lang.String java.lang.Object.toString()
-      toStringSync(): string;
-      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
-      waitSync(arg0: object_t, arg1: integer_t): void;
-      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
-      waitSync(arg0: object_t): void;
-      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
-      waitSync(): void;
-    }
-    export module AccessibleObject {
-      export interface Static {
-        // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
-        setAccessibleSync(arg0: array_t<AccessibleObject>, arg1: boolean_t): void;
-      }
-    }
-  }
-
-  export module java.lang.reflect {
-    export interface Type extends Java.java.lang.Object {
-      // public default java.lang.String java.lang.reflect.Type.getTypeName()
-      getTypeNameSync(): string;
-    }
-    export module Type {
-      export interface Static {
       }
     }
   }

@@ -81,7 +81,6 @@ var Main = (function () {
         dlog('writePackageFiles() entered');
         var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
         var tsWriter = new CodeWriter(classesMap, templatesDirPath);
-        var classes = classesMap.getClasses();
         return mkdirpPromise(path.dirname(this.options.outputPath)).then(function () { return tsWriter.writePackageFile(_this.options); }).then(function () { return dlog('writePackageFiles() completed'); });
     };
     Main.prototype.writeAutoImport = function () {
@@ -93,7 +92,6 @@ var Main = (function () {
         else {
             var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
             var tsWriter = new CodeWriter(this.classesMap, templatesDirPath);
-            var classes = this.classesMap.getClasses();
             return mkdirpPromise(path.dirname(this.options.autoImportPath)).then(function () { return tsWriter.writeAutoImportFile(_this.options); }).then(function () { return dlog('writeAutoImport() completed'); });
         }
     };

@@ -25,7 +25,13 @@ var requiredSeedClasses: string[] = [
   'java.lang.String',
 ];
 
-var reservedShortNames: Dictionary = {
+interface Dictionary<T> {
+  [index: string]: T;
+}
+
+type StringDictionary = Dictionary<string>;
+
+var reservedShortNames: StringDictionary = {
   'Number': null
 };
 
@@ -34,11 +40,7 @@ import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 import FieldDefinition = ClassesMap.FieldDefinition;
 import MethodDefinition = ClassesMap.MethodDefinition;
-import VariantsMap = ClassesMap.VariantsMap;
-
-interface Dictionary {
-  [index: string]: string;
-}
+import VariantsArray = ClassesMap.VariantsArray;
 
 // ## ClassesMap
 // ClassesMap is a map of a set of java classes/interfaces, containing information extracted via Java Reflection.
@@ -57,7 +59,7 @@ class ClassesMap {
   // shortToLongNameMap is used to detect whether a class name unambiguously identifies one class path.
   // Currently it is populated after making one full pass over all classes, and then used in a second full pass.
   // TODO: refactor so the first pass does only the work to find all classes, without creating ClassDefinitions.
-  private shortToLongNameMap: Dictionary;
+  private shortToLongNameMap: StringDictionary;
 
   // allClasses is the list of all classes found by scanning the jars in the class path and applying
   // the inWhiteList() filter.
@@ -92,22 +94,19 @@ class ClassesMap {
     return this.includedPatterns.find((ns: RegExp) => { return className.match(ns) !== null; }) !== undefined;
   }
 
-
   // *shortClassName()*: Return the short class name given the full className (class path).
   shortClassName(className: string): string {
     return _.last(className.split('.'));
   }
-
 
   // *loadClass()*: load the class and return its Class object.
   loadClass(className: string): Java.Class {
     return this.java.getClassLoader().loadClassSync(className);
   }
 
-
   // *mapClassInterfaces()*: Find the direct interfaces of className.
   // Note that we later compute the transitive closure of all inherited interfaces
-  mapClassInterfaces(className: string, clazz: Java.Class, work: Work) : Array<string>{
+  mapClassInterfaces(className: string, clazz: Java.Class, work: Work) : Array<string> {
     assert.strictEqual(clazz.getNameSync(), className);
     var interfaces = _.map(clazz.getInterfacesSync(), (intf: Java.Class) => { return intf.getNameSync(); });
     interfaces = _.filter(interfaces, (intf: string) => { return this.inWhiteList(intf); });
@@ -127,7 +126,7 @@ class ClassesMap {
   // *typeEncoding()*: return the JNI encoding string for a java class
   typeEncoding(clazz: Java.Class): string {
     var name = clazz.getNameSync();
-    var primitives: Dictionary = {
+    var primitives: StringDictionary = {
       boolean: 'Z',
       byte: 'B',
       char: 'C',
@@ -185,7 +184,7 @@ class ClassesMap {
     }
 
     // First convert the 1-letter JNI abbreviated type names to their human readble types
-    var jniAbbreviations: Dictionary = {
+    var jniAbbreviations: StringDictionary = {
       // see http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/types.html
       B: 'byte',
       C: 'char',
@@ -201,7 +200,7 @@ class ClassesMap {
     }
 
     // Next, promote primitive types to their corresponding Object types, to avoid redundancy below.
-    var primitiveToObjectMap: Dictionary = {
+    var primitiveToObjectMap: StringDictionary = {
       'byte': 'java.lang.Object',
       'char': 'java.lang.Object',
       'boolean': 'java.lang.Boolean',
@@ -245,7 +244,7 @@ class ClassesMap {
     // We define an interface longValue_t (in package.txt) that that extends Number and adds a string member longValue.
     // We also define long_t, which is the union [number|longValue_t|java.lang.Long].
 
-    var javaTypeToTypescriptType: Dictionary = {
+    var javaTypeToTypescriptType: StringDictionary = {
       void: 'void',
       'java.lang.Boolean': context === ParamContext.eInput ? 'boolean_t' : 'boolean',
       'java.lang.Double':  context === ParamContext.eInput ? 'double_t' : 'number',
@@ -330,7 +329,6 @@ class ClassesMap {
     }
   }
 
-
   // *mapMethod()*: return a map of useful properties of a method or constructor.
   // For our purposes, we can treat constructors as methods except for the handling of return type.
   mapMethod(method: Java.Executable, work: Work): MethodDefinition {
@@ -375,7 +373,6 @@ class ClassesMap {
     return methodMap;
   }
 
-
   // *mapClassMethods()*: return a methodMap array for the methods of a class
   mapClassMethods(className: string, clazz: Java.Class, work: Work): Array<MethodDefinition> {
     return _.map(clazz.getMethodsSync(), function (m: Java.Method) { return this.mapMethod(m, work); }, this);
@@ -408,7 +405,6 @@ class ClassesMap {
 
     return fieldDefinition;
   }
-
 
   // *mapClassFields()*: return a FieldDefinition array for the fields of a class
   mapClassFields(className: string, clazz: Java.Class, work: Work): Array<FieldDefinition> {
@@ -453,16 +449,32 @@ class ClassesMap {
     return b.signature.localeCompare(a.signature);
   }
 
+  // *flattenDictionary()*: return an array of the dictionary's values, sorted by the dictionary's keys.
+  flattenDictionary<T>(dict: Dictionary<T>): T[] {
+    function caseInsensitiveOrder(a: string, b: string): number {
+      var A = a.toLowerCase();
+      var B = b.toLowerCase();
+      if (A < B) {
+        return -1;
+      } else if (A > B) {
+        return  1;
+      } else {
+      return 0;
+      }
+    }
+    var keys = _.keys(dict).sort(caseInsensitiveOrder);
+    return _.map(keys, (key: string): T => dict[key]);
+  }
+
   // *groupMethods()*: group overloaded methods (i.e. having the same name)
-  groupMethods(flatList: Array<MethodDefinition>): VariantsMap {
+  groupMethods(flatList: Array<MethodDefinition>): VariantsArray {
     var variantsMap = _.groupBy(flatList, (method: MethodDefinition) => { return method.name; });
     _.forEach(variantsMap, (variants: Array<MethodDefinition>, name: string) => {
       variantsMap[name] = variants.sort(this.compareVariants);
     });
 
-    return variantsMap;
+    return this.flattenDictionary(variantsMap);
   }
-
 
   // *fixClassPath()*: given a full class path name, rename any path components that are reserved words.
   fixClassPath(fullName: string): string {
@@ -482,14 +494,12 @@ class ClassesMap {
     return parts.join('.');
   }
 
-
   // *packageName()*: given a full class path name, return the package name.
   packageName(className: string): string {
     var parts = className.split('.');
     parts.pop();
     return parts.join('.');
   }
-
 
   // *mapClass()*: return a map of all useful properties of a class.
   mapClass(className: string, work: Work): ClassDefinition {
@@ -571,7 +581,6 @@ class ClassesMap {
     return classMap;
   }
 
-
   // *loadAllClasses()*: load and map all classes of interest
   loadAllClasses(seedClasses: Array<string>): Work {
     var work = new Work();
@@ -587,10 +596,14 @@ class ClassesMap {
     return work;
   }
 
-
   // *getClasses()*: return the map of all classes. Keys are classnames, values are classMaps.
   getClasses(): ClassDefinitionMap {
     return this.classes;
+  }
+
+  // *getSortedClasses()*: return a sorted array of classes.
+  getSortedClasses(): Array<ClassDefinition> {
+    return this.flattenDictionary(this.classes);
   }
 
   getWhitedListedClassesInJar(jarpath: string): BluePromise<Array<string>> {
@@ -696,11 +709,8 @@ module ClassesMap {
                             // use return type to distinguish among overloaded methods.
   }
 
-  // ### VariantsMap
-  // A map of method name to list of overloaded method variants
-  export interface VariantsMap {
-      [index: string]: Array<MethodDefinition>;
-  }
+  // ### VariantsArray
+  export type VariantsArray = Array<Array<MethodDefinition>>;
 
   export interface FieldDefinition {
     name: string;
@@ -729,7 +739,7 @@ module ClassesMap {
     tsInterfaces: Array<string>;       // [ 'java.util.function_.Function' ]
     methods: Array<MethodDefinition>;  // definitions of all methods implemented by this class
     constructors: Array<MethodDefinition>; // definitions of all constructors for this class, may be empty.
-    variants: VariantsMap;             // definitions of all methods, grouped by method name
+    variants: VariantsArray;             // definitions of all methods, grouped by method name
     isEnum: boolean;                   // true for an Enum, false otherwise.
     fields: Array<FieldDefinition>;    // array of FieldDefinitions for public fields.
 

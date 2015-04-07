@@ -139,7 +139,7 @@ describe('CodeWriter', () => {
         'tsInterfaces: Java.java.lang.Object',
         'methods: [object Object],[object Object],[object Object],[object Object]',
         'constructors: ',
-        'variants: [object Object]',
+        'variants: [object Object],[object Object],[object Object],[object Object]',
         'isEnum: false',
         'fields: ',
         ''
