@@ -29,8 +29,7 @@ interface Dictionary<T> {
   [index: string]: T;
 }
 
-interface StringDictionary extends Dictionary<string> {
-}
+type StringDictionary = Dictionary<string>;
 
 var reservedShortNames: StringDictionary = {
   'Number': null
@@ -110,7 +109,7 @@ class ClassesMap {
 
   // *mapClassInterfaces()*: Find the direct interfaces of className.
   // Note that we later compute the transitive closure of all inherited interfaces
-  mapClassInterfaces(className: string, clazz: Java.Class, work: Work) : Array<string>{
+  mapClassInterfaces(className: string, clazz: Java.Class, work: Work) : Array<string> {
     assert.strictEqual(clazz.getNameSync(), className);
     var interfaces = _.map(clazz.getInterfacesSync(), (intf: Java.Class) => { return intf.getNameSync(); });
     interfaces = _.filter(interfaces, (intf: string) => { return this.inWhiteList(intf); });
