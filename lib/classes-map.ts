@@ -41,8 +41,7 @@ import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 import FieldDefinition = ClassesMap.FieldDefinition;
 import MethodDefinition = ClassesMap.MethodDefinition;
-import VariantsMap = ClassesMap.VariantsMap;
-
+import VariantsArray = ClassesMap.VariantsArray;
 
 // ## ClassesMap
 // ClassesMap is a map of a set of java classes/interfaces, containing information extracted via Java Reflection.
@@ -457,14 +456,30 @@ class ClassesMap {
     return b.signature.localeCompare(a.signature);
   }
 
+  flattenDictionary<T>(dict: Dictionary<T>): T[] {
+    function caseInsensitiveOrder(a: string, b: string): number {
+      var A = a.toLowerCase();
+      var B = b.toLowerCase();
+      if (A < B) {
+        return -1;
+      } else if (A > B) {
+        return  1;
+      } else {
+      return 0;
+      }
+    }
+    var keys = _.keys(dict).sort(caseInsensitiveOrder);
+    return _.map(keys, (key: string): T => dict[key]);
+  }
+
   // *groupMethods()*: group overloaded methods (i.e. having the same name)
-  groupMethods(flatList: Array<MethodDefinition>): VariantsMap {
+  groupMethods(flatList: Array<MethodDefinition>): VariantsArray {
     var variantsMap = _.groupBy(flatList, (method: MethodDefinition) => { return method.name; });
     _.forEach(variantsMap, (variants: Array<MethodDefinition>, name: string) => {
       variantsMap[name] = variants.sort(this.compareVariants);
     });
 
-    return variantsMap;
+    return this.flattenDictionary(variantsMap);
   }
 
 
@@ -700,10 +715,8 @@ module ClassesMap {
                             // use return type to distinguish among overloaded methods.
   }
 
-  // ### VariantsMap
-  // A map of method name to list of overloaded method variants
-  export interface VariantsMap {
-      [index: string]: Array<MethodDefinition>;
+  // ### VariantsArray
+  export interface VariantsArray extends Array<Array<MethodDefinition>> {
   }
 
   export interface FieldDefinition {
@@ -733,7 +746,7 @@ module ClassesMap {
     tsInterfaces: Array<string>;       // [ 'java.util.function_.Function' ]
     methods: Array<MethodDefinition>;  // definitions of all methods implemented by this class
     constructors: Array<MethodDefinition>; // definitions of all constructors for this class, may be empty.
-    variants: VariantsMap;             // definitions of all methods, grouped by method name
+    variants: VariantsArray;             // definitions of all methods, grouped by method name
     isEnum: boolean;                   // true for an Enum, false otherwise.
     fields: Array<FieldDefinition>;    // array of FieldDefinitions for public fields.
 
