@@ -455,6 +455,7 @@ class ClassesMap {
     return b.signature.localeCompare(a.signature);
   }
 
+  // *flattenDictionary()*: return an array of the dictionary's values, sorted by the dictionary's keys.
   flattenDictionary<T>(dict: Dictionary<T>): T[] {
     function caseInsensitiveOrder(a: string, b: string): number {
       var A = a.toLowerCase();
@@ -720,8 +721,7 @@ module ClassesMap {
   }
 
   // ### VariantsArray
-  export interface VariantsArray extends Array<Array<MethodDefinition>> {
-  }
+  export type VariantsArray = Array<Array<MethodDefinition>>;
 
   export interface FieldDefinition {
     name: string;
