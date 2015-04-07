@@ -612,6 +612,11 @@ class ClassesMap {
     return this.classes;
   }
 
+  // *getSortedClasses()*: return a sorted array of classes.
+  getSortedClasses(): Array<ClassDefinition> {
+    return this.flattenDictionary(this.classes);
+  }
+
   getWhitedListedClassesInJar(jarpath: string): BluePromise<Array<string>> {
     var listArchive = BluePromise.promisify(archive.list, archive);
     return listArchive(jarpath)

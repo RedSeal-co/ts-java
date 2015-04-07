@@ -124,6 +124,7 @@ class CodeWriter {
     });
   }
 
+
   // *streamLibraryClassFile(): stream a complete source file for a java wrapper class.
   streamLibraryClassFile(className: string, template: string, streamFn: StreamFn, endFn: EndFn): BluePromise<void> {
     return streamFn(this.fill(template, this.classes[className]))
@@ -155,7 +156,7 @@ class CodeWriter {
     var endFn: EndFn = <EndFn> BluePromise.promisify(stream.end, stream);
 
     var context = {
-      classes: this.classes,
+      classes: this.classesMap.getSortedClasses(),
       opts: options.asyncOptions
     };
 
@@ -166,6 +167,7 @@ class CodeWriter {
       .then(() => streamFn(this.fill('package', context)))
       .then(() => endFn());
   }
+
 
   // *writeAutoImportFile(): write the autoImport.ts file, small .ts source file that makes it possible
   // to import java classes with just their class name;
@@ -190,6 +192,7 @@ class CodeWriter {
       .then(() => streamFn(this.fill('autoImport', this.classes)))
       .then(() => endFn());
   }
+
 
   // *getClassMap(): accessor method to return the 'class map' for the given class name.
   // The class map is a javascript object map/dictionary containing all properties of interest for the class.
