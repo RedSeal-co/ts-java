@@ -94,18 +94,15 @@ class ClassesMap {
     return this.includedPatterns.find((ns: RegExp) => { return className.match(ns) !== null; }) !== undefined;
   }
 
-
   // *shortClassName()*: Return the short class name given the full className (class path).
   shortClassName(className: string): string {
     return _.last(className.split('.'));
   }
 
-
   // *loadClass()*: load the class and return its Class object.
   loadClass(className: string): Java.Class {
     return this.java.getClassLoader().loadClassSync(className);
   }
-
 
   // *mapClassInterfaces()*: Find the direct interfaces of className.
   // Note that we later compute the transitive closure of all inherited interfaces
@@ -332,7 +329,6 @@ class ClassesMap {
     }
   }
 
-
   // *mapMethod()*: return a map of useful properties of a method or constructor.
   // For our purposes, we can treat constructors as methods except for the handling of return type.
   mapMethod(method: Java.Executable, work: Work): MethodDefinition {
@@ -377,7 +373,6 @@ class ClassesMap {
     return methodMap;
   }
 
-
   // *mapClassMethods()*: return a methodMap array for the methods of a class
   mapClassMethods(className: string, clazz: Java.Class, work: Work): Array<MethodDefinition> {
     return _.map(clazz.getMethodsSync(), function (m: Java.Method) { return this.mapMethod(m, work); }, this);
@@ -410,7 +405,6 @@ class ClassesMap {
 
     return fieldDefinition;
   }
-
 
   // *mapClassFields()*: return a FieldDefinition array for the fields of a class
   mapClassFields(className: string, clazz: Java.Class, work: Work): Array<FieldDefinition> {
@@ -482,7 +476,6 @@ class ClassesMap {
     return this.flattenDictionary(variantsMap);
   }
 
-
   // *fixClassPath()*: given a full class path name, rename any path components that are reserved words.
   fixClassPath(fullName: string): string {
     var reservedWords = [
@@ -501,14 +494,12 @@ class ClassesMap {
     return parts.join('.');
   }
 
-
   // *packageName()*: given a full class path name, return the package name.
   packageName(className: string): string {
     var parts = className.split('.');
     parts.pop();
     return parts.join('.');
   }
-
 
   // *mapClass()*: return a map of all useful properties of a class.
   mapClass(className: string, work: Work): ClassDefinition {
@@ -590,7 +581,6 @@ class ClassesMap {
     return classMap;
   }
 
-
   // *loadAllClasses()*: load and map all classes of interest
   loadAllClasses(seedClasses: Array<string>): Work {
     var work = new Work();
@@ -605,7 +595,6 @@ class ClassesMap {
 
     return work;
   }
-
 
   // *getClasses()*: return the map of all classes. Keys are classnames, values are classMaps.
   getClasses(): ClassDefinitionMap {
