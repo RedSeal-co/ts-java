@@ -25,7 +25,14 @@ var requiredSeedClasses: string[] = [
   'java.lang.String',
 ];
 
-var reservedShortNames: Dictionary = {
+interface Dictionary<T> {
+  [index: string]: T;
+}
+
+interface StringDictionary extends Dictionary<string> {
+}
+
+var reservedShortNames: StringDictionary = {
   'Number': null
 };
 
@@ -36,9 +43,6 @@ import FieldDefinition = ClassesMap.FieldDefinition;
 import MethodDefinition = ClassesMap.MethodDefinition;
 import VariantsMap = ClassesMap.VariantsMap;
 
-interface Dictionary {
-  [index: string]: string;
-}
 
 // ## ClassesMap
 // ClassesMap is a map of a set of java classes/interfaces, containing information extracted via Java Reflection.
@@ -57,7 +61,7 @@ class ClassesMap {
   // shortToLongNameMap is used to detect whether a class name unambiguously identifies one class path.
   // Currently it is populated after making one full pass over all classes, and then used in a second full pass.
   // TODO: refactor so the first pass does only the work to find all classes, without creating ClassDefinitions.
-  private shortToLongNameMap: Dictionary;
+  private shortToLongNameMap: StringDictionary;
 
   // allClasses is the list of all classes found by scanning the jars in the class path and applying
   // the inWhiteList() filter.
@@ -127,7 +131,7 @@ class ClassesMap {
   // *typeEncoding()*: return the JNI encoding string for a java class
   typeEncoding(clazz: Java.Class): string {
     var name = clazz.getNameSync();
-    var primitives: Dictionary = {
+    var primitives: StringDictionary = {
       boolean: 'Z',
       byte: 'B',
       char: 'C',
@@ -185,7 +189,7 @@ class ClassesMap {
     }
 
     // First convert the 1-letter JNI abbreviated type names to their human readble types
-    var jniAbbreviations: Dictionary = {
+    var jniAbbreviations: StringDictionary = {
       // see http://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/types.html
       B: 'byte',
       C: 'char',
@@ -201,7 +205,7 @@ class ClassesMap {
     }
 
     // Next, promote primitive types to their corresponding Object types, to avoid redundancy below.
-    var primitiveToObjectMap: Dictionary = {
+    var primitiveToObjectMap: StringDictionary = {
       'byte': 'java.lang.Object',
       'char': 'java.lang.Object',
       'boolean': 'java.lang.Boolean',
@@ -245,7 +249,7 @@ class ClassesMap {
     // We define an interface longValue_t (in package.txt) that that extends Number and adds a string member longValue.
     // We also define long_t, which is the union [number|longValue_t|java.lang.Long].
 
-    var javaTypeToTypescriptType: Dictionary = {
+    var javaTypeToTypescriptType: StringDictionary = {
       void: 'void',
       'java.lang.Boolean': context === ParamContext.eInput ? 'boolean_t' : 'boolean',
       'java.lang.Double':  context === ParamContext.eInput ? 'double_t' : 'number',
