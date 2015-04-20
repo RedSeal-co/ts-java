@@ -14,7 +14,7 @@ I need to understand when ts-java declares short aliases for class paths.
 
     import _ = require('lodash');
     import glob = require('glob');
-    import java = require('redseal-java');
+    import java = require('java');
     import assert = require('power-assert');
 
     function before(done: Java.Callback<void>): void {

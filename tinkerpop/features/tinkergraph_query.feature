@@ -14,7 +14,7 @@ So I can leverage my knowledge of the Java TinkerPop API to write programs in Ty
 
     import autoImport = require('../../tinkerpop/o/autoImport');
     import glob = require('glob');
-    import java = require('redseal-java');
+    import java = require('java');
     import BluePromise = require('bluebird');
     var promisify = require('bluebird').promisify;
 

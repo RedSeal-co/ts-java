@@ -3,12 +3,14 @@
 /// <reference path='../typings/bluebird/bluebird.d.ts' />
 
 
-declare module 'redseal-java' {
+declare module 'java' {
   var Java: Java.NodeAPI;
   export = Java;
 }
 
-declare module 'java' {
+// redseal-java is a fork of java that RedSeal sometimes uses for experimental features.
+// We declare redseal-java as an ambient module to allow an application to substitute it for local experiments.
+declare module 'redseal-java' {
   var Java: Java.NodeAPI;
   export = Java;
 }
