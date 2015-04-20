@@ -15,7 +15,7 @@ Feature: Constructors
     /// <reference path='../../featureset/java.d.ts'/>
 
     import glob = require('glob');
-    import java = require('redseal-java');
+    import java = require('java');
 
     function before(done: Java.Callback<void>): void {
       java.asyncOptions = {

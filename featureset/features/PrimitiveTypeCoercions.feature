@@ -14,7 +14,7 @@ So I can understand how to primitive types and be aware of some limitations.
 
     import assert = require('power-assert');
     import glob = require('glob');
-    import java = require('redseal-java');
+    import java = require('java');
     import util = require('util');
 
     function before(done: Java.Callback<void>): void {

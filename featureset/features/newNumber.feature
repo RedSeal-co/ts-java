@@ -16,7 +16,7 @@ See also PrimitiveTypeCoercions.feature.
 
     import assert = require('power-assert');
     import glob = require('glob');
-    import java = require('redseal-java');
+    import java = require('java');
 
     function before(done: Java.Callback<void>): void {
       glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {

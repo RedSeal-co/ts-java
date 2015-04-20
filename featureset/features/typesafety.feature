@@ -13,7 +13,7 @@ I want to understand how Typescript offers type saftey.
 
     import BluePromise = require('bluebird');
     import glob = require('glob');
-    import java = require('redseal-java');
+    import java = require('java');
 
     java.asyncOptions = {
       syncSuffix: 'Sync',

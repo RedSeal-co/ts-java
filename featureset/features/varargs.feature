@@ -24,7 +24,7 @@ See also arrays.feature.
     import assert = require('power-assert');
     import BluePromise = require('bluebird');
     import glob = require('glob');
-    import java = require('redseal-java');
+    import java = require('java');
 
     java.asyncOptions = {
       syncSuffix: 'Sync',

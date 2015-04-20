@@ -22,7 +22,7 @@ in the Background section.
     /// <reference path='../../hellojava/java.d.ts'/>
 
     import glob = require('glob');
-    import java = require('redseal-java');
+    import java = require('java');
     import BluePromise = require('bluebird');
     var promisify = require('bluebird').promisify;
 
