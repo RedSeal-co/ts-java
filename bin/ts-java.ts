@@ -70,6 +70,7 @@ class Main {
       .then(() => this.loadClasses())
       .then(() => BluePromise.join(this.writeJsons(), this.writeInterpolatedFiles(), this.writeAutoImport()))
       .then(() => dlog('run() completed.'))
+      .then(() => this.outputSummaryDiagnostics())
       .then(() => this.classesMap);
   }
 
@@ -127,6 +128,11 @@ class Main {
     }
   }
 
+  private outputSummaryDiagnostics(): BluePromise<void> {
+    console.log(this.classesMap.unhandledTypes);
+    return;
+  }
+
   private initJava(): BluePromise<void> {
     var classpath: Array<string> = [];
     return BluePromise.all(_.map(this.options.classpath, (globExpr: string) => globPromise(globExpr)))
@@ -172,10 +178,7 @@ readJsonPromise(packageJsonPath, console.error, false)
     }
 
     var main = new Main(packageContents.tsjava);
-    return main.run()
-      .then((classesMap: ClassesMap) => {
-        console.log(classesMap.unhandledTypes);
-      });
+    return main.run();
   })
   .catch((err: any) => {
     if ('cause' in err && err.cause.code === 'ENOENT' && err.cause.path === packageJsonPath) {

@@ -50,7 +50,7 @@ var Main = (function () {
         var _this = this;
         return this.initJava().then(function () {
             _this.classesMap = new ClassesMap(java, _this.options);
-        }).then(function () { return _this.loadClasses(); }).then(function () { return BluePromise.join(_this.writeJsons(), _this.writeInterpolatedFiles(), _this.writeAutoImport()); }).then(function () { return dlog('run() completed.'); }).then(function () { return _this.classesMap; });
+        }).then(function () { return _this.loadClasses(); }).then(function () { return BluePromise.join(_this.writeJsons(), _this.writeInterpolatedFiles(), _this.writeAutoImport()); }).then(function () { return dlog('run() completed.'); }).then(function () { return _this.outputSummaryDiagnostics(); }).then(function () { return _this.classesMap; });
     };
     Main.prototype.writeInterpolatedFiles = function () {
         var classesMap = this.classesMap;
@@ -95,6 +95,10 @@ var Main = (function () {
             return mkdirpPromise(path.dirname(this.options.autoImportPath)).then(function () { return tsWriter.writeAutoImportFile(_this.options); }).then(function () { return dlog('writeAutoImport() completed'); });
         }
     };
+    Main.prototype.outputSummaryDiagnostics = function () {
+        console.log(this.classesMap.unhandledTypes);
+        return;
+    };
     Main.prototype.initJava = function () {
         var _this = this;
         var classpath = [];
@@ -131,9 +135,7 @@ readJsonPromise(packageJsonPath, console.error, false).then(function (packageCon
         program.help();
     }
     var main = new Main(packageContents.tsjava);
-    return main.run().then(function (classesMap) {
-        console.log(classesMap.unhandledTypes);
-    });
+    return main.run();
 }).catch(function (err) {
     if ('cause' in err && err.cause.code === 'ENOENT' && err.cause.path === packageJsonPath) {
         console.error(error('Not found:', packageJsonPath));
