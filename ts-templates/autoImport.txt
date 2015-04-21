@@ -8,7 +8,7 @@ interface Dictionary {
 
 {{#each this}}
 {{#if useAlias}}
-function autoImport(shortName: "{{alias}}"): Java.{{quotedPkgName}}.{{shortName}}.Static;
+function autoImport(shortName: '{{alias}}'): Java.{{quotedPkgName}}.{{shortName}}.Static;
 {{/if}}
 {{/each}}
 function autoImport(shortName: string): any;
@@ -18,11 +18,11 @@ function autoImport(shortName: string): any {
   var shortToLongNameMap: Dictionary = {
     {{#each this}}
     {{#if useAlias}}
-    "{{alias}}": "{{packageName}}.{{shortName}}",
+    '{{alias}}': '{{packageName}}.{{shortName}}'{{#unless @last}},{{/unless}}
     {{/if}}
     {{/each}}
   };
-  
+
   if (shortName in shortToLongNameMap) {
     return java.import(shortToLongNameMap[shortName]);
   } else {

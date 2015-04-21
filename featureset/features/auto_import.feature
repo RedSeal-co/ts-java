@@ -9,7 +9,7 @@ Feature: Auto import
   will write the source file defining the autoImport function.
 
   Background:
-    Given that ts-java has been run and autoImport.ts has compiled cleanly.
+    Given that ts-java has been run and autoImport.ts has compiled and linted cleanly.
     Given this boilerplate to intialize node-java:
     """
     /// <reference path='../../typings/glob/glob.d.ts' />
