@@ -1,0 +1,2 @@
+import java = require('java');
+// This template intentionally mostly blank
