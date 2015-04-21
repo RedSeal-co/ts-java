@@ -48,7 +48,12 @@ import VariantsArray = ClassesMap.VariantsArray;
 // and information about all methods implemented by the class (directly or indirectly via inheritance).
 class ClassesMap {
 
+  // *unhandledTypes* is the set of all types that are not allowed by the whiteList filtering
+  // yet are referenced by methods of classes that are included in the output java.d.ts file.
   public unhandledTypes: Immutable.Set<string>;
+
+  // *unhandledSuperClasses* are any unhandledTypes that are superclasses of included types.
+  public unhandledSuperClasses: Immutable.Set<string>;
 
   private java: Java.NodeAPI;
   private options: TsJavaOptions;
@@ -71,6 +76,7 @@ class ClassesMap {
 
     this.classes = {};
     this.unhandledTypes = Immutable.Set<string>();
+    this.unhandledSuperClasses = Immutable.Set<string>();
     this.allClasses = Immutable.Set<string>();
 
     // We create this after the first pass.
@@ -539,11 +545,10 @@ class ClassesMap {
     // until we find a whitelisted superclass. If none exists, we declare the
     // class to not have a superclass, even though it does.
     // The developer may want to include the superclass in the seed classes.
-    // TODO: implement better diagnostics so it will be clear to the developer
-    // that s/he needs to decide whether the superclass needs to be included.
     var superclass: Java.Class = clazz.getSuperclassSync();
     while (superclass && !this.inWhiteList(superclass.getNameSync())) {
       this.unhandledTypes = this.unhandledTypes.add(superclass.getNameSync());
+      this.unhandledSuperClasses = this.unhandledSuperClasses.add(superclass.getNameSync());
       superclass = superclass.getSuperclassSync();
     }
 
