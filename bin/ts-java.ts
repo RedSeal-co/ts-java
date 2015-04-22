@@ -44,6 +44,7 @@ var globPromise = BluePromise.promisify(glob);
 
 var dlog = debug('ts-java:main');
 var error = chalk.bold.red;
+var bold = chalk.bold;
 
 class Main {
 
@@ -129,7 +130,17 @@ class Main {
   }
 
   private outputSummaryDiagnostics(): BluePromise<void> {
-    console.log(this.classesMap.unhandledTypes);
+    if (program.opts().summary) {
+      if (!this.classesMap.unhandledTypes.isEmpty()) {
+        console.log(bold('Classes that were referenced, but excluded by the current configuration:'));
+        this.classesMap.unhandledTypes.sort().forEach((clazz: string) => console.log('  ', clazz));
+      }
+      if (!this.classesMap.unhandledSuperClasses.isEmpty()) {
+        console.log(bold('Superclasses that were referenced, but excluded by the current configuration:'));
+        var warn = chalk.bold.yellow;
+        this.classesMap.unhandledSuperClasses.sort().forEach((clazz: string) => console.log('  ', warn(clazz)));
+      }
+    }
     return;
   }
 
@@ -171,6 +182,7 @@ readJsonPromise(tsJavaAppPackagePath, console.error, false)
 
     program
       .version(tsJavaVersion)
+      .option('-s, --summary', 'Output summary of results')
       .on('--help', () => {
         _.forEach(helpText, (line: string) => console.log(chalk.bold(line)));
       });

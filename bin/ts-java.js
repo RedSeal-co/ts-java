@@ -32,6 +32,7 @@ var readJsonPromise = BluePromise.promisify(readJson);
 var globPromise = BluePromise.promisify(glob);
 var dlog = debug('ts-java:main');
 var error = chalk.bold.red;
+var bold = chalk.bold;
 var Main = (function () {
     function Main(options) {
         this.options = options;
@@ -96,7 +97,17 @@ var Main = (function () {
         }
     };
     Main.prototype.outputSummaryDiagnostics = function () {
-        console.log(this.classesMap.unhandledTypes);
+        if (program.opts().summary) {
+            if (!this.classesMap.unhandledTypes.isEmpty()) {
+                console.log(bold('Classes that were referenced, but excluded by the current configuration:'));
+                this.classesMap.unhandledTypes.sort().forEach(function (clazz) { return console.log('  ', clazz); });
+            }
+            if (!this.classesMap.unhandledSuperClasses.isEmpty()) {
+                console.log(bold('Superclasses that were referenced, but excluded by the current configuration:'));
+                var warn = chalk.bold.yellow;
+                this.classesMap.unhandledSuperClasses.sort().forEach(function (clazz) { return console.log('  ', warn(clazz)); });
+            }
+        }
         return;
     };
     Main.prototype.initJava = function () {
@@ -128,7 +139,7 @@ var tsJavaAppPackagePath = path.resolve(__dirname, '..', 'package.json');
 var packageJsonPath = path.resolve('.', 'package.json');
 readJsonPromise(tsJavaAppPackagePath, console.error, false).then(function (packageContents) {
     var tsJavaVersion = packageContents.version;
-    program.version(tsJavaVersion).on('--help', function () {
+    program.version(tsJavaVersion).option('-s, --summary', 'Output summary of results').on('--help', function () {
         _.forEach(helpText, function (line) { return console.log(chalk.bold(line)); });
     });
     program.parse(process.argv);

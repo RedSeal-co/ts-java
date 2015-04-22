@@ -64,7 +64,7 @@ JAVAPKGS_JAVADTS=$(patsubst %,%/java.d.ts,$(JAVAPKGS))
 
 # The rule to update each java.d.ts file
 $(JAVAPKGS_JAVADTS): %/java.d.ts: %/package.json %/o/maven.lastran bin/ts-java.sh ts-templates/package.txt ts-templates/autoImport.txt
-	cd $* && ../bin/ts-java.sh
+	cd $* && ../bin/ts-java.sh --summary
 
 $(JAVAPKGS_CLEAN): %-clean:
 	cd $* && mvn clean
