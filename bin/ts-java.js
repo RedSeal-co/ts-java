@@ -124,12 +124,15 @@ var helpText = [
     '  All configuration options must be specified in a node.js package.json file, in a property tsjava.',
     '  See the README.md file for more information.'
 ];
-program.on('--help', function () {
-    _.forEach(helpText, function (line) { return console.log(chalk.bold(line)); });
-});
-program.parse(process.argv);
-var packageJsonPath = './package.json';
-readJsonPromise(packageJsonPath, console.error, false).then(function (packageContents) {
+var tsJavaAppPackagePath = path.resolve(__dirname, '..', 'package.json');
+var packageJsonPath = path.resolve('.', 'package.json');
+readJsonPromise(tsJavaAppPackagePath, console.error, false).then(function (packageContents) {
+    var tsJavaVersion = packageContents.version;
+    program.version(tsJavaVersion).on('--help', function () {
+        _.forEach(helpText, function (line) { return console.log(chalk.bold(line)); });
+    });
+    program.parse(process.argv);
+}).then(function () { return readJsonPromise(packageJsonPath, console.error, false); }).then(function (packageContents) {
     if (!('tsjava' in packageContents)) {
         console.error(error('package.json does not contain a tsjava property'));
         program.help();

@@ -162,14 +162,22 @@ var helpText = [
 '  See the README.md file for more information.'
 ];
 
-program.on('--help', () => {
-  _.forEach(helpText, (line: string) => console.log(chalk.bold(line)));
-});
+var tsJavaAppPackagePath = path.resolve(__dirname, '..', 'package.json');
+var packageJsonPath = path.resolve('.', 'package.json');
 
-program.parse(process.argv);
+readJsonPromise(tsJavaAppPackagePath, console.error, false)
+  .then((packageContents: any) => {
+    var tsJavaVersion = packageContents.version;
 
-var packageJsonPath = './package.json';
-readJsonPromise(packageJsonPath, console.error, false)
+    program
+      .version(tsJavaVersion)
+      .on('--help', () => {
+        _.forEach(helpText, (line: string) => console.log(chalk.bold(line)));
+      });
+
+    program.parse(process.argv);
+  })
+  .then(() => readJsonPromise(packageJsonPath, console.error, false))
   .then((packageContents: any) => {
 
     if (!('tsjava' in packageContents)) {
@@ -193,4 +201,3 @@ readJsonPromise(packageJsonPath, console.error, false)
     }
   })
   .done();
-
