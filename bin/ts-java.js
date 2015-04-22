@@ -8,6 +8,7 @@
 /// <reference path='../typings/lodash/lodash.d.ts' />
 /// <reference path='../typings/mkdirp/mkdirp.d.ts' />
 /// <reference path='../typings/node/node.d.ts' />
+/// <reference path='../lib/find-java-home.d.ts' />
 /// <reference path='../lib/read-package-json.d.ts' />
 'use strict';
 require('source-map-support').install();
@@ -17,19 +18,21 @@ var chalk = require('chalk');
 var ClassesMap = require('../lib/classes-map');
 var CodeWriter = require('../lib/code-writer');
 var debug = require('debug');
+var findJavaHome = require('find-java-home');
 var fs = require('fs');
 var glob = require('glob');
 var java = require('java');
-var readJson = require('read-package-json');
 var mkdirp = require('mkdirp');
 var path = require('path');
 var program = require('commander');
+var readJson = require('read-package-json');
 BluePromise.longStackTraces();
 var writeFilePromise = BluePromise.promisify(fs.writeFile);
 var readFilePromise = BluePromise.promisify(fs.readFile);
 var mkdirpPromise = BluePromise.promisify(mkdirp);
 var readJsonPromise = BluePromise.promisify(readJson);
 var globPromise = BluePromise.promisify(glob);
+var findJavaHomePromise = BluePromise.promisify(findJavaHome);
 var dlog = debug('ts-java:main');
 var error = chalk.bold.red;
 var bold = chalk.bold;
@@ -103,7 +106,7 @@ var Main = (function () {
                 this.classesMap.unhandledTypes.sort().forEach(function (clazz) { return console.log('  ', clazz); });
             }
             if (!this.classesMap.unhandledSuperClasses.isEmpty()) {
-                console.log(bold('Superclasses that were referenced, but excluded by the current configuration:'));
+                console.log(bold('Classes that were referenced *as superclasses*, but excluded by the current configuration:'));
                 var warn = chalk.bold.yellow;
                 this.classesMap.unhandledSuperClasses.sort().forEach(function (clazz) { return console.log('  ', warn(clazz)); });
             }
@@ -119,6 +122,11 @@ var Main = (function () {
                 java.classpath.push(path);
                 classpath.push(path);
             });
+        }).then(function () { return findJavaHomePromise(); }).then(function (javaHome) {
+            // Add the Java runtime library to the class path so that ts-java is aware of java.lang and java.util classes.
+            var rtJarPath = path.join(javaHome, 'jre', 'lib', 'rt.jar');
+            dlog('Adding rt.jar to classpath:', rtJarPath);
+            classpath.push(rtJarPath);
         }).then(function () {
             // The classpath in options is an array of glob expressions.
             // It is convenient to replace it here with the equivalent expanded array jar file paths.

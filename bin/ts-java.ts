@@ -8,6 +8,7 @@
 /// <reference path='../typings/lodash/lodash.d.ts' />
 /// <reference path='../typings/mkdirp/mkdirp.d.ts' />
 /// <reference path='../typings/node/node.d.ts' />
+/// <reference path='../lib/find-java-home.d.ts' />
 /// <reference path='../lib/read-package-json.d.ts' />
 
 'use strict';
@@ -21,6 +22,7 @@ import chalk = require('chalk');
 import ClassesMap = require('../lib/classes-map');
 import CodeWriter = require('../lib/code-writer');
 import debug = require('debug');
+import findJavaHome = require('find-java-home');
 import fs = require('fs');
 import glob = require('glob');
 import Immutable = require('immutable');
@@ -41,6 +43,7 @@ var readFilePromise = BluePromise.promisify(fs.readFile);
 var mkdirpPromise = BluePromise.promisify(mkdirp);
 var readJsonPromise = BluePromise.promisify(readJson);
 var globPromise = BluePromise.promisify(glob);
+var findJavaHomePromise = BluePromise.promisify(findJavaHome);
 
 var dlog = debug('ts-java:main');
 var error = chalk.bold.red;
@@ -136,7 +139,7 @@ class Main {
         this.classesMap.unhandledTypes.sort().forEach((clazz: string) => console.log('  ', clazz));
       }
       if (!this.classesMap.unhandledSuperClasses.isEmpty()) {
-        console.log(bold('Superclasses that were referenced, but excluded by the current configuration:'));
+        console.log(bold('Classes that were referenced *as superclasses*, but excluded by the current configuration:'));
         var warn = chalk.bold.yellow;
         this.classesMap.unhandledSuperClasses.sort().forEach((clazz: string) => console.log('  ', warn(clazz)));
       }
@@ -154,6 +157,13 @@ class Main {
           java.classpath.push(path);
           classpath.push(path);
         });
+      })
+      .then(() => findJavaHomePromise())
+      .then((javaHome: string) => {
+        // Add the Java runtime library to the class path so that ts-java is aware of java.lang and java.util classes.
+        var rtJarPath = path.join(javaHome, 'jre', 'lib', 'rt.jar');
+        dlog('Adding rt.jar to classpath:', rtJarPath);
+        classpath.push(rtJarPath);
       })
       .then(() => {
         // The classpath in options is an array of glob expressions.
