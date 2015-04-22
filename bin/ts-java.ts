@@ -25,10 +25,10 @@ import fs = require('fs');
 import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
-import readJson = require('read-package-json');
 import mkdirp = require('mkdirp');
 import path = require('path');
 import program = require('commander');
+import readJson = require('read-package-json');
 import TsJavaOptions = require('../lib/TsJavaOptions');
 import Work = require('../lib/work');
 
