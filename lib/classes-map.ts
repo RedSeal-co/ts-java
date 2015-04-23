@@ -632,47 +632,28 @@ class ClassesMap {
       });
   }
 
-  // *initialize()*: fully initialize from seedClasses.
+  // *initialize()*: fully initialize from seedClasses and whitelists.
   initialize(): BluePromise<void> {
     return this.preScanAllClasses()
       .then(() => {
-        while (true) {
-          // We assume this.allClasses now contains a complete list of all classes
-          // that we will process. We scan it now to create the shortToLongNameMap,
-          // which allows us to discover class names conflicts.
-          // Conflicts are recorded by using null for the longName.
-          this.shortToLongNameMap = {};
-          this.allClasses.forEach((longName: string): any => {
-            var shortName = this.shortClassName(longName);
-            if (shortName in reservedShortNames || shortName in this.shortToLongNameMap) {
-              // We have a conflict
-              this.shortToLongNameMap[shortName] = null;
-            } else {
-              // No conflict yet
-              this.shortToLongNameMap[shortName] = longName;
-            }
-          });
-
-          // Reset our ClassDefinitionMap in case we are recreating it.
-          this.classes = {};
-          var seeds: Array<string> = this.allClasses.toArray();
-          var work = this.loadAllClasses(seeds);
-
-          // We must now check to see if additional classes were processed beyond those
-          // in this.allClasses at the start of the loop. This only happens if the TsJavaOptions
-          // whiteList includes java.lang or java.util packages and results in classes being
-          // added that were not specified in the seed classes.
-          var checkClassList = work.getDone();
-          assert(this.allClasses.size <= checkClassList.size);
-          var unexpected = checkClassList.subtract(this.allClasses);
-          if (unexpected.size === 0) {
-            break;
+        // We assume this.allClasses now contains a complete list of all classes
+        // that we will process. We scan it now to create the shortToLongNameMap,
+        // which allows us to discover class names conflicts.
+        // Conflicts are recorded by using null for the longName.
+        this.shortToLongNameMap = {};
+        this.allClasses.forEach((longName: string): any => {
+          var shortName = this.shortClassName(longName);
+          if (shortName in reservedShortNames || shortName in this.shortToLongNameMap) {
+            // We have a conflict
+            this.shortToLongNameMap[shortName] = null;
           } else {
-            console.error('These classes should be added to the tsjava.seedClasses list:', unexpected);
-            this.allClasses = checkClassList;
+            // No conflict yet
+            this.shortToLongNameMap[shortName] = longName;
           }
-        }
+        });
 
+        var seeds: Array<string> = this.allClasses.toArray();
+        this.loadAllClasses(seeds);
       });
   }
 
