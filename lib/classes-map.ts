@@ -52,7 +52,10 @@ class ClassesMap {
   // yet are referenced by methods of classes that are included in the output java.d.ts file.
   public unhandledTypes: Immutable.Set<string>;
 
-  // *unhandledSuperClasses* are any unhandledTypes that are superclasses of included types.
+  // *unhandledInterfaces* are any excluded types that are interfaces of included types.
+  public unhandledInterfaces: Immutable.Set<string>;
+
+  // *unhandledSuperClasses* are any excluded that are superclasses of included types.
   public unhandledSuperClasses: Immutable.Set<string>;
 
   private java: Java.NodeAPI;
@@ -76,6 +79,7 @@ class ClassesMap {
 
     this.classes = {};
     this.unhandledTypes = Immutable.Set<string>();
+    this.unhandledInterfaces = Immutable.Set<string>();
     this.unhandledSuperClasses = Immutable.Set<string>();
     this.allClasses = Immutable.Set<string>();
 
@@ -110,12 +114,30 @@ class ClassesMap {
     return this.java.getClassLoader().loadClassSync(className);
   }
 
+  // *resolveInterfaces()*: Find the set of non-excluded interfaces for the given class `clazz`.
+  // If an interface of a class is excluded by the configuration, we check the ancestors of that class.
+  resolveInterfaces(clazz: Java.Class): Immutable.Set<string> {
+    var result = Immutable.Set<string>();
+
+    _.forEach(clazz.getInterfacesSync(), (intf: Java.Class): void => {
+      var intfName: string = intf.getNameSync();
+      if (this.inWhiteList(intfName)) {
+        result = result.add(intfName);
+      } else {
+        // Remember the excluded interface
+        this.unhandledInterfaces = this.unhandledInterfaces.add(intfName);
+        // recurse and merge results.
+        result = result.merge(this.resolveInterfaces(intf));
+      }
+    });
+
+    return result;
+  }
+
   // *mapClassInterfaces()*: Find the direct interfaces of className.
-  // Note that we later compute the transitive closure of all inherited interfaces
   mapClassInterfaces(className: string, clazz: Java.Class, work: Work) : Array<string> {
     assert.strictEqual(clazz.getNameSync(), className);
-    var interfaces = _.map(clazz.getInterfacesSync(), (intf: Java.Class) => { return intf.getNameSync(); });
-    interfaces = _.filter(interfaces, (intf: string) => { return this.inWhiteList(intf); });
+    var interfaces: Array<string> = this.resolveInterfaces(clazz).toArray();
 
     // Methods of Object must always be available on any instance variable, even variables whose static
     // type is a Java interface. Java does this implicitly. We have to do it explicitly.
