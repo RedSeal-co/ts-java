@@ -545,10 +545,10 @@ class ClassesMap {
     // If the immediate type is not in the whitelist, we ascend up the ancestry
     // until we find a whitelisted superclass. If none exists, we declare the
     // class to not have a superclass, even though it does.
-    // The developer may want to include the superclass in the seed classes.
+    // We report all such skipped superclasses in the summary diagnostics.
+    // The developer can then choose to add any of these classes to the seed classes list.
     var superclass: Java.Class = clazz.getSuperclassSync();
     while (superclass && !this.inWhiteList(superclass.getNameSync())) {
-      this.unhandledTypes = this.unhandledTypes.add(superclass.getNameSync());
       this.unhandledSuperClasses = this.unhandledSuperClasses.add(superclass.getNameSync());
       superclass = superclass.getSuperclassSync();
     }
