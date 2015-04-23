@@ -267,9 +267,10 @@ class ClassesMap {
       typeName = javaTypeToTypescriptType[typeName];
     } else if (this.inWhiteList(typeName)) {
       // Use the short class name if it doesn't cause name conflicts.
-      // This can only be done correctly in our 2nd pass, when this.shortToLongNameMap has been populated.
-      // However, conflicts are very rare, and unit tests currently don't run two passes,
-      // so it is convenient to always map to the short name in the first pass.
+      // This can only be done correctly after running prescanAllClasses,
+      // when this.shortToLongNameMap has been populated.
+      // However, conflicts are very rare, and unit tests currently don't run prescanAllClasses,
+      // so it is convenient to always map to the short name if shortToLongNameMap doesn't exist.
       var shortName = this.shortClassName(typeName);
       if (!this.shortToLongNameMap || this.shortToLongNameMap[shortName] === typeName) {
         typeName = shortName;
