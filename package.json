@@ -13,7 +13,7 @@
     "reflection"
   ],
   "author": "Jim Lloyd <jim.lloyd@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "bin": {
     "ts-java": "bin/ts-java.sh",
     "ts-java.js": "bin/ts-java.js"
