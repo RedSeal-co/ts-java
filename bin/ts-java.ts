@@ -137,6 +137,7 @@ class Main {
       return;
     }
 
+    var warn = chalk.bold.yellow;
     console.log('ts-java version %s', tsJavaVersion);
 
     var classesMap: ClassDefinitionMap = this.classesMap.getClasses();
@@ -157,13 +158,21 @@ class Main {
       }
     }
 
-    if (!this.classesMap.unhandledSuperClasses.isEmpty()) {
-      var warn = chalk.bold.yellow;
+    if (!this.classesMap.unhandledInterfaces.isEmpty()) {
       if (program.opts().details) {
-        console.log(warn('Classes that were referenced *as superclasses*, but excluded by the current configuration:'));
+        console.log(warn('Classes that were referenced as *interfaces*, but excluded by the current configuration:'));
+        this.classesMap.unhandledInterfaces.sort().forEach((clazz: string) => console.log('  ', clazz));
+      } else {
+        console.log(warn('Excluded %d classes referenced as *interfaces*.'), this.classesMap.unhandledInterfaces.size);
+      }
+    }
+
+    if (!this.classesMap.unhandledSuperClasses.isEmpty()) {
+      if (program.opts().details) {
+        console.log(warn('Classes that were referenced as *superclasses*, but excluded by the current configuration:'));
         this.classesMap.unhandledSuperClasses.sort().forEach((clazz: string) => console.log('  ', clazz));
       } else {
-        console.log(warn('Excluded %d classes referenced *as superclasses*.'), this.classesMap.unhandledSuperClasses.size);
+        console.log(warn('Excluded %d classes referenced as *superclasses*.'), this.classesMap.unhandledSuperClasses.size);
       }
     }
 
