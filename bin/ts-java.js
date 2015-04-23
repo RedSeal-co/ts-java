@@ -100,15 +100,36 @@ var Main = (function () {
         }
     };
     Main.prototype.outputSummaryDiagnostics = function () {
-        if (program.opts().summary) {
-            if (!this.classesMap.unhandledTypes.isEmpty()) {
+        if (program.opts().quiet) {
+            return;
+        }
+        console.log('ts-java version %s', tsJavaVersion);
+        var classesMap = this.classesMap.getClasses();
+        var classList = _.keys(classesMap).sort();
+        if (program.opts().details) {
+            console.log(bold('Generated classes:'));
+            classList.forEach(function (clazz) { return console.log('  ', clazz); });
+        }
+        else {
+            console.log('Generated %s with %d classes.', this.options.outputPath, classList.length);
+        }
+        if (!this.classesMap.unhandledTypes.isEmpty()) {
+            if (program.opts().details) {
                 console.log(bold('Classes that were referenced, but excluded by the current configuration:'));
                 this.classesMap.unhandledTypes.sort().forEach(function (clazz) { return console.log('  ', clazz); });
             }
-            if (!this.classesMap.unhandledSuperClasses.isEmpty()) {
-                console.log(bold('Classes that were referenced *as superclasses*, but excluded by the current configuration:'));
-                var warn = chalk.bold.yellow;
-                this.classesMap.unhandledSuperClasses.sort().forEach(function (clazz) { return console.log('  ', warn(clazz)); });
+            else {
+                console.log('Excluded %d classes referenced as method parameters.', this.classesMap.unhandledTypes.size);
+            }
+        }
+        if (!this.classesMap.unhandledSuperClasses.isEmpty()) {
+            var warn = chalk.bold.yellow;
+            if (program.opts().details) {
+                console.log(warn('Classes that were referenced *as superclasses*, but excluded by the current configuration:'));
+                this.classesMap.unhandledSuperClasses.sort().forEach(function (clazz) { return console.log('  ', clazz); });
+            }
+            else {
+                console.log(warn('Excluded %d classes referenced *as superclasses*.'), this.classesMap.unhandledSuperClasses.size);
             }
         }
         return;
@@ -140,14 +161,17 @@ var Main = (function () {
     return Main;
 })();
 var helpText = [
-    '  All configuration options must be specified in a node.js package.json file, in a property tsjava.',
+    '  All configuration options must be specified in a node.js package.json file,',
+    '  in a property tsjava.',
+    '',
     '  See the README.md file for more information.'
 ];
 var tsJavaAppPackagePath = path.resolve(__dirname, '..', 'package.json');
 var packageJsonPath = path.resolve('.', 'package.json');
+var tsJavaVersion;
 readJsonPromise(tsJavaAppPackagePath, console.error, false).then(function (packageContents) {
-    var tsJavaVersion = packageContents.version;
-    program.version(tsJavaVersion).option('-s, --summary', 'Output summary of results').on('--help', function () {
+    tsJavaVersion = packageContents.version;
+    program.version(tsJavaVersion).option('-q, --quiet', 'Run silently with no output').option('-d, --details', 'Output diagnostic details').on('--help', function () {
         _.forEach(helpText, function (line) { return console.log(chalk.bold(line)); });
     });
     program.parse(process.argv);
