@@ -1,7 +1,6 @@
 {
   "name": "ts-java",
   "version": "1.0.5",
-  "private": true,
   "description": "Create TypeScript declaration files for java packages.",
   "main": "index.js",
   "scripts": {
@@ -46,11 +45,14 @@
     "typescript": "^1.4.1"
   },
   "directories": {
-    "doc": "doc",
     "test": "test"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.lab.redseal.net:redseal/ts-java.git"
-  }
+    "url": "git@github.com:RedSeal-co/ts-java.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RedSeal-co/ts-java/issues"
+  },
+  "homepage": "https://github.com/RedSeal-co/ts-java"
 }
