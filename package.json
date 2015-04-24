@@ -1,6 +1,6 @@
 {
   "name": "ts-java",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "description": "Create TypeScript declaration files for java packages.",
   "main": "index.js",
