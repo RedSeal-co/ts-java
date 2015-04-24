@@ -45,13 +45,13 @@ ts-java is configured by adding a `tsjava` property to the package.json file:
    "classpath": [
      "target/dependency/**/*.jar"
    ],
-   "seedClasses": [
+   "classes": [
      "org.apache.tinkerpop.gremlin.structure.Graph",
      "org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph",
      "org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory",
      "java.util.ArrayList"
    ],
-   "whiteList": [
+   "packages": [
      "java.util.",
      "java.math.",
      "org.apache.tinkerpop.gremlin."
@@ -60,7 +60,7 @@ ts-java is configured by adding a `tsjava` property to the package.json file:
 }
 ```
 
-We'll explain what the properties `classpath`, `seedClasses`, and `whiteList` mean below. Assuming they are properly specified, `ts-java` can be run in the project's root directory to generate a `java.d.ts` file:
+We'll explain what the properties `classpath`, `classes`, and `packages` mean below. Assuming they are properly specified, `ts-java` can be run in the project's root directory to generate a `java.d.ts` file:
 
 ```bash
 $ ts-java
@@ -74,11 +74,9 @@ $
 
 The `tsjava` property in the `package.json` must define three nested properties:
 
-* `classpath`: an array of glob expressions for the files to be added to the java classpath. It should be the same classpath that you will use to initialize node-java to run your application.
-* `seedClasses`: an array of class paths to seed the set of classes that ts-java will analyze and generate interfaces for. You don't need to explicitly specify all classes you want to generate Typescript interfaces for. `ts-java` will 'crawl' your
-Java classes starting from the seed classes. Whenever a new class is referenced (as an inherited interface or as a method parameter) ts-java checks to see if it
-is allowed by the `whiteList` (see below), in which case `ts-java` will include that class and transitively all referenced white-listed classes.
-* `whiteList`: an array of regular expressions that classes much match in order to be included in the output. Any referenced class *not* included in the white list will be omitted from the generated `java.d.ts` declaration file. All references to such omitted classes will be translated as the `any` type.
+* `classpath`: an array of glob expressions for the files to be added to the java classpath. It should be the same classpath that you will use to initialize node-java to run your application. In addition to the classes specified in `classpath`, `ts-java` automatically includes the Java runtime library classes.
+* `packages`: an array of partial class paths, typically package paths. All classes in the classpath that match any string in this list will be included in the generated output.
+* `classes`: an array of full class paths for classes that ts-java will generate interfaces for. If you want some but not all classes in a package, specify those classes here.
 
 ### Command Line Options
 
@@ -151,23 +149,81 @@ Classes that were referenced as *superclasses*, but excluded by the current conf
    java.lang.Number
 ```
 
-These details are useful while refining the configuration to to select the exact set of classes your application needs available. The classes listed in both of the 'referenced but excluded' categories may include classes you application needs, in which case you should include those classes in the `seedClasses` list.
+These details are useful while refining the configuration to select the exact set of classes your application needs available. The classes listed in both of the 'referenced but excluded' categories may include classes your application needs, in which case you should add those classes to the `classes` list.
 
-#### Why not include all classes?
+#### Why not simply include all classes?
 
-You certainly can. But we expect that most node applications that use Java libraries only use a subset of the classes implemented in the libraries. Including all classes results in a larger java.d.ts file, which can slow down compiles, and also make it more cumbersome to use a java.d.ts file as documentation for the Java library's API.
+You certainly can. But we expect that most node applications that use Java libraries will only use a subset of the classes implemented in the libraries. Including all classes results in a larger `java.d.ts` file, which can slow down Typescript compilation, and also make it more cumbersome to use a `java.d.ts` file as documentation for the Java library's API.
 
 #### What happens with excluded classes?
 
-If an excluded class is referenced as a method parameter, ts-java replaces the type with the Typescript type `any`. A future release may provide an option to instead omit methods that use excluded types.
+If an excluded class is referenced as a method parameter, `ts-java` replaces the type with the Typescript type `any`. A future release may provide an option to instead omit methods that use excluded types.
 
-If the excluded class is referenced as an interface or superclass, the Typescript declaration won't include that relationship, even though the implemented methods of the excluded interface *will* be accessible.
+If the excluded class is referenced as an interface or superclass, the Typescript declaration won't include that relationship, though the implemented methods of the excluded interface *will* be accessible. So, the only real limitation is that you won't be able to use the excluded type to declare polymorphic variables.
+
+## Class name aliases and AutoImport
+
+All Java classes are declared to exist in the Typescript module `Java`. Each Java package is mapped to a Typescript module. For example, a class such as `java.lang.String` is declared in nested Typescript modules as:
+
+```typescript
+declare module Java {
+	...
+   export module java.lang {
+    	export interface String extends Java.java.lang.Object {
+   		}
+   }
+   ...
+}
+```
+In your Typescript application, you can refer to Java classes using fully qualified type paths such as `Java.java.lang.String`. Clearly this is too verbose. `ts-java` addresses this by declaring type aliases for all classes that have a unique class names. The `java.d.ts` file includes a section like this:
+
+```typescript
+declare module Java {
+	...
+	export import Object = java.lang.Object;
+	export import String = java.lang.String;
+	...
+}
+```
+
+This allows you to write just `Java.String` instead of `Java.java.lang.String`.
+
+To get access to a class via node-java, you typically use java.import(), such as:
+
+```
+	import java = require('java');
+	...
+	var String = java.import('java.lang.String');
+```
+
+`ts-java` provides a feature to make this simpler, which is enabled by adding an `autoImportPath` property to the `tsjava` property of your package.json file, specifing the path to which `tsjava` should write a Typescript source file. For example:
+
+```json
+ "tsjava": {
+   "classpath": [
+     "target/dependency/**/*.jar"
+   ],
+   "autoImportPath": "lib/autoImport.ts",
+   ...
+   },
+ ...
+```
+
+Your application can then do this:
+
+```typescript
+import autoImport = require('lib/autoImport');
+...
+var String = autoImport('String');
+```
+
+See `featureset/features/auto_import.feature` for more information.
 
 ## Examples
 
 The directories `hellojava`, `featureset`, `reflection` and `tinkerpop` contain working examples of using `ts-java`.
 
-Three of these examples include [Cucumber](https://github.com/cucumber/cucumber-js) tests. The `.feature` files document various aspects of how to use ts-java and what to expect from the generated Typescript declarations.
+Three of these examples include [Cucumber](https://github.com/cucumber/cucumber-js) tests. The `.feature` files document various aspects of how to use `ts-java` and what to expect from the generated Typescript declarations.
 
 #### hellojava
 
@@ -175,11 +231,11 @@ This is a tiny test built from one trivial Java class `HelloJava` implementing o
 
 #### featureset
 
-This directory contains Cucumber `.feature` files that are intended to provide good coverage of the ts-java feature set. The files in `featureset/features/*.feature` provide examples and documentation for most of the `ts-java` feature set. If you find some aspect of `ts-java` is not adequately covered in these .feature files, we encourage you to submit an issue.
+This directory contains Cucumber `.feature` files that are intended to provide good coverage of the `ts-java` feature set. The files in `featureset/features/*.feature` provide examples and documentation for most of the `ts-java` feature set. If you find some aspect of `ts-java` is not adequately covered in these `.feature` files, we encourage you to submit an issue.
 
 #### reflection
 
-`ts-java` is written in Typescript and uses Java [Reflection](http://docs.oracle.com/javase/8/docs/api/java/lang/reflect/package-summary.html), so it needs a `java.d.ts` file. The `reflection/` directory uses `ts-java` to generate this `java.d.ts` file. We did this by bootstrapping from a  hand-coded `java.d.ts` file, and then switching to the generated `java.d.ts` file once `ts-java` was able to generate a valid file. The `Makefile` contains rules to declare the build broken if the `java.d.ts` generated in `reflection/` differs from the `java.d.ts` used by `ts-java` sources.
+`ts-java` is written in Typescript and uses Java [Reflection](http://docs.oracle.com/javase/8/docs/api/java/lang/reflect/package-summary.html), so it needs a `java.d.ts` file (in `lib/java.d.ts`). The `reflection/` directory uses `ts-java` to generate this `java.d.ts` file. We did this by bootstrapping from a hand-coded `java.d.ts` file, and then switching to the generated `java.d.ts` file once `ts-java` was able to generate a valid file. The project `Makefile` contains rules to declare the build broken if the `java.d.ts` generated in `reflection/` differs from `lib/java.d.ts` used by `ts-java` sources, forcing us to keep the file up to date.
 
 #### tinkerpop
 

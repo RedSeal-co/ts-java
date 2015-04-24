@@ -6,10 +6,10 @@
       "target/*.jar",
       "target/dependency/*.jar"
     ],
-    "seedClasses": [
+    "classes": [
       "com.redseal.hellojava.HelloJava"
     ],
-    "whiteList": [
+    "packages": [
     ],
     "asyncOptions": {
       "syncSuffix": "Sync",

@@ -20,7 +20,7 @@ import Work = require('./work');
 
 var dlog = debug('ts-java:classes-map');
 
-var requiredSeedClasses: string[] = [
+var requiredCoreClasses: string[] = [
   'java.lang.Object',
   'java.lang.String',
 ];
@@ -48,7 +48,7 @@ import VariantsArray = ClassesMap.VariantsArray;
 // and information about all methods implemented by the class (directly or indirectly via inheritance).
 class ClassesMap {
 
-  // *unhandledTypes* is the set of all types that are not allowed by the whiteList filtering
+  // *unhandledTypes* is the set of all types that are not included by the configured classes/packages lists
   // yet are referenced by methods of classes that are included in the output java.d.ts file.
   public unhandledTypes: Immutable.Set<string>;
 
@@ -86,11 +86,15 @@ class ClassesMap {
     // We create this after the first pass.
     this.shortToLongNameMap = null;
 
-    this.includedPatterns = Immutable.Set(_.map(this.options.whiteList, (str: string) => {
+    // TODO: remove these two lines when the deprecated `seedClasses` and `whiteList` are no longer needed.
+    options.classes = options.classes || options.seedClasses;
+    options.packages = options.packages || options.whiteList;
+
+    this.includedPatterns = Immutable.Set(_.map(this.options.packages, (str: string) => {
       return new RegExp(str);
     }));
 
-    var seeds = Immutable.Set(requiredSeedClasses).merge(options.seedClasses);
+    var seeds = Immutable.Set(requiredCoreClasses).merge(options.classes);
     seeds.forEach((className: string) => {
       if (!this.inWhiteList(className)) {
         var pattern = new RegExp('^' + className.replace(/([\.\$])/g, '\\$1') + '$');
@@ -243,7 +247,7 @@ class ClassesMap {
     }
 
     if (!this.inWhiteList(typeName) && typeName !== 'void') {
-      // Since the type is not in our whiteList, we might want to use the Typescript 'any' type.
+      // Since the type is not in our included classes, we might want to use the Typescript 'any' type.
       // However, array_t<any> doesn't really make sense. Rather, we want array_t<Object>,
       // or possibly instead of Object a superclass that is in our whitelist.
       this.unhandledTypes = this.unhandledTypes.add(typeName);
@@ -617,10 +621,10 @@ class ClassesMap {
   }
 
   // *loadAllClasses()*: load and map all classes of interest
-  loadAllClasses(seedClasses: Array<string>): Work {
+  loadAllClasses(requiredClasses: Array<string>): Work {
     var work = new Work();
-    _.forEach(seedClasses, (className: string) => work.addTodo(className));
-    _.forEach(requiredSeedClasses, (className: string) => work.addTodo(className));
+    _.forEach(requiredClasses, (className: string) => work.addTodo(className));
+    _.forEach(requiredCoreClasses, (className: string) => work.addTodo(className));
 
     while (!work.isDone()) {
       var className = work.next();
@@ -655,7 +659,7 @@ class ClassesMap {
       });
   }
 
-  // *initialize()*: fully initialize from seedClasses and whitelists.
+  // *initialize()*: fully initialize from configured packages & classes.
   initialize(): BluePromise<void> {
     return this.preScanAllClasses()
       .then(() => {
@@ -693,8 +697,8 @@ class ClassesMap {
     .then((allSoFar: Immutable.Set<string>) => {
       // We don't have java.lang classes in the scan of jars in the class path.
       // We'll get them from these two sources of seed classes.
-      allSoFar = allSoFar.union(options.seedClasses);
-      allSoFar = allSoFar.union(requiredSeedClasses);
+      allSoFar = allSoFar.union(options.classes);
+      allSoFar = allSoFar.union(requiredCoreClasses);
       this.allClasses = allSoFar;
       return allSoFar;
     });

@@ -5,7 +5,7 @@
     "classpath": [
       "target/**/*.jar"
     ],
-    "seedClasses": [
+    "classes": [
       "java.lang.Boolean",
       "java.lang.Class",
       "java.lang.ClassLoader",
@@ -18,7 +18,7 @@
       "java.lang.reflect.Parameter",
       "java.lang.reflect.Type"
     ],
-    "whiteList": [
+    "packages": [
     ],
     "asyncOptions": {
       "syncSuffix": "Sync"

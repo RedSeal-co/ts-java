@@ -34,8 +34,9 @@ var readJsonPromise = BluePromise.promisify(readJson);
 var globPromise = BluePromise.promisify(glob);
 var findJavaHomePromise = BluePromise.promisify(findJavaHome);
 var dlog = debug('ts-java:main');
-var error = chalk.bold.red;
 var bold = chalk.bold;
+var error = bold.red;
+var warn = bold.yellow;
 var Main = (function () {
     function Main(options) {
         this.options = options;
@@ -48,6 +49,16 @@ var Main = (function () {
         if (!this.options.promisesPath) {
             // TODO: Provide more control over promises
             this.options.promisesPath = '../bluebird/bluebird.d.ts';
+        }
+        if (!this.options.packages && this.options.whiteList) {
+            console.warn(warn('tsjava.whiteList in package.json is deprecated. Please use tsjava.packages instead.'));
+            this.options.packages = this.options.whiteList;
+            this.options.whiteList = undefined;
+        }
+        if (!this.options.classes && this.options.seedClasses) {
+            console.warn(warn('tsjava.seedClasses in package.json is deprecated. Please use tsjava.classes instead.'));
+            this.options.classes = this.options.seedClasses;
+            this.options.seedClasses = undefined;
         }
     }
     Main.prototype.run = function () {
@@ -103,7 +114,6 @@ var Main = (function () {
         if (program.opts().quiet) {
             return;
         }
-        var warn = chalk.bold.yellow;
         console.log('ts-java version %s', tsJavaVersion);
         var classesMap = this.classesMap.getClasses();
         var classList = _.keys(classesMap).sort();

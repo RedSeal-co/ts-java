@@ -11,14 +11,18 @@ interface TsJavaOptions {
     // Note: ts-java allows glob expressions here, e.g. 'target/**/*.jar'.
     // However ClassesMap expects this to be an expanded array of file paths.
 
-  seedClasses: Array<string>;
-    // The set of java classes from which to start crawling, bringing in all java classes
-    // reachable from the seeds that match the whiteList expressions below.
+  classes?: Array<string>;
+    // The set of java classes the application requires, for finer-grained control than packages.
 
-  whiteList: Array<string>;
-    // A set of partial class paths for the classes of interest.
-    // Any classes seen during crawl that are not matched by a member of this white list
-    // are ignored. References to those classes (in say method argument lists) are turned to typescript 'any' type.
+  seedClasses?: Array<string>;
+    // A deprecated alias for classes.
+
+  packages: Array<string>;
+    // A set of packages class paths for packages to include.
+    // All classes in each of these packages will be included.
+
+  whiteList?: Array<string>;
+    // A deprecated alias for packages.
 
   granularity?: string;
     // 'package' or 'class'. Defaults to 'package'. 'class' is currently an undocumented/unsupported option.
