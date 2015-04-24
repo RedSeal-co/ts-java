@@ -1,5 +1,7 @@
 # ts-java
 
+[![Build Status](https://travis-ci.org/RedSeal-co/ts-java.svg?branch=master)](https://travis-ci.org/RedSeal-co/ts-java)
+
 *Create TypeScript declaration files for Java packages.*
 
 [Typescript](http://www.typescriptlang.org) provides the ability for Javascript programmers to write typesafe code.
@@ -239,6 +241,6 @@ This directory contains Cucumber `.feature` files that are intended to provide g
 
 #### tinkerpop
 
-[Tinkerpop3](http://www.tinkerpop.com/) is an An Open Source Graph Computing Framework and is the primary use case that motivated us to create ts-java. If you are also a Tinkerpop user, check out [ts-tinkerop](https://github.com/RedSeal-co/ts-tinkerpop), a small library with utilties built on top of the Tinkerpop interfaces exposed by the `java.d.ts` declaration file.
+[Tinkerpop3](http://www.tinkerpop.com/) is an An Open Source Graph Computing Framework and is the primary use case that motivated us to create ts-java. If you are also a Tinkerpop user, check out [ts-tinkerpop](https://github.com/RedSeal-co/ts-tinkerpop), a small library with utilities built on top of the Tinkerpop interfaces exposed by the `java.d.ts` declaration file.
 
 [java]: http://en.wikipedia.org/wiki/Java_(programming_language)
