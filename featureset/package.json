@@ -7,7 +7,7 @@
       "target/*.jar",
       "target/dependency/*.jar"
     ],
-    "seedClasses": [
+    "classes": [
       "com.redseal.featureset.ambiguous.Thing",
       "com.redseal.featureset.ambiguous.Thing$Nested",
       "com.redseal.featureset.AnEnum",
@@ -27,7 +27,7 @@
       "java.util.List",
       "java.util.function.Function"
     ],
-    "whiteList": [
+    "packages": [
     ],
     "asyncOptions": {
       "syncSuffix": "Sync",

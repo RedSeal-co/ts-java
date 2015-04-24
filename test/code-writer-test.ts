@@ -47,7 +47,7 @@ describe('CodeWriter', () => {
     'outputPath': './java.d.ts',
     'autoImportPath': './autoImport.ts',
     'classpath': null,  // initialized below
-    'seedClasses': [
+    'classes': [
       'java.lang.Boolean',
       'java.lang.Double',
       'java.lang.Float',
@@ -60,7 +60,7 @@ describe('CodeWriter', () => {
       'java.lang.Enum',
       'com.redseal.featureset.SomeClass',
     ],
-    'whiteList': [
+    'packages': [
       'com.redseal.featureset.'
     ]
   };

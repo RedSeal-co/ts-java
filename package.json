@@ -13,7 +13,7 @@
     "reflection"
   ],
   "author": "Jim Lloyd <jim.lloyd@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "bin": {
     "ts-java": "bin/ts-java.sh",
     "ts-java.js": "bin/ts-java.js"
@@ -23,15 +23,16 @@
     "chalk": "^0.5.1",
     "commander": "^2.6.0",
     "debug": "^2.1.1",
+    "find-java-home": "^0.1.2",
     "glob": "^4.5.3",
     "handlebars": "^2.0.0",
     "immutable": "^3.3.0",
+    "java": "^0.5.1",
     "lodash": "^2.4.1",
     "ls-archive": "^1.0.3",
     "mkdirp": "^0.5.0",
     "power-assert": "^0.10.2",
     "read-package-json": "^1.3.3",
-    "java": "^0.5.1",
     "source-map-support": "^0.2.9"
   },
   "devDependencies": {

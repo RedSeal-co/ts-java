@@ -8,6 +8,7 @@
 /// <reference path='../typings/lodash/lodash.d.ts' />
 /// <reference path='../typings/mkdirp/mkdirp.d.ts' />
 /// <reference path='../typings/node/node.d.ts' />
+/// <reference path='../lib/find-java-home.d.ts' />
 /// <reference path='../lib/read-package-json.d.ts' />
 
 'use strict';
@@ -21,14 +22,15 @@ import chalk = require('chalk');
 import ClassesMap = require('../lib/classes-map');
 import CodeWriter = require('../lib/code-writer');
 import debug = require('debug');
+import findJavaHome = require('find-java-home');
 import fs = require('fs');
 import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
-import readJson = require('read-package-json');
 import mkdirp = require('mkdirp');
 import path = require('path');
 import program = require('commander');
+import readJson = require('read-package-json');
 import TsJavaOptions = require('../lib/TsJavaOptions');
 import Work = require('../lib/work');
 
@@ -41,9 +43,12 @@ var readFilePromise = BluePromise.promisify(fs.readFile);
 var mkdirpPromise = BluePromise.promisify(mkdirp);
 var readJsonPromise = BluePromise.promisify(readJson);
 var globPromise = BluePromise.promisify(glob);
+var findJavaHomePromise = BluePromise.promisify(findJavaHome);
 
 var dlog = debug('ts-java:main');
-var error = chalk.bold.red;
+var bold = chalk.bold;
+var error = bold.red;
+var warn = bold.yellow;
 
 class Main {
 
@@ -62,6 +67,16 @@ class Main {
       // TODO: Provide more control over promises
       this.options.promisesPath = '../bluebird/bluebird.d.ts';
     }
+    if (!this.options.packages && this.options.whiteList) {
+      console.warn(warn('tsjava.whiteList in package.json is deprecated. Please use tsjava.packages instead.'));
+      this.options.packages = this.options.whiteList;
+      this.options.whiteList = undefined;
+    }
+    if (!this.options.classes && this.options.seedClasses) {
+      console.warn(warn('tsjava.seedClasses in package.json is deprecated. Please use tsjava.classes instead.'));
+      this.options.classes = this.options.seedClasses;
+      this.options.seedClasses = undefined;
+    }
   }
 
   run(): BluePromise<ClassesMap> {
@@ -70,6 +85,7 @@ class Main {
       .then(() => this.loadClasses())
       .then(() => BluePromise.join(this.writeJsons(), this.writeInterpolatedFiles(), this.writeAutoImport()))
       .then(() => dlog('run() completed.'))
+      .then(() => this.outputSummaryDiagnostics())
       .then(() => this.classesMap);
   }
 
@@ -127,6 +143,52 @@ class Main {
     }
   }
 
+  private outputSummaryDiagnostics(): BluePromise<void> {
+    if (program.opts().quiet) {
+      return;
+    }
+
+    console.log('ts-java version %s', tsJavaVersion);
+
+    var classesMap: ClassDefinitionMap = this.classesMap.getClasses();
+    var classList = _.keys(classesMap).sort();
+    if (program.opts().details) {
+      console.log(bold('Generated classes:'));
+      classList.forEach((clazz: string) => console.log('  ', clazz));
+    } else {
+      console.log('Generated %s with %d classes.', this.options.outputPath, classList.length);
+    }
+
+    if (!this.classesMap.unhandledTypes.isEmpty()) {
+      if (program.opts().details) {
+        console.log(bold('Classes that were referenced, but excluded by the current configuration:'));
+        this.classesMap.unhandledTypes.sort().forEach((clazz: string) => console.log('  ', clazz));
+      } else {
+       console.log('Excluded %d classes referenced as method parameters.', this.classesMap.unhandledTypes.size);
+      }
+    }
+
+    if (!this.classesMap.unhandledInterfaces.isEmpty()) {
+      if (program.opts().details) {
+        console.log(warn('Classes that were referenced as *interfaces*, but excluded by the current configuration:'));
+        this.classesMap.unhandledInterfaces.sort().forEach((clazz: string) => console.log('  ', clazz));
+      } else {
+        console.log(warn('Excluded %d classes referenced as *interfaces*.'), this.classesMap.unhandledInterfaces.size);
+      }
+    }
+
+    if (!this.classesMap.unhandledSuperClasses.isEmpty()) {
+      if (program.opts().details) {
+        console.log(warn('Classes that were referenced as *superclasses*, but excluded by the current configuration:'));
+        this.classesMap.unhandledSuperClasses.sort().forEach((clazz: string) => console.log('  ', clazz));
+      } else {
+        console.log(warn('Excluded %d classes referenced as *superclasses*.'), this.classesMap.unhandledSuperClasses.size);
+      }
+    }
+
+    return;
+  }
+
   private initJava(): BluePromise<void> {
     var classpath: Array<string> = [];
     return BluePromise.all(_.map(this.options.classpath, (globExpr: string) => globPromise(globExpr)))
@@ -137,6 +199,13 @@ class Main {
           java.classpath.push(path);
           classpath.push(path);
         });
+      })
+      .then(() => findJavaHomePromise())
+      .then((javaHome: string) => {
+        // Add the Java runtime library to the class path so that ts-java is aware of java.lang and java.util classes.
+        var rtJarPath = path.join(javaHome, 'jre', 'lib', 'rt.jar');
+        dlog('Adding rt.jar to classpath:', rtJarPath);
+        classpath.push(rtJarPath);
       })
       .then(() => {
         // The classpath in options is an array of glob expressions.
@@ -152,18 +221,31 @@ class Main {
 }
 
 var helpText = [
-'  All configuration options must be specified in a node.js package.json file, in a property tsjava.',
+'  All configuration options must be specified in a node.js package.json file,',
+'  in a property tsjava.',
+'',
 '  See the README.md file for more information.'
 ];
 
-program.on('--help', () => {
-  _.forEach(helpText, (line: string) => console.log(chalk.bold(line)));
-});
+var tsJavaAppPackagePath = path.resolve(__dirname, '..', 'package.json');
+var packageJsonPath = path.resolve('.', 'package.json');
+var tsJavaVersion: string;
 
-program.parse(process.argv);
+readJsonPromise(tsJavaAppPackagePath, console.error, false)
+  .then((packageContents: any) => {
+    tsJavaVersion = packageContents.version;
 
-var packageJsonPath = './package.json';
-readJsonPromise(packageJsonPath, console.error, false)
+    program
+      .version(tsJavaVersion)
+      .option('-q, --quiet', 'Run silently with no output')
+      .option('-d, --details', 'Output diagnostic details')
+      .on('--help', () => {
+        _.forEach(helpText, (line: string) => console.log(chalk.bold(line)));
+      });
+
+    program.parse(process.argv);
+  })
+  .then(() => readJsonPromise(packageJsonPath, console.error, false))
   .then((packageContents: any) => {
 
     if (!('tsjava' in packageContents)) {
@@ -172,10 +254,7 @@ readJsonPromise(packageJsonPath, console.error, false)
     }
 
     var main = new Main(packageContents.tsjava);
-    return main.run()
-      .then((classesMap: ClassesMap) => {
-        console.log(classesMap.unhandledTypes);
-      });
+    return main.run();
   })
   .catch((err: any) => {
     if ('cause' in err && err.cause.code === 'ENOENT' && err.cause.path === packageJsonPath) {
@@ -190,4 +269,3 @@ readJsonPromise(packageJsonPath, console.error, false)
     }
   })
   .done();
-

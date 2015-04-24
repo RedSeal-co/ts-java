@@ -38,7 +38,7 @@ describe('ClassesMap', () => {
     'classpath': [
       'tinkerpop/target/dependency/**/*.jar'
     ],
-    'seedClasses': [
+    'classes': [
       'java.lang.Boolean',
       'java.lang.Double',
       'java.lang.Float',
@@ -49,7 +49,7 @@ describe('ClassesMap', () => {
       'java.lang.Number',
       'java.lang.Enum'
     ],
-    'whiteList': [
+    'packages': [
       'com.tinkerpop.gremlin.',
       'java.util.function.',
     ]
