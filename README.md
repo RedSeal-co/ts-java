@@ -16,6 +16,10 @@ to connect to Java APIs.
 allowing Typescript programmers to use Java classes in their node.js applications
 with type safety comparable to using Java directly.
 
+## Discusion Forum
+
+Please use the [node-java discussion forum](https://groups.google.com/forum/#!forum/node-java) for discussion of ts-java.
+
 ## Status
 
 **ts-java** is still evolving but is already proving useful in active projects. One major feature not yet included in ts-java is support for Java Generics. We expect Java Generics will map cleanly to Typescript Generics.
@@ -45,19 +49,17 @@ ts-java is configured by adding a `tsjava` property to the package.json file:
  ...
  "tsjava": {
    "classpath": [
-     "target/dependency/**/*.jar"
-   ],
-   "classes": [
-     "org.apache.tinkerpop.gremlin.structure.Graph",
-     "org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph",
-     "org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory",
-     "java.util.ArrayList"
+     "target/**/*.jar"
    ],
    "packages": [
      "java.util.",
      "java.math.",
      "org.apache.tinkerpop.gremlin."
-   ]
+   ],
+   "classes": [
+      "java.lang.Boolean",
+      "java.lang.Long",
+   ],
  }
 }
 ```
@@ -163,52 +165,58 @@ If an excluded class is referenced as a method parameter, `ts-java` replaces the
 
 If the excluded class is referenced as an interface or superclass, the Typescript declaration won't include that relationship, though the implemented methods of the excluded interface *will* be accessible. So, the only real limitation is that you won't be able to use the excluded type to declare polymorphic variables.
 
+#### What about Java Runtime classes?
+
+`ts-java` always includes `java.lang.Object` and `java.lang.String`, but any other Java Runtime classes you need must be specified in either the `packages` or `classes` sections of the `tsjava` configuration.
+
+
 ## Class name aliases and AutoImport
 
 All Java classes are declared to exist in the Typescript module `Java`. Each Java package is mapped to a Typescript module. For example, a class such as `java.lang.String` is declared in nested Typescript modules as:
 
 ```typescript
 declare module Java {
-	...
-   export module java.lang {
-    	export interface String extends Java.java.lang.Object {
-   		}
-   }
-   ...
+  ...
+  export module java.lang {
+    export interface String extends Java.java.lang.Object {
+      ...
+    }
+  }
+  ...
 }
 ```
-In your Typescript application, you can refer to Java classes using fully qualified type paths such as `Java.java.lang.String`. Clearly this is too verbose. `ts-java` addresses this by declaring type aliases for all classes that have a unique class names. The `java.d.ts` file includes a section like this:
+In your Typescript application, you can refer to Java classes using fully qualified type paths such as `Java.java.lang.String`. Clearly this is too verbose. `ts-java` addresses this by declaring type aliases for all classes that have unique class names. The `java.d.ts` file includes a section like this:
 
 ```typescript
 declare module Java {
-	...
-	export import Object = java.lang.Object;
-	export import String = java.lang.String;
-	...
+  ...
+  export import Object = java.lang.Object;
+  export import String = java.lang.String;
+  ...
 }
 ```
 
 This allows you to write just `Java.String` instead of `Java.java.lang.String`.
 
-To get access to a class via node-java, you typically use java.import(), such as:
+To get access to a class via node-java, you typically use `java.import()`, such as:
 
 ```
-	import java = require('java');
-	...
-	var String = java.import('java.lang.String');
+  import java = require('java');
+  ...
+  var String = java.import('java.lang.String');
 ```
 
-`ts-java` provides a feature to make this simpler, which is enabled by adding an `autoImportPath` property to the `tsjava` property of your package.json file, specifing the path to which `tsjava` should write a Typescript source file. For example:
+`ts-java` provides a feature to make this simpler, which is enabled by adding an `autoImportPath` property to the `tsjava` property of your package.json file, specifying the path to which `tsjava` should write a Typescript source file. For example:
 
 ```json
- "tsjava": {
-   "classpath": [
-     "target/dependency/**/*.jar"
-   ],
-   "autoImportPath": "lib/autoImport.ts",
-   ...
-   },
- ...
+"tsjava": {
+  "classpath": [
+    "target/dependency/**/*.jar"
+  ],
+  "autoImportPath": "lib/autoImport.ts",
+  ...
+  },
+...
 ```
 
 Your application can then do this:
