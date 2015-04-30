@@ -210,6 +210,22 @@ function wrapper() {
       });
 
   });
+
+  this.Given(/^that featureset\/package\.json uses the following specification for tsjava\.packages:$/,
+    function (expected: string, callback: Callback) {
+      var world = <World> this;
+      var packageJsonPath = world.testPackageName + '/package.json';
+      readJsonPromise(packageJsonPath, console.error, false)
+        .then((json: any) => {
+          var expectedJson: any = JSON.parse(expected);
+          console.log(expectedJson.packages);
+          console.log(json.tsjava.packages);
+          expect(json.tsjava.packages).to.deep.equal(expectedJson.packages);
+          callback();
+        });
+    });
+
 }
+
 
 export = wrapper;
