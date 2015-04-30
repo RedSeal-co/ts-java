@@ -91,6 +91,16 @@ class ClassesMap {
     options.packages = options.packages || options.whiteList;
 
     this.includedPatterns = Immutable.Set(_.map(this.options.packages, (str: string) => {
+      if (/\.\*$/.test(str)) {
+        // package string ends with .*
+        str = str.slice(0, -1); // remove the *
+        str = str + '[\\w\\$]+$'; // and replace it with expression designed to match exactly one classname string
+      } else if (/\.\*\*$/.test(str)) {
+        // package string ends with .**
+        str = str.slice(0, -2); // remove the **
+      }
+      str = '^' + str.replace(/\./g, '\\.');
+      dlog('package pattern:', str);
       return new RegExp(str);
     }));
 

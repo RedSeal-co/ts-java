@@ -6,7 +6,7 @@
     "classpath": [
       "target/dependency/**/*.jar"
     ],
-    "seedClasses": [
+    "classes": [
       "com.tinkerpop.gremlin.structure.Graph",
       "com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph",
       "com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory",
@@ -22,8 +22,8 @@
       "java.util.Arrays",
       "java.util.List"
     ],
-    "whiteList": [
-      "com.tinkerpop.gremlin."
+    "packages": [
+      "com.tinkerpop.gremlin.**"
     ],
     "asyncOptions": {
       "syncSuffix": "",
