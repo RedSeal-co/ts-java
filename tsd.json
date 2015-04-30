@@ -1,57 +1,57 @@
 {
   "version": "v4",
-  "repo": "mhfrantz/DefinitelyTyped",
+  "repo": "RedSeal-co/DefinitelyTyped",
   "ref": "prod",
   "path": "typings",
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "mocha/mocha.d.ts": {
-      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
+      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
     },
     "chai/chai.d.ts": {
-      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
+      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
     },
     "lodash/lodash.d.ts": {
-      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
+      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
     },
     "node/node.d.ts": {
-      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
+      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
     },
     "handlebars/handlebars.d.ts": {
-      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
+      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
     },
     "mkdirp/mkdirp.d.ts": {
-      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
+      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
     },
     "commander/commander.d.ts": {
-      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
+      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
     },
     "debug/debug.d.ts": {
-      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
+      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
     },
     "glob/glob.d.ts": {
-      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
+      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
     },
     "minimatch/minimatch.d.ts": {
-      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
+      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
     },
     "bluebird/bluebird.d.ts": {
-      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
+      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
     },
     "chalk/chalk.d.ts": {
-      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
+      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
     },
     "cucumber/cucumber.d.ts": {
-      "commit": "62b2d5c98748ac76630a67ce628c51be09056a8a"
+      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
     },
     "power-assert/power-assert.d.ts": {
-      "commit": "972aafed0b9fcc1dd861446d8659c96d6b7e0d7e"
+      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
     },
     "power-assert-formatter/power-assert-formatter.d.ts": {
-      "commit": "972aafed0b9fcc1dd861446d8659c96d6b7e0d7e"
+      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
     },
     "empower/empower.d.ts": {
-      "commit": "972aafed0b9fcc1dd861446d8659c96d6b7e0d7e"
+      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
     }
   }
 }
