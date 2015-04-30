@@ -16,12 +16,11 @@
       "java.lang.Long",
       "java.lang.reflect.Method",
       "java.lang.Short",
-      "java.util.Arrays",
-      "java.util.List",
       "java.util.function.Function"
     ],
     "packages": [
-      "com.redseal.featureset.**"
+      "com.redseal.featureset.**",
+      "java.util.*"
     ],
     "asyncOptions": {
       "syncSuffix": "Sync",
