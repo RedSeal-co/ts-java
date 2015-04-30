@@ -52,9 +52,10 @@ ts-java is configured by adding a `tsjava` property to the package.json file:
      "target/**/*.jar"
    ],
    "packages": [
-     "java.util.",
-     "java.math.",
-     "org.apache.tinkerpop.gremlin."
+     "java.util.*",
+     "java.util.function.*",
+     "java.math.*",
+     "org.apache.tinkerpop.gremlin.**"
    ],
    "classes": [
       "java.lang.Boolean",
@@ -79,7 +80,13 @@ $
 The `tsjava` property in the `package.json` must define three nested properties:
 
 * `classpath`: an array of glob expressions for the files to be added to the java classpath. It should be the same classpath that you will use to initialize node-java to run your application. In addition to the classes specified in `classpath`, `ts-java` automatically includes the Java runtime library classes.
-* `packages`: an array of partial class paths, typically package paths. All classes in the classpath that match any string in this list will be included in the generated output.
+
+* `packages`: an array of package expression strings. Each string is interpreted as matching a package or a family of nested packages. Expressions should be of one of these two forms:
+    1. `path.to.some.package.*`
+    2. `path.to.some.package.**`
+
+    The first form matches all classes directly in `path.to.some.package` but does not match any nested packages. The second form matches all classes in all packages rooted at `path.to.some.package`.
+    
 * `classes`: an array of full class paths for classes that ts-java will generate interfaces for. If you want some but not all classes in a package, specify those classes here.
 
 ### Command Line Options
