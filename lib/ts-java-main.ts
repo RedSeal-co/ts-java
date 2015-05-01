@@ -53,6 +53,20 @@ class Main {
   private classesMap: ClassesMap;
 
   constructor(options: TsJavaOptions) {
+    this.initFromOptions(options);
+  }
+
+  run(): BluePromise<ClassesMap> {
+    return this.initJava()
+      .then(() => { this.classesMap = new ClassesMap(java, this.options); })
+      .then(() => this.loadClasses())
+      .then(() => BluePromise.join(this.writeJsons(), this.writeInterpolatedFiles(), this.writeAutoImport()))
+      .then(() => dlog('run() completed.'))
+      .then(() => this.outputSummaryDiagnostics())
+      .then(() => this.classesMap);
+  }
+
+  private initFromOptions(options: TsJavaOptions): void {
     this.options = options;
     if (this.options.granularity !== 'class') {
       this.options.granularity = 'package';
@@ -81,16 +95,6 @@ class Main {
       console.warn(warn('tsjava.packages should have expressions ending in .* or .**'));
       dlog('Deprecated package expression:', deprecated);
     }
-  }
-
-  run(): BluePromise<ClassesMap> {
-    return this.initJava()
-      .then(() => { this.classesMap = new ClassesMap(java, this.options); })
-      .then(() => this.loadClasses())
-      .then(() => BluePromise.join(this.writeJsons(), this.writeInterpolatedFiles(), this.writeAutoImport()))
-      .then(() => dlog('run() completed.'))
-      .then(() => this.outputSummaryDiagnostics())
-      .then(() => this.classesMap);
   }
 
   private writeInterpolatedFiles() : BluePromise<void> {
