@@ -1,4 +1,5 @@
 // classes-map-test.ts
+///<reference path='../lib/find-java-home.d.ts' />
 ///<reference path='../lib/java.d.ts' />
 ///<reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 ///<reference path='../typings/chai/chai.d.ts'/>
@@ -13,23 +14,43 @@ declare function require(name: string): any;
 require('source-map-support').install();
 
 import _ = require('lodash');
+import BluePromise = require('bluebird');
 import ClassesMap = require('../lib/classes-map');
 import chai = require('chai');
+import debug = require('debug');
+import findJavaHome = require('find-java-home');
 import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
 import ParamContext = require('../lib/paramcontext');
+import path = require('path');
 import TsJavaOptions = require('../lib/TsJavaOptions');
 import Work = require('../lib/work');
+
+var dlog = debug('ts-java:classes-map-test');
+var findJavaHomePromise = BluePromise.promisify(findJavaHome);
+var globPromise = BluePromise.promisify(glob);
 
 describe('ClassesMap', () => {
   var expect = chai.expect;
 
   var classesMap: ClassesMap;
 
-  before(() => {
-    var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
-    _.forEach(filenames, (name: string) => { java.classpath.push(name); });
+  before((): BluePromise<void> => {
+    return findJavaHomePromise()
+      .then((javaHome: string) => {
+        // Add the Java runtime library to the class path so that ts-java is aware of java.lang and java.util classes.
+        var rtJarPath = path.join(javaHome, 'jre', 'lib', 'rt.jar');
+        dlog('Adding to classpath:', rtJarPath);
+        java.classpath.push(rtJarPath);
+      })
+      .then(() => globPromise('tinkerpop/target/dependency/**/*.jar'))
+      .then((filenames: string[]) => {
+        _.forEach(filenames, (name: string) => {
+          dlog('Adding to classpath:', name);
+          java.classpath.push(name);
+        });
+      });
   });
 
   var options: TsJavaOptions = {
