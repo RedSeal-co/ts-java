@@ -25,6 +25,10 @@ TSC_OPTS=--module commonjs --target ES5 --sourceMap --noEmitOnError --noImplicit
 %.js: %.ts
 	($(TSC) $(TSC_OPTS) $< && $(LINT) $<) || (rm -f $@ && false)
 
+compile: $(ALL_TS_OBJ)
+
+.PHONY: compile
+
 ######
 # JAVAPKGS are directories containing a pom.xml and a package.json in which ts-java will be run
 # to generate a java.d.ts file. Keep the packages in alphabetical order.
