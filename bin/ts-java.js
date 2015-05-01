@@ -60,6 +60,13 @@ var Main = (function () {
             this.options.classes = this.options.seedClasses;
             this.options.seedClasses = undefined;
         }
+        var deprecated = _.find(this.options.packages, function (s) {
+            return s.slice(-2) !== '.*' && s.slice(-3) !== '.**';
+        });
+        if (deprecated) {
+            console.warn(warn('tsjava.packages should have expressions ending in .* or .**'));
+            dlog('Deprecated package expression:', deprecated);
+        }
     }
     Main.prototype.run = function () {
         var _this = this;

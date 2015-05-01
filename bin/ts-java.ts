@@ -77,6 +77,13 @@ class Main {
       this.options.classes = this.options.seedClasses;
       this.options.seedClasses = undefined;
     }
+    var deprecated: string = _.find(this.options.packages, (s: string) => {
+      return s.slice(-2) !== '.*' && s.slice(-3) !== '.**';
+    });
+    if (deprecated) {
+      console.warn(warn('tsjava.packages should have expressions ending in .* or .**'));
+      dlog('Deprecated package expression:', deprecated);
+    }
   }
 
   run(): BluePromise<ClassesMap> {

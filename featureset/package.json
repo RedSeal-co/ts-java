@@ -8,13 +8,6 @@
       "target/dependency/*.jar"
     ],
     "classes": [
-      "com.redseal.featureset.ambiguous.Thing",
-      "com.redseal.featureset.ambiguous.Thing$Nested",
-      "com.redseal.featureset.AnEnum",
-      "com.redseal.featureset.SomeAbstractClass",
-      "com.redseal.featureset.SomeClass",
-      "com.redseal.featureset.SomeInterface",
-      "com.redseal.featureset.Thing",
       "java.lang.Boolean",
       "java.lang.Class",
       "java.lang.Double",
@@ -23,11 +16,11 @@
       "java.lang.Long",
       "java.lang.reflect.Method",
       "java.lang.Short",
-      "java.util.Arrays",
-      "java.util.List",
       "java.util.function.Function"
     ],
     "packages": [
+      "com.redseal.featureset.**",
+      "java.util.*"
     ],
     "asyncOptions": {
       "syncSuffix": "Sync",
