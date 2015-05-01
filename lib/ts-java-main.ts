@@ -77,7 +77,15 @@ class Main {
   }
 
   private initFromPackagePath(): BluePromise<void> {
-    return BluePromise.resolve();
+    return readJsonPromise(this.packagePath, console.error, false)
+      .then((packageContents: any) => {
+        if (!('tsjava' in packageContents)) {
+          return BluePromise.reject(new Error('package.json does not contain a tsjava property'));
+        } else {
+          this.options = packageContents.tsjava;
+          return this.initFromOptions();
+        }
+      });
   }
 
   private initFromOptions(): BluePromise<void>  {
