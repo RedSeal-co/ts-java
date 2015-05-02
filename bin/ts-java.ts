@@ -55,27 +55,20 @@ readJsonPromise(tsJavaAppPackagePath, console.error, false)
 
     program.parse(process.argv);
   })
-  .then(() => readJsonPromise(packageJsonPath, console.error, false))
-  .then((packageContents: any) => {
-
-    if (!('tsjava' in packageContents)) {
-      console.error(error('package.json does not contain a tsjava property'));
-      program.help();
-    }
-
-    var main = new Main(packageContents.tsjava);
+  .then(() => {
+    var main = new Main(packageJsonPath);
     return main.run();
   })
   .catch((err: any) => {
     if ('cause' in err && err.cause.code === 'ENOENT' && err.cause.path === packageJsonPath) {
       console.error(error('Not found:', packageJsonPath));
-      program.help();
     } else {
       console.error(error(err));
       if (err.stack) {
         console.error(err.stack);
       }
-      process.exit(1);
     }
+    program.help();
+    process.exit(1);
   })
   .done();

@@ -37,24 +37,20 @@ readJsonPromise(tsJavaAppPackagePath, console.error, false).then(function (packa
         _.forEach(helpText, function (line) { return console.log(chalk.bold(line)); });
     });
     program.parse(process.argv);
-}).then(function () { return readJsonPromise(packageJsonPath, console.error, false); }).then(function (packageContents) {
-    if (!('tsjava' in packageContents)) {
-        console.error(error('package.json does not contain a tsjava property'));
-        program.help();
-    }
-    var main = new Main(packageContents.tsjava);
+}).then(function () {
+    var main = new Main(packageJsonPath);
     return main.run();
 }).catch(function (err) {
     if ('cause' in err && err.cause.code === 'ENOENT' && err.cause.path === packageJsonPath) {
         console.error(error('Not found:', packageJsonPath));
-        program.help();
     }
     else {
         console.error(error(err));
         if (err.stack) {
             console.error(err.stack);
         }
-        process.exit(1);
     }
+    program.help();
+    process.exit(1);
 }).done();
 //# sourceMappingURL=ts-java.js.map
