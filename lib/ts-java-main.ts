@@ -64,16 +64,22 @@ class Main {
   }
 
   run(): BluePromise<ClassesMap> {
-    var start: BluePromise<void> = this.options ? this.initFromOptions() : this.initFromPackagePath();
-
-    return start
-      .then(() => this.initJava())
-      .then(() => { this.classesMap = new ClassesMap(java, this.options); })
-      .then(() => this.loadClasses())
+    return this.load()
       .then(() => BluePromise.join(this.writeJsons(), this.writeInterpolatedFiles(), this.writeAutoImport()))
       .then(() => dlog('run() completed.'))
       .then(() => this.outputSummaryDiagnostics())
       .then(() => this.classesMap);
+  }
+
+  load(): BluePromise<void> {
+    var start: BluePromise<void> = this.options ? this.initFromOptions() : this.initFromPackagePath();
+    return start
+      .then(() => this.initJava())
+      .then(() => {
+        this.classesMap = new ClassesMap(java, this.options);
+        return this.classesMap.initialize();
+      })
+    ;
   }
 
   private initFromPackagePath(): BluePromise<void> {
@@ -240,11 +246,6 @@ class Main {
         // It is convenient to replace it here with the equivalent expanded array jar file paths.
         this.options.classpath = classpath;
       });
-  }
-
-  private loadClasses(): BluePromise<ClassesMap> {
-    return this.classesMap.initialize()
-      .then(() => this.classesMap);
   }
 }
 
