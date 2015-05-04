@@ -3,20 +3,23 @@
 /// <reference path="../typings/debug/debug.d.ts"/>
 /// <reference path="../typings/lodash/lodash.d.ts" />
 /// <reference path='../typings/node/node.d.ts' />
-/// <reference path='./ls-archive.d.ts' />
+/// <reference path='./zip.d.ts' />
 /// <reference path='./java.d.ts' />
 
 'use strict';
 
 import _ = require('lodash');
-import archive = require('ls-archive');
 import assert = require('assert');
 import BluePromise = require('bluebird');
 import debug = require('debug');
+import fs = require('fs');
 import Immutable = require('immutable');
 import ParamContext = require('./paramcontext');
 import TsJavaOptions = require('./TsJavaOptions');
 import Work = require('./work');
+import zip = require('zip');
+
+var openAsync = BluePromise.promisify(fs.open, fs);
 
 var dlog = debug('ts-java:classes-map');
 
@@ -35,7 +38,6 @@ var reservedShortNames: StringDictionary = {
   'Number': null
 };
 
-import ArchiveEntry = archive.ArchiveEntry;
 import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 import FieldDefinition = ClassesMap.FieldDefinition;
@@ -656,17 +658,24 @@ class ClassesMap {
   }
 
   getWhitedListedClassesInJar(jarpath: string): BluePromise<Array<string>> {
-    var listArchive = BluePromise.promisify(archive.list, archive);
-    return listArchive(jarpath)
-      .then((entries: Array<ArchiveEntry>) => {
-        var allPaths: Array<string> = _.map(entries, (entry: ArchiveEntry) => entry.getPath());
-        var classFilePaths: Array<string> = _.filter(allPaths, (path: string) => /.class$/.test(path));
-        var classNames: Array<string> = _.map(classFilePaths, (path: string) => {
-          return path.slice(0, -'.class'.length).replace(/\//g, '.');
+    dlog('getWhitedListedClassesInJar started for:', jarpath);
+    var result: Array<string> = [];
+    return openAsync(jarpath, 'r', '0666')
+      .then((fd: number) => {
+        var reader = zip.Reader(fd);
+        reader.forEach((entry: zip.Entry) => {
+          if (entry) {
+            var entryPath: string = entry.getName();
+            if (/\.class$/.test(entryPath)) {
+              var className: string = entryPath.slice(0, -'.class'.length).replace(/\//g, '.');
+              if (this.inWhiteList(className)) {
+                result.push(className);
+              }
+            }
+          }
         });
-        var result: Array<string> = _.filter(classNames, (name: string) => this.inWhiteList(name));
-        return result;
-      });
+      })
+      .then(() => result);
   }
 
   // *initialize()*: fully initialize from configured packages & classes.
@@ -698,22 +707,20 @@ class ClassesMap {
   // The result is stored in the member variable this.allClasses and returned as the function result
   private preScanAllClasses(): BluePromise<Immutable.Set<string>> {
     var options = this.options;
-    return BluePromise.reduce(options.classpath, (allSoFar: Immutable.Set<string>, jarpath: string) => {
-      return this.getWhitedListedClassesInJar(jarpath)
-        .then((classes: Array<string>) => {
-          return BluePromise.reduce(classes, (allSoFar: Immutable.Set<string>, className: string) => allSoFar.add(className), allSoFar);
-        });
-    }, Immutable.Set<string>())
-    .then((allSoFar: Immutable.Set<string>) => {
-      // We don't have java.lang classes in the scan of jars in the class path.
-      // We'll get them from these two sources of seed classes.
-      allSoFar = allSoFar.union(options.classes);
-      allSoFar = allSoFar.union(requiredCoreClasses);
-      this.allClasses = allSoFar;
-      return allSoFar;
-    });
+    var result = Immutable.Set<string>();
+    var promises: BluePromise<Array<string>>[] = _.map(options.classpath, (jarpath: string) => this.getWhitedListedClassesInJar(jarpath));
+    return BluePromise.all(promises)
+      .each((classes: Array<string>) => {
+        result = result.merge(classes);
+      })
+      .then(() => {
+        result = result.union(options.classes);
+        result = result.union(requiredCoreClasses);
+        this.allClasses = result;
+        dlog('preScanAllClasses completed');
+        return result;
+      });
   }
-
 }
 
 module ClassesMap {
