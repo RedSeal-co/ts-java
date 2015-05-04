@@ -33,7 +33,7 @@ var tsJavaVersion;
 readJsonPromise(tsJavaAppPackagePath, console.error, false).then(function (packageContents) {
     tsJavaVersion = packageContents.version;
     console.log('ts-java version %s', tsJavaVersion);
-    program.version(tsJavaVersion).option('-q, --quiet', 'Run silently with no output').option('-d, --details', 'Output diagnostic details').on('--help', function () {
+    program.version(tsJavaVersion).option('-q, --quiet', 'Run silently with no output').option('-d, --details', 'Output diagnostic details').option('-j, --json', 'Output json class descriptors for each class to o/json').on('--help', function () {
         _.forEach(helpText, function (line) { return console.log(chalk.bold(line)); });
     });
     program.parse(process.argv);

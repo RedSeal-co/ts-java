@@ -49,6 +49,7 @@ readJsonPromise(tsJavaAppPackagePath, console.error, false)
       .version(tsJavaVersion)
       .option('-q, --quiet', 'Run silently with no output')
       .option('-d, --details', 'Output diagnostic details')
+      .option('-j, --json', 'Output json class descriptors for each class to o/json')
       .on('--help', () => {
         _.forEach(helpText, (line: string) => console.log(chalk.bold(line)));
       });

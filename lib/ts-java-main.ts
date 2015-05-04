@@ -131,6 +131,10 @@ class Main {
   }
 
   private writeJsons(): BluePromise<void> {
+    if (!program.opts().json) {
+      return;
+    }
+
     var classes: ClassDefinitionMap = this.classesMap.getClasses();
     dlog('writeJsons() entered');
     return mkdirpPromise('o/json')
