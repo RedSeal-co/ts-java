@@ -82,6 +82,10 @@ class Main {
       .then(() => this.classesMap);
   }
 
+  getOptions(): TsJavaOptions {
+    return this.options;
+  }
+
   private initFromPackagePath(): BluePromise<void> {
     return readJsonPromise(this.packagePath, console.error, false)
       .then((packageContents: any) => {
