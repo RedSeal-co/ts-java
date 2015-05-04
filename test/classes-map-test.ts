@@ -35,13 +35,16 @@ var globPromise = BluePromise.promisify(glob);
 describe('ClassesMap', () => {
   var expect = chai.expect;
 
-  var tsJavaMain = new TsJavaMain(path.join('tinkerpop', 'package.json'));
+  var tsJavaMain: TsJavaMain;
   var classesMap: ClassesMap = undefined;
 
   before((): BluePromise<void> => {
+    process.chdir('tinkerpop');
     expect(classesMap).to.not.exist;
+    tsJavaMain = new TsJavaMain(path.join('package.json'));
     return tsJavaMain.load().then((_classesMap: ClassesMap) => {
       classesMap = _classesMap;
+      process.chdir('..');
       return BluePromise.resolve();
     });
   });
@@ -88,7 +91,7 @@ describe('ClassesMap', () => {
     it('should fail for an invalid class name', () => {
       expect(function () { classesMap.loadClass('net.lang.Object'); }).to.throw(/java.lang.ClassNotFoundException/);
     });
-    it.skip('should return a valid Class object for com.tinkerpop.gremlin.structure.Edge', () => {
+    it('should return a valid Class object for com.tinkerpop.gremlin.structure.Edge', () => {
       var clazz = classesMap.loadClass('com.tinkerpop.gremlin.structure.Edge');
       expect(clazz).to.be.ok;
       expect(clazz.getNameSync()).to.equal('com.tinkerpop.gremlin.structure.Edge');
@@ -115,7 +118,7 @@ describe('ClassesMap', () => {
       work.setDone(className);
       expect(work.getTodo().toArray()).to.deep.equal(expected);
     });
-    it.skip('should find the interfaces of com.tinkerpop.gremlin.structure.Edge', () => {
+    it('should find the interfaces of com.tinkerpop.gremlin.structure.Edge', () => {
       var className = 'com.tinkerpop.gremlin.structure.Edge';
       var work = new Work();
       work.addTodo(className);
@@ -140,7 +143,7 @@ describe('ClassesMap', () => {
   });
 
   describe('tsTypeName', () => {
-    it.skip('it should translate Java primitive types to TypeScript types for function input parameters', () => {
+    it('it should translate Java primitive types to TypeScript types for function input parameters', () => {
       expect(classesMap.tsTypeName('boolean')).to.equal('boolean_t');
       expect(classesMap.tsTypeName('double')).to.equal('double_t');
       expect(classesMap.tsTypeName('float')).to.equal('float_t');
@@ -149,7 +152,7 @@ describe('ClassesMap', () => {
       expect(classesMap.tsTypeName('short')).to.equal('short_t');
       expect(classesMap.tsTypeName('void')).to.equal('void');
     });
-    it.skip('it should translate Java primitive types to TypeScript types for function return results', () => {
+    it('it should translate Java primitive types to TypeScript types for function return results', () => {
       expect(classesMap.tsTypeName('boolean', ParamContext.eReturn)).to.equal('boolean');
       expect(classesMap.tsTypeName('double', ParamContext.eReturn)).to.equal('number');
       expect(classesMap.tsTypeName('float', ParamContext.eReturn)).to.equal('number');
@@ -158,7 +161,7 @@ describe('ClassesMap', () => {
       expect(classesMap.tsTypeName('short', ParamContext.eReturn)).to.equal('number');
       expect(classesMap.tsTypeName('void', ParamContext.eReturn)).to.equal('void');
     });
-    it.skip('it should translate Java primitive classes to TypeScript types for function input parameters', () => {
+    it('it should translate Java primitive classes to TypeScript types for function input parameters', () => {
       expect(classesMap.tsTypeName('java.lang.Boolean')).to.equal('boolean_t');
       expect(classesMap.tsTypeName('java.lang.Double')).to.equal('double_t');
       expect(classesMap.tsTypeName('java.lang.Float')).to.equal('float_t');
@@ -170,7 +173,7 @@ describe('ClassesMap', () => {
       expect(classesMap.tsTypeName('Ljava.lang.Object;')).to.equal('object_t');
       expect(classesMap.tsTypeName('Ljava.util.function.Function;')).to.equal('Function');
     });
-    it.skip('it should translate Java primitive classes to TypeScript types for function return results', () => {
+    it('it should translate Java primitive classes to TypeScript types for function return results', () => {
       expect(classesMap.tsTypeName('java.lang.Boolean', ParamContext.eReturn)).to.equal('boolean');
       expect(classesMap.tsTypeName('java.lang.Double', ParamContext.eReturn)).to.equal('number');
       expect(classesMap.tsTypeName('java.lang.Float', ParamContext.eReturn)).to.equal('number');
@@ -296,62 +299,6 @@ describe('ClassesMap', () => {
         'remove()V'
       ];
       expect(methodSignatures).to.deep.equal(expectedSignatures);
-    });
-  });
-
-  describe('loadAllClasses', () => {
-    it.skip('should load all classes reachable from java.util.Iterator', () => {
-      classesMap.loadAllClasses(['java.util.Iterator']);
-      var classes = classesMap.getClasses();
-      expect(classes).to.be.an('object');
-      var classNames = _.keys(classes).sort();
-      expect(classNames).to.deep.equal([
-        'java.lang.Object',
-        'java.lang.String',
-        'java.util.Iterator',
-        'java.util.function.Consumer'
-      ]);
-    });
-    it.skip('should load all classes reachable from com.tinkerpop.gremlin.structure.Graph', () => {
-      var work = classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
-      var classes = classesMap.getClasses();
-      expect(classes).to.be.an('object');
-      var someExpectedClasses = [
-        'com.tinkerpop.gremlin.process.graph.EdgeTraversal',
-        'com.tinkerpop.gremlin.process.graph.ElementTraversal',
-        'com.tinkerpop.gremlin.process.graph.GraphTraversal',
-        'com.tinkerpop.gremlin.process.graph.VertexPropertyTraversal',
-        'com.tinkerpop.gremlin.process.graph.VertexTraversal',
-        'com.tinkerpop.gremlin.process.Path',
-        'com.tinkerpop.gremlin.process.Step',
-        'com.tinkerpop.gremlin.process.T',
-        'com.tinkerpop.gremlin.process.Traversal',
-        'com.tinkerpop.gremlin.process.TraversalEngine',
-        'com.tinkerpop.gremlin.process.Traverser',
-        'com.tinkerpop.gremlin.process.Traverser$Admin',
-        'com.tinkerpop.gremlin.structure.Direction',
-        'com.tinkerpop.gremlin.structure.Edge',
-        'com.tinkerpop.gremlin.structure.Edge$Iterators',
-        'com.tinkerpop.gremlin.structure.Element',
-        'com.tinkerpop.gremlin.structure.Element$Iterators',
-        'com.tinkerpop.gremlin.structure.Graph',
-        'com.tinkerpop.gremlin.structure.Property',
-        'com.tinkerpop.gremlin.structure.Transaction',
-        'com.tinkerpop.gremlin.structure.Vertex',
-        'java.lang.Enum',
-        'java.lang.Object',
-        'java.util.function.BiConsumer',
-        'java.util.function.BiFunction',
-        'java.util.function.BinaryOperator',
-        'java.util.function.BiPredicate',
-        'java.util.function.Consumer',
-        'java.util.function.Function',
-        'java.util.function.Predicate',
-        'java.util.function.Supplier',
-        'java.util.function.UnaryOperator',
-        'java.util.Iterator'
-      ];
-      expect(classes).to.include.keys(someExpectedClasses);
     });
   });
 
