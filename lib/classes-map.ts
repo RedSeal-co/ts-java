@@ -678,34 +678,47 @@ class ClassesMap {
       .then(() => result);
   }
 
+  createShortNameMap(): BluePromise<void> {
+    dlog('createShortNameMap started');
+    // We assume this.allClasses now contains a complete list of all classes
+    // that we will process. We scan it now to create the shortToLongNameMap,
+    // which allows us to discover class names conflicts.
+    // Conflicts are recorded by using null for the longName.
+    this.shortToLongNameMap = {};
+    this.allClasses.forEach((longName: string): any => {
+      var shortName = this.shortClassName(longName);
+      if (shortName in reservedShortNames || shortName in this.shortToLongNameMap) {
+        // We have a conflict
+        this.shortToLongNameMap[shortName] = null;
+      } else {
+        // No conflict yet
+        this.shortToLongNameMap[shortName] = longName;
+      }
+    });
+    dlog('createShortNameMap completed');
+    return;
+  }
+
+  analyzeIncludedClasses(): BluePromise<void> {
+    dlog('analyzeIncludedClasses started');
+    var seeds: Array<string> = this.allClasses.toArray();
+    this.loadAllClasses(seeds);
+    dlog('analyzeIncludedClasses completed');
+    return;
+  }
+
   // *initialize()*: fully initialize from configured packages & classes.
   initialize(): BluePromise<void> {
-    return this.preScanAllClasses()
-      .then(() => {
-        // We assume this.allClasses now contains a complete list of all classes
-        // that we will process. We scan it now to create the shortToLongNameMap,
-        // which allows us to discover class names conflicts.
-        // Conflicts are recorded by using null for the longName.
-        this.shortToLongNameMap = {};
-        this.allClasses.forEach((longName: string): any => {
-          var shortName = this.shortClassName(longName);
-          if (shortName in reservedShortNames || shortName in this.shortToLongNameMap) {
-            // We have a conflict
-            this.shortToLongNameMap[shortName] = null;
-          } else {
-            // No conflict yet
-            this.shortToLongNameMap[shortName] = longName;
-          }
-        });
-
-        var seeds: Array<string> = this.allClasses.toArray();
-        this.loadAllClasses(seeds);
-      });
+    return BluePromise.resolve()
+      .then(() => this.preScanAllClasses())
+      .then(() => this.createShortNameMap())
+      .then(() => this.analyzeIncludedClasses());
   }
 
   // *preScanAllClasses()*: scan all jars in the class path and find all classes matching our filter.
   // The result is stored in the member variable this.allClasses and returned as the function result
-  private preScanAllClasses(): BluePromise<Immutable.Set<string>> {
+  private preScanAllClasses(): BluePromise<void> {
+    dlog('preScanAllClasses started');
     var options = this.options;
     var result = Immutable.Set<string>();
     var promises: BluePromise<Array<string>>[] = _.map(options.classpath, (jarpath: string) => this.getWhitedListedClassesInJar(jarpath));
@@ -714,11 +727,8 @@ class ClassesMap {
         result = result.merge(classes);
       })
       .then(() => {
-        result = result.union(options.classes);
-        result = result.union(requiredCoreClasses);
         this.allClasses = result;
         dlog('preScanAllClasses completed');
-        return result;
       });
   }
 }
