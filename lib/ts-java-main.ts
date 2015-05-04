@@ -71,7 +71,7 @@ class Main {
       .then(() => this.classesMap);
   }
 
-  load(): BluePromise<void> {
+  load(): BluePromise<ClassesMap> {
     var start: BluePromise<void> = this.options ? this.initFromOptions() : this.initFromPackagePath();
     return start
       .then(() => this.initJava())
@@ -79,7 +79,7 @@ class Main {
         this.classesMap = new ClassesMap(java, this.options);
         return this.classesMap.initialize();
       })
-    ;
+      .then(() => this.classesMap);
   }
 
   private initFromPackagePath(): BluePromise<void> {
