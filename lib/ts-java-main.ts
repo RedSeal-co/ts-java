@@ -187,6 +187,29 @@ class Main {
     }
   }
 
+  private checkForUnrecognizedClasses(): void {
+    var allClasses: Immutable.Set<string> = this.classesMap.getAllClasses();
+    var configuredClasses = Immutable.Set<string>(this.classesMap.getOptions().classes);
+    var unrecognizedClasses = configuredClasses.subtract(allClasses);
+    unrecognizedClasses.forEach((className: string) => {
+      console.log(warn('tsjava.classes contained classes not in classpath:'), error(className));
+    });
+  }
+
+  private checkForUselessPackageExpresions(): void {
+    var packages: Immutable.Set<string> = Immutable.Set<string>(this.classesMap.getOptions().packages);
+    var classes: Immutable.Set<string> = this.classesMap.getAllClasses();
+
+    packages.forEach((expr: string) => {
+      var pattern = this.classesMap.packageExpressionToRegExp(expr);
+      var match: boolean = classes.some((className: string) => pattern.test(className));
+      if (!match) {
+        console.log(warn('tsjava.packages contained package expression that didn\'t match any classes in classpath:'),
+                    error(expr));
+      }
+    });
+  }
+
   private outputSummaryDiagnostics(): BluePromise<void> {
     if (program.opts().quiet) {
       return;
@@ -227,6 +250,9 @@ class Main {
         console.log(warn('Excluded %d classes referenced as *superclasses*.'), this.classesMap.unhandledSuperClasses.size);
       }
     }
+
+    this.checkForUnrecognizedClasses();
+    this.checkForUselessPackageExpresions();
 
     return;
   }

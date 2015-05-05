@@ -92,18 +92,10 @@ class ClassesMap {
     options.classes = options.classes || options.seedClasses;
     options.packages = options.packages || options.whiteList;
 
-    this.includedPatterns = Immutable.Set(_.map(this.options.packages, (str: string) => {
-      if (/\.\*$/.test(str)) {
-        // package string ends with .*
-        str = str.slice(0, -1); // remove the *
-        str = str + '[\\w\\$]+$'; // and replace it with expression designed to match exactly one classname string
-      } else if (/\.\*\*$/.test(str)) {
-        // package string ends with .**
-        str = str.slice(0, -2); // remove the **
-      }
-      str = '^' + str.replace(/\./g, '\\.');
-      dlog('package pattern:', str);
-      return new RegExp(str);
+    this.includedPatterns = Immutable.Set(_.map(this.options.packages, (expr: string) => {
+      var pattern: RegExp = this.packageExpressionToRegExp(expr);
+      dlog('package pattern:', pattern);
+      return pattern;
     }));
 
     var seeds = Immutable.Set(requiredCoreClasses).merge(options.classes);
@@ -113,6 +105,35 @@ class ClassesMap {
         this.includedPatterns = this.includedPatterns.add(pattern);
       }
     });
+  }
+
+  // *getAllClasses()*: Return the set of all classes selected by the configuration, i.e. appearing in output java.d.ts.
+  getAllClasses(): Immutable.Set<string> {
+    return this.allClasses;
+  }
+
+  // *getIncludedPatterns()*: Return the set of all package patterns derived from the configuration.
+  getIncludedPatterns(): Immutable.Set<RegExp> {
+    return this.includedPatterns;
+  }
+
+  // *getOptions()*: Return the TsJavaOptions used to configure this ClassesMap.
+  getOptions(): TsJavaOptions {
+    return this.options;
+  }
+
+  // *packageExpressionToRegExp()*: Return a RegExp equivalent to the given package expression.
+  packageExpressionToRegExp(expr: string): RegExp {
+    if (/\.\*$/.test(expr)) {
+      // package string ends with .*
+      expr = expr.slice(0, -1); // remove the *
+      expr = expr + '[\\w\\$]+$'; // and replace it with expression designed to match exactly one classname string
+    } else if (/\.\*\*$/.test(expr)) {
+      // package string ends with .**
+      expr = expr.slice(0, -2); // remove the **
+    }
+    expr = '^' + expr.replace(/\./g, '\\.');
+    return new RegExp(expr);
   }
 
   // *inWhiteList()*: Return true for classes of interest.
