@@ -678,6 +678,8 @@ class ClassesMap {
     return this.flattenDictionary(this.classes);
   }
 
+  // *getWhitedListedClassesInJar()*: For the given jar, read the index, and return an array of all classes
+  // from the jar that are selected by the configuration.
   getWhitedListedClassesInJar(jarpath: string): BluePromise<Array<string>> {
     dlog('getWhitedListedClassesInJar started for:', jarpath);
     var result: Array<string> = [];
@@ -699,6 +701,9 @@ class ClassesMap {
       .then(() => result);
   }
 
+  // *createShortNameMap()*: Find all classes with unique class names, and create a map from name to full class name.
+  // E.g. if `java.lang.String` is the only class named `String`, the map will contain {'String': 'java.lang.String'}.
+  // For non-unique class names, the name is added to the map with a null value.
   createShortNameMap(): BluePromise<void> {
     dlog('createShortNameMap started');
     // We assume this.allClasses now contains a complete list of all classes
@@ -720,6 +725,8 @@ class ClassesMap {
     return;
   }
 
+  // *analyzeIncludedClasses()*: Analyze all of the classes included by the configuration, creating a ClassDefinition
+  // for each class.
   analyzeIncludedClasses(): BluePromise<void> {
     dlog('analyzeIncludedClasses started');
     var seeds: Array<string> = this.allClasses.toArray();
