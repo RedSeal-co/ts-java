@@ -8,6 +8,7 @@
       "target/dependency/*.jar"
     ],
     "classes": [
+      "not.a.class",
       "java.lang.Boolean",
       "java.lang.Class",
       "java.lang.Double",
@@ -19,6 +20,8 @@
       "java.util.function.Function"
     ],
     "packages": [
+      "bogus.package.*",
+      "bogus.package.root.**",
       "com.redseal.featureset.**",
       "java.util.*"
     ],

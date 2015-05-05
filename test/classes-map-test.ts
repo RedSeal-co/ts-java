@@ -1,4 +1,5 @@
 // classes-map-test.ts
+///<reference path='../lib/find-java-home.d.ts' />
 ///<reference path='../lib/java.d.ts' />
 ///<reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 ///<reference path='../typings/chai/chai.d.ts'/>
@@ -13,50 +14,39 @@ declare function require(name: string): any;
 require('source-map-support').install();
 
 import _ = require('lodash');
+import BluePromise = require('bluebird');
 import ClassesMap = require('../lib/classes-map');
 import chai = require('chai');
+import debug = require('debug');
+import findJavaHome = require('find-java-home');
 import glob = require('glob');
 import Immutable = require('immutable');
 import java = require('java');
 import ParamContext = require('../lib/paramcontext');
+import path = require('path');
 import TsJavaOptions = require('../lib/TsJavaOptions');
 import Work = require('../lib/work');
+import TsJavaMain = require('../lib/ts-java-main');
+
+var dlog = debug('ts-java:classes-map-test');
+var findJavaHomePromise = BluePromise.promisify(findJavaHome);
+var globPromise = BluePromise.promisify(glob);
 
 describe('ClassesMap', () => {
   var expect = chai.expect;
 
-  var classesMap: ClassesMap;
+  var tsJavaMain: TsJavaMain;
+  var classesMap: ClassesMap = undefined;
 
-  before(() => {
-    var filenames = glob.sync('tinkerpop/target/dependency/**/*.jar');
-    _.forEach(filenames, (name: string) => { java.classpath.push(name); });
-  });
-
-  var options: TsJavaOptions = {
-    'promisesPath': '../typings/bluebird/bluebird.d.ts',
-    'outputPath': './java.d.ts',
-    'classpath': [
-      'tinkerpop/target/dependency/**/*.jar'
-    ],
-    'classes': [
-      'java.lang.Boolean',
-      'java.lang.Double',
-      'java.lang.Float',
-      'java.lang.Integer',
-      'java.lang.Long',
-      'java.lang.Short',
-      'java.util.Iterator',
-      'java.lang.Number',
-      'java.lang.Enum'
-    ],
-    'packages': [
-      'com.tinkerpop.gremlin.',
-      'java.util.function.',
-    ]
-  };
-
-  beforeEach(() => {
-    classesMap = new ClassesMap(java, options);
+  before((): BluePromise<void> => {
+    process.chdir('tinkerpop');
+    expect(classesMap).to.not.exist;
+    tsJavaMain = new TsJavaMain(path.join('package.json'));
+    return tsJavaMain.load().then((_classesMap: ClassesMap) => {
+      classesMap = _classesMap;
+      process.chdir('..');
+      return BluePromise.resolve();
+    });
   });
 
   describe('initialize', () => {
@@ -69,8 +59,11 @@ describe('ClassesMap', () => {
     it('should return true for valid class names', () => {
       expect(classesMap.inWhiteList('java.lang.Object')).to.equal(true);
       expect(classesMap.inWhiteList('java.util.Iterator')).to.equal(true);
-      expect(classesMap.inWhiteList('com.tinkerpop.gremlin.')).to.equal(true);
-      expect(classesMap.inWhiteList('com.tinkerpop.gremlin.Foo')).to.equal(true);
+
+      // The tinkerpop package.json only includes specific tinkerpop packages and not package hierarchies.
+      // So, inWhiteList will return true only for class paths that appear to be in one of the included packages,
+      // but the class (in this case `Foo`) need not actually exist.
+      expect(classesMap.inWhiteList('com.tinkerpop.gremlin.process.Foo')).to.equal(true);
     });
     it('should return false for invalid class names', () => {
       expect(classesMap.inWhiteList('')).to.equal(false);
@@ -90,13 +83,18 @@ describe('ClassesMap', () => {
   });
 
   describe('loadClass', () => {
-    it('should return a valid Class object for a loadable class', () => {
+    it('should return a valid Class object for java.lang.Object', () => {
       var clazz = classesMap.loadClass('java.lang.Object');
       expect(clazz).to.be.ok;
       expect(clazz.getNameSync()).to.equal('java.lang.Object');
     });
     it('should fail for an invalid class name', () => {
       expect(function () { classesMap.loadClass('net.lang.Object'); }).to.throw(/java.lang.ClassNotFoundException/);
+    });
+    it('should return a valid Class object for com.tinkerpop.gremlin.structure.Edge', () => {
+      var clazz = classesMap.loadClass('com.tinkerpop.gremlin.structure.Edge');
+      expect(clazz).to.be.ok;
+      expect(clazz.getNameSync()).to.equal('com.tinkerpop.gremlin.structure.Edge');
     });
   });
 
@@ -301,62 +299,6 @@ describe('ClassesMap', () => {
         'remove()V'
       ];
       expect(methodSignatures).to.deep.equal(expectedSignatures);
-    });
-  });
-
-  describe('loadAllClasses', () => {
-    it('should load all classes reachable from java.util.Iterator', () => {
-      classesMap.loadAllClasses(['java.util.Iterator']);
-      var classes = classesMap.getClasses();
-      expect(classes).to.be.an('object');
-      var classNames = _.keys(classes).sort();
-      expect(classNames).to.deep.equal([
-        'java.lang.Object',
-        'java.lang.String',
-        'java.util.Iterator',
-        'java.util.function.Consumer'
-      ]);
-    });
-    it('should load all classes reachable from com.tinkerpop.gremlin.structure.Graph', () => {
-      var work = classesMap.loadAllClasses(['com.tinkerpop.gremlin.structure.Graph']);
-      var classes = classesMap.getClasses();
-      expect(classes).to.be.an('object');
-      var someExpectedClasses = [
-        'com.tinkerpop.gremlin.process.graph.EdgeTraversal',
-        'com.tinkerpop.gremlin.process.graph.ElementTraversal',
-        'com.tinkerpop.gremlin.process.graph.GraphTraversal',
-        'com.tinkerpop.gremlin.process.graph.VertexPropertyTraversal',
-        'com.tinkerpop.gremlin.process.graph.VertexTraversal',
-        'com.tinkerpop.gremlin.process.Path',
-        'com.tinkerpop.gremlin.process.Step',
-        'com.tinkerpop.gremlin.process.T',
-        'com.tinkerpop.gremlin.process.Traversal',
-        'com.tinkerpop.gremlin.process.TraversalEngine',
-        'com.tinkerpop.gremlin.process.Traverser',
-        'com.tinkerpop.gremlin.process.Traverser$Admin',
-        'com.tinkerpop.gremlin.structure.Direction',
-        'com.tinkerpop.gremlin.structure.Edge',
-        'com.tinkerpop.gremlin.structure.Edge$Iterators',
-        'com.tinkerpop.gremlin.structure.Element',
-        'com.tinkerpop.gremlin.structure.Element$Iterators',
-        'com.tinkerpop.gremlin.structure.Graph',
-        'com.tinkerpop.gremlin.structure.Property',
-        'com.tinkerpop.gremlin.structure.Transaction',
-        'com.tinkerpop.gremlin.structure.Vertex',
-        'java.lang.Enum',
-        'java.lang.Object',
-        'java.util.function.BiConsumer',
-        'java.util.function.BiFunction',
-        'java.util.function.BinaryOperator',
-        'java.util.function.BiPredicate',
-        'java.util.function.Consumer',
-        'java.util.function.Function',
-        'java.util.function.Predicate',
-        'java.util.function.Supplier',
-        'java.util.function.UnaryOperator',
-        'java.util.Iterator'
-      ];
-      expect(classes).to.include.keys(someExpectedClasses);
     });
   });
 

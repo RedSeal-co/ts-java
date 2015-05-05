@@ -16,6 +16,8 @@ given package or a package nested in the given package.
     """
     {
       "packages": [
+        "bogus.package.*",
+        "bogus.package.root.**",
         "com.redseal.featureset.**",
         "java.util.*"
       ]

@@ -3,20 +3,23 @@
 /// <reference path="../typings/debug/debug.d.ts"/>
 /// <reference path="../typings/lodash/lodash.d.ts" />
 /// <reference path='../typings/node/node.d.ts' />
-/// <reference path='./ls-archive.d.ts' />
+/// <reference path='./zip.d.ts' />
 /// <reference path='./java.d.ts' />
 
 'use strict';
 
 import _ = require('lodash');
-import archive = require('ls-archive');
 import assert = require('assert');
 import BluePromise = require('bluebird');
 import debug = require('debug');
+import fs = require('fs');
 import Immutable = require('immutable');
 import ParamContext = require('./paramcontext');
 import TsJavaOptions = require('./TsJavaOptions');
 import Work = require('./work');
+import zip = require('zip');
+
+var openAsync = BluePromise.promisify(fs.open, fs);
 
 var dlog = debug('ts-java:classes-map');
 
@@ -35,7 +38,6 @@ var reservedShortNames: StringDictionary = {
   'Number': null
 };
 
-import ArchiveEntry = archive.ArchiveEntry;
 import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 import FieldDefinition = ClassesMap.FieldDefinition;
@@ -90,18 +92,10 @@ class ClassesMap {
     options.classes = options.classes || options.seedClasses;
     options.packages = options.packages || options.whiteList;
 
-    this.includedPatterns = Immutable.Set(_.map(this.options.packages, (str: string) => {
-      if (/\.\*$/.test(str)) {
-        // package string ends with .*
-        str = str.slice(0, -1); // remove the *
-        str = str + '[\\w\\$]+$'; // and replace it with expression designed to match exactly one classname string
-      } else if (/\.\*\*$/.test(str)) {
-        // package string ends with .**
-        str = str.slice(0, -2); // remove the **
-      }
-      str = '^' + str.replace(/\./g, '\\.');
-      dlog('package pattern:', str);
-      return new RegExp(str);
+    this.includedPatterns = Immutable.Set(_.map(this.options.packages, (expr: string) => {
+      var pattern: RegExp = this.packageExpressionToRegExp(expr);
+      dlog('package pattern:', pattern);
+      return pattern;
     }));
 
     var seeds = Immutable.Set(requiredCoreClasses).merge(options.classes);
@@ -111,6 +105,35 @@ class ClassesMap {
         this.includedPatterns = this.includedPatterns.add(pattern);
       }
     });
+  }
+
+  // *getAllClasses()*: Return the set of all classes selected by the configuration, i.e. appearing in output java.d.ts.
+  getAllClasses(): Immutable.Set<string> {
+    return this.allClasses;
+  }
+
+  // *getIncludedPatterns()*: Return the set of all package patterns derived from the configuration.
+  getIncludedPatterns(): Immutable.Set<RegExp> {
+    return this.includedPatterns;
+  }
+
+  // *getOptions()*: Return the TsJavaOptions used to configure this ClassesMap.
+  getOptions(): TsJavaOptions {
+    return this.options;
+  }
+
+  // *packageExpressionToRegExp()*: Return a RegExp equivalent to the given package expression.
+  packageExpressionToRegExp(expr: string): RegExp {
+    if (/\.\*$/.test(expr)) {
+      // package string ends with .*
+      expr = expr.slice(0, -1); // remove the *
+      expr = expr + '[\\w\\$]+$'; // and replace it with expression designed to match exactly one classname string
+    } else if (/\.\*\*$/.test(expr)) {
+      // package string ends with .**
+      expr = expr.slice(0, -2); // remove the **
+    }
+    expr = '^' + expr.replace(/\./g, '\\.');
+    return new RegExp(expr);
   }
 
   // *inWhiteList()*: Return true for classes of interest.
@@ -655,65 +678,87 @@ class ClassesMap {
     return this.flattenDictionary(this.classes);
   }
 
+  // *getWhitedListedClassesInJar()*: For the given jar, read the index, and return an array of all classes
+  // from the jar that are selected by the configuration.
   getWhitedListedClassesInJar(jarpath: string): BluePromise<Array<string>> {
-    var listArchive = BluePromise.promisify(archive.list, archive);
-    return listArchive(jarpath)
-      .then((entries: Array<ArchiveEntry>) => {
-        var allPaths: Array<string> = _.map(entries, (entry: ArchiveEntry) => entry.getPath());
-        var classFilePaths: Array<string> = _.filter(allPaths, (path: string) => /.class$/.test(path));
-        var classNames: Array<string> = _.map(classFilePaths, (path: string) => {
-          return path.slice(0, -'.class'.length).replace(/\//g, '.');
+    dlog('getWhitedListedClassesInJar started for:', jarpath);
+    var result: Array<string> = [];
+    return openAsync(jarpath, 'r', '0666')
+      .then((fd: number) => {
+        var reader = zip.Reader(fd);
+        reader.forEach((entry: zip.Entry) => {
+          if (entry) {
+            var entryPath: string = entry.getName();
+            if (/\.class$/.test(entryPath)) {
+              var className: string = entryPath.slice(0, -'.class'.length).replace(/\//g, '.');
+              if (this.inWhiteList(className)) {
+                result.push(className);
+              }
+            }
+          }
         });
-        var result: Array<string> = _.filter(classNames, (name: string) => this.inWhiteList(name));
-        return result;
-      });
+      })
+      .then(() => result);
+  }
+
+  // *createShortNameMap()*: Find all classes with unique class names, and create a map from name to full class name.
+  // E.g. if `java.lang.String` is the only class named `String`, the map will contain {'String': 'java.lang.String'}.
+  // For non-unique class names, the name is added to the map with a null value.
+  createShortNameMap(): BluePromise<void> {
+    dlog('createShortNameMap started');
+    // We assume this.allClasses now contains a complete list of all classes
+    // that we will process. We scan it now to create the shortToLongNameMap,
+    // which allows us to discover class names conflicts.
+    // Conflicts are recorded by using null for the longName.
+    this.shortToLongNameMap = {};
+    this.allClasses.forEach((longName: string): any => {
+      var shortName = this.shortClassName(longName);
+      if (shortName in reservedShortNames || shortName in this.shortToLongNameMap) {
+        // We have a conflict
+        this.shortToLongNameMap[shortName] = null;
+      } else {
+        // No conflict yet
+        this.shortToLongNameMap[shortName] = longName;
+      }
+    });
+    dlog('createShortNameMap completed');
+    return;
+  }
+
+  // *analyzeIncludedClasses()*: Analyze all of the classes included by the configuration, creating a ClassDefinition
+  // for each class.
+  analyzeIncludedClasses(): BluePromise<void> {
+    dlog('analyzeIncludedClasses started');
+    var seeds: Array<string> = this.allClasses.toArray();
+    this.loadAllClasses(seeds);
+    dlog('analyzeIncludedClasses completed');
+    return;
   }
 
   // *initialize()*: fully initialize from configured packages & classes.
   initialize(): BluePromise<void> {
-    return this.preScanAllClasses()
-      .then(() => {
-        // We assume this.allClasses now contains a complete list of all classes
-        // that we will process. We scan it now to create the shortToLongNameMap,
-        // which allows us to discover class names conflicts.
-        // Conflicts are recorded by using null for the longName.
-        this.shortToLongNameMap = {};
-        this.allClasses.forEach((longName: string): any => {
-          var shortName = this.shortClassName(longName);
-          if (shortName in reservedShortNames || shortName in this.shortToLongNameMap) {
-            // We have a conflict
-            this.shortToLongNameMap[shortName] = null;
-          } else {
-            // No conflict yet
-            this.shortToLongNameMap[shortName] = longName;
-          }
-        });
-
-        var seeds: Array<string> = this.allClasses.toArray();
-        this.loadAllClasses(seeds);
-      });
+    return BluePromise.resolve()
+      .then(() => this.preScanAllClasses())
+      .then(() => this.createShortNameMap())
+      .then(() => this.analyzeIncludedClasses());
   }
 
   // *preScanAllClasses()*: scan all jars in the class path and find all classes matching our filter.
   // The result is stored in the member variable this.allClasses and returned as the function result
-  private preScanAllClasses(): BluePromise<Immutable.Set<string>> {
+  private preScanAllClasses(): BluePromise<void> {
+    dlog('preScanAllClasses started');
     var options = this.options;
-    return BluePromise.reduce(options.classpath, (allSoFar: Immutable.Set<string>, jarpath: string) => {
-      return this.getWhitedListedClassesInJar(jarpath)
-        .then((classes: Array<string>) => {
-          return BluePromise.reduce(classes, (allSoFar: Immutable.Set<string>, className: string) => allSoFar.add(className), allSoFar);
-        });
-    }, Immutable.Set<string>())
-    .then((allSoFar: Immutable.Set<string>) => {
-      // We don't have java.lang classes in the scan of jars in the class path.
-      // We'll get them from these two sources of seed classes.
-      allSoFar = allSoFar.union(options.classes);
-      allSoFar = allSoFar.union(requiredCoreClasses);
-      this.allClasses = allSoFar;
-      return allSoFar;
-    });
+    var result = Immutable.Set<string>();
+    var promises: BluePromise<Array<string>>[] = _.map(options.classpath, (jarpath: string) => this.getWhitedListedClassesInJar(jarpath));
+    return BluePromise.all(promises)
+      .each((classes: Array<string>) => {
+        result = result.merge(classes);
+      })
+      .then(() => {
+        this.allClasses = result;
+        dlog('preScanAllClasses completed');
+      });
   }
-
 }
 
 module ClassesMap {

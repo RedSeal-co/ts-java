@@ -25,6 +25,10 @@ TSC_OPTS=--module commonjs --target ES5 --sourceMap --noEmitOnError --noImplicit
 %.js: %.ts
 	($(TSC) $(TSC_OPTS) $< && $(LINT) $<) || (rm -f $@ && false)
 
+compile: $(ALL_TS_OBJ)
+
+.PHONY: compile
+
 ######
 # JAVAPKGS are directories containing a pom.xml and a package.json in which ts-java will be run
 # to generate a java.d.ts file. Keep the packages in alphabetical order.
@@ -99,7 +103,7 @@ UNIT_TEST_OBJS=$(patsubst %.ts,%.js,$(UNIT_TESTS))
 UNIT_TEST_RAN=$(patsubst %.ts,o/%.lastran,$(UNIT_TESTS))
 
 $(UNIT_TEST_RAN): o/%.lastran: %.js $(LIBS_OBJS)
-	node_modules/mocha/bin/mocha --timeout 10s --reporter=spec --ui tdd $<
+	node_modules/mocha/bin/mocha --timeout 20s --reporter=spec --ui tdd $<
 	mkdir -p $(dir $@) && touch  $@
 
 #####
