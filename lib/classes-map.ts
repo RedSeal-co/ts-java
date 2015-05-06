@@ -138,7 +138,15 @@ class ClassesMap {
 
   // *inWhiteList()*: Return true for classes of interest.
   inWhiteList(className: string): boolean {
-    return this.includedPatterns.find((ns: RegExp) => { return className.match(ns) !== null; }) !== undefined;
+    var allowed: boolean = this.includedPatterns.find((ns: RegExp) => { return className.match(ns) !== null; }) !== undefined;
+    if (allowed) {
+      var isAnon: boolean = /\$\d+$/.test(className);
+      if (isAnon) {
+        dlog('Filtering out anon class:', className);
+        allowed = false;
+      }
+    }
+    return allowed;
   }
 
   // *shortClassName()*: Return the short class name given the full className (class path).
