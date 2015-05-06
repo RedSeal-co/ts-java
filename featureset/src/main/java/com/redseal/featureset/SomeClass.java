@@ -102,4 +102,18 @@ public class SomeClass extends SomeAbstractClass {
     public Object getDoubleObject() {
         return new Double(java.lang.Math.PI);
     }
+
+    private class SomePrivateInnerClass {
+      SomePrivateInnerClass(int a) {
+        mA = a;
+      }
+      private int mA;
+    }
+}
+
+class SomePackageScopeClass {
+  SomePackageScopeClass(int a) {
+    mA = a;
+  }
+  private int mA;
 }
