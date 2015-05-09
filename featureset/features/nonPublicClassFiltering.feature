@@ -2,7 +2,7 @@ Feature: Non-public class filtering
 
 As a developer using ts-java
 I need to understand that non-public classes are automatically excluded
-So that I'm not surprised by their absence
+Since we can't use them anyway
 
 Ts-java only exposes public classes. Non-public classes include
 1) package scope classes
