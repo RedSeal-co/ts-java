@@ -97,6 +97,7 @@ declare module Java {
     newArray(className: 'java.lang.reflect.Executable', arg: Executable[]): array_t<java.lang.reflect.Executable>;
     newArray(className: 'java.lang.reflect.Field', arg: Field[]): array_t<java.lang.reflect.Field>;
     newArray(className: 'java.lang.reflect.Method', arg: Method[]): array_t<java.lang.reflect.Method>;
+    newArray(className: 'java.lang.reflect.Modifier', arg: Modifier[]): array_t<java.lang.reflect.Modifier>;
     newArray(className: 'java.lang.reflect.Parameter', arg: Parameter[]): array_t<java.lang.reflect.Parameter>;
     newArray(className: 'java.lang.reflect.Type', arg: Type[]): array_t<java.lang.reflect.Type>;
     newArray(className: 'java.lang.String', arg: string_t[]): array_t<java.lang.String>;
@@ -112,6 +113,7 @@ declare module Java {
     import(className: 'java.lang.reflect.Executable'): java.lang.reflect.Executable.Static;
     import(className: 'java.lang.reflect.Field'): java.lang.reflect.Field.Static;
     import(className: 'java.lang.reflect.Method'): java.lang.reflect.Method.Static;
+    import(className: 'java.lang.reflect.Modifier'): java.lang.reflect.Modifier.Static;
     import(className: 'java.lang.reflect.Parameter'): java.lang.reflect.Parameter.Static;
     import(className: 'java.lang.reflect.Type'): java.lang.reflect.Type.Static;
     import(className: 'java.lang.String'): java.lang.String.Static;
@@ -122,6 +124,7 @@ declare module Java {
     newInstance(className: 'java.lang.Integer', arg0: string_t, cb: Callback<number>): void;
     newInstance(className: 'java.lang.Integer', arg0: integer_t, cb: Callback<number>): void;
     newInstance(className: 'java.lang.Object', cb: Callback<object_t>): void;
+    newInstance(className: 'java.lang.reflect.Modifier', cb: Callback<Modifier>): void;
     newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: object_t, cb: Callback<string>): void;
     newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: string_t, cb: Callback<string>): void;
     newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: integer_t, cb: Callback<string>): void;
@@ -144,6 +147,7 @@ declare module Java {
     newInstanceSync(className: 'java.lang.Integer', arg0: string_t): number;
     newInstanceSync(className: 'java.lang.Integer', arg0: integer_t): number;
     newInstanceSync(className: 'java.lang.Object'): object_t;
+    newInstanceSync(className: 'java.lang.reflect.Modifier'): Modifier;
     newInstanceSync(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: object_t): string;
     newInstanceSync(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: string_t): string;
     newInstanceSync(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: integer_t): string;
@@ -166,6 +170,7 @@ declare module Java {
     newInstancePromise(className: 'java.lang.Integer', arg0: string_t): Promise<number>;
     newInstancePromise(className: 'java.lang.Integer', arg0: integer_t): Promise<number>;
     newInstancePromise(className: 'java.lang.Object'): Promise<object_t>;
+    newInstancePromise(className: 'java.lang.reflect.Modifier'): Promise<Modifier>;
     newInstancePromise(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: object_t): Promise<string>;
     newInstancePromise(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: string_t): Promise<string>;
     newInstancePromise(className: 'java.lang.String', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: integer_t): Promise<string>;
@@ -194,6 +199,7 @@ declare module Java {
   export import Executable = java.lang.reflect.Executable;
   export import Field = java.lang.reflect.Field;
   export import Method = java.lang.reflect.Method;
+  export import Modifier = java.lang.reflect.Modifier;
   export import Parameter = java.lang.reflect.Parameter;
   export import Type = java.lang.reflect.Type;
   export import String = java.lang.String;
@@ -1035,6 +1041,84 @@ declare module Java {
         setAccessibleSync(arg0: array_t<AccessibleObject>, arg1: boolean_t): void;
         PUBLIC: number;
         DECLARED: number;
+      }
+    }
+  }
+
+  export module java.lang.reflect {
+    export interface Modifier extends Java.java.lang.Object {
+      // public boolean java.lang.Object.equals(java.lang.Object)
+      equalsSync(arg0: object_t): boolean;
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClassSync(): Class;
+      // public native int java.lang.Object.hashCode()
+      hashCodeSync(): number;
+      // public final native void java.lang.Object.notify()
+      notifySync(): void;
+      // public final native void java.lang.Object.notifyAll()
+      notifyAllSync(): void;
+      // public java.lang.String java.lang.Object.toString()
+      toStringSync(): string;
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      waitSync(arg0: object_t, arg1: integer_t): void;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      waitSync(arg0: object_t): void;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      waitSync(): void;
+    }
+    export module Modifier {
+      export interface Static {
+        new (): java.lang.reflect.Modifier;
+        // public static int java.lang.reflect.Modifier.classModifiers()
+        classModifiersSync(): number;
+        // public static int java.lang.reflect.Modifier.constructorModifiers()
+        constructorModifiersSync(): number;
+        // public static int java.lang.reflect.Modifier.fieldModifiers()
+        fieldModifiersSync(): number;
+        // public static int java.lang.reflect.Modifier.interfaceModifiers()
+        interfaceModifiersSync(): number;
+        // public static boolean java.lang.reflect.Modifier.isAbstract(int)
+        isAbstractSync(arg0: integer_t): boolean;
+        // public static boolean java.lang.reflect.Modifier.isFinal(int)
+        isFinalSync(arg0: integer_t): boolean;
+        // public static boolean java.lang.reflect.Modifier.isInterface(int)
+        isInterfaceSync(arg0: integer_t): boolean;
+        // public static boolean java.lang.reflect.Modifier.isNative(int)
+        isNativeSync(arg0: integer_t): boolean;
+        // public static boolean java.lang.reflect.Modifier.isPrivate(int)
+        isPrivateSync(arg0: integer_t): boolean;
+        // public static boolean java.lang.reflect.Modifier.isProtected(int)
+        isProtectedSync(arg0: integer_t): boolean;
+        // public static boolean java.lang.reflect.Modifier.isPublic(int)
+        isPublicSync(arg0: integer_t): boolean;
+        // public static boolean java.lang.reflect.Modifier.isStatic(int)
+        isStaticSync(arg0: integer_t): boolean;
+        // public static boolean java.lang.reflect.Modifier.isStrict(int)
+        isStrictSync(arg0: integer_t): boolean;
+        // public static boolean java.lang.reflect.Modifier.isSynchronized(int)
+        isSynchronizedSync(arg0: integer_t): boolean;
+        // public static boolean java.lang.reflect.Modifier.isTransient(int)
+        isTransientSync(arg0: integer_t): boolean;
+        // public static boolean java.lang.reflect.Modifier.isVolatile(int)
+        isVolatileSync(arg0: integer_t): boolean;
+        // public static int java.lang.reflect.Modifier.methodModifiers()
+        methodModifiersSync(): number;
+        // public static int java.lang.reflect.Modifier.parameterModifiers()
+        parameterModifiersSync(): number;
+        // public static java.lang.String java.lang.reflect.Modifier.toString(int)
+        toStringSync(arg0: integer_t): string;
+        PUBLIC: number;
+        PRIVATE: number;
+        PROTECTED: number;
+        STATIC: number;
+        FINAL: number;
+        SYNCHRONIZED: number;
+        VOLATILE: number;
+        TRANSIENT: number;
+        NATIVE: number;
+        INTERFACE: number;
+        ABSTRACT: number;
+        STRICT: number;
       }
     }
   }

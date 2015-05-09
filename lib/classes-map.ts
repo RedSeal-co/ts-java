@@ -60,6 +60,8 @@ class ClassesMap {
   // *unhandledSuperClasses* are any excluded that are superclasses of included types.
   public unhandledSuperClasses: Immutable.Set<string>;
 
+  private classCache: Immutable.Map<string, Java.Class>;
+
   private java: Java.NodeAPI;
   private options: TsJavaOptions;
 
@@ -79,6 +81,7 @@ class ClassesMap {
     this.java = java;
     this.options = options;
 
+    this.classCache = Immutable.Map<string, Java.Class>();
     this.classes = {};
     this.unhandledTypes = Immutable.Set<string>();
     this.unhandledInterfaces = Immutable.Set<string>();
@@ -154,9 +157,14 @@ class ClassesMap {
     return _.last(className.split('.'));
   }
 
-  // *loadClass()*: load the class and return its Class object.
-  loadClass(className: string): Java.Class {
-    return this.java.getClassLoader().loadClassSync(className);
+  // *getClass()*: load the class and return its Class object.
+  getClass(className: string): Java.Class {
+    var clazz = this.classCache.get(className);
+    if (!clazz) {
+      // For historical reasons, we simulate the exception thrown when the Java classloader doesn't find class
+      throw new Error('java.lang.ClassNotFoundException:' + className);
+    }
+    return clazz;
   }
 
   // *resolveInterfaces()*: Find the set of non-excluded interfaces for the given class `clazz`.
@@ -584,7 +592,7 @@ class ClassesMap {
 
   // *mapClass()*: return a map of all useful properties of a class.
   mapClass(className: string, work: Work): ClassDefinition {
-    var clazz: Java.Class = this.loadClass(className);
+    var clazz: Java.Class = this.getClass(className);
     assert.strictEqual(className, clazz.getNameSync());
 
     var interfaces = this.mapClassInterfaces(className, clazz, work);
@@ -743,10 +751,39 @@ class ClassesMap {
     return;
   }
 
+  // *loadClassCache()*: Load all classes seen in prescan, pruning any non-public classes.
+  loadClassCache(): BluePromise<void> {
+    var Modifier: Java.Modifier.Static = this.java.import('java.lang.reflect.Modifier');
+    var nonPublic = Immutable.Set<string>();
+    var classLoader = this.java.getClassLoader();
+    this.allClasses.forEach((className: string): void => {
+      var clazz: Java.Class = classLoader.loadClassSync(className);
+      var modifiers: number = clazz.getModifiersSync();
+      var isPublic: boolean = Modifier.isPublicSync(modifiers);
+      var isPrivate: boolean = Modifier.isPrivateSync(modifiers);
+      var isProtected: boolean = Modifier.isProtectedSync(modifiers);
+      if (isPublic) {
+        this.classCache = this.classCache.set(className, clazz);
+      } else {
+        nonPublic = nonPublic.add(className);
+        if (isPrivate) {
+          dlog('Pruning private class:', className);
+        } else if (isProtected) {
+          dlog('Pruning protected class:', className);
+        } else {
+          dlog('Pruning package-private class:', className);
+        }
+      }
+    });
+    this.allClasses = this.allClasses.subtract(nonPublic);
+    return;
+  }
+
   // *initialize()*: fully initialize from configured packages & classes.
   initialize(): BluePromise<void> {
     return BluePromise.resolve()
       .then(() => this.preScanAllClasses())
+      .then(() => this.loadClassCache())
       .then(() => this.createShortNameMap())
       .then(() => this.analyzeIncludedClasses());
   }

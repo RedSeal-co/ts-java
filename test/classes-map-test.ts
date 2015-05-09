@@ -82,17 +82,17 @@ describe('ClassesMap', () => {
     });
   });
 
-  describe('loadClass', () => {
+  describe('getClass', () => {
     it('should return a valid Class object for java.lang.Object', () => {
-      var clazz = classesMap.loadClass('java.lang.Object');
+      var clazz = classesMap.getClass('java.lang.Object');
       expect(clazz).to.be.ok;
       expect(clazz.getNameSync()).to.equal('java.lang.Object');
     });
     it('should fail for an invalid class name', () => {
-      expect(function () { classesMap.loadClass('net.lang.Object'); }).to.throw(/java.lang.ClassNotFoundException/);
+      expect(function () { classesMap.getClass('net.lang.Object'); }).to.throw(/java.lang.ClassNotFoundException/);
     });
     it('should return a valid Class object for com.tinkerpop.gremlin.structure.Edge', () => {
-      var clazz = classesMap.loadClass('com.tinkerpop.gremlin.structure.Edge');
+      var clazz = classesMap.getClass('com.tinkerpop.gremlin.structure.Edge');
       expect(clazz).to.be.ok;
       expect(clazz.getNameSync()).to.equal('com.tinkerpop.gremlin.structure.Edge');
     });
@@ -103,7 +103,7 @@ describe('ClassesMap', () => {
       var className = 'java.lang.Object';
       var work = new Work();
       work.addTodo(className);
-      var clazz = classesMap.loadClass(className);
+      var clazz = classesMap.getClass(className);
       var interfaces = classesMap.mapClassInterfaces(className, clazz, work);
       expect(interfaces).to.deep.equal([]);
     });
@@ -111,7 +111,7 @@ describe('ClassesMap', () => {
       var className = 'java.util.Iterator';
       var work = new Work();
       work.addTodo(className);
-      var clazz = classesMap.loadClass(className);
+      var clazz = classesMap.getClass(className);
       var interfaces = classesMap.mapClassInterfaces(className, clazz, work);
       var expected = ['java.lang.Object'];
       expect(interfaces).to.deep.equal(expected);
@@ -122,7 +122,7 @@ describe('ClassesMap', () => {
       var className = 'com.tinkerpop.gremlin.structure.Edge';
       var work = new Work();
       work.addTodo(className);
-      var clazz = classesMap.loadClass(className);
+      var clazz = classesMap.getClass(className);
       var interfaces = classesMap.mapClassInterfaces(className, clazz, work);
       var expected = [
         'com.tinkerpop.gremlin.structure.Element',
@@ -210,7 +210,7 @@ describe('ClassesMap', () => {
       var className = 'java.lang.Object';
       var work = new Work();
       work.addTodo(className);
-      var clazz = classesMap.loadClass(className);
+      var clazz = classesMap.getClass(className);
       expect(clazz).to.be.ok;
       var methods = clazz.getDeclaredMethodsSync();
       var method = _.find(methods, (method: Java.Method) => { return method.getNameSync() === 'hashCode'; });
@@ -239,7 +239,7 @@ describe('ClassesMap', () => {
       var className = 'java.lang.Object';
       var work = new Work();
       work.addTodo(className);
-      var clazz = classesMap.loadClass(className);
+      var clazz = classesMap.getClass(className);
       var methods = classesMap.mapClassMethods(className, clazz, work);
       expect(methods).to.be.an('array');
       expect(methods).to.have.length(9);
