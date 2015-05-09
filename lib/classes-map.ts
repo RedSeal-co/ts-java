@@ -157,8 +157,8 @@ class ClassesMap {
     return _.last(className.split('.'));
   }
 
-  // *loadClass()*: load the class and return its Class object.
-  loadClass(className: string): Java.Class {
+  // *getClass()*: load the class and return its Class object.
+  getClass(className: string): Java.Class {
     var clazz = this.classCache.get(className);
     if (!clazz) {
       // For historical reasons, we simulate the exception thrown when the Java classloader doesn't find class
@@ -592,7 +592,7 @@ class ClassesMap {
 
   // *mapClass()*: return a map of all useful properties of a class.
   mapClass(className: string, work: Work): ClassDefinition {
-    var clazz: Java.Class = this.loadClass(className);
+    var clazz: Java.Class = this.getClass(className);
     assert.strictEqual(className, clazz.getNameSync());
 
     var interfaces = this.mapClassInterfaces(className, clazz, work);
