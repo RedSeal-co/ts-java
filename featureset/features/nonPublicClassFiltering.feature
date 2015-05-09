@@ -49,7 +49,6 @@ Ts-java only exposes public classes. Non-public classes include
     error TS2305: Module 'Java.com.redseal.featureset' has no exported member 'AnonClassTest$1'
     """
 
-  @todo
   Scenario: Package scope classes are not visible
     Given the above boilerplate with following scenario snippet:
     """
@@ -60,7 +59,6 @@ Ts-java only exposes public classes. Non-public classes include
     error TS2305: Module 'Java.com.redseal.featureset' has no exported member 'SomePackageScopeClass'
     """
 
-  @todo
   Scenario: Private inner classes are not visible
     Given the above boilerplate with following scenario snippet:
     """
