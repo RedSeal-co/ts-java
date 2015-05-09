@@ -55,10 +55,10 @@ given package or a package nested in the given package.
     """
     Then it compiles and lints cleanly
 
-  Scenario: A nested class in a non-recursive class exists
+  Scenario: A nested class in a non-recursive package exists
     Given the above boilerplate with following scenario snippet:
     """
-    var ListItr: Java.java.util.ArrayList$ListItr.Static = autoImport('ArrayList$ListItr');
+    var ListItr: Java.java.util.AbstractMap$SimpleEntry.Static = autoImport('AbstractMap$SimpleEntry');
     """
     Then it compiles and lints cleanly
 
