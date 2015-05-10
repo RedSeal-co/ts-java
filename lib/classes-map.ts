@@ -151,6 +151,13 @@ class ClassesMap {
     return allowed;
   }
 
+  // *isIncludedClass()*: Return true if the class will appear in the output java.d.ts file.
+  // All such classes 1) match the classes or package expressions in the tsjava section of the package.json,
+  // and 2) are public.
+  isIncludedClass(className: string): boolean {
+    return this.allClasses.get(className) !== undefined;
+  }
+
   // *shortClassName()*: Return the short class name given the full className (class path).
   shortClassName(className: string): string {
     return _.last(className.split('.'));
@@ -173,7 +180,7 @@ class ClassesMap {
 
     _.forEach(clazz.getInterfacesSync(), (intf: Java.Class): void => {
       var intfName: string = intf.getNameSync();
-      if (this.inWhiteList(intfName)) {
+      if (this.isIncludedClass(intfName)) {
         result = result.add(intfName);
       } else {
         // Remember the excluded interface
@@ -292,7 +299,7 @@ class ClassesMap {
       typeName = primitiveToObjectMap[typeName];
     }
 
-    if (!this.inWhiteList(typeName) && typeName !== 'void') {
+    if (!this.isIncludedClass(typeName) && typeName !== 'void') {
       // Since the type is not in our included classes, we might want to use the Typescript 'any' type.
       // However, array_t<any> doesn't really make sense. Rather, we want array_t<Object>,
       // or possibly instead of Object a superclass that is in our whitelist.
@@ -337,7 +344,7 @@ class ClassesMap {
 
     if (typeName in javaTypeToTypescriptType) {
       typeName = javaTypeToTypescriptType[typeName];
-    } else if (this.inWhiteList(typeName)) {
+    } else if (this.isIncludedClass(typeName)) {
       // Use the short class name if it doesn't cause name conflicts.
       // This can only be done correctly after running prescanAllClasses,
       // when this.shortToLongNameMap has been populated.
@@ -589,14 +596,14 @@ class ClassesMap {
     var isPrimitive = clazz.isPrimitiveSync();
     var isEnum = clazz.isEnumSync();
 
-    // Get the superclass of the class, if it exists, and is in our white list.
-    // If the immediate type is not in the whitelist, we ascend up the ancestry
-    // until we find a whitelisted superclass. If none exists, we declare the
+    // Get the superclass of the class, if it exists, and is an included class.
+    // If the immediate type is not an included class, we ascend up the ancestry
+    // until we find an included superclass. If none exists, we declare the
     // class to not have a superclass, even though it does.
     // We report all such skipped superclasses in the summary diagnostics.
     // The developer can then choose to add any of these classes to the seed classes list.
     var superclass: Java.Class = clazz.getSuperclassSync();
-    while (superclass && !this.inWhiteList(superclass.getNameSync())) {
+    while (superclass && !this.isIncludedClass(superclass.getNameSync())) {
       this.unhandledSuperClasses = this.unhandledSuperClasses.add(superclass.getNameSync());
       superclass = superclass.getSuperclassSync();
     }
