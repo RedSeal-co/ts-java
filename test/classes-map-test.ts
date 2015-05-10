@@ -25,7 +25,6 @@ import java = require('java');
 import ParamContext = require('../lib/paramcontext');
 import path = require('path');
 import TsJavaOptions = require('../lib/TsJavaOptions');
-import Work = require('../lib/work');
 import TsJavaMain = require('../lib/ts-java-main');
 
 var dlog = debug('ts-java:classes-map-test');
@@ -101,36 +100,26 @@ describe('ClassesMap', () => {
   describe('mapClassInterfaces', () => {
     it('should find no interfaces for java.lang.Object', () => {
       var className = 'java.lang.Object';
-      var work = new Work();
-      work.addTodo(className);
       var clazz = classesMap.getClass(className);
-      var interfaces = classesMap.mapClassInterfaces(className, clazz, work);
+      var interfaces = classesMap.mapClassInterfaces(className, clazz);
       expect(interfaces).to.deep.equal([]);
     });
     it('should find one interface for java.util.Iterator', () => {
       var className = 'java.util.Iterator';
-      var work = new Work();
-      work.addTodo(className);
       var clazz = classesMap.getClass(className);
-      var interfaces = classesMap.mapClassInterfaces(className, clazz, work);
+      var interfaces = classesMap.mapClassInterfaces(className, clazz);
       var expected = ['java.lang.Object'];
       expect(interfaces).to.deep.equal(expected);
-      work.setDone(className);
-      expect(work.getTodo().toArray()).to.deep.equal(expected);
     });
     it('should find the interfaces of com.tinkerpop.gremlin.structure.Edge', () => {
       var className = 'com.tinkerpop.gremlin.structure.Edge';
-      var work = new Work();
-      work.addTodo(className);
       var clazz = classesMap.getClass(className);
-      var interfaces = classesMap.mapClassInterfaces(className, clazz, work);
+      var interfaces = classesMap.mapClassInterfaces(className, clazz);
       var expected = [
         'com.tinkerpop.gremlin.structure.Element',
         'com.tinkerpop.gremlin.process.graph.EdgeTraversal'
       ];
       expect(interfaces).to.deep.equal(expected);
-      work.setDone(className);
-      expect(work.getTodo().toArray().sort()).to.deep.equal(expected.sort());
     });
   });
 
@@ -208,14 +197,12 @@ describe('ClassesMap', () => {
   describe('mapMethod', () => {
     it('should map java.lang.Object:hashCode', () => {
       var className = 'java.lang.Object';
-      var work = new Work();
-      work.addTodo(className);
       var clazz = classesMap.getClass(className);
       expect(clazz).to.be.ok;
       var methods = clazz.getDeclaredMethodsSync();
       var method = _.find(methods, (method: Java.Method) => { return method.getNameSync() === 'hashCode'; });
       expect(method).to.be.ok;
-      var methodMap = classesMap.mapMethod(method, work);
+      var methodMap = classesMap.mapMethod(method);
       expect(methodMap).to.be.ok;
       var expected = { name: 'hashCode',
         declared: 'java.lang.Object',
@@ -237,10 +224,8 @@ describe('ClassesMap', () => {
   describe('mapClassMethods', () => {
     it('should load all methods of java.lang.Object', () => {
       var className = 'java.lang.Object';
-      var work = new Work();
-      work.addTodo(className);
       var clazz = classesMap.getClass(className);
-      var methods = classesMap.mapClassMethods(className, clazz, work);
+      var methods = classesMap.mapClassMethods(className, clazz);
       expect(methods).to.be.an('array');
       expect(methods).to.have.length(9);
       var names = _.pluck(methods, 'name').sort();
@@ -265,9 +250,7 @@ describe('ClassesMap', () => {
   describe('mapClass', () => {
     it('should map the properties of java.util.Iterator', () => {
       var className = 'java.util.Iterator';
-      var work = new Work();
-      work.addTodo(className);
-      var classMap = classesMap.mapClass(className, work);
+      var classMap = classesMap.mapClass(className);
       expect(classMap).to.be.ok;
       expect(classMap).to.have.keys([
         'alias',
