@@ -68,12 +68,12 @@ class ClassesMap {
   private includedPatterns: Immutable.Set<RegExp>;
 
   // shortToLongNameMap is used to detect whether a class name unambiguously identifies one class path.
-  // Currently it is populated after making one full pass over all classes, and then used in a second full pass.
-  // TODO: refactor so the first pass does only the work to find all classes, without creating ClassDefinitions.
   private shortToLongNameMap: StringDictionary;
 
-  // allClasses is the list of all classes found by scanning the jars in the class path and applying
-  // the inWhiteList() filter.
+  // allClasses is the list of all classes that should appear in the output java.d.ts file.
+  // The list is created via two steps:
+  // 1) Scan the jars in the class path for all classes matching the inWhiteList filter.
+  // 2) Remove any non-public classes from the list.
   private allClasses: Immutable.Set<string>;
 
   constructor(java: Java.NodeAPI, options: TsJavaOptions) {
@@ -163,7 +163,7 @@ class ClassesMap {
     return _.last(className.split('.'));
   }
 
-  // *getClass()*: load the class and return its Class object.
+  // *getClass()*: get the Class object for the given full class name.
   getClass(className: string): Java.Class {
     var clazz = this.classCache.get(className);
     if (!clazz) {
