@@ -670,18 +670,12 @@ class ClassesMap {
   }
 
   // *loadAllClasses()*: load and map all classes of interest
-  loadAllClasses(requiredClasses: Array<string>): Work {
+  loadAllClasses(requiredClasses: Array<string>): void {
+    // TODO: remove work, it's no longer necessary.
     var work = new Work();
-    _.forEach(requiredClasses, (className: string) => work.addTodo(className));
-    _.forEach(requiredCoreClasses, (className: string) => work.addTodo(className));
-
-    while (!work.isDone()) {
-      var className = work.next();
-      work.setDone(className);
+    this.allClasses.forEach((className: string): void => {
       this.classes[className] = this.mapClass(className, work);
-    }
-
-    return work;
+    });
   }
 
   // *getClasses()*: return the map of all classes. Keys are classnames, values are classMaps.
