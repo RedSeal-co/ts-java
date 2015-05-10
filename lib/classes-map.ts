@@ -649,7 +649,7 @@ class ClassesMap {
   }
 
   // *loadAllClasses()*: load and map all classes of interest
-  loadAllClasses(requiredClasses: Array<string>): void {
+  loadAllClasses(): void {
     this.allClasses.forEach((className: string): void => {
       this.classes[className] = this.mapClass(className);
     });
@@ -716,8 +716,7 @@ class ClassesMap {
   // for each class.
   analyzeIncludedClasses(): BluePromise<void> {
     dlog('analyzeIncludedClasses started');
-    var seeds: Array<string> = this.allClasses.toArray();
-    this.loadAllClasses(seeds);
+    this.loadAllClasses();
     dlog('analyzeIncludedClasses completed');
     return;
   }
