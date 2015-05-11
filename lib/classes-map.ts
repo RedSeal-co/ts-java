@@ -155,7 +155,7 @@ class ClassesMap {
   // All such classes 1) match the classes or package expressions in the tsjava section of the package.json,
   // and 2) are public.
   isIncludedClass(className: string): boolean {
-    return this.allClasses.get(className) !== undefined;
+    return this.allClasses.has(className);
   }
 
   // *shortClassName()*: Return the short class name given the full className (class path).
