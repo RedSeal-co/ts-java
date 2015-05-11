@@ -165,7 +165,7 @@ bin/ts-java.sh: bin/ts-java.js lib/java.d.ts
 
 bin/ts-java.js : $(LIBS_OBJS)
 
-lib/classes-map.js : lib/work.ts lib/paramcontext.ts
+lib/classes-map.js : lib/paramcontext.ts
 
 lib/code-writer.js : lib/classes-map.ts
 

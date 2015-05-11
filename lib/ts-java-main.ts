@@ -29,7 +29,6 @@ import path = require('path');
 import program = require('commander');
 import readJson = require('read-package-json');
 import TsJavaOptions = require('../lib/TsJavaOptions');
-import Work = require('../lib/work');
 
 import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;

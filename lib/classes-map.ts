@@ -16,7 +16,6 @@ import fs = require('fs');
 import Immutable = require('immutable');
 import ParamContext = require('./paramcontext');
 import TsJavaOptions = require('./TsJavaOptions');
-import Work = require('./work');
 import zip = require('zip');
 
 var openAsync = BluePromise.promisify(fs.open, fs);
@@ -69,12 +68,12 @@ class ClassesMap {
   private includedPatterns: Immutable.Set<RegExp>;
 
   // shortToLongNameMap is used to detect whether a class name unambiguously identifies one class path.
-  // Currently it is populated after making one full pass over all classes, and then used in a second full pass.
-  // TODO: refactor so the first pass does only the work to find all classes, without creating ClassDefinitions.
   private shortToLongNameMap: StringDictionary;
 
-  // allClasses is the list of all classes found by scanning the jars in the class path and applying
-  // the inWhiteList() filter.
+  // allClasses is the list of all classes that should appear in the output java.d.ts file.
+  // The list is created via two steps:
+  // 1) Scan the jars in the class path for all classes matching the inWhiteList filter.
+  // 2) Remove any non-public classes from the list.
   private allClasses: Immutable.Set<string>;
 
   constructor(java: Java.NodeAPI, options: TsJavaOptions) {
@@ -152,12 +151,19 @@ class ClassesMap {
     return allowed;
   }
 
+  // *isIncludedClass()*: Return true if the class will appear in the output java.d.ts file.
+  // All such classes 1) match the classes or package expressions in the tsjava section of the package.json,
+  // and 2) are public.
+  isIncludedClass(className: string): boolean {
+    return this.allClasses.has(className);
+  }
+
   // *shortClassName()*: Return the short class name given the full className (class path).
   shortClassName(className: string): string {
     return _.last(className.split('.'));
   }
 
-  // *getClass()*: load the class and return its Class object.
+  // *getClass()*: get the Class object for the given full class name.
   getClass(className: string): Java.Class {
     var clazz = this.classCache.get(className);
     if (!clazz) {
@@ -174,7 +180,7 @@ class ClassesMap {
 
     _.forEach(clazz.getInterfacesSync(), (intf: Java.Class): void => {
       var intfName: string = intf.getNameSync();
-      if (this.inWhiteList(intfName)) {
+      if (this.isIncludedClass(intfName)) {
         result = result.add(intfName);
       } else {
         // Remember the excluded interface
@@ -188,7 +194,7 @@ class ClassesMap {
   }
 
   // *mapClassInterfaces()*: Find the direct interfaces of className.
-  mapClassInterfaces(className: string, clazz: Java.Class, work: Work) : Array<string> {
+  mapClassInterfaces(className: string, clazz: Java.Class) : Array<string> {
     assert.strictEqual(clazz.getNameSync(), className);
     var interfaces: Array<string> = this.resolveInterfaces(clazz).toArray();
 
@@ -198,8 +204,6 @@ class ClassesMap {
     if (interfaces.length === 0 && className !== javaLangObject && clazz.getSuperclassSync() === null) {
       interfaces.push(javaLangObject);
     }
-
-    _.forEach(interfaces, (intf: string) => { work.addTodo(intf); });
 
     return interfaces;
   }
@@ -295,7 +299,7 @@ class ClassesMap {
       typeName = primitiveToObjectMap[typeName];
     }
 
-    if (!this.inWhiteList(typeName) && typeName !== 'void') {
+    if (!this.isIncludedClass(typeName) && typeName !== 'void') {
       // Since the type is not in our included classes, we might want to use the Typescript 'any' type.
       // However, array_t<any> doesn't really make sense. Rather, we want array_t<Object>,
       // or possibly instead of Object a superclass that is in our whitelist.
@@ -340,7 +344,7 @@ class ClassesMap {
 
     if (typeName in javaTypeToTypescriptType) {
       typeName = javaTypeToTypescriptType[typeName];
-    } else if (this.inWhiteList(typeName)) {
+    } else if (this.isIncludedClass(typeName)) {
       // Use the short class name if it doesn't cause name conflicts.
       // This can only be done correctly after running prescanAllClasses,
       // when this.shortToLongNameMap has been populated.
@@ -397,23 +401,9 @@ class ClassesMap {
     return [typeName, ext];
   }
 
-  addToTheToDoList(canonicalTypeName: string, work: Work): void {
-    // We expect various type names here, 4 general categories:
-    // 1) primitive types such as int, long, char
-    // 2) arrays of primitive types, such as int[]
-    // 3) class names such as java.util.Iterator
-    // 4) array-of-class names such as java.util.Iterator[]
-    // We only add to the todo list for the last two, and only in the non-array form.
-    var parts: [string, string] = this.baseType(canonicalTypeName);
-    canonicalTypeName = parts[0];
-    if (this.inWhiteList(canonicalTypeName)) {
-        work.addTodo(canonicalTypeName);
-    }
-  }
-
   // *mapMethod()*: return a map of useful properties of a method or constructor.
   // For our purposes, we can treat constructors as methods except for the handling of return type.
-  mapMethod(method: Java.Executable, work: Work): MethodDefinition {
+  mapMethod(method: Java.Executable): MethodDefinition {
 
     var signature = this.methodSignature(method);
 
@@ -446,31 +436,21 @@ class ClassesMap {
       signature: signature
     };
 
-    this.addToTheToDoList(methodMap.declared, work);
-    this.addToTheToDoList(methodMap.returns, work);
-    _.forEach(methodMap.paramTypes, (p: string) => {
-      this.addToTheToDoList(p, work);
-    });
-
     return methodMap;
   }
 
   // *mapClassMethods()*: return a methodMap array for the methods of a class
-  mapClassMethods(className: string, clazz: Java.Class, work: Work): Array<MethodDefinition> {
-    return _.map(clazz.getMethodsSync(), function (m: Java.Method) { return this.mapMethod(m, work); }, this);
+  mapClassMethods(className: string, clazz: Java.Class): Array<MethodDefinition> {
+    return _.map(clazz.getMethodsSync(), function (m: Java.Method) { return this.mapMethod(m); }, this);
   }
 
   // *mapField()*: return a map of useful properties of a field.
-  mapField(field: Java.Field, work: Work): FieldDefinition {
+  mapField(field: Java.Field): FieldDefinition {
     var name: string = field.getNameSync();
     var fieldType: Java.Class = field.getTypeSync();
     var fieldTypeName: string = fieldType.getNameSync();
     var declaredIn: string = field.getDeclaringClassSync().getNameSync();
     var tsType: string = this.tsTypeName(fieldTypeName, ParamContext.eReturn);
-
-    if (this.inWhiteList(fieldTypeName)) {
-      this.addToTheToDoList(fieldTypeName, work);
-    }
 
     var modifiers: number = field.getModifiersSync();
     var isStatic: boolean = (modifiers & 8) === 8;
@@ -489,17 +469,17 @@ class ClassesMap {
   }
 
   // *mapClassFields()*: return a FieldDefinition array for the fields of a class
-  mapClassFields(className: string, clazz: Java.Class, work: Work): Array<FieldDefinition> {
+  mapClassFields(className: string, clazz: Java.Class): Array<FieldDefinition> {
     // For reasons I don't understand, it seems that getFields() can return duplicates.
     // TODO: Figure out why there are duplicates, as perhaps there is a better fix.
     // In the meantime, we dedup here.
-    var allFields: Array<FieldDefinition> = _.map(clazz.getFieldsSync(), function (f: Java.Field) { return this.mapField(f, work); }, this);
+    var allFields: Array<FieldDefinition> = _.map(clazz.getFieldsSync(), function (f: Java.Field) { return this.mapField(f); }, this);
     return _.uniq(allFields, false, 'name');
   }
 
   // *mapClassConstructors()*: return a methodMap array for the constructors of a class
-  mapClassConstructors(className: string, clazz: Java.Class, work: Work): Array<MethodDefinition> {
-    return _.map(clazz.getConstructorsSync(), function (m: Java.Constructor) { return this.mapMethod(m, work); }, this);
+  mapClassConstructors(className: string, clazz: Java.Class): Array<MethodDefinition> {
+    return _.map(clazz.getConstructorsSync(), function (m: Java.Constructor) { return this.mapMethod(m); }, this);
   }
 
   compareVariants(a: MethodDefinition, b: MethodDefinition): number {
@@ -591,15 +571,15 @@ class ClassesMap {
   }
 
   // *mapClass()*: return a map of all useful properties of a class.
-  mapClass(className: string, work: Work): ClassDefinition {
+  mapClass(className: string): ClassDefinition {
     var clazz: Java.Class = this.getClass(className);
     assert.strictEqual(className, clazz.getNameSync());
 
-    var interfaces = this.mapClassInterfaces(className, clazz, work);
-    var methods: Array<MethodDefinition> = this.mapClassMethods(className, clazz, work);
-    var fields: Array<FieldDefinition> = this.mapClassFields(className, clazz, work);
+    var interfaces = this.mapClassInterfaces(className, clazz);
+    var methods: Array<MethodDefinition> = this.mapClassMethods(className, clazz);
+    var fields: Array<FieldDefinition> = this.mapClassFields(className, clazz);
 
-    var constructors: Array<MethodDefinition> = this.mapClassConstructors(className, clazz, work);
+    var constructors: Array<MethodDefinition> = this.mapClassConstructors(className, clazz);
 
     var shortName: string = this.shortClassName(className);
     var alias: string = shortName;
@@ -616,14 +596,14 @@ class ClassesMap {
     var isPrimitive = clazz.isPrimitiveSync();
     var isEnum = clazz.isEnumSync();
 
-    // Get the superclass of the class, if it exists, and is in our white list.
-    // If the immediate type is not in the whitelist, we ascend up the ancestry
-    // until we find a whitelisted superclass. If none exists, we declare the
+    // Get the superclass of the class, if it exists, and is an included class.
+    // If the immediate type is not an included class, we ascend up the ancestry
+    // until we find an included superclass. If none exists, we declare the
     // class to not have a superclass, even though it does.
     // We report all such skipped superclasses in the summary diagnostics.
     // The developer can then choose to add any of these classes to the seed classes list.
     var superclass: Java.Class = clazz.getSuperclassSync();
-    while (superclass && !this.inWhiteList(superclass.getNameSync())) {
+    while (superclass && !this.isIncludedClass(superclass.getNameSync())) {
       this.unhandledSuperClasses = this.unhandledSuperClasses.add(superclass.getNameSync());
       superclass = superclass.getSuperclassSync();
     }
@@ -634,7 +614,6 @@ class ClassesMap {
 
     var tsInterfaces = _.map(interfaces, (intf: string) => { return this.fixClassPath(intf); });
     if (superclass) {
-      work.addTodo(superclass.getNameSync());
       tsInterfaces.unshift(this.fixClassPath(superclass.getNameSync()));
     }
 
@@ -667,21 +646,6 @@ class ClassesMap {
     };
 
     return classMap;
-  }
-
-  // *loadAllClasses()*: load and map all classes of interest
-  loadAllClasses(requiredClasses: Array<string>): Work {
-    var work = new Work();
-    _.forEach(requiredClasses, (className: string) => work.addTodo(className));
-    _.forEach(requiredCoreClasses, (className: string) => work.addTodo(className));
-
-    while (!work.isDone()) {
-      var className = work.next();
-      work.setDone(className);
-      this.classes[className] = this.mapClass(className, work);
-    }
-
-    return work;
   }
 
   // *getClasses()*: return the map of all classes. Keys are classnames, values are classMaps.
@@ -745,8 +709,9 @@ class ClassesMap {
   // for each class.
   analyzeIncludedClasses(): BluePromise<void> {
     dlog('analyzeIncludedClasses started');
-    var seeds: Array<string> = this.allClasses.toArray();
-    this.loadAllClasses(seeds);
+    this.allClasses.forEach((className: string): void => {
+      this.classes[className] = this.mapClass(className);
+    });
     dlog('analyzeIncludedClasses completed');
     return;
   }
