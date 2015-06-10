@@ -572,11 +572,21 @@ class ClassesMap {
   }
 
   // *mapClass()*: return a map of all useful properties of a class.
-  mapClass(className: string): ClassDefinition {
+  mapClass(className: string, work: Work): ClassDefinition {
     var clazz: Java.Class = this.getClass(className);
     assert.strictEqual(className, clazz.getNameSync());
 
     var interfaces = this.mapClassInterfaces(className, clazz);
+
+    interfaces.forEach((intfName: string) => {
+      if (!work.alreadyDone(intfName)) {
+        work.addTodo(intfName);  // needed only to simplify a unit test. Normally a no-op.
+        dlog('Recursing in mapClass to do inherited interface:', intfName);
+        this.classes[intfName] = this.mapClass(intfName, work);
+        work.setDone(intfName);
+      }
+    });
+
     var methods: Array<MethodDefinition> = this.mapClassMethods(className, clazz);
     var fields: Array<FieldDefinition> = this.mapClassFields(className, clazz);
 
@@ -714,7 +724,7 @@ class ClassesMap {
     this.allClasses.forEach((className: string): void => work.addTodo(className));
 
     work.forEach((className: string): void => {
-      this.classes[className] = this.mapClass(className);
+      this.classes[className] = this.mapClass(className, work);
     });
 
     dlog('analyzeIncludedClasses completed');

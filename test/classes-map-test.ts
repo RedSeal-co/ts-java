@@ -26,6 +26,7 @@ import ParamContext = require('../lib/paramcontext');
 import path = require('path');
 import TsJavaOptions = require('../lib/TsJavaOptions');
 import TsJavaMain = require('../lib/ts-java-main');
+import Work = require('../lib/work');
 
 var dlog = debug('ts-java:classes-map-test');
 var findJavaHomePromise = BluePromise.promisify(findJavaHome);
@@ -250,7 +251,9 @@ describe('ClassesMap', () => {
   describe('mapClass', () => {
     it('should map the properties of java.util.Iterator', () => {
       var className = 'java.util.Iterator';
-      var classMap = classesMap.mapClass(className);
+      var work: Work = new Work();
+      work.addTodo(className);
+      var classMap = classesMap.mapClass(className, work);
       expect(classMap).to.be.ok;
       expect(classMap).to.have.keys([
         'alias',
