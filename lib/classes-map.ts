@@ -16,6 +16,7 @@ import fs = require('fs');
 import Immutable = require('immutable');
 import ParamContext = require('./paramcontext');
 import TsJavaOptions = require('./TsJavaOptions');
+import Work = require('./work');
 import zip = require('zip');
 
 var openAsync = BluePromise.promisify(fs.open, fs);
@@ -709,9 +710,13 @@ class ClassesMap {
   // for each class.
   analyzeIncludedClasses(): BluePromise<void> {
     dlog('analyzeIncludedClasses started');
-    this.allClasses.forEach((className: string): void => {
+    var work: Work = new Work();
+    this.allClasses.forEach((className: string): void => work.addTodo(className));
+
+    work.forEach((className: string): void => {
       this.classes[className] = this.mapClass(className);
     });
+
     dlog('analyzeIncludedClasses completed');
     return;
   }
