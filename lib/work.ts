@@ -72,6 +72,15 @@ class Work {
   getTodo(): Immutable.Set<string> {
     return this.todo;
   }
+
+  // *forEach()* process each item in the work queue's todo list.
+  forEach(iterator: (item: string) => void) {
+    while (!this.isDone()) {
+      var item: string = this.next();
+      iterator(item);
+      this.setDone(item);
+    }
+  }
 }
 
 export = Work;
