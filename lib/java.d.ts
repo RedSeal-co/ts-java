@@ -362,7 +362,7 @@ declare module Java {
       getSimpleNameSync(): string;
       // public native java.lang.Class<? super T> java.lang.Class.getSuperclass()
       getSuperclassSync(): Class;
-      // public java.lang.String java.lang.Class.getTypeName()
+      // public default java.lang.String java.lang.reflect.Type.getTypeName()
       getTypeNameSync(): string;
       // public java.lang.reflect.TypeVariable<java.lang.Class<T>>[] java.lang.Class.getTypeParameters()
       getTypeParametersSync(): object_t[];
@@ -400,7 +400,7 @@ declare module Java {
       notifyAllSync(): void;
       // public java.lang.String java.lang.Class.toGenericString()
       toGenericStringSync(): string;
-      // public java.lang.String java.lang.Class.toString()
+      // public java.lang.String java.lang.Object.toString()
       toStringSync(): string;
       // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
       waitSync(arg0: object_t, arg1: integer_t): void;

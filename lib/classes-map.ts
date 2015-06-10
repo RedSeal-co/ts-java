@@ -554,6 +554,30 @@ class ClassesMap {
     return result;
   }
 
+  interfacesTransitiveClosure(directInterfaces: string[]): string[] {
+    var work: Work = new Work();
+    directInterfaces.forEach((intf: string) => work.addTodo(intf));
+    work.forEach((intf: string) => {
+      this.classes[intf].interfaces.forEach((parent: string) => work.addTodo(parent));
+    });
+    return work.getDone().toArray();
+  }
+
+  mergeOverloadedVariants(variantsDict: MethodsByNameBySignature, directInterfaces: string[]): void {
+
+    var interfaces: string[] = this.interfacesTransitiveClosure(directInterfaces).sort();
+      // TODO: sort by depth instead of lexical order.
+
+    _.forEach(variantsDict, (methodVariants: VariantsBySignature, methodName: string) => {
+      _.forEach(interfaces, (intfName: string) => {
+        var intfVariantsDict: MethodsByNameBySignature = this.classes[intfName].variantsDict;
+        if (_.has(intfVariantsDict, methodName)) {
+          _.assign(variantsDict[methodName], intfVariantsDict[methodName]);
+        }
+      });
+    });
+  }
+
   // *fixClassPath()*: given a full class path name, rename any path components that are reserved words.
   fixClassPath(fullName: string): string {
     var reservedWords = [
@@ -584,7 +608,7 @@ class ClassesMap {
     var clazz: Java.Class = this.getClass(className);
     assert.strictEqual(className, clazz.getNameSync());
 
-    var interfaces = this.mapClassInterfaces(className, clazz);
+    var interfaces = this.mapClassInterfaces(className, clazz).sort();
 
     interfaces.forEach((intfName: string) => {
       if (!work.alreadyDone(intfName)) {
@@ -645,6 +669,9 @@ class ClassesMap {
     tsInterfaces = _.map(tsInterfaces, (intf: string) => { return 'Java.' + intf; });
 
     var variantsDict: MethodsByNameBySignature = this.groupMethods(methods);
+
+    this.mergeOverloadedVariants(variantsDict, interfaces);
+
     var variants: VariantsArray = _.map(variantsDict, (bySig: VariantsBySignature) =>
                                                         this.flattenDictionary(bySig).sort(this.compareVariants));
 
