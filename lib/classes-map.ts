@@ -393,21 +393,6 @@ class ClassesMap {
     return typeName;
   }
 
-  baseType(typeName: string): [string, string] {
-    var ext = '';
-    while (typeName[0] === '[') {
-      typeName = typeName.slice(1);
-      ext += '[]';
-    }
-
-    var m = typeName.match(/^L(.*);$/);
-    if (m) {
-      typeName = m[1];
-    }
-
-    return [typeName, ext];
-  }
-
   // *mapMethod()*: return a map of useful properties of a method or constructor.
   // For our purposes, we can treat constructors as methods except for the handling of return type.
   mapMethod(method: Java.Executable): MethodDefinition {
