@@ -272,7 +272,8 @@ describe('ClassesMap', () => {
         'tsInterfaces',
         'tsType',
         'useAlias',
-        'variants'
+        'variants',
+        'variantsDict'
       ]);
       expect(classMap.fullName).to.equal(className);
       expect(classMap.shortName).to.equal('Iterator');

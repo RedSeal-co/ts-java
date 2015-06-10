@@ -33,6 +33,7 @@ interface Dictionary<T> {
 }
 
 type StringDictionary = Dictionary<string>;
+type VariantsDictionary = Dictionary<MethodDefinition[]>;
 
 var reservedShortNames: StringDictionary = {
   'Number': null
@@ -537,13 +538,12 @@ class ClassesMap {
   }
 
   // *groupMethods()*: group overloaded methods (i.e. having the same name)
-  groupMethods(flatList: Array<MethodDefinition>): VariantsArray {
-    var variantsMap = _.groupBy(flatList, (method: MethodDefinition) => { return method.name; });
-    _.forEach(variantsMap, (variants: Array<MethodDefinition>, name: string) => {
-      variantsMap[name] = variants.sort(this.compareVariants);
+  groupMethods(flatList: Array<MethodDefinition>): VariantsDictionary {
+    var variantsDict = _.groupBy(flatList, (method: MethodDefinition) => { return method.name; });
+    _.forEach(variantsDict, (variants: Array<MethodDefinition>, name: string) => {
+      variantsDict[name] = variants.sort(this.compareVariants);
     });
-
-    return this.flattenDictionary(variantsMap);
+    return variantsDict;
   }
 
   // *fixClassPath()*: given a full class path name, rename any path components that are reserved words.
@@ -587,7 +587,7 @@ class ClassesMap {
       }
     });
 
-    var methods: Array<MethodDefinition> = this.mapClassMethods(className, clazz);
+    var methods: Array<MethodDefinition> = this.mapClassMethods(className, clazz).sort(bySignature);
     var fields: Array<FieldDefinition> = this.mapClassFields(className, clazz);
 
     var constructors: Array<MethodDefinition> = this.mapClassConstructors(className, clazz);
@@ -636,6 +636,9 @@ class ClassesMap {
     // between java.lang and groovy.lang.
     tsInterfaces = _.map(tsInterfaces, (intf: string) => { return 'Java.' + intf; });
 
+    var variantsDict: VariantsDictionary = this.groupMethods(methods);
+    var variants: VariantsArray = this.flattenDictionary(variantsDict);
+
     var classMap: ClassDefinition = {
       quotedPkgName: this.packageName(this.fixClassPath(className)),
       packageName: this.packageName(className),
@@ -649,9 +652,10 @@ class ClassesMap {
       superclass: superclass === null ? null : superclass.getNameSync(),
       interfaces: interfaces,
       tsInterfaces: tsInterfaces,
-      methods: methods.sort(bySignature),
+      methods: methods,
       constructors: constructors.sort(this.compareVariants),
-      variants: this.groupMethods(methods),
+      variantsDict: variantsDict,
+      variants: variants,
       isEnum: isEnum,
       fields: fields
     };
@@ -809,6 +813,7 @@ module ClassesMap {
                             // use return type to distinguish among overloaded methods.
   }
 
+
   // ### VariantsArray
   export type VariantsArray = Array<Array<MethodDefinition>>;
 
@@ -839,6 +844,7 @@ module ClassesMap {
     tsInterfaces: Array<string>;       // [ 'java.util.function_.Function' ]
     methods: Array<MethodDefinition>;  // definitions of all methods implemented by this class
     constructors: Array<MethodDefinition>; // definitions of all constructors for this class, may be empty.
+    variantsDict: VariantsDictionary;
     variants: VariantsArray;             // definitions of all methods, grouped by method name
     isEnum: boolean;                   // true for an Enum, false otherwise.
     fields: Array<FieldDefinition>;    // array of FieldDefinitions for public fields.
