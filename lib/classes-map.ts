@@ -33,7 +33,12 @@ interface Dictionary<T> {
 }
 
 type StringDictionary = Dictionary<string>;
-type VariantsDictionary = Dictionary<MethodDefinition[]>;
+
+// One method's variants, grouped by method signature.
+type VariantsBySignature = Dictionary<MethodDefinition>;
+
+// All of one class's methods in a doubly-indexed map, by method name then by method signature.
+type MethodsByNameBySignature = Dictionary<VariantsBySignature>;
 
 var reservedShortNames: StringDictionary = {
   'Number': null
@@ -537,13 +542,16 @@ class ClassesMap {
     return _.map(keys, (key: string): T => dict[key]);
   }
 
-  // *groupMethods()*: group overloaded methods (i.e. having the same name)
-  groupMethods(flatList: Array<MethodDefinition>): VariantsDictionary {
-    var variantsDict = _.groupBy(flatList, (method: MethodDefinition) => { return method.name; });
-    _.forEach(variantsDict, (variants: Array<MethodDefinition>, name: string) => {
-      variantsDict[name] = variants.sort(this.compareVariants);
+  // *groupMethods()*: group methods first by name, and then by signature.
+  groupMethods(flatList: Array<MethodDefinition>): MethodsByNameBySignature {
+    var result: MethodsByNameBySignature = {};
+    _.forEach(flatList, (method: MethodDefinition) => {
+      if (!_.has(result, method.name)) {
+        result[method.name] = {};
+      }
+      result[method.name][method.signature] = method;
     });
-    return variantsDict;
+    return result;
   }
 
   // *fixClassPath()*: given a full class path name, rename any path components that are reserved words.
@@ -636,8 +644,9 @@ class ClassesMap {
     // between java.lang and groovy.lang.
     tsInterfaces = _.map(tsInterfaces, (intf: string) => { return 'Java.' + intf; });
 
-    var variantsDict: VariantsDictionary = this.groupMethods(methods);
-    var variants: VariantsArray = this.flattenDictionary(variantsDict);
+    var variantsDict: MethodsByNameBySignature = this.groupMethods(methods);
+    var variants: VariantsArray = _.map(variantsDict, (bySig: VariantsBySignature) =>
+                                                        this.flattenDictionary(bySig).sort(this.compareVariants));
 
     var classMap: ClassDefinition = {
       quotedPkgName: this.packageName(this.fixClassPath(className)),
@@ -844,7 +853,7 @@ module ClassesMap {
     tsInterfaces: Array<string>;       // [ 'java.util.function_.Function' ]
     methods: Array<MethodDefinition>;  // definitions of all methods implemented by this class
     constructors: Array<MethodDefinition>; // definitions of all constructors for this class, may be empty.
-    variantsDict: VariantsDictionary;
+    variantsDict: MethodsByNameBySignature;
     variants: VariantsArray;             // definitions of all methods, grouped by method name
     isEnum: boolean;                   // true for an Enum, false otherwise.
     fields: Array<FieldDefinition>;    // array of FieldDefinitions for public fields.
