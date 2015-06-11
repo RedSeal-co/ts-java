@@ -478,6 +478,8 @@ class ClassesMap {
     return _.map(clazz.getConstructorsSync(), function (m: Java.Constructor) { return this.mapMethod(m); }, this);
   }
 
+  // *compareVariants()*: Compare two method definitions, which should be two variants with the same method name.
+  // We arrange to sort methods from most specific to most generic, as expected by Typescript.
   compareVariants(a: MethodDefinition, b: MethodDefinition): number {
     function countArgsOfTypeAny(a: MethodDefinition): number {
       return _.filter(a.tsParamTypes, (t: string) => t === 'any').length;
@@ -543,6 +545,8 @@ class ClassesMap {
     return result;
   }
 
+  // *interfacesTransitiveClosure()*: return the transitive closure of all inherited interfaces given
+  // a set of directly inherited interfaces.
   interfacesTransitiveClosure(directInterfaces: string[]): string[] {
     var work: Work = new Work();
     directInterfaces.forEach((intf: string) => work.addTodo(intf));
@@ -552,6 +556,9 @@ class ClassesMap {
     return work.getDone().toArray();
   }
 
+  // *interfaceDepth()*: return the 'depth' of a class in the class graph.
+  // A class with no inherited interfaces has depth 0. We arrange so that java.lang.Object is the only such class.
+  // Every other interface has a depth 1 greater than the maximum depth of any of its direct parent interfaces.
   interfaceDepth(intf: string): number {
     if (this.interfaceDepthCache.has(intf)) {
       return this.interfaceDepthCache.get(intf);
@@ -569,22 +576,26 @@ class ClassesMap {
     return intfDepth;
   }
 
+  // *mergeOverloadedVariants()*: Merge into a class's variants dictionary all inherited overloaded variants.
+  // The algorithm intentionally overwrites any method definition with the definition from the inherited
+  // interface that first declared it. The only sigificant difference between the original declaration and a later override
+  // is the generic_proto field, which we render into the output .d.ts file as a comment before the method.
   mergeOverloadedVariants(variantsDict: MethodsByNameBySignature, directInterfaces: string[]): void {
-
     var self = this;
-
+    // Get the list of all inherited interfaces, ordered in descending order by interface depth.
     var interfaces: string[] = this.interfacesTransitiveClosure(directInterfaces)
       .sort((intf1: string, intf2: string): number => {
-        // We want to sort in descending order by depth
         return self.interfaceDepth(intf2) - self.interfaceDepth(intf1);
       });
 
-    dlog('sorted interfaces:', interfaces);
-
+    // for each method name of the class
     _.forEach(variantsDict, (methodVariants: VariantsBySignature, methodName: string) => {
+      // for all inherited interfaces
       _.forEach(interfaces, (intfName: string) => {
         var intfVariantsDict: MethodsByNameBySignature = this.classes[intfName].variantsDict;
+        // if the inherited interface declares any of the variants of the method
         if (_.has(intfVariantsDict, methodName)) {
+          // merge all of the variants into the class's variants dictionary.
           _.assign(variantsDict[methodName], intfVariantsDict[methodName]);
         }
       });
