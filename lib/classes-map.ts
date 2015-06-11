@@ -83,6 +83,8 @@ class ClassesMap {
   // 2) Remove any non-public classes from the list.
   private allClasses: Immutable.Set<string>;
 
+  private interfaceDepthCache: Immutable.Map<string, number>;
+
   constructor(java: Java.NodeAPI, options: TsJavaOptions) {
     this.java = java;
     this.options = options;
@@ -96,6 +98,8 @@ class ClassesMap {
 
     // We create this after the first pass.
     this.shortToLongNameMap = null;
+
+    this.interfaceDepthCache = Immutable.Map<string, number>();
 
     // TODO: remove these two lines when the deprecated `seedClasses` and `whiteList` are no longer needed.
     options.classes = options.classes || options.seedClasses;
@@ -548,10 +552,34 @@ class ClassesMap {
     return work.getDone().toArray();
   }
 
+  interfaceDepth(intf: string): number {
+    if (this.interfaceDepthCache.has(intf)) {
+      return this.interfaceDepthCache.get(intf);
+    }
+
+    var parents: string[] = this.classes[intf].interfaces;
+
+    var intfDepth: number = 0;
+    if (parents.length > 0) {
+      var depths: number[] = _.map(parents, (parent: string) => this.interfaceDepth(parent));
+      intfDepth = _.max(depths) + 1;
+    }
+
+    this.interfaceDepthCache = this.interfaceDepthCache.set(intf, intfDepth);
+    return intfDepth;
+  }
+
   mergeOverloadedVariants(variantsDict: MethodsByNameBySignature, directInterfaces: string[]): void {
 
-    var interfaces: string[] = this.interfacesTransitiveClosure(directInterfaces).sort();
-      // TODO: sort by depth instead of lexical order.
+    var self = this;
+
+    var interfaces: string[] = this.interfacesTransitiveClosure(directInterfaces)
+      .sort((intf1: string, intf2: string): number => {
+        // We want to sort in descending order by depth
+        return self.interfaceDepth(intf2) - self.interfaceDepth(intf1);
+      });
+
+    dlog('sorted interfaces:', interfaces);
 
     _.forEach(variantsDict, (methodVariants: VariantsBySignature, methodName: string) => {
       _.forEach(interfaces, (intfName: string) => {
@@ -593,7 +621,22 @@ class ClassesMap {
     var clazz: Java.Class = this.getClass(className);
     assert.strictEqual(className, clazz.getNameSync());
 
+    // Get the superclass of the class, if it exists, and is an included class.
+    // If the immediate type is not an included class, we ascend up the ancestry
+    // until we find an included superclass. If none exists, we declare the
+    // class to not have a superclass, even though it does.
+    // We report all such skipped superclasses in the summary diagnostics.
+    // The developer can then choose to add any of these classes to the seed classes list.
+    var superclass: Java.Class = clazz.getSuperclassSync();
+    while (superclass && !this.isIncludedClass(superclass.getNameSync())) {
+      this.unhandledSuperClasses = this.unhandledSuperClasses.add(superclass.getNameSync());
+      superclass = superclass.getSuperclassSync();
+    }
+
     var interfaces = this.mapClassInterfaces(className, clazz).sort();
+    if (superclass) {
+      interfaces.unshift(superclass.getNameSync());
+    }
 
     interfaces.forEach((intfName: string) => {
       if (!work.alreadyDone(intfName)) {
@@ -624,26 +667,11 @@ class ClassesMap {
     var isPrimitive = clazz.isPrimitiveSync();
     var isEnum = clazz.isEnumSync();
 
-    // Get the superclass of the class, if it exists, and is an included class.
-    // If the immediate type is not an included class, we ascend up the ancestry
-    // until we find an included superclass. If none exists, we declare the
-    // class to not have a superclass, even though it does.
-    // We report all such skipped superclasses in the summary diagnostics.
-    // The developer can then choose to add any of these classes to the seed classes list.
-    var superclass: Java.Class = clazz.getSuperclassSync();
-    while (superclass && !this.isIncludedClass(superclass.getNameSync())) {
-      this.unhandledSuperClasses = this.unhandledSuperClasses.add(superclass.getNameSync());
-      superclass = superclass.getSuperclassSync();
-    }
-
     function bySignature(a: MethodDefinition, b: MethodDefinition) {
       return a.signature.localeCompare(b.signature);
     }
 
     var tsInterfaces = _.map(interfaces, (intf: string) => { return this.fixClassPath(intf); });
-    if (superclass) {
-      tsInterfaces.unshift(this.fixClassPath(superclass.getNameSync()));
-    }
 
     // tsInterfaces is used in the extends clause of an interface declaration.
     // Each intf is an interface name is a fully scoped java path, but in typescript
