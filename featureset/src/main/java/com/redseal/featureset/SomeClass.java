@@ -109,6 +109,14 @@ public class SomeClass extends SomeAbstractClass {
       }
       private int mA;
     }
+
+    static String getClassOfSomeInterfaceThingy(SomeInterface something) {
+      // This is here just to demonstrate that Java always assumes any runtime object has all methods of Object,
+      // even when the compile-time type is an Interface that doesn't explicitly declare/inherit those methods.
+      // Typescript does not make that assumption, so it is necesary for ts-java to declare root interfaces
+      // as extending java.lang.Object.
+      return something.getClass().getName();
+    }
 }
 
 class SomePackageScopeClass {
