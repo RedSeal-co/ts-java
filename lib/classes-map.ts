@@ -163,123 +163,9 @@ class ClassesMap {
     return new RegExp(expr);
   }
 
-  // *inWhiteList()*: Return true for classes of interest.
-  private inWhiteList(className: string): boolean {
-    var allowed: boolean = this.includedPatterns.find((ns: RegExp) => { return className.match(ns) !== null; }) !== undefined;
-    if (allowed) {
-      var isAnon: boolean = /\$\d+$/.test(className);
-      if (isAnon) {
-        dlog('Filtering out anon class:', className);
-        allowed = false;
-      }
-    }
-    return allowed;
-  }
-
-  // *isIncludedClass()*: Return true if the class will appear in the output java.d.ts file.
-  // All such classes 1) match the classes or package expressions in the tsjava section of the package.json,
-  // and 2) are public.
-  private isIncludedClass(className: string): boolean {
-    return this.allClasses.has(className);
-  }
-
-  // *shortClassName()*: Return the short class name given the full className (class path).
-  private shortClassName(className: string): string {
-    return _.last(className.split('.'));
-  }
-
-  // *getClass()*: get the Class object for the given full class name.
-  private getClass(className: string): Java.Class {
-    var clazz = this.classCache.get(className);
-    if (!clazz) {
-      // For historical reasons, we simulate the exception thrown when the Java classloader doesn't find class
-      throw new Error('java.lang.ClassNotFoundException:' + className);
-    }
-    return clazz;
-  }
-
-  // *resolveInterfaces()*: Find the set of non-excluded interfaces for the given class `clazz`.
-  // If an interface of a class is excluded by the configuration, we check the ancestors of that class.
-  private resolveInterfaces(clazz: Java.Class): Immutable.Set<string> {
-    var result = Immutable.Set<string>();
-
-    _.forEach(clazz.getInterfacesSync(), (intf: Java.Class): void => {
-      var intfName: string = intf.getNameSync();
-      if (this.isIncludedClass(intfName)) {
-        result = result.add(intfName);
-      } else {
-        // Remember the excluded interface
-        this.unhandledInterfaces = this.unhandledInterfaces.add(intfName);
-        // recurse and merge results.
-        result = result.merge(this.resolveInterfaces(intf));
-      }
-    });
-
-    return result;
-  }
-
-  // *mapClassInterfaces()*: Find the direct interfaces of className.
-  private mapClassInterfaces(className: string, clazz: Java.Class) : Array<string> {
-    assert.strictEqual(clazz.getNameSync(), className);
-    var interfaces: Array<string> = this.resolveInterfaces(clazz).toArray();
-
-    // Methods of Object must always be available on any instance variable, even variables whose static
-    // type is a Java interface. Java does this implicitly. We have to do it explicitly.
-    var javaLangObject = 'java.lang.Object';
-    if (interfaces.length === 0 && className !== javaLangObject && clazz.getSuperclassSync() === null) {
-      interfaces.push(javaLangObject);
-    }
-
-    return interfaces;
-  }
-
-  // *typeEncoding()*: return the JNI encoding string for a java class
-  private typeEncoding(clazz: Java.Class): string {
-    var name = clazz.getNameSync();
-    var primitives: StringDictionary = {
-      boolean: 'Z',
-      byte: 'B',
-      char: 'C',
-      double: 'D',
-      float: 'F',
-      int: 'I',
-      long: 'J',
-      short: 'S',
-      void: 'V'
-    };
-
-    var encoding: string;
-    if (clazz.isPrimitiveSync()) {
-      encoding = primitives[name];
-    } else if (clazz.isArraySync()) {
-      encoding = name;
-    } else {
-      encoding = clazz.getCanonicalNameSync();
-      assert.ok(encoding, 'typeEncoding cannot handle type');
-      encoding = 'L' + encoding + ';';
-    }
-
-    return encoding.replace(/\./g, '/');
-  }
-
-  // #### **methodSignature()**: return the signature of a method, i.e. a string unique to any method variant,
-  // encoding the method name, types of parameters, and the return type.
-  // This string may be passed as the method name to java.callMethod() in order to execute a specific variant.
-  private methodSignature(method: Java.Executable): string {
-    var name = method.getNameSync();
-    var paramTypes = method.getParameterTypesSync();
-    var sigs = paramTypes.map((p: Java.Class) => { return this.typeEncoding(p); });
-    var signature = name + '(' + sigs.join('') + ')';
-    if ('getReturnTypeSync' in method) {
-      // methodSignature can be called on either a constructor or regular method.
-      // constructors don't have return types.
-      signature += this.typeEncoding((<Java.Method>method).getReturnTypeSync());
-    }
-    return signature;
-  }
-
   // #### **tsTypeName()**: given a java type name, return a typescript type name
-  private tsTypeName(javaTypeName: string, context: ParamContext = ParamContext.eInput): string {
+  // declared public only for unit tests
+  public tsTypeName(javaTypeName: string, context: ParamContext = ParamContext.eInput): string {
     var typeName = javaTypeName;
 
     var ext = '';
@@ -413,7 +299,8 @@ class ClassesMap {
 
   // *mapMethod()*: return a map of useful properties of a method or constructor.
   // For our purposes, we can treat constructors as methods except for the handling of return type.
-  private mapMethod(method: Java.Executable): MethodDefinition {
+  // declared public only for unit tests
+  public mapMethod(method: Java.Executable): MethodDefinition {
 
     var signature = this.methodSignature(method);
 
@@ -450,8 +337,244 @@ class ClassesMap {
   }
 
   // *mapClassMethods()*: return a methodMap array for the methods of a class
-  private mapClassMethods(className: string, clazz: Java.Class): Array<MethodDefinition> {
+  // declared public only for unit tests
+  public mapClassMethods(className: string, clazz: Java.Class): Array<MethodDefinition> {
     return _.map(clazz.getMethodsSync(), function (m: Java.Method) { return this.mapMethod(m); }, this);
+  }
+
+  // *mapClass()*: return a map of all useful properties of a class.
+  // declared public only for unit tests
+  public mapClass(className: string, work: Work): ClassDefinition {
+    var clazz: Java.Class = this.getClass(className);
+    assert.strictEqual(className, clazz.getNameSync());
+
+    // Get the superclass of the class, if it exists, and is an included class.
+    // If the immediate type is not an included class, we ascend up the ancestry
+    // until we find an included superclass. If none exists, we declare the
+    // class to not have a superclass, even though it does.
+    // We report all such skipped superclasses in the summary diagnostics.
+    // The developer can then choose to add any of these classes to the seed classes list.
+    var superclass: Java.Class = clazz.getSuperclassSync();
+    while (superclass && !this.isIncludedClass(superclass.getNameSync())) {
+      this.unhandledSuperClasses = this.unhandledSuperClasses.add(superclass.getNameSync());
+      superclass = superclass.getSuperclassSync();
+    }
+
+    var interfaces = this.mapClassInterfaces(className, clazz).sort();
+    if (superclass) {
+      interfaces.unshift(superclass.getNameSync());
+    }
+
+    interfaces.forEach((intfName: string) => {
+      if (!work.alreadyDone(intfName)) {
+        work.addTodo(intfName);  // needed only to simplify a unit test. Normally a no-op.
+        dlog('Recursing in mapClass to do inherited interface:', intfName);
+        this.classes[intfName] = this.mapClass(intfName, work);
+        work.setDone(intfName);
+      }
+    });
+
+    var methods: Array<MethodDefinition> = this.mapClassMethods(className, clazz).sort(bySignature);
+    var fields: Array<FieldDefinition> = this.mapClassFields(className, clazz);
+
+    var constructors: Array<MethodDefinition> = this.mapClassConstructors(className, clazz);
+
+    var shortName: string = this.shortClassName(className);
+    var alias: string = shortName;
+    var useAlias: boolean = true;
+
+    if (this.shortToLongNameMap === null) {
+      // First pass, don't do this work yet
+    } else if (this.shortToLongNameMap[shortName] !== className) {
+      alias = className;
+      useAlias = false;
+    }
+
+    var isInterface = clazz.isInterfaceSync();
+    var isPrimitive = clazz.isPrimitiveSync();
+    var isEnum = clazz.isEnumSync();
+
+    function bySignature(a: MethodDefinition, b: MethodDefinition) {
+      return a.signature.localeCompare(b.signature);
+    }
+
+    var tsInterfaces = _.map(interfaces, (intf: string) => { return this.fixClassPath(intf); });
+
+    // tsInterfaces is used in the extends clause of an interface declaration.
+    // Each intf is an interface name is a fully scoped java path, but in typescript
+    // these paths are all relative paths under the output module Java.
+    // In most cases it is not necessary to include the 'Java.' module in the interface
+    // name, but in few cases leaving it out causes naming conflicts, most notably
+    // between java.lang and groovy.lang.
+    tsInterfaces = _.map(tsInterfaces, (intf: string) => { return 'Java.' + intf; });
+
+    var variantsDict: MethodsByNameBySignature = this.groupMethods(methods);
+
+    this.mergeOverloadedVariants(variantsDict, interfaces);
+
+    var variants: VariantsArray = _.map(variantsDict, (bySig: VariantsBySignature) =>
+                                                        this.flattenDictionary(bySig).sort(this.compareVariants));
+
+    var classMap: ClassDefinition = {
+      quotedPkgName: this.packageName(this.fixClassPath(className)),
+      packageName: this.packageName(className),
+      fullName: className,
+      shortName: shortName,
+      alias: alias,
+      useAlias: useAlias,
+      tsType: this.tsTypeName(className),
+      isInterface: isInterface,
+      isPrimitive: isPrimitive,
+      superclass: superclass === null ? null : superclass.getNameSync(),
+      interfaces: interfaces,
+      tsInterfaces: tsInterfaces,
+      methods: methods,
+      constructors: constructors.sort(this.compareVariants),
+      variantsDict: variantsDict,
+      variants: variants,
+      isEnum: isEnum,
+      fields: fields
+    };
+
+    return classMap;
+  }
+
+  // *inWhiteList()*: Return true for classes of interest.
+  // declared public only for unit tests
+  public inWhiteList(className: string): boolean {
+    var allowed: boolean = this.includedPatterns.find((ns: RegExp) => { return className.match(ns) !== null; }) !== undefined;
+    if (allowed) {
+      var isAnon: boolean = /\$\d+$/.test(className);
+      if (isAnon) {
+        dlog('Filtering out anon class:', className);
+        allowed = false;
+      }
+    }
+    return allowed;
+  }
+
+  // *shortClassName()*: Return the short class name given the full className (class path).
+  // declared public only for unit tests
+  public shortClassName(className: string): string {
+    return _.last(className.split('.'));
+  }
+
+  // *getClass()*: get the Class object for the given full class name.
+  // declared public only for unit tests
+  public getClass(className: string): Java.Class {
+    var clazz = this.classCache.get(className);
+    if (!clazz) {
+      // For historical reasons, we simulate the exception thrown when the Java classloader doesn't find class
+      throw new Error('java.lang.ClassNotFoundException:' + className);
+    }
+    return clazz;
+  }
+
+  // *mapClassInterfaces()*: Find the direct interfaces of className.
+  // declared public only for unit tests
+  public mapClassInterfaces(className: string, clazz: Java.Class) : Array<string> {
+    assert.strictEqual(clazz.getNameSync(), className);
+    var interfaces: Array<string> = this.resolveInterfaces(clazz).toArray();
+
+    // Methods of Object must always be available on any instance variable, even variables whose static
+    // type is a Java interface. Java does this implicitly. We have to do it explicitly.
+    var javaLangObject = 'java.lang.Object';
+    if (interfaces.length === 0 && className !== javaLangObject && clazz.getSuperclassSync() === null) {
+      interfaces.push(javaLangObject);
+    }
+
+    return interfaces;
+  }
+
+  // *fixClassPath()*: given a full class path name, rename any path components that are reserved words.
+  // declared public only for unit tests
+  public fixClassPath(fullName: string): string {
+    var reservedWords = [
+      // TODO: include full list of reserved words
+      'function',
+      'package'
+    ];
+    var parts = fullName.split('.');
+    parts = _.map(parts, (part: string) => {
+      if (_.indexOf(reservedWords, part) === -1) {
+        return part;
+      } else {
+        return part + '_';
+      }
+    });
+    return parts.join('.');
+  }
+
+  // *isIncludedClass()*: Return true if the class will appear in the output java.d.ts file.
+  // All such classes 1) match the classes or package expressions in the tsjava section of the package.json,
+  // and 2) are public.
+  private isIncludedClass(className: string): boolean {
+    return this.allClasses.has(className);
+  }
+
+  // *resolveInterfaces()*: Find the set of non-excluded interfaces for the given class `clazz`.
+  // If an interface of a class is excluded by the configuration, we check the ancestors of that class.
+  private resolveInterfaces(clazz: Java.Class): Immutable.Set<string> {
+    var result = Immutable.Set<string>();
+
+    _.forEach(clazz.getInterfacesSync(), (intf: Java.Class): void => {
+      var intfName: string = intf.getNameSync();
+      if (this.isIncludedClass(intfName)) {
+        result = result.add(intfName);
+      } else {
+        // Remember the excluded interface
+        this.unhandledInterfaces = this.unhandledInterfaces.add(intfName);
+        // recurse and merge results.
+        result = result.merge(this.resolveInterfaces(intf));
+      }
+    });
+
+    return result;
+  }
+
+  // *typeEncoding()*: return the JNI encoding string for a java class
+  private typeEncoding(clazz: Java.Class): string {
+    var name = clazz.getNameSync();
+    var primitives: StringDictionary = {
+      boolean: 'Z',
+      byte: 'B',
+      char: 'C',
+      double: 'D',
+      float: 'F',
+      int: 'I',
+      long: 'J',
+      short: 'S',
+      void: 'V'
+    };
+
+    var encoding: string;
+    if (clazz.isPrimitiveSync()) {
+      encoding = primitives[name];
+    } else if (clazz.isArraySync()) {
+      encoding = name;
+    } else {
+      encoding = clazz.getCanonicalNameSync();
+      assert.ok(encoding, 'typeEncoding cannot handle type');
+      encoding = 'L' + encoding + ';';
+    }
+
+    return encoding.replace(/\./g, '/');
+  }
+
+  // #### **methodSignature()**: return the signature of a method, i.e. a string unique to any method variant,
+  // encoding the method name, types of parameters, and the return type.
+  // This string may be passed as the method name to java.callMethod() in order to execute a specific variant.
+  private methodSignature(method: Java.Executable): string {
+    var name = method.getNameSync();
+    var paramTypes = method.getParameterTypesSync();
+    var sigs = paramTypes.map((p: Java.Class) => { return this.typeEncoding(p); });
+    var signature = name + '(' + sigs.join('') + ')';
+    if ('getReturnTypeSync' in method) {
+      // methodSignature can be called on either a constructor or regular method.
+      // constructors don't have return types.
+      signature += this.typeEncoding((<Java.Method>method).getReturnTypeSync());
+    }
+    return signature;
   }
 
   // *mapField()*: return a map of useful properties of a field.
@@ -616,125 +739,11 @@ class ClassesMap {
     });
   }
 
-  // *fixClassPath()*: given a full class path name, rename any path components that are reserved words.
-  private fixClassPath(fullName: string): string {
-    var reservedWords = [
-      // TODO: include full list of reserved words
-      'function',
-      'package'
-    ];
-    var parts = fullName.split('.');
-    parts = _.map(parts, (part: string) => {
-      if (_.indexOf(reservedWords, part) === -1) {
-        return part;
-      } else {
-        return part + '_';
-      }
-    });
-    return parts.join('.');
-  }
-
   // *packageName()*: given a full class path name, return the package name.
   private packageName(className: string): string {
     var parts = className.split('.');
     parts.pop();
     return parts.join('.');
-  }
-
-  // *mapClass()*: return a map of all useful properties of a class.
-  private mapClass(className: string, work: Work): ClassDefinition {
-    var clazz: Java.Class = this.getClass(className);
-    assert.strictEqual(className, clazz.getNameSync());
-
-    // Get the superclass of the class, if it exists, and is an included class.
-    // If the immediate type is not an included class, we ascend up the ancestry
-    // until we find an included superclass. If none exists, we declare the
-    // class to not have a superclass, even though it does.
-    // We report all such skipped superclasses in the summary diagnostics.
-    // The developer can then choose to add any of these classes to the seed classes list.
-    var superclass: Java.Class = clazz.getSuperclassSync();
-    while (superclass && !this.isIncludedClass(superclass.getNameSync())) {
-      this.unhandledSuperClasses = this.unhandledSuperClasses.add(superclass.getNameSync());
-      superclass = superclass.getSuperclassSync();
-    }
-
-    var interfaces = this.mapClassInterfaces(className, clazz).sort();
-    if (superclass) {
-      interfaces.unshift(superclass.getNameSync());
-    }
-
-    interfaces.forEach((intfName: string) => {
-      if (!work.alreadyDone(intfName)) {
-        work.addTodo(intfName);  // needed only to simplify a unit test. Normally a no-op.
-        dlog('Recursing in mapClass to do inherited interface:', intfName);
-        this.classes[intfName] = this.mapClass(intfName, work);
-        work.setDone(intfName);
-      }
-    });
-
-    var methods: Array<MethodDefinition> = this.mapClassMethods(className, clazz).sort(bySignature);
-    var fields: Array<FieldDefinition> = this.mapClassFields(className, clazz);
-
-    var constructors: Array<MethodDefinition> = this.mapClassConstructors(className, clazz);
-
-    var shortName: string = this.shortClassName(className);
-    var alias: string = shortName;
-    var useAlias: boolean = true;
-
-    if (this.shortToLongNameMap === null) {
-      // First pass, don't do this work yet
-    } else if (this.shortToLongNameMap[shortName] !== className) {
-      alias = className;
-      useAlias = false;
-    }
-
-    var isInterface = clazz.isInterfaceSync();
-    var isPrimitive = clazz.isPrimitiveSync();
-    var isEnum = clazz.isEnumSync();
-
-    function bySignature(a: MethodDefinition, b: MethodDefinition) {
-      return a.signature.localeCompare(b.signature);
-    }
-
-    var tsInterfaces = _.map(interfaces, (intf: string) => { return this.fixClassPath(intf); });
-
-    // tsInterfaces is used in the extends clause of an interface declaration.
-    // Each intf is an interface name is a fully scoped java path, but in typescript
-    // these paths are all relative paths under the output module Java.
-    // In most cases it is not necessary to include the 'Java.' module in the interface
-    // name, but in few cases leaving it out causes naming conflicts, most notably
-    // between java.lang and groovy.lang.
-    tsInterfaces = _.map(tsInterfaces, (intf: string) => { return 'Java.' + intf; });
-
-    var variantsDict: MethodsByNameBySignature = this.groupMethods(methods);
-
-    this.mergeOverloadedVariants(variantsDict, interfaces);
-
-    var variants: VariantsArray = _.map(variantsDict, (bySig: VariantsBySignature) =>
-                                                        this.flattenDictionary(bySig).sort(this.compareVariants));
-
-    var classMap: ClassDefinition = {
-      quotedPkgName: this.packageName(this.fixClassPath(className)),
-      packageName: this.packageName(className),
-      fullName: className,
-      shortName: shortName,
-      alias: alias,
-      useAlias: useAlias,
-      tsType: this.tsTypeName(className),
-      isInterface: isInterface,
-      isPrimitive: isPrimitive,
-      superclass: superclass === null ? null : superclass.getNameSync(),
-      interfaces: interfaces,
-      tsInterfaces: tsInterfaces,
-      methods: methods,
-      constructors: constructors.sort(this.compareVariants),
-      variantsDict: variantsDict,
-      variants: variants,
-      isEnum: isEnum,
-      fields: fields
-    };
-
-    return classMap;
   }
 
   // *getWhitedListedClassesInJar()*: For the given jar, read the index, and return an array of all classes
