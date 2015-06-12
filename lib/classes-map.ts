@@ -120,23 +120,37 @@ class ClassesMap {
     });
   }
 
+  // *initialize()*: fully initialize from configured packages & classes.
+  public initialize(): BluePromise<void> {
+    return BluePromise.resolve()
+      .then(() => this.preScanAllClasses())
+      .then(() => this.loadClassCache())
+      .then(() => this.createShortNameMap())
+      .then(() => this.analyzeIncludedClasses());
+  }
+
+  // *getSortedClasses()*: return a sorted array of classes.
+  public getSortedClasses(): Array<ClassDefinition> {
+    return this.flattenDictionary(this.classes);
+  }
+
+  // *getClasses()*: return the map of all classes. Keys are classnames, values are classMaps.
+  public getClasses(): ClassDefinitionMap {
+    return this.classes;
+  }
+
   // *getAllClasses()*: Return the set of all classes selected by the configuration, i.e. appearing in output java.d.ts.
-  getAllClasses(): Immutable.Set<string> {
+  public getAllClasses(): Immutable.Set<string> {
     return this.allClasses;
   }
 
-  // *getIncludedPatterns()*: Return the set of all package patterns derived from the configuration.
-  getIncludedPatterns(): Immutable.Set<RegExp> {
-    return this.includedPatterns;
-  }
-
   // *getOptions()*: Return the TsJavaOptions used to configure this ClassesMap.
-  getOptions(): TsJavaOptions {
+  public getOptions(): TsJavaOptions {
     return this.options;
   }
 
   // *packageExpressionToRegExp()*: Return a RegExp equivalent to the given package expression.
-  packageExpressionToRegExp(expr: string): RegExp {
+  public packageExpressionToRegExp(expr: string): RegExp {
     if (/\.\*$/.test(expr)) {
       // package string ends with .*
       expr = expr.slice(0, -1); // remove the *
@@ -150,7 +164,7 @@ class ClassesMap {
   }
 
   // *inWhiteList()*: Return true for classes of interest.
-  inWhiteList(className: string): boolean {
+  private inWhiteList(className: string): boolean {
     var allowed: boolean = this.includedPatterns.find((ns: RegExp) => { return className.match(ns) !== null; }) !== undefined;
     if (allowed) {
       var isAnon: boolean = /\$\d+$/.test(className);
@@ -165,17 +179,17 @@ class ClassesMap {
   // *isIncludedClass()*: Return true if the class will appear in the output java.d.ts file.
   // All such classes 1) match the classes or package expressions in the tsjava section of the package.json,
   // and 2) are public.
-  isIncludedClass(className: string): boolean {
+  private isIncludedClass(className: string): boolean {
     return this.allClasses.has(className);
   }
 
   // *shortClassName()*: Return the short class name given the full className (class path).
-  shortClassName(className: string): string {
+  private shortClassName(className: string): string {
     return _.last(className.split('.'));
   }
 
   // *getClass()*: get the Class object for the given full class name.
-  getClass(className: string): Java.Class {
+  private getClass(className: string): Java.Class {
     var clazz = this.classCache.get(className);
     if (!clazz) {
       // For historical reasons, we simulate the exception thrown when the Java classloader doesn't find class
@@ -186,7 +200,7 @@ class ClassesMap {
 
   // *resolveInterfaces()*: Find the set of non-excluded interfaces for the given class `clazz`.
   // If an interface of a class is excluded by the configuration, we check the ancestors of that class.
-  resolveInterfaces(clazz: Java.Class): Immutable.Set<string> {
+  private resolveInterfaces(clazz: Java.Class): Immutable.Set<string> {
     var result = Immutable.Set<string>();
 
     _.forEach(clazz.getInterfacesSync(), (intf: Java.Class): void => {
@@ -205,7 +219,7 @@ class ClassesMap {
   }
 
   // *mapClassInterfaces()*: Find the direct interfaces of className.
-  mapClassInterfaces(className: string, clazz: Java.Class) : Array<string> {
+  private mapClassInterfaces(className: string, clazz: Java.Class) : Array<string> {
     assert.strictEqual(clazz.getNameSync(), className);
     var interfaces: Array<string> = this.resolveInterfaces(clazz).toArray();
 
@@ -220,7 +234,7 @@ class ClassesMap {
   }
 
   // *typeEncoding()*: return the JNI encoding string for a java class
-  typeEncoding(clazz: Java.Class): string {
+  private typeEncoding(clazz: Java.Class): string {
     var name = clazz.getNameSync();
     var primitives: StringDictionary = {
       boolean: 'Z',
@@ -251,7 +265,7 @@ class ClassesMap {
   // #### **methodSignature()**: return the signature of a method, i.e. a string unique to any method variant,
   // encoding the method name, types of parameters, and the return type.
   // This string may be passed as the method name to java.callMethod() in order to execute a specific variant.
-  methodSignature(method: Java.Executable): string {
+  private methodSignature(method: Java.Executable): string {
     var name = method.getNameSync();
     var paramTypes = method.getParameterTypesSync();
     var sigs = paramTypes.map((p: Java.Class) => { return this.typeEncoding(p); });
@@ -265,7 +279,7 @@ class ClassesMap {
   }
 
   // #### **tsTypeName()**: given a java type name, return a typescript type name
-  tsTypeName(javaTypeName: string, context: ParamContext = ParamContext.eInput): string {
+  private tsTypeName(javaTypeName: string, context: ParamContext = ParamContext.eInput): string {
     var typeName = javaTypeName;
 
     var ext = '';
@@ -399,7 +413,7 @@ class ClassesMap {
 
   // *mapMethod()*: return a map of useful properties of a method or constructor.
   // For our purposes, we can treat constructors as methods except for the handling of return type.
-  mapMethod(method: Java.Executable): MethodDefinition {
+  private mapMethod(method: Java.Executable): MethodDefinition {
 
     var signature = this.methodSignature(method);
 
@@ -436,12 +450,12 @@ class ClassesMap {
   }
 
   // *mapClassMethods()*: return a methodMap array for the methods of a class
-  mapClassMethods(className: string, clazz: Java.Class): Array<MethodDefinition> {
+  private mapClassMethods(className: string, clazz: Java.Class): Array<MethodDefinition> {
     return _.map(clazz.getMethodsSync(), function (m: Java.Method) { return this.mapMethod(m); }, this);
   }
 
   // *mapField()*: return a map of useful properties of a field.
-  mapField(field: Java.Field): FieldDefinition {
+  private mapField(field: Java.Field): FieldDefinition {
     var name: string = field.getNameSync();
     var fieldType: Java.Class = field.getTypeSync();
     var fieldTypeName: string = fieldType.getNameSync();
@@ -465,7 +479,7 @@ class ClassesMap {
   }
 
   // *mapClassFields()*: return a FieldDefinition array for the fields of a class
-  mapClassFields(className: string, clazz: Java.Class): Array<FieldDefinition> {
+  private mapClassFields(className: string, clazz: Java.Class): Array<FieldDefinition> {
     // For reasons I don't understand, it seems that getFields() can return duplicates.
     // TODO: Figure out why there are duplicates, as perhaps there is a better fix.
     // In the meantime, we dedup here.
@@ -474,13 +488,13 @@ class ClassesMap {
   }
 
   // *mapClassConstructors()*: return a methodMap array for the constructors of a class
-  mapClassConstructors(className: string, clazz: Java.Class): Array<MethodDefinition> {
+  private mapClassConstructors(className: string, clazz: Java.Class): Array<MethodDefinition> {
     return _.map(clazz.getConstructorsSync(), function (m: Java.Constructor) { return this.mapMethod(m); }, this);
   }
 
   // *compareVariants()*: Compare two method definitions, which should be two variants with the same method name.
   // We arrange to sort methods from most specific to most generic, as expected by Typescript.
-  compareVariants(a: MethodDefinition, b: MethodDefinition): number {
+  private compareVariants(a: MethodDefinition, b: MethodDefinition): number {
     function countArgsOfTypeAny(a: MethodDefinition): number {
       return _.filter(a.tsParamTypes, (t: string) => t === 'any').length;
     }
@@ -517,7 +531,7 @@ class ClassesMap {
   }
 
   // *flattenDictionary()*: return an array of the dictionary's values, sorted by the dictionary's keys.
-  flattenDictionary<T>(dict: Dictionary<T>): T[] {
+  private flattenDictionary<T>(dict: Dictionary<T>): T[] {
     function caseInsensitiveOrder(a: string, b: string): number {
       var A = a.toLowerCase();
       var B = b.toLowerCase();
@@ -534,7 +548,7 @@ class ClassesMap {
   }
 
   // *groupMethods()*: group methods first by name, and then by signature.
-  groupMethods(flatList: Array<MethodDefinition>): MethodsByNameBySignature {
+  private groupMethods(flatList: Array<MethodDefinition>): MethodsByNameBySignature {
     var result: MethodsByNameBySignature = {};
     _.forEach(flatList, (method: MethodDefinition) => {
       if (!_.has(result, method.name)) {
@@ -547,7 +561,7 @@ class ClassesMap {
 
   // *interfacesTransitiveClosure()*: return the transitive closure of all inherited interfaces given
   // a set of directly inherited interfaces.
-  interfacesTransitiveClosure(directInterfaces: string[]): string[] {
+  private interfacesTransitiveClosure(directInterfaces: string[]): string[] {
     var work: Work = new Work();
     directInterfaces.forEach((intf: string) => work.addTodo(intf));
     work.forEach((intf: string) => {
@@ -559,7 +573,7 @@ class ClassesMap {
   // *interfaceDepth()*: return the 'depth' of a class in the class graph.
   // A class with no inherited interfaces has depth 0. We arrange so that java.lang.Object is the only such class.
   // Every other interface has a depth 1 greater than the maximum depth of any of its direct parent interfaces.
-  interfaceDepth(intf: string): number {
+  private interfaceDepth(intf: string): number {
     if (this.interfaceDepthCache.has(intf)) {
       return this.interfaceDepthCache.get(intf);
     }
@@ -580,7 +594,7 @@ class ClassesMap {
   // The algorithm intentionally overwrites any method definition with the definition from the inherited
   // interface that first declared it. The only sigificant difference between the original declaration and a later override
   // is the generic_proto field, which we render into the output .d.ts file as a comment before the method.
-  mergeOverloadedVariants(variantsDict: MethodsByNameBySignature, directInterfaces: string[]): void {
+  private mergeOverloadedVariants(variantsDict: MethodsByNameBySignature, directInterfaces: string[]): void {
     var self = this;
     // Get the list of all inherited interfaces, ordered in descending order by interface depth.
     var interfaces: string[] = this.interfacesTransitiveClosure(directInterfaces)
@@ -603,7 +617,7 @@ class ClassesMap {
   }
 
   // *fixClassPath()*: given a full class path name, rename any path components that are reserved words.
-  fixClassPath(fullName: string): string {
+  private fixClassPath(fullName: string): string {
     var reservedWords = [
       // TODO: include full list of reserved words
       'function',
@@ -621,14 +635,14 @@ class ClassesMap {
   }
 
   // *packageName()*: given a full class path name, return the package name.
-  packageName(className: string): string {
+  private packageName(className: string): string {
     var parts = className.split('.');
     parts.pop();
     return parts.join('.');
   }
 
   // *mapClass()*: return a map of all useful properties of a class.
-  mapClass(className: string, work: Work): ClassDefinition {
+  private mapClass(className: string, work: Work): ClassDefinition {
     var clazz: Java.Class = this.getClass(className);
     assert.strictEqual(className, clazz.getNameSync());
 
@@ -723,19 +737,9 @@ class ClassesMap {
     return classMap;
   }
 
-  // *getClasses()*: return the map of all classes. Keys are classnames, values are classMaps.
-  getClasses(): ClassDefinitionMap {
-    return this.classes;
-  }
-
-  // *getSortedClasses()*: return a sorted array of classes.
-  getSortedClasses(): Array<ClassDefinition> {
-    return this.flattenDictionary(this.classes);
-  }
-
   // *getWhitedListedClassesInJar()*: For the given jar, read the index, and return an array of all classes
   // from the jar that are selected by the configuration.
-  getWhitedListedClassesInJar(jarpath: string): BluePromise<Array<string>> {
+  private getWhitedListedClassesInJar(jarpath: string): BluePromise<Array<string>> {
     dlog('getWhitedListedClassesInJar started for:', jarpath);
     var result: Array<string> = [];
     return openAsync(jarpath, 'r', '0666')
@@ -759,7 +763,7 @@ class ClassesMap {
   // *createShortNameMap()*: Find all classes with unique class names, and create a map from name to full class name.
   // E.g. if `java.lang.String` is the only class named `String`, the map will contain {'String': 'java.lang.String'}.
   // For non-unique class names, the name is added to the map with a null value.
-  createShortNameMap(): BluePromise<void> {
+  private createShortNameMap(): BluePromise<void> {
     dlog('createShortNameMap started');
     // We assume this.allClasses now contains a complete list of all classes
     // that we will process. We scan it now to create the shortToLongNameMap,
@@ -782,7 +786,7 @@ class ClassesMap {
 
   // *analyzeIncludedClasses()*: Analyze all of the classes included by the configuration, creating a ClassDefinition
   // for each class.
-  analyzeIncludedClasses(): BluePromise<void> {
+  private analyzeIncludedClasses(): BluePromise<void> {
     dlog('analyzeIncludedClasses started');
     var work: Work = new Work();
     this.allClasses.forEach((className: string): void => work.addTodo(className));
@@ -796,7 +800,7 @@ class ClassesMap {
   }
 
   // *loadClassCache()*: Load all classes seen in prescan, pruning any non-public classes.
-  loadClassCache(): BluePromise<void> {
+  private loadClassCache(): BluePromise<void> {
     var Modifier: Java.Modifier.Static = this.java.import('java.lang.reflect.Modifier');
     var nonPublic = Immutable.Set<string>();
     var classLoader = this.java.getClassLoader();
@@ -821,15 +825,6 @@ class ClassesMap {
     });
     this.allClasses = this.allClasses.subtract(nonPublic);
     return;
-  }
-
-  // *initialize()*: fully initialize from configured packages & classes.
-  initialize(): BluePromise<void> {
-    return BluePromise.resolve()
-      .then(() => this.preScanAllClasses())
-      .then(() => this.loadClassCache())
-      .then(() => this.createShortNameMap())
-      .then(() => this.analyzeIncludedClasses());
   }
 
   // *preScanAllClasses()*: scan all jars in the class path and find all classes matching our filter.
