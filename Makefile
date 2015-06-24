@@ -72,7 +72,7 @@ $(JAVAPKGS_MODULE_TS): %/tsJavaModule.ts: %/package.json %/o/maven.lastran bin/t
 
 $(JAVAPKGS_CLEAN): %-clean:
 	cd $* && mvn clean
-	rm -rf $*/tsJavaModule.ts $*/o $*/typings
+	rm -rf $*/tsJavaModule.ts $*/o $*/o-*.feature $*/typings
 
 ##### java packages: cucumber rules #####
 

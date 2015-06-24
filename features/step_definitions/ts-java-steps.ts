@@ -5,6 +5,7 @@
 /// <reference path='../../typings/chalk/chalk.d.ts' />
 /// <reference path="../../typings/debug/debug.d.ts"/>
 /// <reference path="../../typings/handlebars/handlebars.d.ts"/>
+/// <reference path='../../typings/mkdirp/mkdirp.d.ts' />
 /// <reference path="../../typings/node/node.d.ts"/>
 /// <reference path='../../lib/read-package-json.d.ts' />
 
@@ -20,6 +21,7 @@ import childProcess = require('child_process');
 import debug = require('debug');
 import fs = require('fs');
 import handlebars = require('handlebars');
+import mkdirp = require('mkdirp');
 import path = require('path');
 import readJson = require('read-package-json');
 
@@ -27,6 +29,7 @@ import readJson = require('read-package-json');
 import Callback = cucumber.StepCallback;
 
 var readJsonPromise = BluePromise.promisify(readJson);
+var mkdirpPromise = BluePromise.promisify(mkdirp);
 
 // ### World
 // Interface to the "world" for these steps.
@@ -107,10 +110,13 @@ function wrapper() {
 
     world.testPackageName = dirParts[0];
 
-    // Create a sample program source file each scenario.
-    world.sampleProgramPath = path.join(dirParts[0], 'o', name);
-    dlog('Sample program path:', world.sampleProgramPath);
-    callback();
+    var sourceDirPath = path.join(dirParts[0], 'o-' + dirParts[2]);
+    mkdirpPromise(sourceDirPath).then(() => {
+      // Create a sample program source file each scenario.
+      world.sampleProgramPath = path.join(sourceDirPath, name);
+      dlog('Sample program path:', world.sampleProgramPath);
+      callback();
+    });
   });
 
   this.Given(/^the default TinkerPop packages$/, function (callback: Callback) {
