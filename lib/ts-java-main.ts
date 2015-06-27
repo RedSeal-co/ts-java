@@ -101,9 +101,6 @@ class Main {
     if (this.options.granularity !== 'class') {
       this.options.granularity = 'package';
     }
-    if (!this.options.outputPath) {
-      this.options.outputPath = 'typings/java/java.d.ts';
-    }
     if (!this.options.promisesPath) {
       // TODO: Provide more control over promises
       this.options.promisesPath = '../bluebird/bluebird.d.ts';
@@ -166,16 +163,22 @@ class Main {
 
   private writePackageFiles(classesMap: ClassesMap): BluePromise<void> {
     dlog('writePackageFiles() entered');
-    var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
-    var tsWriter = new CodeWriter(classesMap, templatesDirPath);
-    return mkdirpPromise(path.dirname(this.options.outputPath))
-      .then(() => tsWriter.writePackageFile(this.options))
-      .then(() => dlog('writePackageFiles() completed'));
+    if (!this.options.outputPath) {
+      dlog('No java.d.ts outputPath specified, skipping generation.');
+      return BluePromise.resolve();
+    } else {
+      var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
+      var tsWriter = new CodeWriter(classesMap, templatesDirPath);
+      return mkdirpPromise(path.dirname(this.options.outputPath))
+        .then(() => tsWriter.writePackageFile(this.options))
+        .then(() => dlog('writePackageFiles() completed'));
+    }
   }
 
   private writeAutoImport(): BluePromise<void> {
     dlog('writeAutoImport() entered');
     if (this.options.autoImportPath === undefined) {
+      dlog('No autoImportPath specified, skipping generation.');
       return BluePromise.resolve();
     } else {
       var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
