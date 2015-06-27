@@ -13,9 +13,9 @@
     "packages": [
     ],
     "asyncOptions": {
-      "syncSuffix": "Sync",
-      "asyncSuffix": "",
-      "promiseSuffix": "Promise"
+      "syncSuffix": "",
+      "asyncSuffix": "A",
+      "promiseSuffix": "P"
     }
   }
 }
