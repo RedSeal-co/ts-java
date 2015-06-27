@@ -33,10 +33,11 @@ compile: $(ALL_TS_OBJ)
 # JAVAPKGS are directories containing a pom.xml and a package.json in which ts-java will be run
 # to generate a java.d.ts file. Keep the packages in alphabetical order.
 JAVAPKGS=\
-	hellojava \
-	featureset \
-	reflection \
-	tinkerpop \
+	hellojava
+
+# 	featureset \
+# 	reflection \
+# 	tinkerpop \
 
 ##### java packages: clean package artifacts #####
 
@@ -77,7 +78,7 @@ $(JAVAPKGS_CLEAN): %-clean:
 ##### java packages: cucumber rules #####
 
 # A list of all .feature files (not organized by java packages)
-ALL_CUCUMBER_FEATURES=$(wildcard */features/*.feature)
+ALL_CUCUMBER_FEATURES=$(wildcard hellojava/features/*.feature)
 
 # The corresponding list of feature .lastran marker files
 ALL_CUCUMBER_FEATURES_RAN=$(patsubst %.feature,o/%.lastran,$(ALL_CUCUMBER_FEATURES))
@@ -116,7 +117,7 @@ documentation :
 
 test: unittest cucumber
 	# Test that lib/java.d.ts is up to date. If there are differences, manually update using 'make lib-java-dts'.
-	diff -q lib/java.d.ts reflection/java.d.ts
+# 	diff -q lib/java.d.ts reflection/java.d.ts
 
 lib-java-dts:
 	cp reflection/java.d.ts lib/java.d.ts
