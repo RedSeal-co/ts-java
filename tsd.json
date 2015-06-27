@@ -52,6 +52,9 @@
     },
     "empower/empower.d.ts": {
       "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+    },
+    "java/java.d.ts": {
+      "commit": "b9db1a72aab7b5261e081252da3bfca22046452f"
     }
   }
 }
