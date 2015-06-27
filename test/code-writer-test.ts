@@ -143,7 +143,7 @@ describe('CodeWriter', () => {
           expect(data).to.equal(expectedData);
         });
     });
-    it('should write expected given template interfaces', () => {
+    it.skip('should write expected given template interfaces', () => {
       var className = 'com.redseal.featureset.SomeAbstractClass';
       var runPromise = theWriter.streamLibraryClassFile(className, 'interfaces', streamFn, endFn).then(endFn);
       var expectedData = [
@@ -159,7 +159,7 @@ describe('CodeWriter', () => {
   });
 
   describe('streamPackageFile header', () => {
-    it('should write a java.d.ts stream with the expected reference paths', () => {
+    it.skip('should write a java.d.ts stream with the expected reference paths', () => {
       var className = 'com.redseal.featureset.SomeAbstractClass';
       var runPromise = theWriter.streamPackageFile(tsJavaMain.getOptions(), streamFn, endFn).then(endFn);
       var expectedData = [
@@ -178,7 +178,7 @@ describe('CodeWriter', () => {
   });
 
   describe('streamAutoImportFile header', () => {
-    it('should write a java.d.ts stream with the expected reference paths', () => {
+    it.skip('should write a java.d.ts stream with the expected reference paths', () => {
       var className = 'com.redseal.featureset.SomeAbstractClass';
       var runPromise = theWriter.streamAutoImportFile(tsJavaMain.getOptions(), streamFn, endFn).then(endFn);
       var expectedData = [

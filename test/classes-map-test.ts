@@ -91,7 +91,7 @@ describe('ClassesMap', () => {
     it('should fail for an invalid class name', () => {
       expect(function () { classesMap.getClass('net.lang.Object'); }).to.throw(/java.lang.ClassNotFoundException/);
     });
-    it('should return a valid Class object for com.tinkerpop.gremlin.structure.Edge', () => {
+    it.skip('should return a valid Class object for com.tinkerpop.gremlin.structure.Edge', () => {
       var clazz = classesMap.getClass('com.tinkerpop.gremlin.structure.Edge');
       expect(clazz).to.be.ok;
       expect(clazz.getNameSync()).to.equal('com.tinkerpop.gremlin.structure.Edge');
@@ -112,7 +112,7 @@ describe('ClassesMap', () => {
       var expected = ['java.lang.Object'];
       expect(interfaces).to.deep.equal(expected);
     });
-    it('should find the interfaces of com.tinkerpop.gremlin.structure.Edge', () => {
+    it.skip('should find the interfaces of com.tinkerpop.gremlin.structure.Edge', () => {
       var className = 'com.tinkerpop.gremlin.structure.Edge';
       var clazz = classesMap.getClass(className);
       var interfaces = classesMap.mapClassInterfaces(className, clazz);
