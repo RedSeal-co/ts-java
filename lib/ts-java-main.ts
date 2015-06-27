@@ -105,6 +105,9 @@ class Main {
       // TODO: Provide more control over promises
       this.options.promisesPath = '../bluebird/bluebird.d.ts';
     }
+    if (!this.options.javaTypingsPath) {
+      this.options.javaTypingsPath = 'typings/java/java.d.ts';
+    }
     if (!this.options.packages && this.options.whiteList) {
       console.warn(warn('tsjava.whiteList in package.json is deprecated. Please use tsjava.packages instead.'));
       this.options.packages = this.options.whiteList;

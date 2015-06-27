@@ -30,6 +30,9 @@ interface TsJavaOptions {
   outputPath?: string;
     // The path to write the output java.d.ts file to. Defaults to 'java.d.ts'.
 
+  javaTypingsPath?: string;
+    // The path to typings/java/java.d.ts. Defaults to 'typings/java/java.d.ts'.
+
   promisesPath?: string;
     // The path for the .d.ts file for the promises library.
     // Defaults to '../bluebird/bluebird.d.ts'.
