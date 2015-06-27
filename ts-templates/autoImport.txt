@@ -1,3 +1,4 @@
+{{#with classes}}
 import java = require('java');
 
 export = autoImport;
@@ -29,3 +30,4 @@ function autoImport(shortName: string): any {
     throw new Error('autoImport unable to import short name:' + shortName);
   }
 }
+{{/with}}
