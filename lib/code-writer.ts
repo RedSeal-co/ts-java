@@ -177,9 +177,24 @@ class CodeWriter {
 
   // *streamAutoImportFile(): stream the autoImport.ts file contents
   streamAutoImportFile(options: TsJavaOptions, streamFn: StreamFn, endFn: EndFn): BluePromise<void> {
+    // Remove the runtime libary rt.jar, which was added earlier as 'a convenience'.
+    // TODO: refactor so that rt.jar is not present.
+    var classpath: string[] = _.filter(options.classpath, (jarpath: string) => path.basename(jarpath) !== 'rt.jar');
+
+    // TODO: here and all over, replace `autoImport` with a better name.
+    // Compute the relative path from the directory that will contain the autoImport file to
+    // the root directory of the module (i.e. directory containing package.json with tsjava section).
+    // This relative path must be applied to each path in the classpath.
+    var autoImportDir = path.dirname(path.resolve(options.autoImportPath));
+    var relativePath = path.relative(autoImportDir, process.cwd());
+    console.log('Computed relativePath:', relativePath);
+
     var context = {
       classes: this.sortedClasses,
-      opts: options.asyncOptions
+      opts: options.asyncOptions,
+      classpath: classpath,
+      classpathAdjust: relativePath,
+      name: 'todo_module_name_here' // TODO: arrange for the module name to be here
     };
 
     var outputBaseName = path.basename(options.autoImportPath);

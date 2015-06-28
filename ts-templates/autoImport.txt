@@ -1,9 +1,8 @@
 {{#with classes}}
-/// <reference path='../../typings/glob/glob.d.ts' />
 
 import _java = require('java');
 import BluePromise = require('bluebird');
-import glob = require('glob');
+import path = require('path');
 
 _java.asyncOptions = {
     syncSuffix: "",
@@ -12,16 +11,16 @@ _java.asyncOptions = {
     promisify: BluePromise.promisify
 };
 
-function before(): Promise<void> {
-  var globP = BluePromise.promisify(glob);
-  // TODO: get classpath from package.json instead of this hard-coded path
-  return globP('hellojava/target/**/*.jar')
-    .then((filenames: string[]) => {
-      filenames.forEach((name: string) => { _java.classpath.push(name); });
-    });
+// JVM initialization callback which adds tsjava.classpath to the JVM classpath.
+function beforeJvm(): BluePromise<void> {
+  var moduleJars: string[] = [{{#each @root.classpath}}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}];
+  moduleJars.forEach((jarPath: string) => {
+    _java.classpath.push(path.join(__dirname, '{{@root.classpathAdjust}}', jarPath));
+  });
+  return BluePromise.resolve();
 }
 
-_java.registerClientP(before);
+_java.registerClientP(beforeJvm);
 
 interface Dictionary {
   [index: string]: string;
