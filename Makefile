@@ -34,10 +34,9 @@ compile: $(ALL_TS_OBJ)
 # to generate a module.ts file. Keep the packages in alphabetical order.
 JAVAPKGS=\
 	hellojava \
+	featureset \
 	reflection \
 	tinkerpop
-
-# 	featureset \
 
 ##### java packages: clean package artifacts #####
 
@@ -78,7 +77,7 @@ $(JAVAPKGS_CLEAN): %-clean:
 ##### java packages: cucumber rules #####
 
 # A list of all .feature files (not organized by java packages)
-ALL_CUCUMBER_FEATURES=$(wildcard hellojava/features/*.feature, tinkerpop/features/*.feature)
+ALL_CUCUMBER_FEATURES=$(wildcard */features/*.feature)
 
 # The corresponding list of feature .lastran marker files
 ALL_CUCUMBER_FEATURES_RAN=$(patsubst %.feature,o/%.lastran,$(ALL_CUCUMBER_FEATURES))
