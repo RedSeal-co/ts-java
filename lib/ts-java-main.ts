@@ -75,7 +75,7 @@ class Main {
     return start
       .then(() => this.initJava())
       .then(() => {
-        this.classesMap = new ClassesMap(java, this.options);
+        this.classesMap = new ClassesMap(this.options);
         return this.classesMap.initialize();
       })
       .then(() => this.classesMap);

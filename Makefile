@@ -31,12 +31,12 @@ compile: $(ALL_TS_OBJ)
 
 ######
 # JAVAPKGS are directories containing a pom.xml and a package.json in which ts-java will be run
-# to generate a java.d.ts file. Keep the packages in alphabetical order.
+# to generate a module.ts file. Keep the packages in alphabetical order.
 JAVAPKGS=\
-	hellojava
+	hellojava \
+	reflection
 
 # 	featureset \
-# 	reflection \
 # 	tinkerpop \
 
 ##### java packages: clean package artifacts #####
@@ -62,18 +62,18 @@ $(JAVAPKGS_INSTALL): %/o/maven.lastran: %/pom.xml $(ALL_JAVA_SOURCES)
 
 install-java-pkgs : $(JAVAPKGS_INSTALL)
 
-##### java packages: java.d.ts rules #####
+##### java packages: module.ts rules #####
 
-# The java.d.ts file for each java package, e.g.: hellojava/java.d.ts
-JAVAPKGS_JAVADTS=$(patsubst %,%/java.d.ts,$(JAVAPKGS))
+# The module.ts file for each java package, e.g.: hellojava/module.ts
+JAVAPKGS_MODULE_TS=$(patsubst %,%/module.ts,$(JAVAPKGS))
 
-# The rule to update each java.d.ts file
-$(JAVAPKGS_JAVADTS): %/java.d.ts: %/package.json %/o/maven.lastran bin/ts-java.sh ts-templates/package.txt ts-templates/autoImport.txt
+# The rule to update each module.ts file
+$(JAVAPKGS_MODULE_TS): %/module.ts: %/package.json %/o/maven.lastran bin/ts-java.sh ts-templates/package.txt ts-templates/autoImport.txt
 	cd $* && ../bin/ts-java.sh
 
 $(JAVAPKGS_CLEAN): %-clean:
 	cd $* && mvn clean
-	rm -rf $*/java.d.ts $*/o
+	rm -rf $*/module.ts $*/o
 
 ##### java packages: cucumber rules #####
 
@@ -84,7 +84,7 @@ ALL_CUCUMBER_FEATURES=$(wildcard hellojava/features/*.feature)
 ALL_CUCUMBER_FEATURES_RAN=$(patsubst %.feature,o/%.lastran,$(ALL_CUCUMBER_FEATURES))
 
 # A rule to make sure that every feature file is run
-$(ALL_CUCUMBER_FEATURES_RAN): o/%.lastran : %.feature $(STEPS_OBJS) $(LIBS_OBJS) $(JAVAPKGS_JAVADTS) $(UNIT_TEST_RAN)
+$(ALL_CUCUMBER_FEATURES_RAN): o/%.lastran : %.feature $(STEPS_OBJS) $(LIBS_OBJS) $(JAVAPKGS_MODULE_TS) $(UNIT_TEST_RAN)
 	./node_modules/.bin/cucumber-js --format summary --tags '~@todo' --require features/step_definitions $<
 	mkdir -p $(dir $@) && touch  $@
 
@@ -116,11 +116,11 @@ documentation :
 	node_modules/groc/bin/groc --except "**/node_modules/**" --except "o/**" --except "**/o/**" --except "**/*.d.ts" "**/*.ts" README.md
 
 test: unittest cucumber
-	# Test that lib/java.d.ts is up to date. If there are differences, manually update using 'make lib-java-dts'.
-# 	diff -q lib/java.d.ts reflection/java.d.ts
+	# Test that lib/reflection.ts is up to date. If there are differences, manually update using 'make update_reflection'.
+	diff -q lib/reflection.ts reflection/module.ts
 
-lib-java-dts:
-	cp reflection/java.d.ts lib/java.d.ts
+update_reflection:
+	cp reflection/module.ts lib/reflection.ts
 	$(MAKE) test
 
 unittest: $(UNIT_TEST_RAN)
@@ -161,7 +161,7 @@ update-tsd:
 
 # Explicit dependencies for files that are referenced
 
-bin/ts-java.sh: bin/ts-java.js lib/java.d.ts
+bin/ts-java.sh: bin/ts-java.js lib/reflection.ts
 	touch $@
 
 bin/ts-java.js : $(LIBS_OBJS)

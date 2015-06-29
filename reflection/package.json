@@ -1,7 +1,8 @@
 {
   "tsjava": {
     "promisesPath": "../typings/bluebird/bluebird.d.ts",
-    "outputPath": "./java.d.ts",
+    "autoImportPath": "./module.ts",
+    "javaTypingsPath": "../typings/java/java.d.ts",
     "classpath": [
       "target/**/*.jar"
     ],
@@ -22,7 +23,9 @@
     "packages": [
     ],
     "asyncOptions": {
-      "syncSuffix": "Sync"
+      "syncSuffix": "",
+      "asyncSuffix": "A",
+      "promiseSuffix": "P"
     }
   }
 }

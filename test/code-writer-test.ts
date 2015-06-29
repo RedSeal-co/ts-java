@@ -1,5 +1,4 @@
 // code-writer-test.ts
-///<reference path='../lib/java.d.ts' />
 ///<reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 ///<reference path='../typings/bluebird/bluebird.d.ts' />
 ///<reference path='../typings/chai/chai.d.ts'/>
@@ -21,7 +20,6 @@ import CodeWriter = require('../lib/code-writer');
 import concat = require('concat-stream');
 import glob = require('glob');
 import Immutable = require('immutable');
-import java = require('java');
 import path = require('path');
 import stream = require('stream');
 import TsJavaOptions = require('../lib/TsJavaOptions');

@@ -34,6 +34,12 @@ module Module {
     return _java.ensureJvm();
   }
 
+  {{#hasClass 'java.lang.ClassLoader'}}
+  export function getClassLoader(): Java.java.lang.ClassLoader {
+    return _java.getClassLoader();
+  }
+  {{/hasClass}}
+
   var shortToLongMap: Dictionary = {
     {{#each this}}
     {{#if useAlias}}
@@ -41,7 +47,7 @@ module Module {
     {{/if}}
     {{/each}}
   };
-
+  
   {{#each this}}
   {{#if useAlias}}
   export function importClass(className: '{{alias}}'): Java.{{quotedPkgName}}.{{shortName}}.Static;
@@ -64,7 +70,7 @@ module Module {
     return _java.newInstanceSync.apply(_java, args);
   }
 
-  module Java {
+  export module Java {
 
   // Node-java has special handling for methods that return long or java.lang.Long,
   // returning a Javascript Number but with an additional property longValue.

@@ -18,7 +18,7 @@ in the Background section.
     """
     /// <reference path='../../typings/node/node.d.ts' />
 
-    import hellojava = require('./hellojava');
+    import hellojava = require('../module');
 
     hellojava.ensureJvm().then((): void => {
       var HelloJava = hellojava.importClass('com.redseal.hellojava.HelloJava');
