@@ -8,33 +8,13 @@ So I can leverage my knowledge of the Java TinkerPop API to write programs in Ty
     Given this boilerplate to intialize node-java:
     """
     /// <reference path='../../typings/bluebird/bluebird.d.ts' />
-    /// <reference path='../../tinkerpop/java.d.ts'/>
     /// <reference path='../../typings/node/node.d.ts' />
-    /// <reference path='../../typings/glob/glob.d.ts' />
 
-    import autoImport = require('../../tinkerpop/o/autoImport');
-    import glob = require('glob');
-    import java = require('java');
-    import BluePromise = require('bluebird');
-    var promisify = require('bluebird').promisify;
+    import tinkerpop = require('../module');
+    import Java = tinkerpop.Java;
 
-    java.asyncOptions = {
-      syncSuffix: '',
-      promiseSuffix: 'P',
-      promisify: promisify
-    };
-
-    function before(): Promise<void> {
-      var globP = promisify(glob);
-      return globP('tinkerpop/target/dependency/**/*.jar')
-        .then((filenames: string[]) => {
-          filenames.forEach((name: string) => { java.classpath.push(name); });
-        });
-    }
-
-    java.registerClientP(before);
-    java.ensureJvm().then((): void => {
-      var TinkerFactory: Java.TinkerFactory.Static = autoImport('TinkerFactory');
+    tinkerpop.ensureJvm().then((): void => {
+      var TinkerFactory: Java.TinkerFactory.Static = tinkerpop.importClass('TinkerFactory');
       {{{ scenario_snippet }}}
     });
 
