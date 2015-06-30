@@ -124,6 +124,9 @@ class CodeWriter {
         return options.fn(this);
       }
     });
+    handlebars.registerHelper('join', function(array: string[], sep: string, options: HandlebarHelperOptions ) {
+      return array.map((item: string) => options.fn(item)).join(sep);
+    });
   }
 
 
