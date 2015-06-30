@@ -104,6 +104,11 @@ module Module {
     (err?: Error, result?: T): void;
   }
 
+  export function newShort(val: number): Java.java.lang.Short { return _java.newShort(val); }
+  export function newLong(val: number): Java.java.lang.Long { return _java.newLong(val); }
+  export function newFloat(val: number): Java.java.lang.Float { return _java.newFloat(val); }
+  export function newDouble(val: number): Java.java.lang.Double { return _java.newDouble(val); }
+
   {{#each this}}
   {{#each constructors}}
   export function newInstanceA(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this norest=true}}}{{/if}}, cb: Callback<{{{tsReturns}}}>): void;
