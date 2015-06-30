@@ -8,9 +8,9 @@ import BluePromise = require('bluebird');
 import path = require('path');
 
 _java.asyncOptions = {
-    syncSuffix: "",
-    asyncSuffix: "A",
-    promiseSuffix: "P",
+    syncSuffix: '',
+    asyncSuffix: 'A',
+    promiseSuffix: 'P',
     promisify: BluePromise.promisify
 };
 
@@ -43,7 +43,7 @@ module Module {
     'Object': 'java.lang.Object',
     'String': 'java.lang.String'
   };
-  
+
   export function importClass(className: 'HelloJava'): Java.com.redseal.hellojava.HelloJava.Static;
   export function importClass(className: 'Object'): Java.java.lang.Object.Static;
   export function importClass(className: 'String'): Java.java.lang.String.Static;
@@ -58,14 +58,6 @@ module Module {
     return _java.import(className);
   }
 
-  // TODO: All overloads of newInstanceSync
-  export function newInstanceSync(className: string, ...args: any[]): any {
-    args.unshift(className);
-    return _java.newInstanceSync.apply(_java, args);
-  }
-
-  export module Java {
-
   // Node-java has special handling for methods that return long or java.lang.Long,
   // returning a Javascript Number but with an additional property longValue.
   export interface longValue_t extends Number {
@@ -74,11 +66,11 @@ module Module {
 
   // Node-java can automatically coerce a javascript string into a java.lang.String.
   // This special type alias allows to declare that possiblity to Typescript.
-  export type string_t = string | java.lang.String;
+  export type string_t = string | Java.java.lang.String;
 
   // Java methods that take java.lang.Object parameters implicitly will take a java.lang.String.
   // But string_t is not sufficient for this case, we need object_t.
-  export type object_t = java.lang.Object | string | boolean | number | longValue_t;
+  export type object_t = Java.java.lang.Object | string | boolean | number | longValue_t;
 
   // Java methods that take long or java.lang.Long parameters may take javascript numbers,
   // longValue_t (see above) or java.lang.Long.
@@ -93,18 +85,98 @@ module Module {
   export type float_t = number ;
   export type number_t = number ;
 
-  export interface array_t<T> extends java.lang.Object {
+  export interface array_t<T> extends Java.java.lang.Object {
     // This is an opaque type for a java array_t T[];
     // Use Java.newArray<T>(className, [...]) to create wherever a Java method expects a T[],
     // most notably for vararg parameteters.
     __dummy: T;
   }
 
-  export type object_array_t = array_t<java.lang.Object> | object_t[];
+  export type object_array_t = array_t<Java.java.lang.Object> | object_t[];
 
   export interface Callback<T> {
     (err?: Error, result?: T): void;
   }
+
+  export function instanceOf(javaObject: any, className: string): boolean {
+    return _java.instanceOf(javaObject, className);
+  }
+
+  export function newShort(val: number): Java.java.lang.Short { return _java.newShort(val); }
+  export function newLong(val: number): Java.java.lang.Long { return _java.newLong(val); }
+  export function newFloat(val: number): Java.java.lang.Float { return _java.newFloat(val); }
+  export function newDouble(val: number): Java.java.lang.Double { return _java.newDouble(val); }
+
+  export function newInstanceA(className: 'com.redseal.hellojava.HelloJava', cb: Callback<Java.HelloJava>): void;
+  export function newInstanceA(className: 'java.lang.Object', cb: Callback<object_t>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: string_t, cb: Callback<string>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: object_array_t, arg1: string_t, cb: Callback<string>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: string_t, cb: Callback<string>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: object_array_t, cb: Callback<string>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: object_array_t, cb: Callback<string>): void;
+  export function newInstanceA(className: 'java.lang.String', cb: Callback<string>): void;
+  export function newInstanceA(className: string, ...args: any[]): void;
+  export function newInstanceA(className: string, ...args: any[]): any {
+    args.unshift(className);
+    return _java.newInstance.apply(_java, args);
+  }
+
+  export function newInstance(className: 'com.redseal.hellojava.HelloJava'): Java.HelloJava;
+  export function newInstance(className: 'java.lang.Object'): object_t;
+  export function newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t): string;
+  export function newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: string_t): string;
+  export function newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t): string;
+  export function newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t): string;
+  export function newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t): string;
+  export function newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t): string;
+  export function newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: object_t): string;
+  export function newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: string_t): string;
+  export function newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: object_t): string;
+  export function newInstance(className: 'java.lang.String', arg0: object_t): string;
+  export function newInstance(className: 'java.lang.String', arg0: object_t): string;
+  export function newInstance(className: 'java.lang.String', arg0: string_t): string;
+  export function newInstance(className: 'java.lang.String', arg0: object_array_t): string;
+  export function newInstance(className: 'java.lang.String', arg0: object_array_t): string;
+  export function newInstance(className: 'java.lang.String'): string;
+  export function newInstance(className: string, ...args: any[]): any;
+  export function newInstance(className: string, ...args: any[]): any {
+    args.unshift(className);
+    return _java.newInstanceSync.apply(_java, args);
+  }
+
+  export function newInstanceP(className: 'com.redseal.hellojava.HelloJava'): Promise<Java.HelloJava>;
+  export function newInstanceP(className: 'java.lang.Object'): Promise<object_t>;
+  export function newInstanceP(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t): Promise<string>;
+  export function newInstanceP(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: string_t): Promise<string>;
+  export function newInstanceP(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t): Promise<string>;
+  export function newInstanceP(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t): Promise<string>;
+  export function newInstanceP(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t): Promise<string>;
+  export function newInstanceP(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t): Promise<string>;
+  export function newInstanceP(className: 'java.lang.String', arg0: object_array_t, arg1: object_t): Promise<string>;
+  export function newInstanceP(className: 'java.lang.String', arg0: object_array_t, arg1: string_t): Promise<string>;
+  export function newInstanceP(className: 'java.lang.String', arg0: object_array_t, arg1: object_t): Promise<string>;
+  export function newInstanceP(className: 'java.lang.String', arg0: object_t): Promise<string>;
+  export function newInstanceP(className: 'java.lang.String', arg0: object_t): Promise<string>;
+  export function newInstanceP(className: 'java.lang.String', arg0: string_t): Promise<string>;
+  export function newInstanceP(className: 'java.lang.String', arg0: object_array_t): Promise<string>;
+  export function newInstanceP(className: 'java.lang.String', arg0: object_array_t): Promise<string>;
+  export function newInstanceP(className: 'java.lang.String'): Promise<string>;
+  export function newInstanceP(className: string, ...args: any[]): Promise<any>;
+  export function newInstanceP(className: string, ...args: any[]): Promise<any> {
+    args.unshift(className);
+    return _java.newInstanceP.apply(_java, args);
+  }
+
+  export module Java {
 
   export import HelloJava = com.redseal.hellojava.HelloJava;
   export import Object = java.lang.Object;
@@ -455,6 +527,7 @@ module Module {
     }
     export module String {
       export interface Static {
+        CASE_INSENSITIVE_ORDER: object_t;
         new (arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t): java.lang.String;
         new (arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: string_t): java.lang.String;
         new (arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t): java.lang.String;
@@ -536,7 +609,6 @@ module Module {
         valueOfA(arg0: object_t, cb: Callback<string>): void;
         valueOf(arg0: object_t): string;
         valueOfP(arg0: object_t): Promise<string>;
-        CASE_INSENSITIVE_ORDER: object_t;
       }
     }
   }
