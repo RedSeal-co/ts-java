@@ -188,6 +188,11 @@ module Module {
     }
     export module {{shortName}} {
       export interface Static {
+        {{#each fields}}
+        {{~#if isStatic}}
+        {{name}}: {{{tsType}}};
+        {{/if~}}
+        {{/each}}
         {{#each constructors}}
         new ({{{margs this}}}): {{../quotedPkgName}}.{{../shortName}};
         {{/each}}
@@ -212,11 +217,6 @@ module Module {
         {{/ifdef~}}
         {{/if}}
         {{/each}}
-        {{/each}}
-        {{#each fields}}
-        {{~#if isStatic}}
-        {{name}}: {{{tsType}}};
-        {{/if~}}
         {{/each}}
       }
     }
