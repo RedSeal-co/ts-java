@@ -104,6 +104,10 @@ module Module {
     (err?: Error, result?: T): void;
   }
 
+  export function instanceOf(javaObject: any, className: string): boolean {
+    return _java.instanceOf(javaObject, className);
+  }
+
   export function newShort(val: number): Java.java.lang.Short { return _java.newShort(val); }
   export function newLong(val: number): Java.java.lang.Long { return _java.newLong(val); }
   export function newFloat(val: number): Java.java.lang.Float { return _java.newFloat(val); }
