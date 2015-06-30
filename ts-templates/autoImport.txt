@@ -64,12 +64,6 @@ module Module {
     return _java.import(className);
   }
 
-  // TODO: All overloads of newInstanceSync
-  export function newInstanceSync(className: string, ...args: any[]): any {
-    args.unshift(className);
-    return _java.newInstanceSync.apply(_java, args);
-  }
-
   // Node-java has special handling for methods that return long or java.lang.Long,
   // returning a Javascript Number but with an additional property longValue.
   export interface longValue_t extends Number {
@@ -108,6 +102,39 @@ module Module {
 
   export interface Callback<T> {
     (err?: Error, result?: T): void;
+  }
+
+  {{#each this}}
+  {{#each constructors}}
+  export function newInstanceA(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this norest=true}}}{{/if}}, cb: Callback<{{{tsReturns}}}>): void;
+  {{/each}}
+  {{/each}}
+  export function newInstanceA(className: string, ...args: any[]): void;
+  export function newInstanceA(className: string, ...args: any[]): any {
+    args.unshift(className);
+    return _java.newInstance.apply(_java, args);
+  }
+
+  {{#each this}}
+  {{#each constructors}}
+  export function newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{{tsReturns}}};
+  {{/each}}
+  {{/each}}
+  export function newInstance(className: string, ...args: any[]): any;
+  export function newInstance(className: string, ...args: any[]): any {
+    args.unshift(className);
+    return _java.newInstanceSync.apply(_java, args);
+  }
+
+  {{#each this}}
+  {{#each constructors}}
+  export function newInstanceP(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{{tsReturns}}}>;
+  {{/each}}
+  {{/each}}
+  export function newInstanceP(className: string, ...args: any[]): Promise<any>;
+  export function newInstanceP(className: string, ...args: any[]): Promise<any> {
+    args.unshift(className);
+    return _java.newInstanceP.apply(_java, args);
   }
 
   export module Java {
