@@ -5,9 +5,9 @@ import BluePromise = require('bluebird');
 import path = require('path');
 
 _java.asyncOptions = {
-    syncSuffix: "",
-    asyncSuffix: "A",
-    promiseSuffix: "P",
+    syncSuffix: '',
+    asyncSuffix: 'A',
+    promiseSuffix: 'P',
     promisify: BluePromise.promisify
 };
 
