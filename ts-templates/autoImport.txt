@@ -156,7 +156,7 @@ module Module {
 
   {{#each this}}
   export module {{quotedPkgName}} {
-    export interface {{shortName}} {{#if tsInterfaces}}extends {{tsInterfaces}}{{/if}} {
+    export interface {{shortName}} {{#if tsInterfaces}}extends {{#join tsInterfaces ', '}}{{this}}{{/join}}{{/if}} {
       {{#each variants}}
       {{#each this}}
       {{#unless isStatic}}
