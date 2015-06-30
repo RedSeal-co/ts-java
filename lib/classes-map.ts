@@ -265,6 +265,8 @@ class ClassesMap {
       if (!this.shortToLongNameMap || this.shortToLongNameMap[shortName] === typeName) {
         typeName = shortName;
       }
+      // Add the 'Java.' namespace
+      typeName = 'Java.' + typeName;
     } else {
       dlog('Unhandled type:', typeName);
       this.unhandledTypes = this.unhandledTypes.add(typeName);

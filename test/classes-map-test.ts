@@ -161,7 +161,7 @@ describe('ClassesMap', () => {
       expect(classesMap.tsTypeName('java.lang.Short')).to.equal('short_t');
       expect(classesMap.tsTypeName('java.lang.String')).to.equal('string_t');
       expect(classesMap.tsTypeName('Ljava.lang.Object;')).to.equal('object_t');
-      expect(classesMap.tsTypeName('Ljava.util.function.Function;')).to.equal('Function');
+      expect(classesMap.tsTypeName('Ljava.util.function.Function;')).to.equal('Java.Function');
     });
     it('it should translate Java primitive classes to TypeScript types for function return results', () => {
       expect(classesMap.tsTypeName('java.lang.Boolean', ParamContext.eReturn)).to.equal('boolean');

@@ -106,7 +106,7 @@ describe('CodeWriter', () => {
         'shortName: Function',
         'alias: Function',
         'useAlias: true',
-        'tsType: Function',
+        'tsType: Java.Function',
         'isInterface: true',
         'isPrimitive: false',
         'superclass: ',
