@@ -80,33 +80,33 @@ module Module {
 
   // Node-java can automatically coerce a javascript string into a java.lang.String.
   // This special type alias allows to declare that possiblity to Typescript.
-  export type string_t = string | java.lang.String;
+  export type string_t = string | Java.java.lang.String;
 
   // Java methods that take java.lang.Object parameters implicitly will take a java.lang.String.
   // But string_t is not sufficient for this case, we need object_t.
-  export type object_t = java.lang.Object | string | boolean | number | longValue_t;
+  export type object_t = Java.java.lang.Object | string | boolean | number | longValue_t;
 
   // Java methods that take long or java.lang.Long parameters may take javascript numbers,
   // longValue_t (see above) or java.lang.Long.
   // This special type alias allows to declare that possiblity to Typescript.
-  export type long_t = number | longValue_t {{#hasClass 'java.lang.Long'}}| java.lang.Long{{/hasClass}};
+  export type long_t = number | longValue_t {{#hasClass 'java.lang.Long'}}| Java.java.lang.Long{{/hasClass}};
 
   // Handling of other primitive numeric types is simpler, as there is no loss of precision.
-  export type boolean_t = boolean {{#hasClass 'java.lang.Boolean'}}| java.lang.Boolean{{/hasClass}};
-  export type short_t = number {{#hasClass 'java.lang.Short'}}| java.lang.Short{{/hasClass}};
-  export type integer_t = number {{#hasClass 'java.lang.Integer'}}| java.lang.Integer{{/hasClass}};
-  export type double_t = number {{#hasClass 'java.lang.Double'}}| java.lang.Double{{/hasClass}};
-  export type float_t = number {{#hasClass 'java.lang.Float'}}| java.lang.Float{{/hasClass}};
-  export type number_t = number {{#hasClass 'java.lang.Number'}}| java.lang.Number{{/hasClass}};
+  export type boolean_t = boolean {{#hasClass 'java.lang.Boolean'}}| Java.java.lang.Boolean{{/hasClass}};
+  export type short_t = number {{#hasClass 'java.lang.Short'}}| Java.java.lang.Short{{/hasClass}};
+  export type integer_t = number {{#hasClass 'java.lang.Integer'}}| Java.java.lang.Integer{{/hasClass}};
+  export type double_t = number {{#hasClass 'java.lang.Double'}}| Java.java.lang.Double{{/hasClass}};
+  export type float_t = number {{#hasClass 'java.lang.Float'}}| Java.java.lang.Float{{/hasClass}};
+  export type number_t = number {{#hasClass 'java.lang.Number'}}| Java.java.lang.Number{{/hasClass}};
 
-  export interface array_t<T> extends java.lang.Object {
+  export interface array_t<T> extends Java.java.lang.Object {
     // This is an opaque type for a java array_t T[];
     // Use Java.newArray<T>(className, [...]) to create wherever a Java method expects a T[],
     // most notably for vararg parameteters.
     __dummy: T;
   }
 
-  export type object_array_t = array_t<java.lang.Object> | object_t[];
+  export type object_array_t = array_t<Java.java.lang.Object> | object_t[];
 
   export interface Callback<T> {
     (err?: Error, result?: T): void;
