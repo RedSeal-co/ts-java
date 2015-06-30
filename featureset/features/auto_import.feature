@@ -1,4 +1,3 @@
-@todo
 @https://www.pivotaltracker.com/story/show/90209260 @generate_tp3_typescript
 Feature: Auto import
   As a developer
@@ -13,27 +12,15 @@ Feature: Auto import
     Given that ts-java has been run and autoImport.ts has compiled and linted cleanly.
     Given this boilerplate to intialize node-java:
     """
-    /// <reference path='../../typings/glob/glob.d.ts' />
     /// <reference path='../../typings/node/node.d.ts' />
     /// <reference path='../../typings/power-assert/power-assert.d.ts' />
-    /// <reference path='../java.d.ts' />
 
     import assert = require('power-assert');
-    import glob = require('glob');
-    import java = require('java');
-    import autoImport = require('../../featureset/o/autoImport');
+    import java = require('../module');
+    import Java = java.Java;
 
-    function before(done: Java.Callback<void>): void {
-      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
-        filenames.forEach((name: string) => { java.classpath.push(name); });
-        done();
-      });
-    }
-
-    java.registerClient(before);
-
-    java.ensureJvm(() => {
-      var Arrays = java.import('java.util.Arrays');
+    java.ensureJvm().then(() => {
+      var Arrays = java.importClass('java.util.Arrays');
       {{{ scenario_snippet }}}
     });
 
@@ -42,7 +29,7 @@ Feature: Auto import
   Scenario: Nominal
   Given the above boilerplate with following scenario snippet:
   """
-  var SomeClass: Java.SomeClass.Static = autoImport('SomeClass');
+  var SomeClass: Java.SomeClass.Static = java.importClass('SomeClass');
   var something: Java.SomeClass = new SomeClass();
   """
   Then it compiles and lints cleanly
@@ -51,7 +38,7 @@ Feature: Auto import
   Scenario: Ambiguous
   Given the above boilerplate with following scenario snippet:
   """
-  assert.throws(() => autoImport('Thing'), /autoImport unable to import short name/);
+  assert.throws(() => java.importClass('Thing'), /java.lang.NoClassDefFoundError: Thing/);
   """
   Then it compiles and lints cleanly
   And it runs and produces no output
@@ -61,8 +48,8 @@ Feature: Auto import
   # in Typescript. The typescript module name is mapped to `function_` to avoid the conflict.
   Given the above boilerplate with following scenario snippet:
   """
-  var Function: Java.Function.Static = autoImport('Function');
-  var func: Java.java.util.function_.Function = Function.identitySync();
+  var Function: Java.Function.Static = java.importClass('Function');
+  var func: Java.java.util.function_.Function = Function.identity();
   """
   Then it compiles and lints cleanly
   And it runs and produces no output
@@ -70,8 +57,8 @@ Feature: Auto import
   Scenario: import via full class path
   Given the above boilerplate with following scenario snippet:
   """
-  var Function: Java.Function.Static = java.import('java.util.function.Function');
-  var func: Java.java.util.function_.Function = Function.identitySync();
+  var Function: Java.Function.Static = java.importClass('java.util.function.Function');
+  var func: Java.java.util.function_.Function = Function.identity();
   """
   Then it compiles and lints cleanly
   And it runs and produces no output
