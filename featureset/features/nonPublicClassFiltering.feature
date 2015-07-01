@@ -13,26 +13,12 @@ Ts-java only exposes public classes. Non-public classes include
     Given this boilerplate to intialize node-java:
     """
     /// <reference path='../../typings/power-assert/power-assert.d.ts' />
-    /// <reference path='../../typings/lodash/lodash.d.ts' />
-    /// <reference path='../../typings/node/node.d.ts' />
-    /// <reference path='../../typings/glob/glob.d.ts' />
-    /// <reference path='../../featureset/java.d.ts'/>
 
-    import _ = require('lodash');
-    import glob = require('glob');
-    import java = require('java');
     import assert = require('power-assert');
+    import java = require('../module');
+    import Java = java.Java;
 
-    function before(done: Java.Callback<void>): void {
-      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
-        filenames.forEach((name: string) => { java.classpath.push(name); });
-        done();
-      });
-    }
-
-    java.registerClient(before);
-
-    java.ensureJvm(() => {
+    Java.ensureJvm().then(() => {
       {{{ scenario_snippet }}}
     });
 
@@ -46,7 +32,7 @@ Ts-java only exposes public classes. Non-public classes include
     """
     When compiled it produces this error containing this snippet:
     """
-    error TS2305: Module 'Java.com.redseal.featureset' has no exported member 'AnonClassTest$1'
+    error TS2305: Module '.+Java.com.redseal.featureset' has no exported member 'AnonClassTest\$1'
     """
 
   Scenario: Package scope classes are not visible
@@ -56,7 +42,7 @@ Ts-java only exposes public classes. Non-public classes include
     """
     When compiled it produces this error containing this snippet:
     """
-    error TS2305: Module 'Java.com.redseal.featureset' has no exported member 'SomePackageScopeClass'
+    error TS2305: Module '.+Java.com.redseal.featureset' has no exported member 'SomePackageScopeClass'
     """
 
   Scenario: Private inner classes are not visible
@@ -66,7 +52,7 @@ Ts-java only exposes public classes. Non-public classes include
     """
     When compiled it produces this error containing this snippet:
     """
-    error TS2305: Module 'Java.com.redseal.featureset' has no exported member 'SomeClass$SomePrivateInnerClass'
+    error TS2305: Module '.+Java.com.redseal.featureset' has no exported member 'SomeClass\$SomePrivateInnerClass'
     """
 
 

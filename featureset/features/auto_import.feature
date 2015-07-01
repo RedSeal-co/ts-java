@@ -12,15 +12,14 @@ Feature: Auto import
     Given that ts-java has been run and autoImport.ts has compiled and linted cleanly.
     Given this boilerplate to intialize node-java:
     """
-    /// <reference path='../../typings/node/node.d.ts' />
     /// <reference path='../../typings/power-assert/power-assert.d.ts' />
 
     import assert = require('power-assert');
     import java = require('../module');
     import Java = java.Java;
 
-    java.ensureJvm().then(() => {
-      var Arrays = java.importClass('java.util.Arrays');
+    Java.ensureJvm().then(() => {
+      var Arrays = Java.importClass('java.util.Arrays');
       {{{ scenario_snippet }}}
     });
 
@@ -29,7 +28,7 @@ Feature: Auto import
   Scenario: Nominal
   Given the above boilerplate with following scenario snippet:
   """
-  var SomeClass: Java.SomeClass.Static = java.importClass('SomeClass');
+  var SomeClass: Java.SomeClass.Static = Java.importClass('SomeClass');
   var something: Java.SomeClass = new SomeClass();
   """
   Then it compiles and lints cleanly
@@ -38,7 +37,7 @@ Feature: Auto import
   Scenario: Ambiguous
   Given the above boilerplate with following scenario snippet:
   """
-  assert.throws(() => java.importClass('Thing'), /java.lang.NoClassDefFoundError: Thing/);
+  assert.throws(() => Java.importClass('Thing'), /java.lang.NoClassDefFoundError: Thing/);
   """
   Then it compiles and lints cleanly
   And it runs and produces no output
@@ -48,7 +47,7 @@ Feature: Auto import
   # in Typescript. The typescript module name is mapped to `function_` to avoid the conflict.
   Given the above boilerplate with following scenario snippet:
   """
-  var Function: Java.Function.Static = java.importClass('Function');
+  var Function: Java.Function.Static = Java.importClass('Function');
   var func: Java.java.util.function_.Function = Function.identity();
   """
   Then it compiles and lints cleanly
@@ -57,7 +56,7 @@ Feature: Auto import
   Scenario: import via full class path
   Given the above boilerplate with following scenario snippet:
   """
-  var Function: Java.Function.Static = java.importClass('java.util.function.Function');
+  var Function: Java.Function.Static = Java.importClass('java.util.function.Function');
   var func: Java.java.util.function_.Function = Function.identity();
   """
   Then it compiles and lints cleanly

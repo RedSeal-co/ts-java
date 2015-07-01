@@ -28,7 +28,7 @@ given package or a package nested in the given package.
     import java = require('../module');
     import Java = java.Java;
 
-    java.ensureJvm().then(() => {
+    Java.ensureJvm().then(() => {
       {{{ scenario_snippet }}}
     });
 
@@ -37,25 +37,25 @@ given package or a package nested in the given package.
   Scenario: A class in a nested package exists
     Given the above boilerplate with following scenario snippet:
     """
-    var Thing: Java.com.redseal.featureset.ambiguous.Thing.Static = java.importClass('com.redseal.featureset.ambiguous.Thing');
+    var Thing: Java.com.redseal.featureset.ambiguous.Thing.Static = Java.importClass('com.redseal.featureset.ambiguous.Thing');
     """
     Then it compiles and lints cleanly
 
   Scenario: A nested class in a non-recursive package exists
     Given the above boilerplate with following scenario snippet:
     """
-    var ListItr: Java.java.util.AbstractMap$SimpleEntry.Static = java.importClass('AbstractMap$SimpleEntry');
+    var ListItr: Java.java.util.AbstractMap$SimpleEntry.Static = Java.importClass('AbstractMap$SimpleEntry');
     """
     Then it compiles and lints cleanly
 
   Scenario: Nested packages are not included when a.b.c.* is used to include classes of a.b.c
     Given the above boilerplate with following scenario snippet:
     """
-    var Stream: Java.java.util.stream.Stream.Static = java.importClass('java.util.stream.Stream');
+    var Stream: Java.java.util.stream.Stream.Static = Java.importClass('java.util.stream.Stream');
     """
     When compiled it produces this error containing this snippet:
     """
-    error TS2305: Module 'Module.Java.java.util' has no exported member 'stream'
+    error TS2305: Module '.+.Java.java.util' has no exported member 'stream'
     """
 
 

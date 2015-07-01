@@ -1,5 +1,8 @@
 {{#with classes}}
 
+declare function require(name: string): any;
+require('source-map-support').install();
+
 import _java = require('java');
 import BluePromise = require('bluebird');
 import path = require('path');
@@ -22,13 +25,12 @@ function beforeJvm(): BluePromise<void> {
 
 _java.registerClientP(beforeJvm);
 
-interface Dictionary {
-  [index: string]: string;
-}
-
-export = Module;
-module Module {
+export module Java {
   'use strict';
+
+  interface StringDict {
+    [index: string]: string;
+  }
 
   export function ensureJvm(): Promise<void> {
     return _java.ensureJvm();
@@ -40,14 +42,6 @@ module Module {
   }
   {{/hasClass}}
 
-  var shortToLongMap: Dictionary = {
-    {{#each this}}
-    {{#if useAlias}}
-    '{{alias}}': '{{packageName}}.{{shortName}}'{{#unless @last}},{{/unless}}
-    {{/if}}
-    {{/each}}
-  };
-
   {{#each this}}
   {{#if useAlias}}
   export function importClass(className: '{{alias}}'): Java.{{quotedPkgName}}.{{shortName}}.Static;
@@ -58,11 +52,75 @@ module Module {
   {{/each}}
   export function importClass(className: string): any;
   export function importClass(className: string): any {
+    var shortToLongMap: StringDict = {
+      {{#each this}}
+      {{#if useAlias}}
+      '{{alias}}': '{{packageName}}.{{shortName}}'{{#unless @last}},{{/unless}}
+      {{/if}}
+      {{/each}}
+    };
+
     if (className in shortToLongMap) {
       className = shortToLongMap[className];
     }
     return _java.import(className);
   }
+
+  export interface Callback<T> {
+    (err?: Error, result?: T): void;
+  }
+
+  export function instanceOf(javaObject: any, className: string): boolean {
+    return _java.instanceOf(javaObject, className);
+  }
+
+{{#hasClass 'java.lang.Short'}}  export function newShort(val: number): Java.java.lang.Short { return _java.newShort(val); }{{/hasClass}}
+{{#hasClass 'java.lang.Long'}}  export function newLong(val: number): Java.java.lang.Long { return _java.newLong(val); }{{/hasClass}}
+{{#hasClass 'java.lang.Float'}}  export function newFloat(val: number): Java.java.lang.Float { return _java.newFloat(val); }{{/hasClass}}
+{{#hasClass 'java.lang.Double'}}  export function newDouble(val: number): Java.java.lang.Double { return _java.newDouble(val); }{{/hasClass}}
+
+  {{#each this}}
+  {{#each constructors}}
+  export function newInstanceA(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this norest=true}}}{{/if}}, cb: Callback<{{{tsReturns}}}>): void;
+  {{/each}}
+  {{/each}}
+  export function newInstanceA(className: string, ...args: any[]): void;
+  export function newInstanceA(className: string, ...args: any[]): any {
+    args.unshift(className);
+    return _java.newInstance.apply(_java, args);
+  }
+
+  {{#each this}}
+  {{#each constructors}}
+  export function newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{{tsReturns}}};
+  {{/each}}
+  {{/each}}
+  export function newInstance(className: string, ...args: any[]): any;
+  export function newInstance(className: string, ...args: any[]): any {
+    args.unshift(className);
+    return _java.newInstanceSync.apply(_java, args);
+  }
+
+  {{#each this}}
+  {{#each constructors}}
+  export function newInstanceP(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{{tsReturns}}}>;
+  {{/each}}
+  {{/each}}
+  export function newInstanceP(className: string, ...args: any[]): Promise<any>;
+  export function newInstanceP(className: string, ...args: any[]): Promise<any> {
+    args.unshift(className);
+    return _java.newInstanceP.apply(_java, args);
+  }
+
+  {{#each this}}
+  export function newArray(className: '{{packageName}}.{{shortName}}', arg: {{tsType}}[]): array_t<{{quotedPkgName}}.{{shortName}}>;
+  {{/each}}
+  export function newArray<T>(className: string, arg: any[]): array_t<T>;
+  export function newArray<T>(className: string, arg: any[]): array_t<T> {
+    return _java.newArray(className, arg);
+  }
+
+  // export module Java {
 
   // Node-java has special handling for methods that return long or java.lang.Long,
   // returning a Javascript Number but with an additional property longValue.
@@ -100,54 +158,6 @@ module Module {
 
   export type object_array_t = array_t<Java.java.lang.Object> | object_t[];
 
-  export interface Callback<T> {
-    (err?: Error, result?: T): void;
-  }
-
-  export function instanceOf(javaObject: any, className: string): boolean {
-    return _java.instanceOf(javaObject, className);
-  }
-
-  export function newShort(val: number): Java.java.lang.Short { return _java.newShort(val); }
-  export function newLong(val: number): Java.java.lang.Long { return _java.newLong(val); }
-  export function newFloat(val: number): Java.java.lang.Float { return _java.newFloat(val); }
-  export function newDouble(val: number): Java.java.lang.Double { return _java.newDouble(val); }
-
-  {{#each this}}
-  {{#each constructors}}
-  export function newInstanceA(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this norest=true}}}{{/if}}, cb: Callback<{{{tsReturns}}}>): void;
-  {{/each}}
-  {{/each}}
-  export function newInstanceA(className: string, ...args: any[]): void;
-  export function newInstanceA(className: string, ...args: any[]): any {
-    args.unshift(className);
-    return _java.newInstance.apply(_java, args);
-  }
-
-  {{#each this}}
-  {{#each constructors}}
-  export function newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{{tsReturns}}};
-  {{/each}}
-  {{/each}}
-  export function newInstance(className: string, ...args: any[]): any;
-  export function newInstance(className: string, ...args: any[]): any {
-    args.unshift(className);
-    return _java.newInstanceSync.apply(_java, args);
-  }
-
-  {{#each this}}
-  {{#each constructors}}
-  export function newInstanceP(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{{tsReturns}}}>;
-  {{/each}}
-  {{/each}}
-  export function newInstanceP(className: string, ...args: any[]): Promise<any>;
-  export function newInstanceP(className: string, ...args: any[]): Promise<any> {
-    args.unshift(className);
-    return _java.newInstanceP.apply(_java, args);
-  }
-
-  export module Java {
-
   {{#each this}}
   {{#if useAlias}}
   export import {{alias}} = {{quotedPkgName}}.{{shortName}};
@@ -157,6 +167,12 @@ module Module {
   {{#each this}}
   export module {{quotedPkgName}} {
     export interface {{shortName}} {{#if tsInterfaces}}extends {{#join tsInterfaces ', '}}{{this}}{{/join}}{{/if}} {
+      {{#each fields}}
+      {{~#if isStatic~}}
+      {{~else}}
+      {{name}}: {{{tsType}}};
+      {{/if~}}
+      {{/each}}
       {{#each variants}}
       {{#each this}}
       {{#unless isStatic}}
@@ -178,12 +194,6 @@ module Module {
       {{/ifdef~}}
       {{/unless}}
       {{/each}}
-      {{/each}}
-      {{#each fields}}
-      {{~#if isStatic~}}
-      {{~else}}
-      {{name}}: {{{tsType}}};
-      {{/if~}}
       {{/each}}
     }
     export module {{shortName}} {
@@ -224,7 +234,7 @@ module Module {
 
   {{/each}}
 
-  } // module Java
+  // } // module Java
 
 } // module Module
 {{/with}}

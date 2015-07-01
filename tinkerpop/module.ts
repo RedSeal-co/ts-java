@@ -3,6 +3,9 @@
 /// <reference path="../typings/java/java.d.ts" />
 
 
+declare function require(name: string): any;
+require('source-map-support').install();
+
 import _java = require('java');
 import BluePromise = require('bluebird');
 import path = require('path');
@@ -25,171 +28,17 @@ function beforeJvm(): BluePromise<void> {
 
 _java.registerClientP(beforeJvm);
 
-interface Dictionary {
-  [index: string]: string;
-}
-
-export = Module;
-module Module {
+export module Java {
   'use strict';
+
+  interface StringDict {
+    [index: string]: string;
+  }
 
   export function ensureJvm(): Promise<void> {
     return _java.ensureJvm();
   }
 
-
-  var shortToLongMap: Dictionary = {
-    'AnonymousGraphTraversal': 'com.tinkerpop.gremlin.process.graph.AnonymousGraphTraversal',
-    'AnonymousGraphTraversal$Tokens': 'com.tinkerpop.gremlin.process.graph.AnonymousGraphTraversal$Tokens',
-    'EdgeTraversal': 'com.tinkerpop.gremlin.process.graph.EdgeTraversal',
-    'ElementTraversal': 'com.tinkerpop.gremlin.process.graph.ElementTraversal',
-    'GraphTraversal': 'com.tinkerpop.gremlin.process.graph.GraphTraversal',
-    'GraphTraversal$Admin': 'com.tinkerpop.gremlin.process.graph.GraphTraversal$Admin',
-    'VertexPropertyTraversal': 'com.tinkerpop.gremlin.process.graph.VertexPropertyTraversal',
-    'VertexTraversal': 'com.tinkerpop.gremlin.process.graph.VertexTraversal',
-    'Path': 'com.tinkerpop.gremlin.process.Path',
-    'Path$Exceptions': 'com.tinkerpop.gremlin.process.Path$Exceptions',
-    'Step': 'com.tinkerpop.gremlin.process.Step',
-    'T': 'com.tinkerpop.gremlin.process.T',
-    'Traversal': 'com.tinkerpop.gremlin.process.Traversal',
-    'Traversal$Admin': 'com.tinkerpop.gremlin.process.Traversal$Admin',
-    'Traversal$Exceptions': 'com.tinkerpop.gremlin.process.Traversal$Exceptions',
-    'TraversalEngine': 'com.tinkerpop.gremlin.process.TraversalEngine',
-    'TraversalSideEffects': 'com.tinkerpop.gremlin.process.TraversalSideEffects',
-    'TraversalSideEffects$Exceptions': 'com.tinkerpop.gremlin.process.TraversalSideEffects$Exceptions',
-    'TraversalStrategies': 'com.tinkerpop.gremlin.process.TraversalStrategies',
-    'TraversalStrategies$GlobalCache': 'com.tinkerpop.gremlin.process.TraversalStrategies$GlobalCache',
-    'TraversalStrategy': 'com.tinkerpop.gremlin.process.TraversalStrategy',
-    'Traverser': 'com.tinkerpop.gremlin.process.Traverser',
-    'Traverser$Admin': 'com.tinkerpop.gremlin.process.Traverser$Admin',
-    'TraverserGenerator': 'com.tinkerpop.gremlin.process.TraverserGenerator',
-    'AbstractStep': 'com.tinkerpop.gremlin.process.util.AbstractStep',
-    'BulkSet': 'com.tinkerpop.gremlin.process.util.BulkSet',
-    'DefaultTraversal': 'com.tinkerpop.gremlin.process.util.DefaultTraversal',
-    'DefaultTraversalSideEffects': 'com.tinkerpop.gremlin.process.util.DefaultTraversalSideEffects',
-    'DefaultTraversalStrategies': 'com.tinkerpop.gremlin.process.util.DefaultTraversalStrategies',
-    'ElementFunctionComparator': 'com.tinkerpop.gremlin.process.util.ElementFunctionComparator',
-    'ElementValueComparator': 'com.tinkerpop.gremlin.process.util.ElementValueComparator',
-    'ElementValueFunction': 'com.tinkerpop.gremlin.process.util.ElementValueFunction',
-    'EmptyPath': 'com.tinkerpop.gremlin.process.util.EmptyPath',
-    'EmptyStep': 'com.tinkerpop.gremlin.process.util.EmptyStep',
-    'EmptyTraversal': 'com.tinkerpop.gremlin.process.util.EmptyTraversal',
-    'EmptyTraversalSideEffects': 'com.tinkerpop.gremlin.process.util.EmptyTraversalSideEffects',
-    'EmptyTraversalStrategies': 'com.tinkerpop.gremlin.process.util.EmptyTraversalStrategies',
-    'EmptyTraverser': 'com.tinkerpop.gremlin.process.util.EmptyTraverser',
-    'ExpandableStepIterator': 'com.tinkerpop.gremlin.process.util.ExpandableStepIterator',
-    'FastNoSuchElementException': 'com.tinkerpop.gremlin.process.util.FastNoSuchElementException',
-    'FunctionRing': 'com.tinkerpop.gremlin.process.util.FunctionRing',
-    'GraphTraversalSourceGenerator': 'com.tinkerpop.gremlin.process.util.GraphTraversalSourceGenerator',
-    'ImmutablePath': 'com.tinkerpop.gremlin.process.util.ImmutablePath',
-    'MapHelper': 'com.tinkerpop.gremlin.process.util.MapHelper',
-    'MultiIterator': 'com.tinkerpop.gremlin.process.util.MultiIterator',
-    'MutablePath': 'com.tinkerpop.gremlin.process.util.MutablePath',
-    'SideEffectHelper': 'com.tinkerpop.gremlin.process.util.SideEffectHelper',
-    'SparsePath': 'com.tinkerpop.gremlin.process.util.SparsePath',
-    'StepMetrics': 'com.tinkerpop.gremlin.process.util.StepMetrics',
-    'StepPosition': 'com.tinkerpop.gremlin.process.util.StepPosition',
-    'StepTimer': 'com.tinkerpop.gremlin.process.util.StepTimer',
-    'TraversalHelper': 'com.tinkerpop.gremlin.process.util.TraversalHelper',
-    'TraversalMatrix': 'com.tinkerpop.gremlin.process.util.TraversalMatrix',
-    'TraversalMetrics': 'com.tinkerpop.gremlin.process.util.TraversalMetrics',
-    'TraversalRing': 'com.tinkerpop.gremlin.process.util.TraversalRing',
-    'TraverserSet': 'com.tinkerpop.gremlin.process.util.TraverserSet',
-    'Compare': 'com.tinkerpop.gremlin.structure.Compare',
-    'Contains': 'com.tinkerpop.gremlin.structure.Contains',
-    'Direction': 'com.tinkerpop.gremlin.structure.Direction',
-    'Edge': 'com.tinkerpop.gremlin.structure.Edge',
-    'Edge$Exceptions': 'com.tinkerpop.gremlin.structure.Edge$Exceptions',
-    'Edge$Iterators': 'com.tinkerpop.gremlin.structure.Edge$Iterators',
-    'Element': 'com.tinkerpop.gremlin.structure.Element',
-    'Element$Exceptions': 'com.tinkerpop.gremlin.structure.Element$Exceptions',
-    'Element$Iterators': 'com.tinkerpop.gremlin.structure.Element$Iterators',
-    'Graph': 'com.tinkerpop.gremlin.structure.Graph',
-    'Graph$Exceptions': 'com.tinkerpop.gremlin.structure.Graph$Exceptions',
-    'Graph$Features': 'com.tinkerpop.gremlin.structure.Graph$Features',
-    'Graph$Features$DataTypeFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$DataTypeFeatures',
-    'Graph$Features$EdgeFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$EdgeFeatures',
-    'Graph$Features$EdgePropertyFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$EdgePropertyFeatures',
-    'Graph$Features$ElementFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$ElementFeatures',
-    'Graph$Features$FeatureSet': 'com.tinkerpop.gremlin.structure.Graph$Features$FeatureSet',
-    'Graph$Features$GraphFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$GraphFeatures',
-    'Graph$Features$PropertyFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$PropertyFeatures',
-    'Graph$Features$VariableFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$VariableFeatures',
-    'Graph$Features$VertexFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$VertexFeatures',
-    'Graph$Features$VertexPropertyFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$VertexPropertyFeatures',
-    'Graph$Helper': 'com.tinkerpop.gremlin.structure.Graph$Helper',
-    'Graph$Hidden': 'com.tinkerpop.gremlin.structure.Graph$Hidden',
-    'Graph$Io': 'com.tinkerpop.gremlin.structure.Graph$Io',
-    'Graph$Iterators': 'com.tinkerpop.gremlin.structure.Graph$Iterators',
-    'Graph$OptIn': 'com.tinkerpop.gremlin.structure.Graph$OptIn',
-    'Graph$OptIns': 'com.tinkerpop.gremlin.structure.Graph$OptIns',
-    'Graph$OptOut': 'com.tinkerpop.gremlin.structure.Graph$OptOut',
-    'Graph$OptOuts': 'com.tinkerpop.gremlin.structure.Graph$OptOuts',
-    'Graph$Variables': 'com.tinkerpop.gremlin.structure.Graph$Variables',
-    'Graph$Variables$Exceptions': 'com.tinkerpop.gremlin.structure.Graph$Variables$Exceptions',
-    'Operator': 'com.tinkerpop.gremlin.structure.Operator',
-    'Order': 'com.tinkerpop.gremlin.structure.Order',
-    'Property': 'com.tinkerpop.gremlin.structure.Property',
-    'Property$Exceptions': 'com.tinkerpop.gremlin.structure.Property$Exceptions',
-    'PropertyType': 'com.tinkerpop.gremlin.structure.PropertyType',
-    'Transaction': 'com.tinkerpop.gremlin.structure.Transaction',
-    'Transaction$CLOSE_BEHAVIOR': 'com.tinkerpop.gremlin.structure.Transaction$CLOSE_BEHAVIOR',
-    'Transaction$Exceptions': 'com.tinkerpop.gremlin.structure.Transaction$Exceptions',
-    'Transaction$READ_WRITE_BEHAVIOR': 'com.tinkerpop.gremlin.structure.Transaction$READ_WRITE_BEHAVIOR',
-    'Transaction$Workload': 'com.tinkerpop.gremlin.structure.Transaction$Workload',
-    'Vertex': 'com.tinkerpop.gremlin.structure.Vertex',
-    'Vertex$Exceptions': 'com.tinkerpop.gremlin.structure.Vertex$Exceptions',
-    'Vertex$Iterators': 'com.tinkerpop.gremlin.structure.Vertex$Iterators',
-    'VertexProperty': 'com.tinkerpop.gremlin.structure.VertexProperty',
-    'VertexProperty$Exceptions': 'com.tinkerpop.gremlin.structure.VertexProperty$Exceptions',
-    'VertexProperty$Iterators': 'com.tinkerpop.gremlin.structure.VertexProperty$Iterators',
-    'TinkerEdge': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerEdge',
-    'TinkerElement': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerElement',
-    'TinkerFactory': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory',
-    'TinkerFactory$SocialTraversal': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory$SocialTraversal',
-    'TinkerFactory$SocialTraversal$DefaultSocialTraversal': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory$SocialTraversal$DefaultSocialTraversal',
-    'TinkerGraph': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph',
-    'TinkerGraph$TinkerGraphEdgeFeatures': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph$TinkerGraphEdgeFeatures',
-    'TinkerGraph$TinkerGraphFeatures': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph$TinkerGraphFeatures',
-    'TinkerGraph$TinkerGraphGraphFeatures': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph$TinkerGraphGraphFeatures',
-    'TinkerGraph$TinkerGraphVertexFeatures': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph$TinkerGraphVertexFeatures',
-    'TinkerGraphVariables': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraphVariables',
-    'TinkerHelper': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerHelper',
-    'TinkerProperty': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerProperty',
-    'TinkerVertex': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerVertex',
-    'TinkerVertexProperty': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerVertexProperty',
-    'Boolean': 'java.lang.Boolean',
-    'Cloneable': 'java.lang.Cloneable',
-    'Comparable': 'java.lang.Comparable',
-    'Double': 'java.lang.Double',
-    'Enum': 'java.lang.Enum',
-    'Exception': 'java.lang.Exception',
-    'Float': 'java.lang.Float',
-    'Integer': 'java.lang.Integer',
-    'Iterable': 'java.lang.Iterable',
-    'Long': 'java.lang.Long',
-    'Object': 'java.lang.Object',
-    'Short': 'java.lang.Short',
-    'String': 'java.lang.String',
-    'Throwable': 'java.lang.Throwable',
-    'AbstractCollection': 'java.util.AbstractCollection',
-    'AbstractList': 'java.util.AbstractList',
-    'AbstractSet': 'java.util.AbstractSet',
-    'ArrayList': 'java.util.ArrayList',
-    'Arrays': 'java.util.Arrays',
-    'Collection': 'java.util.Collection',
-    'BiFunction': 'java.util.function.BiFunction',
-    'BinaryOperator': 'java.util.function.BinaryOperator',
-    'BiPredicate': 'java.util.function.BiPredicate',
-    'Consumer': 'java.util.function.Consumer',
-    'Function': 'java.util.function.Function',
-    'HashSet': 'java.util.HashSet',
-    'Iterator': 'java.util.Iterator',
-    'List': 'java.util.List',
-    'Map': 'java.util.Map',
-    'NoSuchElementException': 'java.util.NoSuchElementException',
-    'Set': 'java.util.Set'
-  };
 
   export function importClass(className: 'AnonymousGraphTraversal'): Java.com.tinkerpop.gremlin.process.graph.AnonymousGraphTraversal.Static;
   export function importClass(className: 'AnonymousGraphTraversal$Tokens'): Java.com.tinkerpop.gremlin.process.graph.AnonymousGraphTraversal$Tokens.Static;
@@ -494,47 +343,164 @@ module Module {
   export function importClass(className: 'java.util.Set'): Java.java.util.Set.Static;
   export function importClass(className: string): any;
   export function importClass(className: string): any {
+    var shortToLongMap: StringDict = {
+      'AnonymousGraphTraversal': 'com.tinkerpop.gremlin.process.graph.AnonymousGraphTraversal',
+      'AnonymousGraphTraversal$Tokens': 'com.tinkerpop.gremlin.process.graph.AnonymousGraphTraversal$Tokens',
+      'EdgeTraversal': 'com.tinkerpop.gremlin.process.graph.EdgeTraversal',
+      'ElementTraversal': 'com.tinkerpop.gremlin.process.graph.ElementTraversal',
+      'GraphTraversal': 'com.tinkerpop.gremlin.process.graph.GraphTraversal',
+      'GraphTraversal$Admin': 'com.tinkerpop.gremlin.process.graph.GraphTraversal$Admin',
+      'VertexPropertyTraversal': 'com.tinkerpop.gremlin.process.graph.VertexPropertyTraversal',
+      'VertexTraversal': 'com.tinkerpop.gremlin.process.graph.VertexTraversal',
+      'Path': 'com.tinkerpop.gremlin.process.Path',
+      'Path$Exceptions': 'com.tinkerpop.gremlin.process.Path$Exceptions',
+      'Step': 'com.tinkerpop.gremlin.process.Step',
+      'T': 'com.tinkerpop.gremlin.process.T',
+      'Traversal': 'com.tinkerpop.gremlin.process.Traversal',
+      'Traversal$Admin': 'com.tinkerpop.gremlin.process.Traversal$Admin',
+      'Traversal$Exceptions': 'com.tinkerpop.gremlin.process.Traversal$Exceptions',
+      'TraversalEngine': 'com.tinkerpop.gremlin.process.TraversalEngine',
+      'TraversalSideEffects': 'com.tinkerpop.gremlin.process.TraversalSideEffects',
+      'TraversalSideEffects$Exceptions': 'com.tinkerpop.gremlin.process.TraversalSideEffects$Exceptions',
+      'TraversalStrategies': 'com.tinkerpop.gremlin.process.TraversalStrategies',
+      'TraversalStrategies$GlobalCache': 'com.tinkerpop.gremlin.process.TraversalStrategies$GlobalCache',
+      'TraversalStrategy': 'com.tinkerpop.gremlin.process.TraversalStrategy',
+      'Traverser': 'com.tinkerpop.gremlin.process.Traverser',
+      'Traverser$Admin': 'com.tinkerpop.gremlin.process.Traverser$Admin',
+      'TraverserGenerator': 'com.tinkerpop.gremlin.process.TraverserGenerator',
+      'AbstractStep': 'com.tinkerpop.gremlin.process.util.AbstractStep',
+      'BulkSet': 'com.tinkerpop.gremlin.process.util.BulkSet',
+      'DefaultTraversal': 'com.tinkerpop.gremlin.process.util.DefaultTraversal',
+      'DefaultTraversalSideEffects': 'com.tinkerpop.gremlin.process.util.DefaultTraversalSideEffects',
+      'DefaultTraversalStrategies': 'com.tinkerpop.gremlin.process.util.DefaultTraversalStrategies',
+      'ElementFunctionComparator': 'com.tinkerpop.gremlin.process.util.ElementFunctionComparator',
+      'ElementValueComparator': 'com.tinkerpop.gremlin.process.util.ElementValueComparator',
+      'ElementValueFunction': 'com.tinkerpop.gremlin.process.util.ElementValueFunction',
+      'EmptyPath': 'com.tinkerpop.gremlin.process.util.EmptyPath',
+      'EmptyStep': 'com.tinkerpop.gremlin.process.util.EmptyStep',
+      'EmptyTraversal': 'com.tinkerpop.gremlin.process.util.EmptyTraversal',
+      'EmptyTraversalSideEffects': 'com.tinkerpop.gremlin.process.util.EmptyTraversalSideEffects',
+      'EmptyTraversalStrategies': 'com.tinkerpop.gremlin.process.util.EmptyTraversalStrategies',
+      'EmptyTraverser': 'com.tinkerpop.gremlin.process.util.EmptyTraverser',
+      'ExpandableStepIterator': 'com.tinkerpop.gremlin.process.util.ExpandableStepIterator',
+      'FastNoSuchElementException': 'com.tinkerpop.gremlin.process.util.FastNoSuchElementException',
+      'FunctionRing': 'com.tinkerpop.gremlin.process.util.FunctionRing',
+      'GraphTraversalSourceGenerator': 'com.tinkerpop.gremlin.process.util.GraphTraversalSourceGenerator',
+      'ImmutablePath': 'com.tinkerpop.gremlin.process.util.ImmutablePath',
+      'MapHelper': 'com.tinkerpop.gremlin.process.util.MapHelper',
+      'MultiIterator': 'com.tinkerpop.gremlin.process.util.MultiIterator',
+      'MutablePath': 'com.tinkerpop.gremlin.process.util.MutablePath',
+      'SideEffectHelper': 'com.tinkerpop.gremlin.process.util.SideEffectHelper',
+      'SparsePath': 'com.tinkerpop.gremlin.process.util.SparsePath',
+      'StepMetrics': 'com.tinkerpop.gremlin.process.util.StepMetrics',
+      'StepPosition': 'com.tinkerpop.gremlin.process.util.StepPosition',
+      'StepTimer': 'com.tinkerpop.gremlin.process.util.StepTimer',
+      'TraversalHelper': 'com.tinkerpop.gremlin.process.util.TraversalHelper',
+      'TraversalMatrix': 'com.tinkerpop.gremlin.process.util.TraversalMatrix',
+      'TraversalMetrics': 'com.tinkerpop.gremlin.process.util.TraversalMetrics',
+      'TraversalRing': 'com.tinkerpop.gremlin.process.util.TraversalRing',
+      'TraverserSet': 'com.tinkerpop.gremlin.process.util.TraverserSet',
+      'Compare': 'com.tinkerpop.gremlin.structure.Compare',
+      'Contains': 'com.tinkerpop.gremlin.structure.Contains',
+      'Direction': 'com.tinkerpop.gremlin.structure.Direction',
+      'Edge': 'com.tinkerpop.gremlin.structure.Edge',
+      'Edge$Exceptions': 'com.tinkerpop.gremlin.structure.Edge$Exceptions',
+      'Edge$Iterators': 'com.tinkerpop.gremlin.structure.Edge$Iterators',
+      'Element': 'com.tinkerpop.gremlin.structure.Element',
+      'Element$Exceptions': 'com.tinkerpop.gremlin.structure.Element$Exceptions',
+      'Element$Iterators': 'com.tinkerpop.gremlin.structure.Element$Iterators',
+      'Graph': 'com.tinkerpop.gremlin.structure.Graph',
+      'Graph$Exceptions': 'com.tinkerpop.gremlin.structure.Graph$Exceptions',
+      'Graph$Features': 'com.tinkerpop.gremlin.structure.Graph$Features',
+      'Graph$Features$DataTypeFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$DataTypeFeatures',
+      'Graph$Features$EdgeFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$EdgeFeatures',
+      'Graph$Features$EdgePropertyFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$EdgePropertyFeatures',
+      'Graph$Features$ElementFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$ElementFeatures',
+      'Graph$Features$FeatureSet': 'com.tinkerpop.gremlin.structure.Graph$Features$FeatureSet',
+      'Graph$Features$GraphFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$GraphFeatures',
+      'Graph$Features$PropertyFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$PropertyFeatures',
+      'Graph$Features$VariableFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$VariableFeatures',
+      'Graph$Features$VertexFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$VertexFeatures',
+      'Graph$Features$VertexPropertyFeatures': 'com.tinkerpop.gremlin.structure.Graph$Features$VertexPropertyFeatures',
+      'Graph$Helper': 'com.tinkerpop.gremlin.structure.Graph$Helper',
+      'Graph$Hidden': 'com.tinkerpop.gremlin.structure.Graph$Hidden',
+      'Graph$Io': 'com.tinkerpop.gremlin.structure.Graph$Io',
+      'Graph$Iterators': 'com.tinkerpop.gremlin.structure.Graph$Iterators',
+      'Graph$OptIn': 'com.tinkerpop.gremlin.structure.Graph$OptIn',
+      'Graph$OptIns': 'com.tinkerpop.gremlin.structure.Graph$OptIns',
+      'Graph$OptOut': 'com.tinkerpop.gremlin.structure.Graph$OptOut',
+      'Graph$OptOuts': 'com.tinkerpop.gremlin.structure.Graph$OptOuts',
+      'Graph$Variables': 'com.tinkerpop.gremlin.structure.Graph$Variables',
+      'Graph$Variables$Exceptions': 'com.tinkerpop.gremlin.structure.Graph$Variables$Exceptions',
+      'Operator': 'com.tinkerpop.gremlin.structure.Operator',
+      'Order': 'com.tinkerpop.gremlin.structure.Order',
+      'Property': 'com.tinkerpop.gremlin.structure.Property',
+      'Property$Exceptions': 'com.tinkerpop.gremlin.structure.Property$Exceptions',
+      'PropertyType': 'com.tinkerpop.gremlin.structure.PropertyType',
+      'Transaction': 'com.tinkerpop.gremlin.structure.Transaction',
+      'Transaction$CLOSE_BEHAVIOR': 'com.tinkerpop.gremlin.structure.Transaction$CLOSE_BEHAVIOR',
+      'Transaction$Exceptions': 'com.tinkerpop.gremlin.structure.Transaction$Exceptions',
+      'Transaction$READ_WRITE_BEHAVIOR': 'com.tinkerpop.gremlin.structure.Transaction$READ_WRITE_BEHAVIOR',
+      'Transaction$Workload': 'com.tinkerpop.gremlin.structure.Transaction$Workload',
+      'Vertex': 'com.tinkerpop.gremlin.structure.Vertex',
+      'Vertex$Exceptions': 'com.tinkerpop.gremlin.structure.Vertex$Exceptions',
+      'Vertex$Iterators': 'com.tinkerpop.gremlin.structure.Vertex$Iterators',
+      'VertexProperty': 'com.tinkerpop.gremlin.structure.VertexProperty',
+      'VertexProperty$Exceptions': 'com.tinkerpop.gremlin.structure.VertexProperty$Exceptions',
+      'VertexProperty$Iterators': 'com.tinkerpop.gremlin.structure.VertexProperty$Iterators',
+      'TinkerEdge': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerEdge',
+      'TinkerElement': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerElement',
+      'TinkerFactory': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory',
+      'TinkerFactory$SocialTraversal': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory$SocialTraversal',
+      'TinkerFactory$SocialTraversal$DefaultSocialTraversal': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory$SocialTraversal$DefaultSocialTraversal',
+      'TinkerGraph': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph',
+      'TinkerGraph$TinkerGraphEdgeFeatures': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph$TinkerGraphEdgeFeatures',
+      'TinkerGraph$TinkerGraphFeatures': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph$TinkerGraphFeatures',
+      'TinkerGraph$TinkerGraphGraphFeatures': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph$TinkerGraphGraphFeatures',
+      'TinkerGraph$TinkerGraphVertexFeatures': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph$TinkerGraphVertexFeatures',
+      'TinkerGraphVariables': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraphVariables',
+      'TinkerHelper': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerHelper',
+      'TinkerProperty': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerProperty',
+      'TinkerVertex': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerVertex',
+      'TinkerVertexProperty': 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerVertexProperty',
+      'Boolean': 'java.lang.Boolean',
+      'Cloneable': 'java.lang.Cloneable',
+      'Comparable': 'java.lang.Comparable',
+      'Double': 'java.lang.Double',
+      'Enum': 'java.lang.Enum',
+      'Exception': 'java.lang.Exception',
+      'Float': 'java.lang.Float',
+      'Integer': 'java.lang.Integer',
+      'Iterable': 'java.lang.Iterable',
+      'Long': 'java.lang.Long',
+      'Object': 'java.lang.Object',
+      'Short': 'java.lang.Short',
+      'String': 'java.lang.String',
+      'Throwable': 'java.lang.Throwable',
+      'AbstractCollection': 'java.util.AbstractCollection',
+      'AbstractList': 'java.util.AbstractList',
+      'AbstractSet': 'java.util.AbstractSet',
+      'ArrayList': 'java.util.ArrayList',
+      'Arrays': 'java.util.Arrays',
+      'Collection': 'java.util.Collection',
+      'BiFunction': 'java.util.function.BiFunction',
+      'BinaryOperator': 'java.util.function.BinaryOperator',
+      'BiPredicate': 'java.util.function.BiPredicate',
+      'Consumer': 'java.util.function.Consumer',
+      'Function': 'java.util.function.Function',
+      'HashSet': 'java.util.HashSet',
+      'Iterator': 'java.util.Iterator',
+      'List': 'java.util.List',
+      'Map': 'java.util.Map',
+      'NoSuchElementException': 'java.util.NoSuchElementException',
+      'Set': 'java.util.Set'
+    };
+
     if (className in shortToLongMap) {
       className = shortToLongMap[className];
     }
     return _java.import(className);
   }
-
-  // Node-java has special handling for methods that return long or java.lang.Long,
-  // returning a Javascript Number but with an additional property longValue.
-  export interface longValue_t extends Number {
-    longValue: string;
-  }
-
-  // Node-java can automatically coerce a javascript string into a java.lang.String.
-  // This special type alias allows to declare that possiblity to Typescript.
-  export type string_t = string | Java.java.lang.String;
-
-  // Java methods that take java.lang.Object parameters implicitly will take a java.lang.String.
-  // But string_t is not sufficient for this case, we need object_t.
-  export type object_t = Java.java.lang.Object | string | boolean | number | longValue_t;
-
-  // Java methods that take long or java.lang.Long parameters may take javascript numbers,
-  // longValue_t (see above) or java.lang.Long.
-  // This special type alias allows to declare that possiblity to Typescript.
-  export type long_t = number | longValue_t | Java.java.lang.Long;
-
-  // Handling of other primitive numeric types is simpler, as there is no loss of precision.
-  export type boolean_t = boolean | Java.java.lang.Boolean;
-  export type short_t = number | Java.java.lang.Short;
-  export type integer_t = number | Java.java.lang.Integer;
-  export type double_t = number | Java.java.lang.Double;
-  export type float_t = number | Java.java.lang.Float;
-  export type number_t = number | Java.java.lang.Number;
-
-  export interface array_t<T> extends Java.java.lang.Object {
-    // This is an opaque type for a java array_t T[];
-    // Use Java.newArray<T>(className, [...]) to create wherever a Java method expects a T[],
-    // most notably for vararg parameteters.
-    __dummy: T;
-  }
-
-  export type object_array_t = array_t<Java.java.lang.Object> | object_t[];
 
   export interface Callback<T> {
     (err?: Error, result?: T): void;
@@ -849,7 +815,199 @@ module Module {
     return _java.newInstanceP.apply(_java, args);
   }
 
-  export module Java {
+  export function newArray(className: 'com.tinkerpop.gremlin.process.graph.AnonymousGraphTraversal', arg: Java.AnonymousGraphTraversal[]): array_t<com.tinkerpop.gremlin.process.graph.AnonymousGraphTraversal>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.graph.AnonymousGraphTraversal$Tokens', arg: Java.AnonymousGraphTraversal$Tokens[]): array_t<com.tinkerpop.gremlin.process.graph.AnonymousGraphTraversal$Tokens>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.graph.EdgeTraversal', arg: Java.EdgeTraversal[]): array_t<com.tinkerpop.gremlin.process.graph.EdgeTraversal>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.graph.ElementTraversal', arg: Java.ElementTraversal[]): array_t<com.tinkerpop.gremlin.process.graph.ElementTraversal>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.graph.GraphTraversal', arg: Java.GraphTraversal[]): array_t<com.tinkerpop.gremlin.process.graph.GraphTraversal>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.graph.GraphTraversal$Admin', arg: Java.GraphTraversal$Admin[]): array_t<com.tinkerpop.gremlin.process.graph.GraphTraversal$Admin>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.graph.VertexPropertyTraversal', arg: Java.VertexPropertyTraversal[]): array_t<com.tinkerpop.gremlin.process.graph.VertexPropertyTraversal>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.graph.VertexTraversal', arg: Java.VertexTraversal[]): array_t<com.tinkerpop.gremlin.process.graph.VertexTraversal>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.Path', arg: Java.Path[]): array_t<com.tinkerpop.gremlin.process.Path>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.Path$Exceptions', arg: Java.Path$Exceptions[]): array_t<com.tinkerpop.gremlin.process.Path$Exceptions>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.Step', arg: Java.Step[]): array_t<com.tinkerpop.gremlin.process.Step>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.T', arg: Java.T[]): array_t<com.tinkerpop.gremlin.process.T>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.Traversal', arg: Java.Traversal[]): array_t<com.tinkerpop.gremlin.process.Traversal>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.Traversal$Admin', arg: Java.Traversal$Admin[]): array_t<com.tinkerpop.gremlin.process.Traversal$Admin>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.Traversal$Exceptions', arg: Java.Traversal$Exceptions[]): array_t<com.tinkerpop.gremlin.process.Traversal$Exceptions>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.TraversalEngine', arg: Java.TraversalEngine[]): array_t<com.tinkerpop.gremlin.process.TraversalEngine>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.TraversalSideEffects', arg: Java.TraversalSideEffects[]): array_t<com.tinkerpop.gremlin.process.TraversalSideEffects>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.TraversalSideEffects$Exceptions', arg: Java.TraversalSideEffects$Exceptions[]): array_t<com.tinkerpop.gremlin.process.TraversalSideEffects$Exceptions>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.TraversalStrategies', arg: Java.TraversalStrategies[]): array_t<com.tinkerpop.gremlin.process.TraversalStrategies>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.TraversalStrategies$GlobalCache', arg: Java.TraversalStrategies$GlobalCache[]): array_t<com.tinkerpop.gremlin.process.TraversalStrategies$GlobalCache>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.TraversalStrategy', arg: Java.TraversalStrategy[]): array_t<com.tinkerpop.gremlin.process.TraversalStrategy>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.Traverser', arg: Java.Traverser[]): array_t<com.tinkerpop.gremlin.process.Traverser>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.Traverser$Admin', arg: Java.Traverser$Admin[]): array_t<com.tinkerpop.gremlin.process.Traverser$Admin>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.TraverserGenerator', arg: Java.TraverserGenerator[]): array_t<com.tinkerpop.gremlin.process.TraverserGenerator>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.AbstractStep', arg: Java.AbstractStep[]): array_t<com.tinkerpop.gremlin.process.util.AbstractStep>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.BulkSet', arg: Java.BulkSet[]): array_t<com.tinkerpop.gremlin.process.util.BulkSet>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.DefaultTraversal', arg: Java.DefaultTraversal[]): array_t<com.tinkerpop.gremlin.process.util.DefaultTraversal>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.DefaultTraversalSideEffects', arg: Java.DefaultTraversalSideEffects[]): array_t<com.tinkerpop.gremlin.process.util.DefaultTraversalSideEffects>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.DefaultTraversalStrategies', arg: Java.DefaultTraversalStrategies[]): array_t<com.tinkerpop.gremlin.process.util.DefaultTraversalStrategies>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.ElementFunctionComparator', arg: Java.ElementFunctionComparator[]): array_t<com.tinkerpop.gremlin.process.util.ElementFunctionComparator>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.ElementValueComparator', arg: Java.ElementValueComparator[]): array_t<com.tinkerpop.gremlin.process.util.ElementValueComparator>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.ElementValueFunction', arg: Java.ElementValueFunction[]): array_t<com.tinkerpop.gremlin.process.util.ElementValueFunction>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.EmptyPath', arg: Java.EmptyPath[]): array_t<com.tinkerpop.gremlin.process.util.EmptyPath>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.EmptyStep', arg: Java.EmptyStep[]): array_t<com.tinkerpop.gremlin.process.util.EmptyStep>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.EmptyTraversal', arg: Java.EmptyTraversal[]): array_t<com.tinkerpop.gremlin.process.util.EmptyTraversal>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.EmptyTraversalSideEffects', arg: Java.EmptyTraversalSideEffects[]): array_t<com.tinkerpop.gremlin.process.util.EmptyTraversalSideEffects>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.EmptyTraversalStrategies', arg: Java.EmptyTraversalStrategies[]): array_t<com.tinkerpop.gremlin.process.util.EmptyTraversalStrategies>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.EmptyTraverser', arg: Java.EmptyTraverser[]): array_t<com.tinkerpop.gremlin.process.util.EmptyTraverser>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.ExpandableStepIterator', arg: Java.ExpandableStepIterator[]): array_t<com.tinkerpop.gremlin.process.util.ExpandableStepIterator>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.FastNoSuchElementException', arg: Java.FastNoSuchElementException[]): array_t<com.tinkerpop.gremlin.process.util.FastNoSuchElementException>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.FunctionRing', arg: Java.FunctionRing[]): array_t<com.tinkerpop.gremlin.process.util.FunctionRing>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.GraphTraversalSourceGenerator', arg: Java.GraphTraversalSourceGenerator[]): array_t<com.tinkerpop.gremlin.process.util.GraphTraversalSourceGenerator>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.ImmutablePath', arg: Java.ImmutablePath[]): array_t<com.tinkerpop.gremlin.process.util.ImmutablePath>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.MapHelper', arg: Java.MapHelper[]): array_t<com.tinkerpop.gremlin.process.util.MapHelper>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.MultiIterator', arg: Java.MultiIterator[]): array_t<com.tinkerpop.gremlin.process.util.MultiIterator>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.MutablePath', arg: Java.MutablePath[]): array_t<com.tinkerpop.gremlin.process.util.MutablePath>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.SideEffectHelper', arg: Java.SideEffectHelper[]): array_t<com.tinkerpop.gremlin.process.util.SideEffectHelper>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.SparsePath', arg: Java.SparsePath[]): array_t<com.tinkerpop.gremlin.process.util.SparsePath>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.StepMetrics', arg: Java.StepMetrics[]): array_t<com.tinkerpop.gremlin.process.util.StepMetrics>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.StepPosition', arg: Java.StepPosition[]): array_t<com.tinkerpop.gremlin.process.util.StepPosition>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.StepTimer', arg: Java.StepTimer[]): array_t<com.tinkerpop.gremlin.process.util.StepTimer>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.TraversalHelper', arg: Java.TraversalHelper[]): array_t<com.tinkerpop.gremlin.process.util.TraversalHelper>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.TraversalMatrix', arg: Java.TraversalMatrix[]): array_t<com.tinkerpop.gremlin.process.util.TraversalMatrix>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.TraversalMetrics', arg: Java.TraversalMetrics[]): array_t<com.tinkerpop.gremlin.process.util.TraversalMetrics>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.TraversalRing', arg: Java.TraversalRing[]): array_t<com.tinkerpop.gremlin.process.util.TraversalRing>;
+  export function newArray(className: 'com.tinkerpop.gremlin.process.util.TraverserSet', arg: Java.TraverserSet[]): array_t<com.tinkerpop.gremlin.process.util.TraverserSet>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Compare', arg: Java.Compare[]): array_t<com.tinkerpop.gremlin.structure.Compare>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Contains', arg: Java.Contains[]): array_t<com.tinkerpop.gremlin.structure.Contains>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Direction', arg: Java.Direction[]): array_t<com.tinkerpop.gremlin.structure.Direction>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Edge', arg: Java.Edge[]): array_t<com.tinkerpop.gremlin.structure.Edge>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Edge$Exceptions', arg: Java.Edge$Exceptions[]): array_t<com.tinkerpop.gremlin.structure.Edge$Exceptions>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Edge$Iterators', arg: Java.Edge$Iterators[]): array_t<com.tinkerpop.gremlin.structure.Edge$Iterators>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Element', arg: Java.Element[]): array_t<com.tinkerpop.gremlin.structure.Element>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Element$Exceptions', arg: Java.Element$Exceptions[]): array_t<com.tinkerpop.gremlin.structure.Element$Exceptions>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Element$Iterators', arg: Java.Element$Iterators[]): array_t<com.tinkerpop.gremlin.structure.Element$Iterators>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph', arg: Java.Graph[]): array_t<com.tinkerpop.gremlin.structure.Graph>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Exceptions', arg: Java.Graph$Exceptions[]): array_t<com.tinkerpop.gremlin.structure.Graph$Exceptions>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Features', arg: Java.Graph$Features[]): array_t<com.tinkerpop.gremlin.structure.Graph$Features>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Features$DataTypeFeatures', arg: Java.Graph$Features$DataTypeFeatures[]): array_t<com.tinkerpop.gremlin.structure.Graph$Features$DataTypeFeatures>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Features$EdgeFeatures', arg: Java.Graph$Features$EdgeFeatures[]): array_t<com.tinkerpop.gremlin.structure.Graph$Features$EdgeFeatures>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Features$EdgePropertyFeatures', arg: Java.Graph$Features$EdgePropertyFeatures[]): array_t<com.tinkerpop.gremlin.structure.Graph$Features$EdgePropertyFeatures>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Features$ElementFeatures', arg: Java.Graph$Features$ElementFeatures[]): array_t<com.tinkerpop.gremlin.structure.Graph$Features$ElementFeatures>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Features$FeatureSet', arg: Java.Graph$Features$FeatureSet[]): array_t<com.tinkerpop.gremlin.structure.Graph$Features$FeatureSet>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Features$GraphFeatures', arg: Java.Graph$Features$GraphFeatures[]): array_t<com.tinkerpop.gremlin.structure.Graph$Features$GraphFeatures>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Features$PropertyFeatures', arg: Java.Graph$Features$PropertyFeatures[]): array_t<com.tinkerpop.gremlin.structure.Graph$Features$PropertyFeatures>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Features$VariableFeatures', arg: Java.Graph$Features$VariableFeatures[]): array_t<com.tinkerpop.gremlin.structure.Graph$Features$VariableFeatures>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Features$VertexFeatures', arg: Java.Graph$Features$VertexFeatures[]): array_t<com.tinkerpop.gremlin.structure.Graph$Features$VertexFeatures>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Features$VertexPropertyFeatures', arg: Java.Graph$Features$VertexPropertyFeatures[]): array_t<com.tinkerpop.gremlin.structure.Graph$Features$VertexPropertyFeatures>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Helper', arg: Java.Graph$Helper[]): array_t<com.tinkerpop.gremlin.structure.Graph$Helper>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Hidden', arg: Java.Graph$Hidden[]): array_t<com.tinkerpop.gremlin.structure.Graph$Hidden>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Io', arg: Java.Graph$Io[]): array_t<com.tinkerpop.gremlin.structure.Graph$Io>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Iterators', arg: Java.Graph$Iterators[]): array_t<com.tinkerpop.gremlin.structure.Graph$Iterators>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$OptIn', arg: Java.Graph$OptIn[]): array_t<com.tinkerpop.gremlin.structure.Graph$OptIn>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$OptIns', arg: Java.Graph$OptIns[]): array_t<com.tinkerpop.gremlin.structure.Graph$OptIns>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$OptOut', arg: Java.Graph$OptOut[]): array_t<com.tinkerpop.gremlin.structure.Graph$OptOut>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$OptOuts', arg: Java.Graph$OptOuts[]): array_t<com.tinkerpop.gremlin.structure.Graph$OptOuts>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Variables', arg: Java.Graph$Variables[]): array_t<com.tinkerpop.gremlin.structure.Graph$Variables>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Graph$Variables$Exceptions', arg: Java.Graph$Variables$Exceptions[]): array_t<com.tinkerpop.gremlin.structure.Graph$Variables$Exceptions>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Operator', arg: Java.Operator[]): array_t<com.tinkerpop.gremlin.structure.Operator>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Order', arg: Java.Order[]): array_t<com.tinkerpop.gremlin.structure.Order>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Property', arg: Java.Property[]): array_t<com.tinkerpop.gremlin.structure.Property>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Property$Exceptions', arg: Java.Property$Exceptions[]): array_t<com.tinkerpop.gremlin.structure.Property$Exceptions>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.PropertyType', arg: Java.PropertyType[]): array_t<com.tinkerpop.gremlin.structure.PropertyType>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Transaction', arg: Java.Transaction[]): array_t<com.tinkerpop.gremlin.structure.Transaction>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Transaction$CLOSE_BEHAVIOR', arg: Java.Transaction$CLOSE_BEHAVIOR[]): array_t<com.tinkerpop.gremlin.structure.Transaction$CLOSE_BEHAVIOR>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Transaction$Exceptions', arg: Java.Transaction$Exceptions[]): array_t<com.tinkerpop.gremlin.structure.Transaction$Exceptions>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Transaction$READ_WRITE_BEHAVIOR', arg: Java.Transaction$READ_WRITE_BEHAVIOR[]): array_t<com.tinkerpop.gremlin.structure.Transaction$READ_WRITE_BEHAVIOR>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Transaction$Workload', arg: Java.Transaction$Workload[]): array_t<com.tinkerpop.gremlin.structure.Transaction$Workload>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Vertex', arg: Java.Vertex[]): array_t<com.tinkerpop.gremlin.structure.Vertex>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Vertex$Exceptions', arg: Java.Vertex$Exceptions[]): array_t<com.tinkerpop.gremlin.structure.Vertex$Exceptions>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.Vertex$Iterators', arg: Java.Vertex$Iterators[]): array_t<com.tinkerpop.gremlin.structure.Vertex$Iterators>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.VertexProperty', arg: Java.VertexProperty[]): array_t<com.tinkerpop.gremlin.structure.VertexProperty>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.VertexProperty$Exceptions', arg: Java.VertexProperty$Exceptions[]): array_t<com.tinkerpop.gremlin.structure.VertexProperty$Exceptions>;
+  export function newArray(className: 'com.tinkerpop.gremlin.structure.VertexProperty$Iterators', arg: Java.VertexProperty$Iterators[]): array_t<com.tinkerpop.gremlin.structure.VertexProperty$Iterators>;
+  export function newArray(className: 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerEdge', arg: Java.TinkerEdge[]): array_t<com.tinkerpop.gremlin.tinkergraph.structure.TinkerEdge>;
+  export function newArray(className: 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerElement', arg: Java.TinkerElement[]): array_t<com.tinkerpop.gremlin.tinkergraph.structure.TinkerElement>;
+  export function newArray(className: 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory', arg: Java.TinkerFactory[]): array_t<com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory>;
+  export function newArray(className: 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory$SocialTraversal', arg: Java.TinkerFactory$SocialTraversal[]): array_t<com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory$SocialTraversal>;
+  export function newArray(className: 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory$SocialTraversal$DefaultSocialTraversal', arg: Java.TinkerFactory$SocialTraversal$DefaultSocialTraversal[]): array_t<com.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory$SocialTraversal$DefaultSocialTraversal>;
+  export function newArray(className: 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph', arg: Java.TinkerGraph[]): array_t<com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph>;
+  export function newArray(className: 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph$TinkerGraphEdgeFeatures', arg: Java.TinkerGraph$TinkerGraphEdgeFeatures[]): array_t<com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph$TinkerGraphEdgeFeatures>;
+  export function newArray(className: 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph$TinkerGraphFeatures', arg: Java.TinkerGraph$TinkerGraphFeatures[]): array_t<com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph$TinkerGraphFeatures>;
+  export function newArray(className: 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph$TinkerGraphGraphFeatures', arg: Java.TinkerGraph$TinkerGraphGraphFeatures[]): array_t<com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph$TinkerGraphGraphFeatures>;
+  export function newArray(className: 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph$TinkerGraphVertexFeatures', arg: Java.TinkerGraph$TinkerGraphVertexFeatures[]): array_t<com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph$TinkerGraphVertexFeatures>;
+  export function newArray(className: 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraphVariables', arg: Java.TinkerGraphVariables[]): array_t<com.tinkerpop.gremlin.tinkergraph.structure.TinkerGraphVariables>;
+  export function newArray(className: 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerHelper', arg: Java.TinkerHelper[]): array_t<com.tinkerpop.gremlin.tinkergraph.structure.TinkerHelper>;
+  export function newArray(className: 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerProperty', arg: Java.TinkerProperty[]): array_t<com.tinkerpop.gremlin.tinkergraph.structure.TinkerProperty>;
+  export function newArray(className: 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerVertex', arg: Java.TinkerVertex[]): array_t<com.tinkerpop.gremlin.tinkergraph.structure.TinkerVertex>;
+  export function newArray(className: 'com.tinkerpop.gremlin.tinkergraph.structure.TinkerVertexProperty', arg: Java.TinkerVertexProperty[]): array_t<com.tinkerpop.gremlin.tinkergraph.structure.TinkerVertexProperty>;
+  export function newArray(className: 'java.lang.Boolean', arg: boolean_t[]): array_t<java.lang.Boolean>;
+  export function newArray(className: 'java.lang.Cloneable', arg: Java.Cloneable[]): array_t<java.lang.Cloneable>;
+  export function newArray(className: 'java.lang.Comparable', arg: Java.Comparable[]): array_t<java.lang.Comparable>;
+  export function newArray(className: 'java.lang.Double', arg: double_t[]): array_t<java.lang.Double>;
+  export function newArray(className: 'java.lang.Enum', arg: Java.Enum[]): array_t<java.lang.Enum>;
+  export function newArray(className: 'java.lang.Exception', arg: Java.Exception[]): array_t<java.lang.Exception>;
+  export function newArray(className: 'java.lang.Float', arg: float_t[]): array_t<java.lang.Float>;
+  export function newArray(className: 'java.lang.Integer', arg: integer_t[]): array_t<java.lang.Integer>;
+  export function newArray(className: 'java.lang.Iterable', arg: Java.Iterable[]): array_t<java.lang.Iterable>;
+  export function newArray(className: 'java.lang.Long', arg: long_t[]): array_t<java.lang.Long>;
+  export function newArray(className: 'java.lang.Number', arg: number_t[]): array_t<java.lang.Number>;
+  export function newArray(className: 'java.lang.Object', arg: object_t[]): array_t<java.lang.Object>;
+  export function newArray(className: 'java.lang.Short', arg: short_t[]): array_t<java.lang.Short>;
+  export function newArray(className: 'java.lang.String', arg: string_t[]): array_t<java.lang.String>;
+  export function newArray(className: 'java.lang.Throwable', arg: Java.Throwable[]): array_t<java.lang.Throwable>;
+  export function newArray(className: 'java.util.AbstractCollection', arg: Java.AbstractCollection[]): array_t<java.util.AbstractCollection>;
+  export function newArray(className: 'java.util.AbstractList', arg: Java.AbstractList[]): array_t<java.util.AbstractList>;
+  export function newArray(className: 'java.util.AbstractSet', arg: Java.AbstractSet[]): array_t<java.util.AbstractSet>;
+  export function newArray(className: 'java.util.ArrayList', arg: Java.ArrayList[]): array_t<java.util.ArrayList>;
+  export function newArray(className: 'java.util.Arrays', arg: Java.Arrays[]): array_t<java.util.Arrays>;
+  export function newArray(className: 'java.util.Collection', arg: Java.Collection[]): array_t<java.util.Collection>;
+  export function newArray(className: 'java.util.function.BiFunction', arg: Java.BiFunction[]): array_t<java.util.function_.BiFunction>;
+  export function newArray(className: 'java.util.function.BinaryOperator', arg: Java.BinaryOperator[]): array_t<java.util.function_.BinaryOperator>;
+  export function newArray(className: 'java.util.function.BiPredicate', arg: Java.BiPredicate[]): array_t<java.util.function_.BiPredicate>;
+  export function newArray(className: 'java.util.function.Consumer', arg: Java.Consumer[]): array_t<java.util.function_.Consumer>;
+  export function newArray(className: 'java.util.function.Function', arg: Java.Function[]): array_t<java.util.function_.Function>;
+  export function newArray(className: 'java.util.HashSet', arg: Java.HashSet[]): array_t<java.util.HashSet>;
+  export function newArray(className: 'java.util.Iterator', arg: Java.Iterator[]): array_t<java.util.Iterator>;
+  export function newArray(className: 'java.util.List', arg: Java.List[]): array_t<java.util.List>;
+  export function newArray(className: 'java.util.Map', arg: Java.Map[]): array_t<java.util.Map>;
+  export function newArray(className: 'java.util.NoSuchElementException', arg: Java.NoSuchElementException[]): array_t<java.util.NoSuchElementException>;
+  export function newArray(className: 'java.util.Set', arg: Java.Set[]): array_t<java.util.Set>;
+  export function newArray<T>(className: string, arg: any[]): array_t<T>;
+  export function newArray<T>(className: string, arg: any[]): array_t<T> {
+    return _java.newArray(className, arg);
+  }
+
+  // export module Java {
+
+  // Node-java has special handling for methods that return long or java.lang.Long,
+  // returning a Javascript Number but with an additional property longValue.
+  export interface longValue_t extends Number {
+    longValue: string;
+  }
+
+  // Node-java can automatically coerce a javascript string into a java.lang.String.
+  // This special type alias allows to declare that possiblity to Typescript.
+  export type string_t = string | Java.java.lang.String;
+
+  // Java methods that take java.lang.Object parameters implicitly will take a java.lang.String.
+  // But string_t is not sufficient for this case, we need object_t.
+  export type object_t = Java.java.lang.Object | string | boolean | number | longValue_t;
+
+  // Java methods that take long or java.lang.Long parameters may take javascript numbers,
+  // longValue_t (see above) or java.lang.Long.
+  // This special type alias allows to declare that possiblity to Typescript.
+  export type long_t = number | longValue_t | Java.java.lang.Long;
+
+  // Handling of other primitive numeric types is simpler, as there is no loss of precision.
+  export type boolean_t = boolean | Java.java.lang.Boolean;
+  export type short_t = number | Java.java.lang.Short;
+  export type integer_t = number | Java.java.lang.Integer;
+  export type double_t = number | Java.java.lang.Double;
+  export type float_t = number | Java.java.lang.Float;
+  export type number_t = number | Java.java.lang.Number;
+
+  export interface array_t<T> extends Java.java.lang.Object {
+    // This is an opaque type for a java array_t T[];
+    // Use Java.newArray<T>(className, [...]) to create wherever a Java method expects a T[],
+    // most notably for vararg parameteters.
+    __dummy: T;
+  }
+
+  export type object_array_t = array_t<Java.java.lang.Object> | object_t[];
 
   export import AnonymousGraphTraversal = com.tinkerpop.gremlin.process.graph.AnonymousGraphTraversal;
   export import AnonymousGraphTraversal$Tokens = com.tinkerpop.gremlin.process.graph.AnonymousGraphTraversal$Tokens;
@@ -6715,6 +6873,10 @@ module Module {
 
   export module com.tinkerpop.gremlin.process.util {
     export interface StepPosition extends Java.java.lang.Object {
+      x: number;
+      y: number;
+      z: number;
+      parentId: string;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equals(arg0: object_t): boolean;
       equalsP(arg0: object_t): Promise<boolean>;
@@ -6745,10 +6907,6 @@ module Module {
       // public final void java.lang.Object.wait() throws java.lang.InterruptedException
       wait(): void;
       waitP(): Promise<void>;
-      x: number;
-      y: number;
-      z: number;
-      parentId: string;
     }
     export module StepPosition {
       export interface Static {
@@ -16088,6 +16246,6 @@ module Module {
   }
 
 
-  } // module Java
+  // } // module Java
 
 } // module Module

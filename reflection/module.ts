@@ -3,6 +3,9 @@
 /// <reference path="../typings/java/java.d.ts" />
 
 
+declare function require(name: string): any;
+require('source-map-support').install();
+
 import _java = require('java');
 import BluePromise = require('bluebird');
 import path = require('path');
@@ -25,13 +28,12 @@ function beforeJvm(): BluePromise<void> {
 
 _java.registerClientP(beforeJvm);
 
-interface Dictionary {
-  [index: string]: string;
-}
-
-export = Module;
-module Module {
+export module Java {
   'use strict';
+
+  interface StringDict {
+    [index: string]: string;
+  }
 
   export function ensureJvm(): Promise<void> {
     return _java.ensureJvm();
@@ -40,23 +42,6 @@ module Module {
   export function getClassLoader(): Java.java.lang.ClassLoader {
     return _java.getClassLoader();
   }
-
-  var shortToLongMap: Dictionary = {
-    'Boolean': 'java.lang.Boolean',
-    'Class': 'java.lang.Class',
-    'ClassLoader': 'java.lang.ClassLoader',
-    'Integer': 'java.lang.Integer',
-    'Object': 'java.lang.Object',
-    'AccessibleObject': 'java.lang.reflect.AccessibleObject',
-    'Constructor': 'java.lang.reflect.Constructor',
-    'Executable': 'java.lang.reflect.Executable',
-    'Field': 'java.lang.reflect.Field',
-    'Method': 'java.lang.reflect.Method',
-    'Modifier': 'java.lang.reflect.Modifier',
-    'Parameter': 'java.lang.reflect.Parameter',
-    'Type': 'java.lang.reflect.Type',
-    'String': 'java.lang.String'
-  };
 
   export function importClass(className: 'Boolean'): Java.java.lang.Boolean.Static;
   export function importClass(className: 'Class'): Java.java.lang.Class.Static;
@@ -88,47 +73,28 @@ module Module {
   export function importClass(className: 'java.lang.String'): Java.java.lang.String.Static;
   export function importClass(className: string): any;
   export function importClass(className: string): any {
+    var shortToLongMap: StringDict = {
+      'Boolean': 'java.lang.Boolean',
+      'Class': 'java.lang.Class',
+      'ClassLoader': 'java.lang.ClassLoader',
+      'Integer': 'java.lang.Integer',
+      'Object': 'java.lang.Object',
+      'AccessibleObject': 'java.lang.reflect.AccessibleObject',
+      'Constructor': 'java.lang.reflect.Constructor',
+      'Executable': 'java.lang.reflect.Executable',
+      'Field': 'java.lang.reflect.Field',
+      'Method': 'java.lang.reflect.Method',
+      'Modifier': 'java.lang.reflect.Modifier',
+      'Parameter': 'java.lang.reflect.Parameter',
+      'Type': 'java.lang.reflect.Type',
+      'String': 'java.lang.String'
+    };
+
     if (className in shortToLongMap) {
       className = shortToLongMap[className];
     }
     return _java.import(className);
   }
-
-  // Node-java has special handling for methods that return long or java.lang.Long,
-  // returning a Javascript Number but with an additional property longValue.
-  export interface longValue_t extends Number {
-    longValue: string;
-  }
-
-  // Node-java can automatically coerce a javascript string into a java.lang.String.
-  // This special type alias allows to declare that possiblity to Typescript.
-  export type string_t = string | Java.java.lang.String;
-
-  // Java methods that take java.lang.Object parameters implicitly will take a java.lang.String.
-  // But string_t is not sufficient for this case, we need object_t.
-  export type object_t = Java.java.lang.Object | string | boolean | number | longValue_t;
-
-  // Java methods that take long or java.lang.Long parameters may take javascript numbers,
-  // longValue_t (see above) or java.lang.Long.
-  // This special type alias allows to declare that possiblity to Typescript.
-  export type long_t = number | longValue_t ;
-
-  // Handling of other primitive numeric types is simpler, as there is no loss of precision.
-  export type boolean_t = boolean | Java.java.lang.Boolean;
-  export type short_t = number ;
-  export type integer_t = number | Java.java.lang.Integer;
-  export type double_t = number ;
-  export type float_t = number ;
-  export type number_t = number ;
-
-  export interface array_t<T> extends Java.java.lang.Object {
-    // This is an opaque type for a java array_t T[];
-    // Use Java.newArray<T>(className, [...]) to create wherever a Java method expects a T[],
-    // most notably for vararg parameteters.
-    __dummy: T;
-  }
-
-  export type object_array_t = array_t<Java.java.lang.Object> | object_t[];
 
   export interface Callback<T> {
     (err?: Error, result?: T): void;
@@ -138,10 +104,10 @@ module Module {
     return _java.instanceOf(javaObject, className);
   }
 
-  export function newShort(val: number): Java.java.lang.Short { return _java.newShort(val); }
-  export function newLong(val: number): Java.java.lang.Long { return _java.newLong(val); }
-  export function newFloat(val: number): Java.java.lang.Float { return _java.newFloat(val); }
-  export function newDouble(val: number): Java.java.lang.Double { return _java.newDouble(val); }
+
+
+
+
 
   export function newInstanceA(className: 'java.lang.Boolean', arg0: string_t, cb: Callback<boolean>): void;
   export function newInstanceA(className: 'java.lang.Boolean', arg0: boolean_t, cb: Callback<boolean>): void;
@@ -224,7 +190,62 @@ module Module {
     return _java.newInstanceP.apply(_java, args);
   }
 
-  export module Java {
+  export function newArray(className: 'java.lang.Boolean', arg: boolean_t[]): array_t<java.lang.Boolean>;
+  export function newArray(className: 'java.lang.Class', arg: Java.Class[]): array_t<java.lang.Class>;
+  export function newArray(className: 'java.lang.ClassLoader', arg: Java.ClassLoader[]): array_t<java.lang.ClassLoader>;
+  export function newArray(className: 'java.lang.Integer', arg: integer_t[]): array_t<java.lang.Integer>;
+  export function newArray(className: 'java.lang.Object', arg: object_t[]): array_t<java.lang.Object>;
+  export function newArray(className: 'java.lang.reflect.AccessibleObject', arg: Java.AccessibleObject[]): array_t<java.lang.reflect.AccessibleObject>;
+  export function newArray(className: 'java.lang.reflect.Constructor', arg: Java.Constructor[]): array_t<java.lang.reflect.Constructor>;
+  export function newArray(className: 'java.lang.reflect.Executable', arg: Java.Executable[]): array_t<java.lang.reflect.Executable>;
+  export function newArray(className: 'java.lang.reflect.Field', arg: Java.Field[]): array_t<java.lang.reflect.Field>;
+  export function newArray(className: 'java.lang.reflect.Method', arg: Java.Method[]): array_t<java.lang.reflect.Method>;
+  export function newArray(className: 'java.lang.reflect.Modifier', arg: Java.Modifier[]): array_t<java.lang.reflect.Modifier>;
+  export function newArray(className: 'java.lang.reflect.Parameter', arg: Java.Parameter[]): array_t<java.lang.reflect.Parameter>;
+  export function newArray(className: 'java.lang.reflect.Type', arg: Java.Type[]): array_t<java.lang.reflect.Type>;
+  export function newArray(className: 'java.lang.String', arg: string_t[]): array_t<java.lang.String>;
+  export function newArray<T>(className: string, arg: any[]): array_t<T>;
+  export function newArray<T>(className: string, arg: any[]): array_t<T> {
+    return _java.newArray(className, arg);
+  }
+
+  // export module Java {
+
+  // Node-java has special handling for methods that return long or java.lang.Long,
+  // returning a Javascript Number but with an additional property longValue.
+  export interface longValue_t extends Number {
+    longValue: string;
+  }
+
+  // Node-java can automatically coerce a javascript string into a java.lang.String.
+  // This special type alias allows to declare that possiblity to Typescript.
+  export type string_t = string | Java.java.lang.String;
+
+  // Java methods that take java.lang.Object parameters implicitly will take a java.lang.String.
+  // But string_t is not sufficient for this case, we need object_t.
+  export type object_t = Java.java.lang.Object | string | boolean | number | longValue_t;
+
+  // Java methods that take long or java.lang.Long parameters may take javascript numbers,
+  // longValue_t (see above) or java.lang.Long.
+  // This special type alias allows to declare that possiblity to Typescript.
+  export type long_t = number | longValue_t ;
+
+  // Handling of other primitive numeric types is simpler, as there is no loss of precision.
+  export type boolean_t = boolean | Java.java.lang.Boolean;
+  export type short_t = number ;
+  export type integer_t = number | Java.java.lang.Integer;
+  export type double_t = number ;
+  export type float_t = number ;
+  export type number_t = number ;
+
+  export interface array_t<T> extends Java.java.lang.Object {
+    // This is an opaque type for a java array_t T[];
+    // Use Java.newArray<T>(className, [...]) to create wherever a Java method expects a T[],
+    // most notably for vararg parameteters.
+    __dummy: T;
+  }
+
+  export type object_array_t = array_t<Java.java.lang.Object> | object_t[];
 
   export import Boolean = java.lang.Boolean;
   export import Class = java.lang.Class;
@@ -2408,6 +2429,6 @@ module Module {
   }
 
 
-  } // module Java
+  // } // module Java
 
 } // module Module

@@ -17,9 +17,8 @@ I need to understand when ts-java declares short aliases for class paths.
     import Thing1 = Java.com.redseal.featureset.Thing;
     import Thing2 = Java.com.redseal.featureset.ambiguous.Thing;
 
-    java.ensureJvm().then((): Promise<void> => {
+    Java.ensureJvm().then(() => {
       {{{ scenario_snippet }}}
-      return BluePromise.resolve();
     });
 
     """
@@ -31,7 +30,7 @@ I need to understand when ts-java declares short aliases for class paths.
     """
     When compiled it produces this error containing this snippet:
     """
-    error TS2305: Module 'Module.Java' has no exported member 'Thing'.
+    error TS2305: Module '.+' has no exported member 'Thing'.
     """
 
   Scenario: Must use full class path when class name alone is ambiguous
@@ -45,13 +44,13 @@ I need to understand when ts-java declares short aliases for class paths.
   Scenario: Can use Typescript alias with full class path when class name alone is ambiguous
     Given the above boilerplate with following scenario snippet:
     """
-    var thing1: Thing1 = java.newInstance('com.redseal.featureset.Thing', 42);
+    var thing1: Thing1 = Java.newInstance('com.redseal.featureset.Thing', 42);
     assert.equal(thing1.toString(), 'Thing42');
-    assert(java.instanceOf(thing1, 'com.redseal.featureset.Thing'));
+    assert(Java.instanceOf(thing1, 'com.redseal.featureset.Thing'));
 
-    var thing2: Thing2 = java.newInstance('com.redseal.featureset.ambiguous.Thing', 'foo');
+    var thing2: Thing2 = Java.newInstance('com.redseal.featureset.ambiguous.Thing', 'foo');
     assert.equal(thing2.toString(), 'Ambiguous Thing foo');
-    assert(java.instanceOf(thing2, 'com.redseal.featureset.ambiguous.Thing'));
+    assert(Java.instanceOf(thing2, 'com.redseal.featureset.ambiguous.Thing'));
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
@@ -59,8 +58,8 @@ I need to understand when ts-java declares short aliases for class paths.
   Scenario: Classes with same name with incompatible interfaces cannot be mixed
     Given the above boilerplate with following scenario snippet:
     """
-    var thing1: Thing1 = java.newInstance('com.redseal.featureset.Thing', 42);
-    var thing2: Thing2 = java.newInstance('com.redseal.featureset.ambiguous.Thing', 'foo');
+    var thing1: Thing1 = Java.newInstance('com.redseal.featureset.Thing', 42);
+    var thing2: Thing2 = Java.newInstance('com.redseal.featureset.ambiguous.Thing', 'foo');
     thing1 = thing2;
     """
     When compiled it produces this error containing this snippet:

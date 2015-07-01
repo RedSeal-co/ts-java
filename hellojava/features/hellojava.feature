@@ -16,12 +16,11 @@ in the Background section.
   Background:
     Given this boilerplate to intialize node-java:
     """
-    /// <reference path='../../typings/node/node.d.ts' />
-
     import hellojava = require('../module');
+    import Java = hellojava.Java;
 
-    hellojava.ensureJvm().then((): void => {
-      var HelloJava = hellojava.importClass('com.redseal.hellojava.HelloJava');
+    Java.ensureJvm().then((): void => {
+      var HelloJava = Java.importClass('com.redseal.hellojava.HelloJava');
       {{{ scenario_snippet }}}
     });
 

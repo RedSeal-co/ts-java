@@ -812,9 +812,9 @@ class ClassesMap {
 
   // *loadClassCache()*: Load all classes seen in prescan, pruning any non-public classes.
   private loadClassCache(): BluePromise<void> {
-    var Modifier: Java.Modifier.Static = reflection.importClass('java.lang.reflect.Modifier');
+    var Modifier: Java.Modifier.Static = Java.importClass('java.lang.reflect.Modifier');
     var nonPublic = Immutable.Set<string>();
-    var classLoader = reflection.getClassLoader();
+    var classLoader = Java.getClassLoader();
     this.allClasses.forEach((className: string): void => {
       var clazz: Java.Class = classLoader.loadClass(className);
       var modifiers: number = clazz.getModifiers();

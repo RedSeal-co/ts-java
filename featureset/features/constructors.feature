@@ -11,39 +11,21 @@ Feature: Constructors
     Given this boilerplate to intialize node-java:
     """
     /// <reference path='../../typings/node/node.d.ts' />
-    /// <reference path='../../typings/glob/glob.d.ts' />
-    /// <reference path='../../featureset/java.d.ts'/>
 
-    import glob = require('glob');
-    import java = require('java');
+    import java = require('../module');
+    import Java = java.Java;
 
-    function before(done: Java.Callback<void>): void {
-      java.asyncOptions = {
-        syncSuffix: 'Sync',
-        asyncSuffix: '',
-        promiseSuffix: 'Promise',
-        promisify: require('bluebird').promisify
-      };
-
-      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
-        filenames.forEach((name: string) => { java.classpath.push(name); });
-        done();
-      });
-    }
-
-    java.registerClient(before);
-
-    java.ensureJvm(() => {
+    Java.ensureJvm().then(() => {
       {{{ scenario_snippet }}}
     });
 
     """
 
-  Scenario: newInstanceSync
+  Scenario: newInstance sync
     Given the above boilerplate with following scenario snippet:
     """
-    var something: Java.SomeClass = java.newInstanceSync('com.redseal.featureset.SomeClass');
-    console.log(something.getStringSync());
+    var something: Java.SomeClass = Java.newInstance('com.redseal.featureset.SomeClass');
+    console.log(something.getString());
     """
     Then it compiles and lints cleanly
     And it runs and produces output:
@@ -55,8 +37,8 @@ Feature: Constructors
   Scenario: newInstance async
     Given the above boilerplate with following scenario snippet:
     """
-    java.newInstance('com.redseal.featureset.SomeClass', (err: Error, something: Java.SomeClass) => {
-      console.log(something.getStringSync());
+    Java.newInstanceA('com.redseal.featureset.SomeClass', (err: Error, something: Java.SomeClass) => {
+      console.log(something.getString());
     });
     """
     Then it compiles and lints cleanly
@@ -66,11 +48,11 @@ Feature: Constructors
 
     """
 
-  Scenario: newInstancePromise
+  Scenario: newInstance promise
     Given the above boilerplate with following scenario snippet:
     """
-    java.newInstancePromise('com.redseal.featureset.SomeClass').then((something: Java.SomeClass) => {
-      console.log(something.getStringSync());
+    Java.newInstanceP('com.redseal.featureset.SomeClass').then((something: Java.SomeClass) => {
+      console.log(something.getString());
     });
     """
     Then it compiles and lints cleanly
@@ -83,9 +65,9 @@ Feature: Constructors
   Scenario: new ClassName.Static
     Given the above boilerplate with following scenario snippet:
     """
-    var SomeClass: Java.com.redseal.featureset.SomeClass.Static = java.import('com.redseal.featureset.SomeClass');
+    var SomeClass: Java.com.redseal.featureset.SomeClass.Static = Java.importClass('com.redseal.featureset.SomeClass');
     var something: Java.SomeClass = new SomeClass();
-    console.log(something.getStringSync());
+    console.log(something.getString());
     """
     Then it compiles and lints cleanly
     And it runs and produces output:
@@ -97,9 +79,9 @@ Feature: Constructors
   Scenario: Constructor with arguments
     Given the above boilerplate with following scenario snippet:
     """
-    var SomeClass: Java.com.redseal.featureset.SomeClass.Static = java.import('com.redseal.featureset.SomeClass');
+    var SomeClass: Java.com.redseal.featureset.SomeClass.Static = Java.importClass('com.redseal.featureset.SomeClass');
     var something: Java.SomeClass = new SomeClass(1, 2, 'hello world', true, 3.14);
-    console.log(something.getStringSync());
+    console.log(something.getString());
     """
     Then it compiles and lints cleanly
     And it runs and produces output:

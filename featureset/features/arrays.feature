@@ -21,14 +21,11 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
     """
     /// <reference path='../../typings/power-assert/power-assert.d.ts' />
     /// <reference path='../../typings/lodash/lodash.d.ts' />
-    /// <reference path='../../typings/node/node.d.ts' />
-    /// <reference path='../../typings/glob/glob.d.ts' />
-    /// <reference path='../../featureset/java.d.ts'/>
 
     import _ = require('lodash');
-    import glob = require('glob');
-    import java = require('java');
     import assert = require('power-assert');
+    import java = require('../module');
+    import Java = java.Java;
 
     // We intentionally have two different classes named Thing, so it is necessary to refer
     // to the specific class we want with the full class path. But Typescript makes it easy
@@ -36,19 +33,10 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
     // Unfortunately, Typescript does not allow import aliases in function scope.
     import Thing = Java.com.redseal.featureset.Thing;
 
-    function before(done: Java.Callback<void>): void {
-      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
-        filenames.forEach((name: string) => { java.classpath.push(name); });
-        done();
-      });
-    }
+    Java.ensureJvm().then(() => {
+      var Arrays = Java.importClass('java.util.Arrays');
 
-    java.registerClient(before);
-
-    java.ensureJvm(() => {
-      var Arrays = java.import('java.util.Arrays');
-
-      var SomeClass = java.import('com.redseal.featureset.SomeClass');
+      var SomeClass = Java.importClass('com.redseal.featureset.SomeClass');
       var something: Java.SomeInterface = new SomeClass();
       {{{ scenario_snippet }}}
     });
@@ -58,7 +46,7 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
   Scenario: Getting 1d array of primitive type
     Given the above boilerplate with following scenario snippet:
     """
-    var arr: string[] = something.getListSync();
+    var arr: string[] = something.getList();
     assert.ok(_.isArray(arr));
     assert.deepEqual(arr, [ 'a', 'b', 'c' ]);
     """
@@ -68,7 +56,7 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
   Scenario: Getting 2d array of primitive type
     Given the above boilerplate with following scenario snippet:
     """
-    var arr: number[][] = something.getArraySync();
+    var arr: number[][] = something.getArray();
     assert.deepEqual(arr, [ [ 1, 2, 3 ], [ 4, 5, 6 ] ]);
     """
     Then it compiles and lints cleanly
@@ -77,11 +65,11 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
   Scenario: Getting 1d array of non-primitive type
     Given the above boilerplate with following scenario snippet:
     """
-    var clazz: Java.java.lang.Class = something.getClassSync();
-    var methods: Java.java.lang.reflect.Method[] = clazz.getDeclaredMethodsSync();
+    var clazz: Java.java.lang.Class = something.getClass();
+    var methods: Java.java.lang.reflect.Method[] = clazz.getDeclaredMethods();
     assert.ok(_.isArray(methods));
     assert.ok(methods.length > 0);
-    _.forEach(methods, (method: Java.Method) => assert.ok(java.instanceOf(method, 'java.lang.reflect.Method')));
+    _.forEach(methods, (method: Java.Method) => assert.ok(Java.instanceOf(method, 'java.lang.reflect.Method')));
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
@@ -89,7 +77,7 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
   Scenario: Getting 2d array of non-primitive type
     Given the above boilerplate with following scenario snippet:
     """
-    var things: Thing[][] = something.getThingsSync();
+    var things: Thing[][] = something.getThings();
     assert.ok(_.isArray(things));
     assert.strictEqual(things.length, 2);
     var thing1d: Thing[] = things[1];
@@ -98,7 +86,7 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
 
     var thingStrs: string[][] = _.map(things,
       (thing1d: Thing[]): string[] => _.map(thing1d,
-        (thing: Thing): string => thing.toStringSync()
+        (thing: Thing): string => thing.toString()
       )
     );
     assert.deepEqual(thingStrs, [ [ 'Thing0', 'Thing1', 'Thing2' ], [ 'Thing3', 'Thing4', 'Thing5' ] ]);
@@ -110,8 +98,8 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
     # see also varargs.feature
     Given the above boilerplate with following scenario snippet:
     """
-    something.setListVarArgsSync('foo', 'bar');
-    var arr: string[] = something.getListSync();
+    something.setListVarArgs('foo', 'bar');
+    var arr: string[] = something.getList();
     assert.deepEqual(arr, ['foo', 'bar']);
     """
     Then it compiles and lints cleanly
@@ -120,7 +108,7 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
   Scenario: A javascript array can be passed to a Java method taking an Object[] array.
     Given the above boilerplate with following scenario snippet:
     """
-    var result: string = something.setObjectsSync(['foo', 'bar']);
+    var result: string = something.setObjects(['foo', 'bar']);
     assert.strictEqual(result, 'Ack from setObjects(Object[] args)');
     """
     Then it compiles and lints cleanly
@@ -129,7 +117,7 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
   Scenario: It is an error to pass a Javascript array to a Java array if the base type is not Object
     Given the above boilerplate with following scenario snippet:
     """
-    something.setListSync(['foo', 'bar']);
+    something.setList(['foo', 'bar']);
     """
     When compiled it produces this error containing this snippet:
     """
@@ -139,8 +127,8 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
   Scenario: Setting a 1d array of any other type requires newArray
     Given the above boilerplate with following scenario snippet:
     """
-    something.setListSync(java.newArray('java.lang.String', ['foo', 'bar']));
-    var arr: string[] = something.getListSync();
+    something.setList(Java.newArray('java.lang.String', ['foo', 'bar']));
+    var arr: string[] = something.getList();
     assert.deepEqual(arr, ['foo', 'bar']);
     """
     Then it compiles and lints cleanly
@@ -148,7 +136,7 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
 
   Scenario: Setting 2d array is unsupported.
     # The node-java API `newArray()` only works with 1d arrays.
-    # In the example below, `setArraySync()` expects an int[][] object.
+    # In the example below, `setArray()` expects an int[][] object.
     # Node-java doesn't provide a means to create an object of that type.
     # It is probably possible to enhance node-java's `newArray()` to support
     # multidimensional arrays, but until then ts-java uses the type `void`
@@ -157,9 +145,9 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
     Given the above boilerplate with following scenario snippet:
     """
     var x: number[][] = [ [4, 5, 6], [7, 8, 9] ];
-    something.setArraySync(x);
+    something.setArray(x);
     """
     When compiled it produces this error containing this snippet:
     """
-    error TS2345: Argument of type 'number[][]' is not assignable to parameter of type 'void'.
+    error TS2345: Argument of type 'number\[\]\[\]' is not assignable to parameter of type 'void'.
     """

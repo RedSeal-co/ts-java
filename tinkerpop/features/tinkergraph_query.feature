@@ -7,14 +7,11 @@ So I can leverage my knowledge of the Java TinkerPop API to write programs in Ty
   Background:
     Given this boilerplate to intialize node-java:
     """
-    /// <reference path='../../typings/bluebird/bluebird.d.ts' />
-    /// <reference path='../../typings/node/node.d.ts' />
-
     import tinkerpop = require('../module');
     import Java = tinkerpop.Java;
 
-    tinkerpop.ensureJvm().then((): void => {
-      var TinkerFactory: Java.TinkerFactory.Static = tinkerpop.importClass('TinkerFactory');
+    Java.ensureJvm().then((): void => {
+      var TinkerFactory: Java.TinkerFactory.Static = Java.importClass('TinkerFactory');
       {{{ scenario_snippet }}}
     });
 

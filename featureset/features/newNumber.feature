@@ -9,25 +9,13 @@ See also PrimitiveTypeCoercions.feature.
   Background:
     Given this boilerplate to intialize node-java:
     """
-    /// <reference path='../../typings/glob/glob.d.ts' />
-    /// <reference path='../../typings/node/node.d.ts' />
     /// <reference path='../../typings/power-assert/power-assert.d.ts' />
-    /// <reference path='../../featureset/java.d.ts'/>
 
     import assert = require('power-assert');
-    import glob = require('glob');
-    import java = require('java');
+    import java = require('../module');
+    import Java = java.Java;
 
-    function before(done: Java.Callback<void>): void {
-      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
-        filenames.forEach((name: string) => { java.classpath.push(name); });
-        done();
-      });
-    }
-
-    java.registerClient(before);
-
-    java.ensureJvm(() => {
+    Java.ensureJvm().then(() => {
       {{{ scenario_snippet }}}
     });
 
@@ -36,14 +24,14 @@ See also PrimitiveTypeCoercions.feature.
   Scenario: newShort
     Given the above boilerplate with following scenario snippet:
     """
-    var i: Java.java.lang.Short = java.newShort(23);
+    var i: Java.java.lang.Short = Java.newShort(23);
 
     // Note `i` is not a number:
     assert.strictEqual(typeof i, 'object');
 
     // It is a java object:
-    assert.ok(java.instanceOf(i, 'java.lang.Short'));
-    assert.ok(java.instanceOf(i, 'java.lang.Number'));
+    assert.ok(Java.instanceOf(i, 'java.lang.Short'));
+    assert.ok(Java.instanceOf(i, 'java.lang.Number'));
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
@@ -51,14 +39,14 @@ See also PrimitiveTypeCoercions.feature.
   Scenario: newLong
     Given the above boilerplate with following scenario snippet:
     """
-    var i: Java.java.lang.Long = java.newLong(23);
+    var i: Java.java.lang.Long = Java.newLong(23);
 
     // Note `i` is not a number:
     assert.strictEqual(typeof i, 'object');
 
     // It is a java object:
-    assert.ok(java.instanceOf(i, 'java.lang.Long'));
-    assert.ok(java.instanceOf(i, 'java.lang.Number'));
+    assert.ok(Java.instanceOf(i, 'java.lang.Long'));
+    assert.ok(Java.instanceOf(i, 'java.lang.Number'));
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
@@ -66,14 +54,14 @@ See also PrimitiveTypeCoercions.feature.
   Scenario: newFloat
     Given the above boilerplate with following scenario snippet:
     """
-    var i: Java.java.lang.Float = java.newFloat(3.14159);
+    var i: Java.java.lang.Float = Java.newFloat(3.14159);
 
     // Note `i` is not a number:
     assert.strictEqual(typeof i, 'object');
 
     // It is a java object:
-    assert.ok(java.instanceOf(i, 'java.lang.Float'));
-    assert.ok(java.instanceOf(i, 'java.lang.Number'));
+    assert.ok(Java.instanceOf(i, 'java.lang.Float'));
+    assert.ok(Java.instanceOf(i, 'java.lang.Number'));
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
@@ -81,14 +69,14 @@ See also PrimitiveTypeCoercions.feature.
   Scenario: newDouble
     Given the above boilerplate with following scenario snippet:
     """
-    var i: Java.java.lang.Double = java.newDouble(3.14159);
+    var i: Java.java.lang.Double = Java.newDouble(3.14159);
 
     // Note `i` is not a number:
     assert.strictEqual(typeof i, 'object');
 
     // It is a java object:
-    assert.ok(java.instanceOf(i, 'java.lang.Double'));
-    assert.ok(java.instanceOf(i, 'java.lang.Number'));
+    assert.ok(Java.instanceOf(i, 'java.lang.Double'));
+    assert.ok(Java.instanceOf(i, 'java.lang.Number'));
     """
     Then it compiles and lints cleanly
     And it runs and produces no output

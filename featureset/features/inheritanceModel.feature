@@ -36,7 +36,7 @@ Feature: Inheritance Model
     import java = require('../module');
     import Java = java.Java;
 
-    java.ensureJvm().then(() => {
+    Java.ensureJvm().then(() => {
       {{{ scenario_snippet }}}
     });
 
@@ -49,7 +49,7 @@ Feature: Inheritance Model
       return it.getClass().getName();
     }
 
-    var ArrayList = java.importClass('ArrayList');
+    var ArrayList = Java.importClass('ArrayList');
     var list = new ArrayList();
     var itName: string = getClassOfSomeInterator(list.iterator());
     assert.strictEqual(itName, 'java.util.ArrayList$Itr');
@@ -63,22 +63,22 @@ Feature: Inheritance Model
     """
     // The Step class is a snippet that reproduced a problem exposed in Tinkerpop 3.0.0M9.
     // It resulted in a java.d.ts file that could not be compiled.
-    var Step: Java.Step.Static = java.importClass('com.redseal.featureset.overloading.Step');
+    var Step: Java.Step.Static = Java.importClass('com.redseal.featureset.overloading.Step');
     """
     Then it compiles and lints cleanly
 
   Scenario: Java classes that override one overloaded method variant have access to all inherited method variants.
     Given the above boilerplate with following scenario snippet:
     """
-    var Overloading$Foo = java.importClass('Overloading$Foo');
+    var Overloading$Foo = Java.importClass('Overloading$Foo');
     var foo = new Overloading$Foo();
 
     // These two calls are for variants from java.lang.Object, not explicitly overridden in Overloading$Foo
-    foo.waitA(java.newLong(1), (err: Error): void => { /* empty */ }); // wait for 1 millisecond
-    foo.waitA(java.newLong(1), 1, (err: Error): void => { /* empty */ }); // wait for 1001 nanoseconds
+    foo.waitA(Java.newLong(1), (err: Error): void => { /* empty */ }); // wait for 1 millisecond
+    foo.waitA(Java.newLong(1), 1, (err: Error): void => { /* empty */ }); // wait for 1001 nanoseconds
 
     // This call is for a variant of wait() declared in Overloading$Foo
-    foo.waitA(java.newDouble(0.000001), (err: Error): void => { /* empty */ }); // wait for 1 milliscond
+    foo.waitA(Java.newDouble(0.000001), (err: Error): void => { /* empty */ }); // wait for 1 milliscond
     """
     Then it compiles and lints cleanly
     And it runs and produces no output

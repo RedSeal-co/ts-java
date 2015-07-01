@@ -3,6 +3,9 @@
 /// <reference path="../typings/java/java.d.ts" />
 
 
+declare function require(name: string): any;
+require('source-map-support').install();
+
 import _java = require('java');
 import BluePromise = require('bluebird');
 import path = require('path');
@@ -25,171 +28,17 @@ function beforeJvm(): BluePromise<void> {
 
 _java.registerClientP(beforeJvm);
 
-interface Dictionary {
-  [index: string]: string;
-}
-
-export = Module;
-module Module {
+export module Java {
   'use strict';
+
+  interface StringDict {
+    [index: string]: string;
+  }
 
   export function ensureJvm(): Promise<void> {
     return _java.ensureJvm();
   }
 
-
-  var shortToLongMap: Dictionary = {
-    'Thing$Nested': 'com.redseal.featureset.ambiguous.Thing$Nested',
-    'AnEnum': 'com.redseal.featureset.AnEnum',
-    'AnonClassTest': 'com.redseal.featureset.AnonClassTest',
-    'Overloading': 'com.redseal.featureset.overloading.Overloading',
-    'Overloading$Bar': 'com.redseal.featureset.overloading.Overloading$Bar',
-    'Overloading$Foo': 'com.redseal.featureset.overloading.Overloading$Foo',
-    'Step': 'com.redseal.featureset.overloading.Step',
-    'SomeAbstractClass': 'com.redseal.featureset.SomeAbstractClass',
-    'SomeClass': 'com.redseal.featureset.SomeClass',
-    'SomeInterface': 'com.redseal.featureset.SomeInterface',
-    'TinyInterface': 'com.redseal.featureset.TinyInterface',
-    'Boolean': 'java.lang.Boolean',
-    'Class': 'java.lang.Class',
-    'Double': 'java.lang.Double',
-    'Float': 'java.lang.Float',
-    'Integer': 'java.lang.Integer',
-    'Long': 'java.lang.Long',
-    'Object': 'java.lang.Object',
-    'Method': 'java.lang.reflect.Method',
-    'Short': 'java.lang.Short',
-    'String': 'java.lang.String',
-    'AbstractCollection': 'java.util.AbstractCollection',
-    'AbstractList': 'java.util.AbstractList',
-    'AbstractMap': 'java.util.AbstractMap',
-    'AbstractMap$SimpleEntry': 'java.util.AbstractMap$SimpleEntry',
-    'AbstractMap$SimpleImmutableEntry': 'java.util.AbstractMap$SimpleImmutableEntry',
-    'AbstractQueue': 'java.util.AbstractQueue',
-    'AbstractSequentialList': 'java.util.AbstractSequentialList',
-    'AbstractSet': 'java.util.AbstractSet',
-    'ArrayDeque': 'java.util.ArrayDeque',
-    'ArrayList': 'java.util.ArrayList',
-    'Arrays': 'java.util.Arrays',
-    'Base64': 'java.util.Base64',
-    'Base64$Decoder': 'java.util.Base64$Decoder',
-    'Base64$Encoder': 'java.util.Base64$Encoder',
-    'BitSet': 'java.util.BitSet',
-    'Calendar': 'java.util.Calendar',
-    'Calendar$Builder': 'java.util.Calendar$Builder',
-    'Collection': 'java.util.Collection',
-    'Collections': 'java.util.Collections',
-    'Comparator': 'java.util.Comparator',
-    'ConcurrentModificationException': 'java.util.ConcurrentModificationException',
-    'Currency': 'java.util.Currency',
-    'Date': 'java.util.Date',
-    'Deque': 'java.util.Deque',
-    'Dictionary': 'java.util.Dictionary',
-    'DoubleSummaryStatistics': 'java.util.DoubleSummaryStatistics',
-    'DuplicateFormatFlagsException': 'java.util.DuplicateFormatFlagsException',
-    'EmptyStackException': 'java.util.EmptyStackException',
-    'Enumeration': 'java.util.Enumeration',
-    'EnumMap': 'java.util.EnumMap',
-    'EnumSet': 'java.util.EnumSet',
-    'EventListener': 'java.util.EventListener',
-    'EventListenerProxy': 'java.util.EventListenerProxy',
-    'EventObject': 'java.util.EventObject',
-    'FormatFlagsConversionMismatchException': 'java.util.FormatFlagsConversionMismatchException',
-    'Formattable': 'java.util.Formattable',
-    'FormattableFlags': 'java.util.FormattableFlags',
-    'Formatter': 'java.util.Formatter',
-    'Formatter$BigDecimalLayoutForm': 'java.util.Formatter$BigDecimalLayoutForm',
-    'FormatterClosedException': 'java.util.FormatterClosedException',
-    'Function': 'java.util.function.Function',
-    'GregorianCalendar': 'java.util.GregorianCalendar',
-    'HashMap': 'java.util.HashMap',
-    'HashSet': 'java.util.HashSet',
-    'Hashtable': 'java.util.Hashtable',
-    'IdentityHashMap': 'java.util.IdentityHashMap',
-    'IllegalFormatCodePointException': 'java.util.IllegalFormatCodePointException',
-    'IllegalFormatConversionException': 'java.util.IllegalFormatConversionException',
-    'IllegalFormatException': 'java.util.IllegalFormatException',
-    'IllegalFormatFlagsException': 'java.util.IllegalFormatFlagsException',
-    'IllegalFormatPrecisionException': 'java.util.IllegalFormatPrecisionException',
-    'IllegalFormatWidthException': 'java.util.IllegalFormatWidthException',
-    'IllformedLocaleException': 'java.util.IllformedLocaleException',
-    'InputMismatchException': 'java.util.InputMismatchException',
-    'IntSummaryStatistics': 'java.util.IntSummaryStatistics',
-    'InvalidPropertiesFormatException': 'java.util.InvalidPropertiesFormatException',
-    'Iterator': 'java.util.Iterator',
-    'LinkedHashMap': 'java.util.LinkedHashMap',
-    'LinkedHashSet': 'java.util.LinkedHashSet',
-    'LinkedList': 'java.util.LinkedList',
-    'List': 'java.util.List',
-    'ListIterator': 'java.util.ListIterator',
-    'ListResourceBundle': 'java.util.ListResourceBundle',
-    'Locale': 'java.util.Locale',
-    'Locale$Builder': 'java.util.Locale$Builder',
-    'Locale$Category': 'java.util.Locale$Category',
-    'Locale$FilteringMode': 'java.util.Locale$FilteringMode',
-    'Locale$LanguageRange': 'java.util.Locale$LanguageRange',
-    'LongSummaryStatistics': 'java.util.LongSummaryStatistics',
-    'Map': 'java.util.Map',
-    'Map$Entry': 'java.util.Map$Entry',
-    'MissingFormatArgumentException': 'java.util.MissingFormatArgumentException',
-    'MissingFormatWidthException': 'java.util.MissingFormatWidthException',
-    'MissingResourceException': 'java.util.MissingResourceException',
-    'NavigableMap': 'java.util.NavigableMap',
-    'NavigableSet': 'java.util.NavigableSet',
-    'NoSuchElementException': 'java.util.NoSuchElementException',
-    'Objects': 'java.util.Objects',
-    'Observable': 'java.util.Observable',
-    'Observer': 'java.util.Observer',
-    'Optional': 'java.util.Optional',
-    'OptionalDouble': 'java.util.OptionalDouble',
-    'OptionalInt': 'java.util.OptionalInt',
-    'OptionalLong': 'java.util.OptionalLong',
-    'PrimitiveIterator': 'java.util.PrimitiveIterator',
-    'PrimitiveIterator$OfDouble': 'java.util.PrimitiveIterator$OfDouble',
-    'PrimitiveIterator$OfInt': 'java.util.PrimitiveIterator$OfInt',
-    'PrimitiveIterator$OfLong': 'java.util.PrimitiveIterator$OfLong',
-    'PriorityQueue': 'java.util.PriorityQueue',
-    'Properties': 'java.util.Properties',
-    'PropertyPermission': 'java.util.PropertyPermission',
-    'PropertyResourceBundle': 'java.util.PropertyResourceBundle',
-    'Queue': 'java.util.Queue',
-    'Random': 'java.util.Random',
-    'RandomAccess': 'java.util.RandomAccess',
-    'ResourceBundle': 'java.util.ResourceBundle',
-    'ResourceBundle$Control': 'java.util.ResourceBundle$Control',
-    'Scanner': 'java.util.Scanner',
-    'ServiceConfigurationError': 'java.util.ServiceConfigurationError',
-    'ServiceLoader': 'java.util.ServiceLoader',
-    'Set': 'java.util.Set',
-    'SimpleTimeZone': 'java.util.SimpleTimeZone',
-    'SortedMap': 'java.util.SortedMap',
-    'SortedSet': 'java.util.SortedSet',
-    'Spliterator': 'java.util.Spliterator',
-    'Spliterator$OfDouble': 'java.util.Spliterator$OfDouble',
-    'Spliterator$OfInt': 'java.util.Spliterator$OfInt',
-    'Spliterator$OfLong': 'java.util.Spliterator$OfLong',
-    'Spliterator$OfPrimitive': 'java.util.Spliterator$OfPrimitive',
-    'Spliterators': 'java.util.Spliterators',
-    'Spliterators$AbstractDoubleSpliterator': 'java.util.Spliterators$AbstractDoubleSpliterator',
-    'Spliterators$AbstractIntSpliterator': 'java.util.Spliterators$AbstractIntSpliterator',
-    'Spliterators$AbstractLongSpliterator': 'java.util.Spliterators$AbstractLongSpliterator',
-    'Spliterators$AbstractSpliterator': 'java.util.Spliterators$AbstractSpliterator',
-    'SplittableRandom': 'java.util.SplittableRandom',
-    'Stack': 'java.util.Stack',
-    'StringJoiner': 'java.util.StringJoiner',
-    'StringTokenizer': 'java.util.StringTokenizer',
-    'Timer': 'java.util.Timer',
-    'TimerTask': 'java.util.TimerTask',
-    'TimeZone': 'java.util.TimeZone',
-    'TooManyListenersException': 'java.util.TooManyListenersException',
-    'TreeMap': 'java.util.TreeMap',
-    'TreeSet': 'java.util.TreeSet',
-    'UnknownFormatConversionException': 'java.util.UnknownFormatConversionException',
-    'UnknownFormatFlagsException': 'java.util.UnknownFormatFlagsException',
-    'UUID': 'java.util.UUID',
-    'Vector': 'java.util.Vector',
-    'WeakHashMap': 'java.util.WeakHashMap'
-  };
 
   export function importClass(className: 'Thing$Nested'): Java.com.redseal.featureset.ambiguous.Thing$Nested.Static;
   export function importClass(className: 'AnEnum'): Java.com.redseal.featureset.AnEnum.Static;
@@ -495,47 +344,164 @@ module Module {
   export function importClass(className: 'java.util.WeakHashMap'): Java.java.util.WeakHashMap.Static;
   export function importClass(className: string): any;
   export function importClass(className: string): any {
+    var shortToLongMap: StringDict = {
+      'Thing$Nested': 'com.redseal.featureset.ambiguous.Thing$Nested',
+      'AnEnum': 'com.redseal.featureset.AnEnum',
+      'AnonClassTest': 'com.redseal.featureset.AnonClassTest',
+      'Overloading': 'com.redseal.featureset.overloading.Overloading',
+      'Overloading$Bar': 'com.redseal.featureset.overloading.Overloading$Bar',
+      'Overloading$Foo': 'com.redseal.featureset.overloading.Overloading$Foo',
+      'Step': 'com.redseal.featureset.overloading.Step',
+      'SomeAbstractClass': 'com.redseal.featureset.SomeAbstractClass',
+      'SomeClass': 'com.redseal.featureset.SomeClass',
+      'SomeInterface': 'com.redseal.featureset.SomeInterface',
+      'TinyInterface': 'com.redseal.featureset.TinyInterface',
+      'Boolean': 'java.lang.Boolean',
+      'Class': 'java.lang.Class',
+      'Double': 'java.lang.Double',
+      'Float': 'java.lang.Float',
+      'Integer': 'java.lang.Integer',
+      'Long': 'java.lang.Long',
+      'Object': 'java.lang.Object',
+      'Method': 'java.lang.reflect.Method',
+      'Short': 'java.lang.Short',
+      'String': 'java.lang.String',
+      'AbstractCollection': 'java.util.AbstractCollection',
+      'AbstractList': 'java.util.AbstractList',
+      'AbstractMap': 'java.util.AbstractMap',
+      'AbstractMap$SimpleEntry': 'java.util.AbstractMap$SimpleEntry',
+      'AbstractMap$SimpleImmutableEntry': 'java.util.AbstractMap$SimpleImmutableEntry',
+      'AbstractQueue': 'java.util.AbstractQueue',
+      'AbstractSequentialList': 'java.util.AbstractSequentialList',
+      'AbstractSet': 'java.util.AbstractSet',
+      'ArrayDeque': 'java.util.ArrayDeque',
+      'ArrayList': 'java.util.ArrayList',
+      'Arrays': 'java.util.Arrays',
+      'Base64': 'java.util.Base64',
+      'Base64$Decoder': 'java.util.Base64$Decoder',
+      'Base64$Encoder': 'java.util.Base64$Encoder',
+      'BitSet': 'java.util.BitSet',
+      'Calendar': 'java.util.Calendar',
+      'Calendar$Builder': 'java.util.Calendar$Builder',
+      'Collection': 'java.util.Collection',
+      'Collections': 'java.util.Collections',
+      'Comparator': 'java.util.Comparator',
+      'ConcurrentModificationException': 'java.util.ConcurrentModificationException',
+      'Currency': 'java.util.Currency',
+      'Date': 'java.util.Date',
+      'Deque': 'java.util.Deque',
+      'Dictionary': 'java.util.Dictionary',
+      'DoubleSummaryStatistics': 'java.util.DoubleSummaryStatistics',
+      'DuplicateFormatFlagsException': 'java.util.DuplicateFormatFlagsException',
+      'EmptyStackException': 'java.util.EmptyStackException',
+      'Enumeration': 'java.util.Enumeration',
+      'EnumMap': 'java.util.EnumMap',
+      'EnumSet': 'java.util.EnumSet',
+      'EventListener': 'java.util.EventListener',
+      'EventListenerProxy': 'java.util.EventListenerProxy',
+      'EventObject': 'java.util.EventObject',
+      'FormatFlagsConversionMismatchException': 'java.util.FormatFlagsConversionMismatchException',
+      'Formattable': 'java.util.Formattable',
+      'FormattableFlags': 'java.util.FormattableFlags',
+      'Formatter': 'java.util.Formatter',
+      'Formatter$BigDecimalLayoutForm': 'java.util.Formatter$BigDecimalLayoutForm',
+      'FormatterClosedException': 'java.util.FormatterClosedException',
+      'Function': 'java.util.function.Function',
+      'GregorianCalendar': 'java.util.GregorianCalendar',
+      'HashMap': 'java.util.HashMap',
+      'HashSet': 'java.util.HashSet',
+      'Hashtable': 'java.util.Hashtable',
+      'IdentityHashMap': 'java.util.IdentityHashMap',
+      'IllegalFormatCodePointException': 'java.util.IllegalFormatCodePointException',
+      'IllegalFormatConversionException': 'java.util.IllegalFormatConversionException',
+      'IllegalFormatException': 'java.util.IllegalFormatException',
+      'IllegalFormatFlagsException': 'java.util.IllegalFormatFlagsException',
+      'IllegalFormatPrecisionException': 'java.util.IllegalFormatPrecisionException',
+      'IllegalFormatWidthException': 'java.util.IllegalFormatWidthException',
+      'IllformedLocaleException': 'java.util.IllformedLocaleException',
+      'InputMismatchException': 'java.util.InputMismatchException',
+      'IntSummaryStatistics': 'java.util.IntSummaryStatistics',
+      'InvalidPropertiesFormatException': 'java.util.InvalidPropertiesFormatException',
+      'Iterator': 'java.util.Iterator',
+      'LinkedHashMap': 'java.util.LinkedHashMap',
+      'LinkedHashSet': 'java.util.LinkedHashSet',
+      'LinkedList': 'java.util.LinkedList',
+      'List': 'java.util.List',
+      'ListIterator': 'java.util.ListIterator',
+      'ListResourceBundle': 'java.util.ListResourceBundle',
+      'Locale': 'java.util.Locale',
+      'Locale$Builder': 'java.util.Locale$Builder',
+      'Locale$Category': 'java.util.Locale$Category',
+      'Locale$FilteringMode': 'java.util.Locale$FilteringMode',
+      'Locale$LanguageRange': 'java.util.Locale$LanguageRange',
+      'LongSummaryStatistics': 'java.util.LongSummaryStatistics',
+      'Map': 'java.util.Map',
+      'Map$Entry': 'java.util.Map$Entry',
+      'MissingFormatArgumentException': 'java.util.MissingFormatArgumentException',
+      'MissingFormatWidthException': 'java.util.MissingFormatWidthException',
+      'MissingResourceException': 'java.util.MissingResourceException',
+      'NavigableMap': 'java.util.NavigableMap',
+      'NavigableSet': 'java.util.NavigableSet',
+      'NoSuchElementException': 'java.util.NoSuchElementException',
+      'Objects': 'java.util.Objects',
+      'Observable': 'java.util.Observable',
+      'Observer': 'java.util.Observer',
+      'Optional': 'java.util.Optional',
+      'OptionalDouble': 'java.util.OptionalDouble',
+      'OptionalInt': 'java.util.OptionalInt',
+      'OptionalLong': 'java.util.OptionalLong',
+      'PrimitiveIterator': 'java.util.PrimitiveIterator',
+      'PrimitiveIterator$OfDouble': 'java.util.PrimitiveIterator$OfDouble',
+      'PrimitiveIterator$OfInt': 'java.util.PrimitiveIterator$OfInt',
+      'PrimitiveIterator$OfLong': 'java.util.PrimitiveIterator$OfLong',
+      'PriorityQueue': 'java.util.PriorityQueue',
+      'Properties': 'java.util.Properties',
+      'PropertyPermission': 'java.util.PropertyPermission',
+      'PropertyResourceBundle': 'java.util.PropertyResourceBundle',
+      'Queue': 'java.util.Queue',
+      'Random': 'java.util.Random',
+      'RandomAccess': 'java.util.RandomAccess',
+      'ResourceBundle': 'java.util.ResourceBundle',
+      'ResourceBundle$Control': 'java.util.ResourceBundle$Control',
+      'Scanner': 'java.util.Scanner',
+      'ServiceConfigurationError': 'java.util.ServiceConfigurationError',
+      'ServiceLoader': 'java.util.ServiceLoader',
+      'Set': 'java.util.Set',
+      'SimpleTimeZone': 'java.util.SimpleTimeZone',
+      'SortedMap': 'java.util.SortedMap',
+      'SortedSet': 'java.util.SortedSet',
+      'Spliterator': 'java.util.Spliterator',
+      'Spliterator$OfDouble': 'java.util.Spliterator$OfDouble',
+      'Spliterator$OfInt': 'java.util.Spliterator$OfInt',
+      'Spliterator$OfLong': 'java.util.Spliterator$OfLong',
+      'Spliterator$OfPrimitive': 'java.util.Spliterator$OfPrimitive',
+      'Spliterators': 'java.util.Spliterators',
+      'Spliterators$AbstractDoubleSpliterator': 'java.util.Spliterators$AbstractDoubleSpliterator',
+      'Spliterators$AbstractIntSpliterator': 'java.util.Spliterators$AbstractIntSpliterator',
+      'Spliterators$AbstractLongSpliterator': 'java.util.Spliterators$AbstractLongSpliterator',
+      'Spliterators$AbstractSpliterator': 'java.util.Spliterators$AbstractSpliterator',
+      'SplittableRandom': 'java.util.SplittableRandom',
+      'Stack': 'java.util.Stack',
+      'StringJoiner': 'java.util.StringJoiner',
+      'StringTokenizer': 'java.util.StringTokenizer',
+      'Timer': 'java.util.Timer',
+      'TimerTask': 'java.util.TimerTask',
+      'TimeZone': 'java.util.TimeZone',
+      'TooManyListenersException': 'java.util.TooManyListenersException',
+      'TreeMap': 'java.util.TreeMap',
+      'TreeSet': 'java.util.TreeSet',
+      'UnknownFormatConversionException': 'java.util.UnknownFormatConversionException',
+      'UnknownFormatFlagsException': 'java.util.UnknownFormatFlagsException',
+      'UUID': 'java.util.UUID',
+      'Vector': 'java.util.Vector',
+      'WeakHashMap': 'java.util.WeakHashMap'
+    };
+
     if (className in shortToLongMap) {
       className = shortToLongMap[className];
     }
     return _java.import(className);
   }
-
-  // Node-java has special handling for methods that return long or java.lang.Long,
-  // returning a Javascript Number but with an additional property longValue.
-  export interface longValue_t extends Number {
-    longValue: string;
-  }
-
-  // Node-java can automatically coerce a javascript string into a java.lang.String.
-  // This special type alias allows to declare that possiblity to Typescript.
-  export type string_t = string | Java.java.lang.String;
-
-  // Java methods that take java.lang.Object parameters implicitly will take a java.lang.String.
-  // But string_t is not sufficient for this case, we need object_t.
-  export type object_t = Java.java.lang.Object | string | boolean | number | longValue_t;
-
-  // Java methods that take long or java.lang.Long parameters may take javascript numbers,
-  // longValue_t (see above) or java.lang.Long.
-  // This special type alias allows to declare that possiblity to Typescript.
-  export type long_t = number | longValue_t | Java.java.lang.Long;
-
-  // Handling of other primitive numeric types is simpler, as there is no loss of precision.
-  export type boolean_t = boolean | Java.java.lang.Boolean;
-  export type short_t = number | Java.java.lang.Short;
-  export type integer_t = number | Java.java.lang.Integer;
-  export type double_t = number | Java.java.lang.Double;
-  export type float_t = number | Java.java.lang.Float;
-  export type number_t = number ;
-
-  export interface array_t<T> extends Java.java.lang.Object {
-    // This is an opaque type for a java array_t T[];
-    // Use Java.newArray<T>(className, [...]) to create wherever a Java method expects a T[],
-    // most notably for vararg parameteters.
-    __dummy: T;
-  }
-
-  export type object_array_t = array_t<Java.java.lang.Object> | object_t[];
 
   export interface Callback<T> {
     (err?: Error, result?: T): void;
@@ -1201,7 +1167,200 @@ module Module {
     return _java.newInstanceP.apply(_java, args);
   }
 
-  export module Java {
+  export function newArray(className: 'com.redseal.featureset.ambiguous.Thing', arg: Java.com.redseal.featureset.ambiguous.Thing[]): array_t<com.redseal.featureset.ambiguous.Thing>;
+  export function newArray(className: 'com.redseal.featureset.ambiguous.Thing$Nested', arg: Java.Thing$Nested[]): array_t<com.redseal.featureset.ambiguous.Thing$Nested>;
+  export function newArray(className: 'com.redseal.featureset.AnEnum', arg: Java.AnEnum[]): array_t<com.redseal.featureset.AnEnum>;
+  export function newArray(className: 'com.redseal.featureset.AnonClassTest', arg: Java.AnonClassTest[]): array_t<com.redseal.featureset.AnonClassTest>;
+  export function newArray(className: 'com.redseal.featureset.overloading.Overloading', arg: Java.Overloading[]): array_t<com.redseal.featureset.overloading.Overloading>;
+  export function newArray(className: 'com.redseal.featureset.overloading.Overloading$Bar', arg: Java.Overloading$Bar[]): array_t<com.redseal.featureset.overloading.Overloading$Bar>;
+  export function newArray(className: 'com.redseal.featureset.overloading.Overloading$Foo', arg: Java.Overloading$Foo[]): array_t<com.redseal.featureset.overloading.Overloading$Foo>;
+  export function newArray(className: 'com.redseal.featureset.overloading.Step', arg: Java.Step[]): array_t<com.redseal.featureset.overloading.Step>;
+  export function newArray(className: 'com.redseal.featureset.SomeAbstractClass', arg: Java.SomeAbstractClass[]): array_t<com.redseal.featureset.SomeAbstractClass>;
+  export function newArray(className: 'com.redseal.featureset.SomeClass', arg: Java.SomeClass[]): array_t<com.redseal.featureset.SomeClass>;
+  export function newArray(className: 'com.redseal.featureset.SomeInterface', arg: Java.SomeInterface[]): array_t<com.redseal.featureset.SomeInterface>;
+  export function newArray(className: 'com.redseal.featureset.Thing', arg: Java.com.redseal.featureset.Thing[]): array_t<com.redseal.featureset.Thing>;
+  export function newArray(className: 'com.redseal.featureset.TinyInterface', arg: Java.TinyInterface[]): array_t<com.redseal.featureset.TinyInterface>;
+  export function newArray(className: 'java.lang.Boolean', arg: boolean_t[]): array_t<java.lang.Boolean>;
+  export function newArray(className: 'java.lang.Class', arg: Java.Class[]): array_t<java.lang.Class>;
+  export function newArray(className: 'java.lang.Double', arg: double_t[]): array_t<java.lang.Double>;
+  export function newArray(className: 'java.lang.Float', arg: float_t[]): array_t<java.lang.Float>;
+  export function newArray(className: 'java.lang.Integer', arg: integer_t[]): array_t<java.lang.Integer>;
+  export function newArray(className: 'java.lang.Long', arg: long_t[]): array_t<java.lang.Long>;
+  export function newArray(className: 'java.lang.Object', arg: object_t[]): array_t<java.lang.Object>;
+  export function newArray(className: 'java.lang.reflect.Method', arg: Java.Method[]): array_t<java.lang.reflect.Method>;
+  export function newArray(className: 'java.lang.Short', arg: short_t[]): array_t<java.lang.Short>;
+  export function newArray(className: 'java.lang.String', arg: string_t[]): array_t<java.lang.String>;
+  export function newArray(className: 'java.util.AbstractCollection', arg: Java.AbstractCollection[]): array_t<java.util.AbstractCollection>;
+  export function newArray(className: 'java.util.AbstractList', arg: Java.AbstractList[]): array_t<java.util.AbstractList>;
+  export function newArray(className: 'java.util.AbstractMap', arg: Java.AbstractMap[]): array_t<java.util.AbstractMap>;
+  export function newArray(className: 'java.util.AbstractMap$SimpleEntry', arg: Java.AbstractMap$SimpleEntry[]): array_t<java.util.AbstractMap$SimpleEntry>;
+  export function newArray(className: 'java.util.AbstractMap$SimpleImmutableEntry', arg: Java.AbstractMap$SimpleImmutableEntry[]): array_t<java.util.AbstractMap$SimpleImmutableEntry>;
+  export function newArray(className: 'java.util.AbstractQueue', arg: Java.AbstractQueue[]): array_t<java.util.AbstractQueue>;
+  export function newArray(className: 'java.util.AbstractSequentialList', arg: Java.AbstractSequentialList[]): array_t<java.util.AbstractSequentialList>;
+  export function newArray(className: 'java.util.AbstractSet', arg: Java.AbstractSet[]): array_t<java.util.AbstractSet>;
+  export function newArray(className: 'java.util.ArrayDeque', arg: Java.ArrayDeque[]): array_t<java.util.ArrayDeque>;
+  export function newArray(className: 'java.util.ArrayList', arg: Java.ArrayList[]): array_t<java.util.ArrayList>;
+  export function newArray(className: 'java.util.Arrays', arg: Java.Arrays[]): array_t<java.util.Arrays>;
+  export function newArray(className: 'java.util.Base64', arg: Java.Base64[]): array_t<java.util.Base64>;
+  export function newArray(className: 'java.util.Base64$Decoder', arg: Java.Base64$Decoder[]): array_t<java.util.Base64$Decoder>;
+  export function newArray(className: 'java.util.Base64$Encoder', arg: Java.Base64$Encoder[]): array_t<java.util.Base64$Encoder>;
+  export function newArray(className: 'java.util.BitSet', arg: Java.BitSet[]): array_t<java.util.BitSet>;
+  export function newArray(className: 'java.util.Calendar', arg: Java.Calendar[]): array_t<java.util.Calendar>;
+  export function newArray(className: 'java.util.Calendar$Builder', arg: Java.Calendar$Builder[]): array_t<java.util.Calendar$Builder>;
+  export function newArray(className: 'java.util.Collection', arg: Java.Collection[]): array_t<java.util.Collection>;
+  export function newArray(className: 'java.util.Collections', arg: Java.Collections[]): array_t<java.util.Collections>;
+  export function newArray(className: 'java.util.Comparator', arg: Java.Comparator[]): array_t<java.util.Comparator>;
+  export function newArray(className: 'java.util.ConcurrentModificationException', arg: Java.ConcurrentModificationException[]): array_t<java.util.ConcurrentModificationException>;
+  export function newArray(className: 'java.util.Currency', arg: Java.Currency[]): array_t<java.util.Currency>;
+  export function newArray(className: 'java.util.Date', arg: Java.Date[]): array_t<java.util.Date>;
+  export function newArray(className: 'java.util.Deque', arg: Java.Deque[]): array_t<java.util.Deque>;
+  export function newArray(className: 'java.util.Dictionary', arg: Java.Dictionary[]): array_t<java.util.Dictionary>;
+  export function newArray(className: 'java.util.DoubleSummaryStatistics', arg: Java.DoubleSummaryStatistics[]): array_t<java.util.DoubleSummaryStatistics>;
+  export function newArray(className: 'java.util.DuplicateFormatFlagsException', arg: Java.DuplicateFormatFlagsException[]): array_t<java.util.DuplicateFormatFlagsException>;
+  export function newArray(className: 'java.util.EmptyStackException', arg: Java.EmptyStackException[]): array_t<java.util.EmptyStackException>;
+  export function newArray(className: 'java.util.Enumeration', arg: Java.Enumeration[]): array_t<java.util.Enumeration>;
+  export function newArray(className: 'java.util.EnumMap', arg: Java.EnumMap[]): array_t<java.util.EnumMap>;
+  export function newArray(className: 'java.util.EnumSet', arg: Java.EnumSet[]): array_t<java.util.EnumSet>;
+  export function newArray(className: 'java.util.EventListener', arg: Java.EventListener[]): array_t<java.util.EventListener>;
+  export function newArray(className: 'java.util.EventListenerProxy', arg: Java.EventListenerProxy[]): array_t<java.util.EventListenerProxy>;
+  export function newArray(className: 'java.util.EventObject', arg: Java.EventObject[]): array_t<java.util.EventObject>;
+  export function newArray(className: 'java.util.FormatFlagsConversionMismatchException', arg: Java.FormatFlagsConversionMismatchException[]): array_t<java.util.FormatFlagsConversionMismatchException>;
+  export function newArray(className: 'java.util.Formattable', arg: Java.Formattable[]): array_t<java.util.Formattable>;
+  export function newArray(className: 'java.util.FormattableFlags', arg: Java.FormattableFlags[]): array_t<java.util.FormattableFlags>;
+  export function newArray(className: 'java.util.Formatter', arg: Java.Formatter[]): array_t<java.util.Formatter>;
+  export function newArray(className: 'java.util.Formatter$BigDecimalLayoutForm', arg: Java.Formatter$BigDecimalLayoutForm[]): array_t<java.util.Formatter$BigDecimalLayoutForm>;
+  export function newArray(className: 'java.util.FormatterClosedException', arg: Java.FormatterClosedException[]): array_t<java.util.FormatterClosedException>;
+  export function newArray(className: 'java.util.function.Function', arg: Java.Function[]): array_t<java.util.function_.Function>;
+  export function newArray(className: 'java.util.GregorianCalendar', arg: Java.GregorianCalendar[]): array_t<java.util.GregorianCalendar>;
+  export function newArray(className: 'java.util.HashMap', arg: Java.HashMap[]): array_t<java.util.HashMap>;
+  export function newArray(className: 'java.util.HashSet', arg: Java.HashSet[]): array_t<java.util.HashSet>;
+  export function newArray(className: 'java.util.Hashtable', arg: Java.Hashtable[]): array_t<java.util.Hashtable>;
+  export function newArray(className: 'java.util.IdentityHashMap', arg: Java.IdentityHashMap[]): array_t<java.util.IdentityHashMap>;
+  export function newArray(className: 'java.util.IllegalFormatCodePointException', arg: Java.IllegalFormatCodePointException[]): array_t<java.util.IllegalFormatCodePointException>;
+  export function newArray(className: 'java.util.IllegalFormatConversionException', arg: Java.IllegalFormatConversionException[]): array_t<java.util.IllegalFormatConversionException>;
+  export function newArray(className: 'java.util.IllegalFormatException', arg: Java.IllegalFormatException[]): array_t<java.util.IllegalFormatException>;
+  export function newArray(className: 'java.util.IllegalFormatFlagsException', arg: Java.IllegalFormatFlagsException[]): array_t<java.util.IllegalFormatFlagsException>;
+  export function newArray(className: 'java.util.IllegalFormatPrecisionException', arg: Java.IllegalFormatPrecisionException[]): array_t<java.util.IllegalFormatPrecisionException>;
+  export function newArray(className: 'java.util.IllegalFormatWidthException', arg: Java.IllegalFormatWidthException[]): array_t<java.util.IllegalFormatWidthException>;
+  export function newArray(className: 'java.util.IllformedLocaleException', arg: Java.IllformedLocaleException[]): array_t<java.util.IllformedLocaleException>;
+  export function newArray(className: 'java.util.InputMismatchException', arg: Java.InputMismatchException[]): array_t<java.util.InputMismatchException>;
+  export function newArray(className: 'java.util.IntSummaryStatistics', arg: Java.IntSummaryStatistics[]): array_t<java.util.IntSummaryStatistics>;
+  export function newArray(className: 'java.util.InvalidPropertiesFormatException', arg: Java.InvalidPropertiesFormatException[]): array_t<java.util.InvalidPropertiesFormatException>;
+  export function newArray(className: 'java.util.Iterator', arg: Java.Iterator[]): array_t<java.util.Iterator>;
+  export function newArray(className: 'java.util.LinkedHashMap', arg: Java.LinkedHashMap[]): array_t<java.util.LinkedHashMap>;
+  export function newArray(className: 'java.util.LinkedHashSet', arg: Java.LinkedHashSet[]): array_t<java.util.LinkedHashSet>;
+  export function newArray(className: 'java.util.LinkedList', arg: Java.LinkedList[]): array_t<java.util.LinkedList>;
+  export function newArray(className: 'java.util.List', arg: Java.List[]): array_t<java.util.List>;
+  export function newArray(className: 'java.util.ListIterator', arg: Java.ListIterator[]): array_t<java.util.ListIterator>;
+  export function newArray(className: 'java.util.ListResourceBundle', arg: Java.ListResourceBundle[]): array_t<java.util.ListResourceBundle>;
+  export function newArray(className: 'java.util.Locale', arg: Java.Locale[]): array_t<java.util.Locale>;
+  export function newArray(className: 'java.util.Locale$Builder', arg: Java.Locale$Builder[]): array_t<java.util.Locale$Builder>;
+  export function newArray(className: 'java.util.Locale$Category', arg: Java.Locale$Category[]): array_t<java.util.Locale$Category>;
+  export function newArray(className: 'java.util.Locale$FilteringMode', arg: Java.Locale$FilteringMode[]): array_t<java.util.Locale$FilteringMode>;
+  export function newArray(className: 'java.util.Locale$LanguageRange', arg: Java.Locale$LanguageRange[]): array_t<java.util.Locale$LanguageRange>;
+  export function newArray(className: 'java.util.LongSummaryStatistics', arg: Java.LongSummaryStatistics[]): array_t<java.util.LongSummaryStatistics>;
+  export function newArray(className: 'java.util.Map', arg: Java.Map[]): array_t<java.util.Map>;
+  export function newArray(className: 'java.util.Map$Entry', arg: Java.Map$Entry[]): array_t<java.util.Map$Entry>;
+  export function newArray(className: 'java.util.MissingFormatArgumentException', arg: Java.MissingFormatArgumentException[]): array_t<java.util.MissingFormatArgumentException>;
+  export function newArray(className: 'java.util.MissingFormatWidthException', arg: Java.MissingFormatWidthException[]): array_t<java.util.MissingFormatWidthException>;
+  export function newArray(className: 'java.util.MissingResourceException', arg: Java.MissingResourceException[]): array_t<java.util.MissingResourceException>;
+  export function newArray(className: 'java.util.NavigableMap', arg: Java.NavigableMap[]): array_t<java.util.NavigableMap>;
+  export function newArray(className: 'java.util.NavigableSet', arg: Java.NavigableSet[]): array_t<java.util.NavigableSet>;
+  export function newArray(className: 'java.util.NoSuchElementException', arg: Java.NoSuchElementException[]): array_t<java.util.NoSuchElementException>;
+  export function newArray(className: 'java.util.Objects', arg: Java.Objects[]): array_t<java.util.Objects>;
+  export function newArray(className: 'java.util.Observable', arg: Java.Observable[]): array_t<java.util.Observable>;
+  export function newArray(className: 'java.util.Observer', arg: Java.Observer[]): array_t<java.util.Observer>;
+  export function newArray(className: 'java.util.Optional', arg: Java.Optional[]): array_t<java.util.Optional>;
+  export function newArray(className: 'java.util.OptionalDouble', arg: Java.OptionalDouble[]): array_t<java.util.OptionalDouble>;
+  export function newArray(className: 'java.util.OptionalInt', arg: Java.OptionalInt[]): array_t<java.util.OptionalInt>;
+  export function newArray(className: 'java.util.OptionalLong', arg: Java.OptionalLong[]): array_t<java.util.OptionalLong>;
+  export function newArray(className: 'java.util.PrimitiveIterator', arg: Java.PrimitiveIterator[]): array_t<java.util.PrimitiveIterator>;
+  export function newArray(className: 'java.util.PrimitiveIterator$OfDouble', arg: Java.PrimitiveIterator$OfDouble[]): array_t<java.util.PrimitiveIterator$OfDouble>;
+  export function newArray(className: 'java.util.PrimitiveIterator$OfInt', arg: Java.PrimitiveIterator$OfInt[]): array_t<java.util.PrimitiveIterator$OfInt>;
+  export function newArray(className: 'java.util.PrimitiveIterator$OfLong', arg: Java.PrimitiveIterator$OfLong[]): array_t<java.util.PrimitiveIterator$OfLong>;
+  export function newArray(className: 'java.util.PriorityQueue', arg: Java.PriorityQueue[]): array_t<java.util.PriorityQueue>;
+  export function newArray(className: 'java.util.Properties', arg: Java.Properties[]): array_t<java.util.Properties>;
+  export function newArray(className: 'java.util.PropertyPermission', arg: Java.PropertyPermission[]): array_t<java.util.PropertyPermission>;
+  export function newArray(className: 'java.util.PropertyResourceBundle', arg: Java.PropertyResourceBundle[]): array_t<java.util.PropertyResourceBundle>;
+  export function newArray(className: 'java.util.Queue', arg: Java.Queue[]): array_t<java.util.Queue>;
+  export function newArray(className: 'java.util.Random', arg: Java.Random[]): array_t<java.util.Random>;
+  export function newArray(className: 'java.util.RandomAccess', arg: Java.RandomAccess[]): array_t<java.util.RandomAccess>;
+  export function newArray(className: 'java.util.ResourceBundle', arg: Java.ResourceBundle[]): array_t<java.util.ResourceBundle>;
+  export function newArray(className: 'java.util.ResourceBundle$Control', arg: Java.ResourceBundle$Control[]): array_t<java.util.ResourceBundle$Control>;
+  export function newArray(className: 'java.util.Scanner', arg: Java.Scanner[]): array_t<java.util.Scanner>;
+  export function newArray(className: 'java.util.ServiceConfigurationError', arg: Java.ServiceConfigurationError[]): array_t<java.util.ServiceConfigurationError>;
+  export function newArray(className: 'java.util.ServiceLoader', arg: Java.ServiceLoader[]): array_t<java.util.ServiceLoader>;
+  export function newArray(className: 'java.util.Set', arg: Java.Set[]): array_t<java.util.Set>;
+  export function newArray(className: 'java.util.SimpleTimeZone', arg: Java.SimpleTimeZone[]): array_t<java.util.SimpleTimeZone>;
+  export function newArray(className: 'java.util.SortedMap', arg: Java.SortedMap[]): array_t<java.util.SortedMap>;
+  export function newArray(className: 'java.util.SortedSet', arg: Java.SortedSet[]): array_t<java.util.SortedSet>;
+  export function newArray(className: 'java.util.Spliterator', arg: Java.Spliterator[]): array_t<java.util.Spliterator>;
+  export function newArray(className: 'java.util.Spliterator$OfDouble', arg: Java.Spliterator$OfDouble[]): array_t<java.util.Spliterator$OfDouble>;
+  export function newArray(className: 'java.util.Spliterator$OfInt', arg: Java.Spliterator$OfInt[]): array_t<java.util.Spliterator$OfInt>;
+  export function newArray(className: 'java.util.Spliterator$OfLong', arg: Java.Spliterator$OfLong[]): array_t<java.util.Spliterator$OfLong>;
+  export function newArray(className: 'java.util.Spliterator$OfPrimitive', arg: Java.Spliterator$OfPrimitive[]): array_t<java.util.Spliterator$OfPrimitive>;
+  export function newArray(className: 'java.util.Spliterators', arg: Java.Spliterators[]): array_t<java.util.Spliterators>;
+  export function newArray(className: 'java.util.Spliterators$AbstractDoubleSpliterator', arg: Java.Spliterators$AbstractDoubleSpliterator[]): array_t<java.util.Spliterators$AbstractDoubleSpliterator>;
+  export function newArray(className: 'java.util.Spliterators$AbstractIntSpliterator', arg: Java.Spliterators$AbstractIntSpliterator[]): array_t<java.util.Spliterators$AbstractIntSpliterator>;
+  export function newArray(className: 'java.util.Spliterators$AbstractLongSpliterator', arg: Java.Spliterators$AbstractLongSpliterator[]): array_t<java.util.Spliterators$AbstractLongSpliterator>;
+  export function newArray(className: 'java.util.Spliterators$AbstractSpliterator', arg: Java.Spliterators$AbstractSpliterator[]): array_t<java.util.Spliterators$AbstractSpliterator>;
+  export function newArray(className: 'java.util.SplittableRandom', arg: Java.SplittableRandom[]): array_t<java.util.SplittableRandom>;
+  export function newArray(className: 'java.util.Stack', arg: Java.Stack[]): array_t<java.util.Stack>;
+  export function newArray(className: 'java.util.StringJoiner', arg: Java.StringJoiner[]): array_t<java.util.StringJoiner>;
+  export function newArray(className: 'java.util.StringTokenizer', arg: Java.StringTokenizer[]): array_t<java.util.StringTokenizer>;
+  export function newArray(className: 'java.util.Timer', arg: Java.Timer[]): array_t<java.util.Timer>;
+  export function newArray(className: 'java.util.TimerTask', arg: Java.TimerTask[]): array_t<java.util.TimerTask>;
+  export function newArray(className: 'java.util.TimeZone', arg: Java.TimeZone[]): array_t<java.util.TimeZone>;
+  export function newArray(className: 'java.util.TooManyListenersException', arg: Java.TooManyListenersException[]): array_t<java.util.TooManyListenersException>;
+  export function newArray(className: 'java.util.TreeMap', arg: Java.TreeMap[]): array_t<java.util.TreeMap>;
+  export function newArray(className: 'java.util.TreeSet', arg: Java.TreeSet[]): array_t<java.util.TreeSet>;
+  export function newArray(className: 'java.util.UnknownFormatConversionException', arg: Java.UnknownFormatConversionException[]): array_t<java.util.UnknownFormatConversionException>;
+  export function newArray(className: 'java.util.UnknownFormatFlagsException', arg: Java.UnknownFormatFlagsException[]): array_t<java.util.UnknownFormatFlagsException>;
+  export function newArray(className: 'java.util.UUID', arg: Java.UUID[]): array_t<java.util.UUID>;
+  export function newArray(className: 'java.util.Vector', arg: Java.Vector[]): array_t<java.util.Vector>;
+  export function newArray(className: 'java.util.WeakHashMap', arg: Java.WeakHashMap[]): array_t<java.util.WeakHashMap>;
+  export function newArray<T>(className: string, arg: any[]): array_t<T>;
+  export function newArray<T>(className: string, arg: any[]): array_t<T> {
+    return _java.newArray(className, arg);
+  }
+
+  // export module Java {
+
+  // Node-java has special handling for methods that return long or java.lang.Long,
+  // returning a Javascript Number but with an additional property longValue.
+  export interface longValue_t extends Number {
+    longValue: string;
+  }
+
+  // Node-java can automatically coerce a javascript string into a java.lang.String.
+  // This special type alias allows to declare that possiblity to Typescript.
+  export type string_t = string | Java.java.lang.String;
+
+  // Java methods that take java.lang.Object parameters implicitly will take a java.lang.String.
+  // But string_t is not sufficient for this case, we need object_t.
+  export type object_t = Java.java.lang.Object | string | boolean | number | longValue_t;
+
+  // Java methods that take long or java.lang.Long parameters may take javascript numbers,
+  // longValue_t (see above) or java.lang.Long.
+  // This special type alias allows to declare that possiblity to Typescript.
+  export type long_t = number | longValue_t | Java.java.lang.Long;
+
+  // Handling of other primitive numeric types is simpler, as there is no loss of precision.
+  export type boolean_t = boolean | Java.java.lang.Boolean;
+  export type short_t = number | Java.java.lang.Short;
+  export type integer_t = number | Java.java.lang.Integer;
+  export type double_t = number | Java.java.lang.Double;
+  export type float_t = number | Java.java.lang.Float;
+  export type number_t = number ;
+
+  export interface array_t<T> extends Java.java.lang.Object {
+    // This is an opaque type for a java array_t T[];
+    // Use Java.newArray<T>(className, [...]) to create wherever a Java method expects a T[],
+    // most notably for vararg parameteters.
+    __dummy: T;
+  }
+
+  export type object_array_t = array_t<Java.java.lang.Object> | object_t[];
 
   export import Thing$Nested = com.redseal.featureset.ambiguous.Thing$Nested;
   export import AnEnum = com.redseal.featureset.AnEnum;
@@ -2166,6 +2325,7 @@ module Module {
 
   export module com.redseal.featureset {
     export interface Thing extends Java.java.lang.Object {
+      theInstanceField: string;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: object_t, cb: Callback<boolean>): void;
       equals(arg0: object_t): boolean;
@@ -2206,7 +2366,6 @@ module Module {
       waitA( cb: Callback<void>): void;
       wait(): void;
       waitP(): Promise<void>;
-      theInstanceField: string;
     }
     export module Thing {
       export interface Static {
@@ -18919,6 +19078,6 @@ module Module {
   }
 
 
-  } // module Java
+  // } // module Java
 
 } // module Module

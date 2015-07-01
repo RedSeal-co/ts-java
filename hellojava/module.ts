@@ -3,6 +3,9 @@
 /// <reference path="../typings/java/java.d.ts" />
 
 
+declare function require(name: string): any;
+require('source-map-support').install();
+
 import _java = require('java');
 import BluePromise = require('bluebird');
 import path = require('path');
@@ -25,24 +28,17 @@ function beforeJvm(): BluePromise<void> {
 
 _java.registerClientP(beforeJvm);
 
-interface Dictionary {
-  [index: string]: string;
-}
-
-export = Module;
-module Module {
+export module Java {
   'use strict';
+
+  interface StringDict {
+    [index: string]: string;
+  }
 
   export function ensureJvm(): Promise<void> {
     return _java.ensureJvm();
   }
 
-
-  var shortToLongMap: Dictionary = {
-    'HelloJava': 'com.redseal.hellojava.HelloJava',
-    'Object': 'java.lang.Object',
-    'String': 'java.lang.String'
-  };
 
   export function importClass(className: 'HelloJava'): Java.com.redseal.hellojava.HelloJava.Static;
   export function importClass(className: 'Object'): Java.java.lang.Object.Static;
@@ -52,47 +48,17 @@ module Module {
   export function importClass(className: 'java.lang.String'): Java.java.lang.String.Static;
   export function importClass(className: string): any;
   export function importClass(className: string): any {
+    var shortToLongMap: StringDict = {
+      'HelloJava': 'com.redseal.hellojava.HelloJava',
+      'Object': 'java.lang.Object',
+      'String': 'java.lang.String'
+    };
+
     if (className in shortToLongMap) {
       className = shortToLongMap[className];
     }
     return _java.import(className);
   }
-
-  // Node-java has special handling for methods that return long or java.lang.Long,
-  // returning a Javascript Number but with an additional property longValue.
-  export interface longValue_t extends Number {
-    longValue: string;
-  }
-
-  // Node-java can automatically coerce a javascript string into a java.lang.String.
-  // This special type alias allows to declare that possiblity to Typescript.
-  export type string_t = string | Java.java.lang.String;
-
-  // Java methods that take java.lang.Object parameters implicitly will take a java.lang.String.
-  // But string_t is not sufficient for this case, we need object_t.
-  export type object_t = Java.java.lang.Object | string | boolean | number | longValue_t;
-
-  // Java methods that take long or java.lang.Long parameters may take javascript numbers,
-  // longValue_t (see above) or java.lang.Long.
-  // This special type alias allows to declare that possiblity to Typescript.
-  export type long_t = number | longValue_t ;
-
-  // Handling of other primitive numeric types is simpler, as there is no loss of precision.
-  export type boolean_t = boolean ;
-  export type short_t = number ;
-  export type integer_t = number ;
-  export type double_t = number ;
-  export type float_t = number ;
-  export type number_t = number ;
-
-  export interface array_t<T> extends Java.java.lang.Object {
-    // This is an opaque type for a java array_t T[];
-    // Use Java.newArray<T>(className, [...]) to create wherever a Java method expects a T[],
-    // most notably for vararg parameteters.
-    __dummy: T;
-  }
-
-  export type object_array_t = array_t<Java.java.lang.Object> | object_t[];
 
   export interface Callback<T> {
     (err?: Error, result?: T): void;
@@ -102,10 +68,10 @@ module Module {
     return _java.instanceOf(javaObject, className);
   }
 
-  export function newShort(val: number): Java.java.lang.Short { return _java.newShort(val); }
-  export function newLong(val: number): Java.java.lang.Long { return _java.newLong(val); }
-  export function newFloat(val: number): Java.java.lang.Float { return _java.newFloat(val); }
-  export function newDouble(val: number): Java.java.lang.Double { return _java.newDouble(val); }
+
+
+
+
 
   export function newInstanceA(className: 'com.redseal.hellojava.HelloJava', cb: Callback<Java.HelloJava>): void;
   export function newInstanceA(className: 'java.lang.Object', cb: Callback<object_t>): void;
@@ -176,7 +142,51 @@ module Module {
     return _java.newInstanceP.apply(_java, args);
   }
 
-  export module Java {
+  export function newArray(className: 'com.redseal.hellojava.HelloJava', arg: Java.HelloJava[]): array_t<com.redseal.hellojava.HelloJava>;
+  export function newArray(className: 'java.lang.Object', arg: object_t[]): array_t<java.lang.Object>;
+  export function newArray(className: 'java.lang.String', arg: string_t[]): array_t<java.lang.String>;
+  export function newArray<T>(className: string, arg: any[]): array_t<T>;
+  export function newArray<T>(className: string, arg: any[]): array_t<T> {
+    return _java.newArray(className, arg);
+  }
+
+  // export module Java {
+
+  // Node-java has special handling for methods that return long or java.lang.Long,
+  // returning a Javascript Number but with an additional property longValue.
+  export interface longValue_t extends Number {
+    longValue: string;
+  }
+
+  // Node-java can automatically coerce a javascript string into a java.lang.String.
+  // This special type alias allows to declare that possiblity to Typescript.
+  export type string_t = string | Java.java.lang.String;
+
+  // Java methods that take java.lang.Object parameters implicitly will take a java.lang.String.
+  // But string_t is not sufficient for this case, we need object_t.
+  export type object_t = Java.java.lang.Object | string | boolean | number | longValue_t;
+
+  // Java methods that take long or java.lang.Long parameters may take javascript numbers,
+  // longValue_t (see above) or java.lang.Long.
+  // This special type alias allows to declare that possiblity to Typescript.
+  export type long_t = number | longValue_t ;
+
+  // Handling of other primitive numeric types is simpler, as there is no loss of precision.
+  export type boolean_t = boolean ;
+  export type short_t = number ;
+  export type integer_t = number ;
+  export type double_t = number ;
+  export type float_t = number ;
+  export type number_t = number ;
+
+  export interface array_t<T> extends Java.java.lang.Object {
+    // This is an opaque type for a java array_t T[];
+    // Use Java.newArray<T>(className, [...]) to create wherever a Java method expects a T[],
+    // most notably for vararg parameteters.
+    __dummy: T;
+  }
+
+  export type object_array_t = array_t<Java.java.lang.Object> | object_t[];
 
   export import HelloJava = com.redseal.hellojava.HelloJava;
   export import Object = java.lang.Object;
@@ -614,6 +624,6 @@ module Module {
   }
 
 
-  } // module Java
+  // } // module Java
 
 } // module Module

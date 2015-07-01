@@ -10,6 +10,9 @@
 
 'use strict';
 
+declare function require(name: string): any;
+require('source-map-support').install();
+
 import BluePromise = require('bluebird');
 import chai = require('chai');
 import chalk = require('chalk');
@@ -154,7 +157,7 @@ function wrapper() {
     var compileCmd: string = './node_modules/.bin/tsc --module commonjs --target ES5 --noImplicitAny --sourceMap '
                            + world.sampleProgramPath;
     execChild(world, compileCmd, () => {
-      expect(world.stdout).to.contain(expected);
+      expect(world.stdout).to.match(new RegExp(expected));
       callback();
     });
   });

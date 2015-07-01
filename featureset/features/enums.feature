@@ -8,26 +8,14 @@ I want to understand how to use Java enum types in Typescript.
     """
     /// <reference path='../../typings/power-assert/power-assert.d.ts' />
     /// <reference path='../../typings/lodash/lodash.d.ts' />
-    /// <reference path='../../typings/node/node.d.ts' />
-    /// <reference path='../../typings/glob/glob.d.ts' />
-    /// <reference path='../../featureset/java.d.ts'/>
 
     import _ = require('lodash');
-    import glob = require('glob');
-    import java = require('java');
     import assert = require('power-assert');
+    import java = require('../module');
+    import Java = java.Java;
 
-    function before(done: Java.Callback<void>): void {
-      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
-        filenames.forEach((name: string) => { java.classpath.push(name); });
-        done();
-      });
-    }
-
-    java.registerClient(before);
-
-    java.ensureJvm(() => {
-      var AnEnum = java.import('com.redseal.featureset.AnEnum');
+    Java.ensureJvm().then(() => {
+      var AnEnum = Java.importClass('com.redseal.featureset.AnEnum');
       {{{ scenario_snippet }}}
     });
 
@@ -40,9 +28,9 @@ I want to understand how to use Java enum types in Typescript.
     var monk: Java.AnEnum = AnEnum.monk;
     assert.ok(miles);
     assert.ok(monk);
-    assert.ok(java.instanceOf(miles, 'com.redseal.featureset.AnEnum'));
-    assert.ok(java.instanceOf(miles, 'java.lang.Enum'));
-    assert.ok(!miles.equalsSync(monk));
+    assert.ok(Java.instanceOf(miles, 'com.redseal.featureset.AnEnum'));
+    assert.ok(Java.instanceOf(miles, 'java.lang.Enum'));
+    assert.ok(!miles.equals(monk));
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
@@ -50,9 +38,9 @@ I want to understand how to use Java enum types in Typescript.
   Scenario: values()
     Given the above boilerplate with following scenario snippet:
     """
-    var enums: Java.AnEnum[] = AnEnum.valuesSync();
+    var enums: Java.AnEnum[] = AnEnum.values();
     assert.ok(_.isArray(enums));
-    var ids: string[] = _.map(enums, (e: Java.AnEnum) => e.toStringSync());
+    var ids: string[] = _.map(enums, (e: Java.AnEnum) => e.toString());
     assert.deepEqual(ids, [ 'mingus', 'monk', 'miles' ]);
     """
     Then it compiles and lints cleanly
@@ -61,10 +49,10 @@ I want to understand how to use Java enum types in Typescript.
   Scenario: must use java Object.equals to compare enum values
     Given the above boilerplate with following scenario snippet:
     """
-    var miles: Java.AnEnum = AnEnum.valueOfSync('miles');
-    var milesAgain: Java.AnEnum = AnEnum.valueOfSync('miles');
+    var miles: Java.AnEnum = AnEnum.valueOf('miles');
+    var milesAgain: Java.AnEnum = AnEnum.valueOf('miles');
 
-    var sameWithJavaObjectEquals: boolean = miles.equalsSync(milesAgain);
+    var sameWithJavaObjectEquals: boolean = miles.equals(milesAgain);
     assert( sameWithJavaObjectEquals );
 
     var sameWithJavascriptEquals: boolean = miles === milesAgain;
@@ -76,10 +64,10 @@ I want to understand how to use Java enum types in Typescript.
   Scenario: valueOf()
     Given the above boilerplate with following scenario snippet:
     """
-    var miles: Java.AnEnum = AnEnum.valueOfSync('miles');
-    var monk: Java.AnEnum = AnEnum.valueOfSync('monk');
-    assert.ok(miles.equalsSync(AnEnum.miles));
-    assert.ok(monk.equalsSync(AnEnum.monk));
+    var miles: Java.AnEnum = AnEnum.valueOf('miles');
+    var monk: Java.AnEnum = AnEnum.valueOf('monk');
+    assert.ok(miles.equals(AnEnum.miles));
+    assert.ok(monk.equals(AnEnum.monk));
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
@@ -97,7 +85,7 @@ I want to understand how to use Java enum types in Typescript.
   Scenario: valueOf() typo throws exception
     Given the above boilerplate with following scenario snippet:
     """
-    assert.throws(() => AnEnum.valueOfSync('myles'), /java.lang.IllegalArgumentException/);
+    assert.throws(() => AnEnum.valueOf('myles'), /java.lang.IllegalArgumentException/);
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
