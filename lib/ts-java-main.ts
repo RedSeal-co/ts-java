@@ -64,7 +64,7 @@ class Main {
 
   run(): BluePromise<ClassesMap> {
     return this.load()
-      .then(() => BluePromise.join(this.writeJsons(), this.writeInterpolatedFiles(), this.writeAutoImport()))
+      .then(() => BluePromise.join(this.writeJsons(), this.writeInterpolatedFiles(), this.writeTsJavaModule()))
       .then(() => dlog('run() completed.'))
       .then(() => this.outputSummaryDiagnostics())
       .then(() => this.classesMap);
@@ -178,8 +178,8 @@ class Main {
     }
   }
 
-  private writeAutoImport(): BluePromise<void> {
-    dlog('writeAutoImport() entered');
+  private writeTsJavaModule(): BluePromise<void> {
+    dlog('writeTsJavaModule() entered');
     if (this.options.tsJavaModulePath === undefined) {
       dlog('No tsJavaModulePath specified, skipping generation.');
       return BluePromise.resolve();
@@ -187,8 +187,8 @@ class Main {
       var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
       var tsWriter = new CodeWriter(this.classesMap, templatesDirPath);
       return mkdirpPromise(path.dirname(this.options.tsJavaModulePath))
-        .then(() => tsWriter.writeAutoImportFile(this.options))
-        .then(() => dlog('writeAutoImport() completed'));
+        .then(() => tsWriter.writeTsJavaModule(this.options))
+        .then(() => dlog('writeTsJavaModule() completed'));
     }
   }
 

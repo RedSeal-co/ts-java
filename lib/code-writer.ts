@@ -178,14 +178,13 @@ class CodeWriter {
   }
 
 
-  // *streamAutoImportFile(): stream the autoImport.ts file contents
-  streamAutoImportFile(options: TsJavaOptions, streamFn: StreamFn, endFn: EndFn): BluePromise<void> {
+  // *streamTsJavaModule(): stream the tsJavaModule.ts file contents
+  streamTsJavaModule(options: TsJavaOptions, streamFn: StreamFn, endFn: EndFn): BluePromise<void> {
     // Remove the runtime libary rt.jar, which was added earlier as 'a convenience'.
     // TODO: refactor so that rt.jar is not present.
     var classpath: string[] = _.filter(options.classpath, (jarpath: string) => path.basename(jarpath) !== 'rt.jar');
 
-    // TODO: here and all over, replace `autoImport` with a better name.
-    // Compute the relative path from the directory that will contain the autoImport file to
+    // Compute the relative path from the directory that will contain the tsJavaModule file to
     // the root directory of the module (i.e. directory containing package.json with tsjava section).
     // This relative path must be applied to each path in the classpath.
     var autoImportDir = path.dirname(path.resolve(options.tsJavaModulePath));
@@ -208,14 +207,14 @@ class CodeWriter {
       .then(() => endFn());
   }
 
-  // *writeAutoImportFile(): write the autoImport.ts file, small .ts source file that makes it possible
+  // *writeTsJavaModule(): write the autoImport.ts file, small .ts source file that makes it possible
   // to import java classes with just their class name;
-  writeAutoImportFile(options: TsJavaOptions): BluePromise<void> {
+  writeTsJavaModule(options: TsJavaOptions): BluePromise<void> {
     var stream = fs.createWriteStream(options.tsJavaModulePath);
     var streamFn: StreamFn = <StreamFn> BluePromise.promisify(stream.write, stream);
     var endFn: EndFn = <EndFn> BluePromise.promisify(stream.end, stream);
 
-    return this.streamAutoImportFile(options, streamFn, endFn);
+    return this.streamTsJavaModule(options, streamFn, endFn);
   }
 
 
