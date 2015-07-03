@@ -4,9 +4,9 @@ Feature: Auto import
   I want to import a class using its basename
   So that my code can be immune to Java refactoring.
 
-  This feature is enabled via the tsjava section of package.json,
-  by adding a property `tsJavaModulePath` which specifies where ts-java
-  will write the source file defining the tsJavaModule function.
+  A generated tsJavaModule.ts file exposes the function importClass(),
+  which can a class by its full class path, or by just its class name,
+  when the class name unambiguously determines the full class path.
 
   Background:
     Given that ts-java has been run and tsJavaModule.ts has compiled and linted cleanly.
