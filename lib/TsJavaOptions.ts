@@ -38,8 +38,8 @@ interface TsJavaOptions {
     // Defaults to '../bluebird/bluebird.d.ts'.
     // Promises libraries other than bluebird are currently not supported, though might work.
 
-  autoImportPath?: string;
-    // The path where ts-java will write a source file defining the autoImport function.
+  tsJavaModulePath?: string;
+    // The path where ts-java will write the generated typescript source module.
 
   asyncOptions?: AsyncOptions;
     // The asyncOptions which will be used to initalize Java.

@@ -195,7 +195,7 @@ function wrapper() {
     var packageJsonPath = world.testPackageName + '/package.json';
     readJsonPromise(packageJsonPath, console.error, false)
       .then((json: any) => {
-        var autoImportFilePath: string = world.testPackageName + '/' + json.tsjava.autoImportPath;
+        var autoImportFilePath: string = world.testPackageName + '/' + json.tsjava.tsJavaModulePath;
         var compileCmd: string = './node_modules/.bin/tsc --module commonjs --target ES5 --noImplicitAny --sourceMap '
                                + autoImportFilePath;
         execChild(world, compileCmd, () => {

@@ -180,13 +180,13 @@ class Main {
 
   private writeAutoImport(): BluePromise<void> {
     dlog('writeAutoImport() entered');
-    if (this.options.autoImportPath === undefined) {
-      dlog('No autoImportPath specified, skipping generation.');
+    if (this.options.tsJavaModulePath === undefined) {
+      dlog('No tsJavaModulePath specified, skipping generation.');
       return BluePromise.resolve();
     } else {
       var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
       var tsWriter = new CodeWriter(this.classesMap, templatesDirPath);
-      return mkdirpPromise(path.dirname(this.options.autoImportPath))
+      return mkdirpPromise(path.dirname(this.options.tsJavaModulePath))
         .then(() => tsWriter.writeAutoImportFile(this.options))
         .then(() => dlog('writeAutoImport() completed'));
     }
