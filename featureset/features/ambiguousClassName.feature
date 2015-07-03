@@ -11,7 +11,7 @@ I need to understand when ts-java declares short aliases for class paths.
 
     import assert = require('power-assert');
     import BluePromise = require('bluebird');
-    import java = require('../module');
+    import java = require('../tsJavaModule');
 
     import Java = java.Java;
     import Thing1 = Java.com.redseal.featureset.Thing;

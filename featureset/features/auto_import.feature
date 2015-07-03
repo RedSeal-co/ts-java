@@ -15,7 +15,7 @@ Feature: Auto import
     /// <reference path='../../typings/power-assert/power-assert.d.ts' />
 
     import assert = require('power-assert');
-    import java = require('../module');
+    import java = require('../tsJavaModule');
     import Java = java.Java;
 
     Java.ensureJvm().then(() => {

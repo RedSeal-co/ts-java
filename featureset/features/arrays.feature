@@ -24,7 +24,7 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
 
     import _ = require('lodash');
     import assert = require('power-assert');
-    import java = require('../module');
+    import java = require('../tsJavaModule');
     import Java = java.Java;
 
     // We intentionally have two different classes named Thing, so it is necessary to refer

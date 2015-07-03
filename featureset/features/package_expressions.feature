@@ -25,7 +25,7 @@ given package or a package nested in the given package.
     """
     Given this boilerplate to intialize node-java:
     """
-    import java = require('../module');
+    import java = require('../tsJavaModule');
     import Java = java.Java;
 
     Java.ensureJvm().then(() => {

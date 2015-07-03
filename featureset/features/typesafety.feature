@@ -18,7 +18,7 @@ for methods variants. Sync methods are denoted with no suffix,
   Background:
     Given this boilerplate to intialize node-java:
     """
-    import java = require('../module');
+    import java = require('../tsJavaModule');
     import Java = java.Java;
 
     Java.ensureJvm().then(() => {

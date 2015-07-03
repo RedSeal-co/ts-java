@@ -11,7 +11,7 @@ I want to understand how to use public fields in Typescript.
 
     import _ = require('lodash');
     import assert = require('power-assert');
-    import java = require('../module');
+    import java = require('../tsJavaModule');
     import Java = java.Java;
 
     Java.ensureJvm().then(() => {

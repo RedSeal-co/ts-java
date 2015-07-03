@@ -1,6 +1,6 @@
 {
   "tsjava": {
-    "tsJavaModulePath": "module.ts",
+    "tsJavaModulePath": "tsJavaModule.ts",
     "promisesPath": "typings/bluebird/bluebird.d.ts",
     "javaTypingsPath": "../typings/java/java.d.ts",
     "classpath": [

@@ -10,7 +10,7 @@ So I can understand how to primitive types and be aware of some limitations.
     /// <reference path='../../typings/power-assert/power-assert.d.ts' />
 
     import assert = require('power-assert');
-    import java = require('../module');
+    import java = require('../tsJavaModule');
     import util = require('util');
 
     import Java = java.Java;

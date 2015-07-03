@@ -12,7 +12,7 @@ Feature: Constructors
     """
     /// <reference path='../../typings/node/node.d.ts' />
 
-    import java = require('../module');
+    import java = require('../tsJavaModule');
     import Java = java.Java;
 
     Java.ensureJvm().then(() => {

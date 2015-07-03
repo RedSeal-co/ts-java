@@ -7,7 +7,7 @@ So I can leverage my knowledge of the Java TinkerPop API to write programs in Ty
   Background:
     Given this boilerplate to intialize node-java:
     """
-    import tinkerpop = require('../module');
+    import tinkerpop = require('../tsJavaModule');
     import Java = tinkerpop.Java;
 
     Java.ensureJvm().then((): void => {

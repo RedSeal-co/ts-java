@@ -31,7 +31,7 @@ compile: $(ALL_TS_OBJ)
 
 ######
 # JAVAPKGS are directories containing a pom.xml and a package.json in which ts-java will be run
-# to generate a module.ts file. Keep the packages in alphabetical order.
+# to generate a tsJavaModule.ts file. Keep the packages in alphabetical order.
 JAVAPKGS=\
 	hellojava \
 	featureset \
@@ -61,18 +61,18 @@ $(JAVAPKGS_INSTALL): %/o/maven.lastran: %/pom.xml $(ALL_JAVA_SOURCES)
 
 install-java-pkgs : $(JAVAPKGS_INSTALL)
 
-##### java packages: module.ts rules #####
+##### java packages: tsJavaModule.ts rules #####
 
-# The module.ts file for each java package, e.g.: hellojava/module.ts
-JAVAPKGS_MODULE_TS=$(patsubst %,%/module.ts,$(JAVAPKGS))
+# The tsJavaModule.ts file for each java package, e.g.: hellojava/tsJavaModule.ts
+JAVAPKGS_MODULE_TS=$(patsubst %,%/tsJavaModule.ts,$(JAVAPKGS))
 
-# The rule to update each module.ts file
-$(JAVAPKGS_MODULE_TS): %/module.ts: %/package.json %/o/maven.lastran bin/ts-java.sh ts-templates/autoImport.txt
+# The rule to update each tsJavaModule.ts file
+$(JAVAPKGS_MODULE_TS): %/tsJavaModule.ts: %/package.json %/o/maven.lastran bin/ts-java.sh ts-templates/autoImport.txt
 	cd $* && ../bin/ts-java.sh
 
 $(JAVAPKGS_CLEAN): %-clean:
 	cd $* && mvn clean
-	rm -rf $*/module.ts $*/o
+	rm -rf $*/tsJavaModule.ts $*/o
 
 ##### java packages: cucumber rules #####
 
@@ -116,10 +116,10 @@ documentation :
 
 test: unittest cucumber
 	# Test that lib/reflection.ts is up to date. If there are differences, manually update using 'make update_reflection'.
-	diff -q lib/reflection.ts reflection/module.ts
+	diff -q lib/reflection.ts reflection/tsJavaModule.ts
 
 update_reflection:
-	cp reflection/module.ts lib/reflection.ts
+	cp reflection/tsJavaModule.ts lib/reflection.ts
 	$(MAKE) test
 
 unittest: $(UNIT_TEST_RAN)

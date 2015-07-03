@@ -16,7 +16,7 @@ in the Background section.
   Background:
     Given this boilerplate to intialize node-java:
     """
-    import hellojava = require('../module');
+    import hellojava = require('../tsJavaModule');
     import Java = hellojava.Java;
 
     Java.ensureJvm().then((): void => {
