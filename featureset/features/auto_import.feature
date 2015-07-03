@@ -5,11 +5,11 @@ Feature: Auto import
   So that my code can be immune to Java refactoring.
 
   This feature is enabled via the tsjava section of package.json,
-  by adding a property `autoImportPath` which specifies where ts-java
-  will write the source file defining the autoImport function.
+  by adding a property `tsJavaModulePath` which specifies where ts-java
+  will write the source file defining the tsJavaModule function.
 
   Background:
-    Given that ts-java has been run and autoImport.ts has compiled and linted cleanly.
+    Given that ts-java has been run and tsJavaModule.ts has compiled and linted cleanly.
     Given this boilerplate to intialize node-java:
     """
     /// <reference path='../../typings/power-assert/power-assert.d.ts' />

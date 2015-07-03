@@ -67,7 +67,7 @@ install-java-pkgs : $(JAVAPKGS_INSTALL)
 JAVAPKGS_MODULE_TS=$(patsubst %,%/tsJavaModule.ts,$(JAVAPKGS))
 
 # The rule to update each tsJavaModule.ts file
-$(JAVAPKGS_MODULE_TS): %/tsJavaModule.ts: %/package.json %/o/maven.lastran bin/ts-java.sh ts-templates/autoImport.txt
+$(JAVAPKGS_MODULE_TS): %/tsJavaModule.ts: %/package.json %/o/maven.lastran bin/ts-java.sh ts-templates/tsJavaModule.txt
 	cd $* && ../bin/ts-java.sh
 
 $(JAVAPKGS_CLEAN): %-clean:
