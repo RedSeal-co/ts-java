@@ -21,7 +21,7 @@ import zip = require('zip');
 import reflection = require('./reflection');
 import Java = reflection.Java;
 
-var openAsync = BluePromise.promisify(fs.open, fs);
+var openAsync = BluePromise.promisify(fs.open);
 
 var dlog = debug('ts-java:classes-map');
 
@@ -753,7 +753,7 @@ class ClassesMap {
   private getWhitedListedClassesInJar(jarpath: string): BluePromise<Array<string>> {
     dlog('getWhitedListedClassesInJar started for:', jarpath);
     var result: Array<string> = [];
-    return openAsync(jarpath, 'r', '0666')
+    return openAsync(jarpath, 'r')
       .then((fd: number) => {
         var reader = zip.Reader(fd);
         reader.forEach((entry: zip.Entry) => {

@@ -20,11 +20,11 @@ import TsJavaOptions = require('./TsJavaOptions');
 import util = require('util');
 
 interface StreamFn {
-  (x: string): BluePromise<void>;
+  (x: string): BluePromise<any>;
 }
 
 interface EndFn {
-  (): BluePromise<void>;
+  (): BluePromise<any>;
 }
 
 interface HandlebarHelperOptions {
@@ -145,8 +145,8 @@ class CodeWriter {
     var filePath = 'o/lib/' + fileName + ext;
 
     var stream = fs.createWriteStream(filePath);
-    var streamFn: StreamFn = <StreamFn> BluePromise.promisify(stream.write, stream);
-    var endFn: EndFn = <EndFn> BluePromise.promisify(stream.end, stream);
+    var streamFn: StreamFn = BluePromise.promisify(stream.write, stream);
+    var endFn: EndFn = BluePromise.promisify(stream.end, stream);
 
     return this.streamLibraryClassFile(className, template, streamFn, endFn);
   }

@@ -33,13 +33,23 @@ import TsJavaOptions = require('../lib/TsJavaOptions');
 import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 
+// Typescript & bluebird.promisify needs some assistance with functions such as fs.writefile.
+// Node.d.ts declares writeFile as follows, with the exception that the callback argument is declared optional.
+interface WriteFile {
+  (filename: string, data: any, callback: (err: NodeJS.ErrnoException) => void): void;
+}
+
 BluePromise.longStackTraces();
-var writeFilePromise = BluePromise.promisify(fs.writeFile);
+var writeFilePromise = BluePromise.promisify(<WriteFile> fs.writeFile);
 var readFilePromise = BluePromise.promisify(fs.readFile);
 var mkdirpPromise = BluePromise.promisify(mkdirp);
 var readJsonPromise = BluePromise.promisify(readJson);
 var globPromise = BluePromise.promisify(glob);
 var findJavaHomePromise = BluePromise.promisify(findJavaHome);
+
+interface Func {
+  (result: any): void;
+}
 
 var dlog = debug('ts-java:main');
 var bold = chalk.bold;
@@ -142,12 +152,14 @@ class Main {
     dlog('writeJsons() entered');
     return mkdirpPromise('o/json')
       .then(() => {
-        return _.map(_.keys(classes), (className: string) => {
+        var parray: BluePromise<void>[] = _.map(_.keys(classes), (className: string) => {
           var classMap = classes[className];
-          return writeFilePromise('o/json/' + classMap.shortName + '.json', JSON.stringify(classMap, null, '  '));
+          var p: BluePromise<any> = writeFilePromise('o/json/' + classMap.shortName + '.json', JSON.stringify(classMap, null, '  '));
+          return p;
         });
+        return parray;
       })
-      .then((promises: Promise<any[]>) => BluePromise.all(promises))
+      .then((promises: BluePromise<void>[]) => BluePromise.all(promises))
       .then(() => dlog('writeJsons() completed.'));
   }
 
@@ -160,7 +172,7 @@ class Main {
         var classes: ClassDefinitionMap = classesMap.getClasses();
         return _.map(_.keys(classes), (name: string) => tsWriter.writeLibraryClassFile(name, this.options.granularity));
       })
-      .then((promises: Promise<any[]>) => BluePromise.all(promises))
+      .then((promises: Promise<any>[]) => BluePromise.all(promises))
       .then(() => dlog('writeClassFiles() completed.'));
   }
 
