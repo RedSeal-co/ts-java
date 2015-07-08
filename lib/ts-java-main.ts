@@ -258,7 +258,14 @@ class Main {
       console.log(bold('Generated classes:'));
       classList.forEach((clazz: string) => console.log('  ', clazz));
     } else {
-      console.log('Generated %s with %d classes.', this.options.outputPath, classList.length);
+      // TODO: remove support for generating java.d.ts files.
+      if (this.options.outputPath) {
+        console.log('Generated %s with %d classes.', this.options.outputPath, classList.length);
+      }
+      // TODO: always generate tsJavaModule.ts files, by using a default when value not specified.
+      if (this.options.tsJavaModulePath) {
+        console.log('Generated %s with %d classes.', this.options.tsJavaModulePath, classList.length);
+      }
     }
 
     if (!this.classesMap.unhandledTypes.isEmpty()) {
