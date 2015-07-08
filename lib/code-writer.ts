@@ -189,7 +189,6 @@ class CodeWriter {
     // This relative path must be applied to each path in the classpath.
     var tsJavaModuleDir = path.dirname(path.resolve(options.tsJavaModulePath));
     var relativePath = path.relative(tsJavaModuleDir, process.cwd());
-    console.log('Computed relativePath:', relativePath);
 
     var context = {
       classes: this.sortedClasses,
