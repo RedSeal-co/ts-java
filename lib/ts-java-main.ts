@@ -14,6 +14,7 @@
 'use strict';
 
 import _ = require('lodash');
+import AsyncOptions = require('./AsyncOptions');
 import BluePromise = require('bluebird');
 import chalk = require('chalk');
 import ClassesMap = require('../lib/classes-map');
@@ -46,6 +47,20 @@ var mkdirpPromise = BluePromise.promisify(mkdirp);
 var readJsonPromise = BluePromise.promisify(readJson);
 var globPromise = BluePromise.promisify(glob);
 var findJavaHomePromise = BluePromise.promisify(findJavaHome);
+
+// ts-java must use asyncOptions that are 'compatible' with the java/java.d.ts in Definitely typed,
+// which uses the following settings.
+// Options are incompatible if a different value is defined for any of the three properties,
+// but any of them can be left undefined.
+var expectedAsyncOptions: AsyncOptions = {
+  syncSuffix: '',
+  asyncSuffix: 'A',
+  promiseSuffix: 'P'
+};
+
+function areCompatibleAsyncOptions(opts: AsyncOptions): boolean {
+  return _.isEqual(expectedAsyncOptions, _.defaults({}, opts, expectedAsyncOptions));
+}
 
 interface Func {
   (result: any): void;
@@ -117,6 +132,11 @@ class Main {
     }
     if (!this.options.javaTypingsPath) {
       this.options.javaTypingsPath = 'typings/java/java.d.ts';
+    }
+    if (!this.options.asyncOptions) {
+      this.options.asyncOptions = expectedAsyncOptions;
+    } else if (!areCompatibleAsyncOptions(this.options.asyncOptions)) {
+      console.warn(warn('tsjava.asyncOptions are not compatible with the asyncOptions used in the standard typings/java/java.d.ts'));
     }
     if (!this.options.packages && this.options.whiteList) {
       console.warn(warn('tsjava.whiteList in package.json is deprecated. Please use tsjava.packages instead.'));
