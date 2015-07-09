@@ -170,3 +170,7 @@ lib/classes-map.js : lib/paramcontext.ts
 lib/code-writer.js : lib/classes-map.ts
 
 test/classes-map-test.js test/code-writer-test.js : $(LIBS_SRC)
+
+o/integration/features/composability.lastran : featureset/o/maven.lastran featureset/tsJavaModule.ts \
+						reflection/o/maven.lastran reflection/tsJavaModule.ts \
+						hellojava/o/maven.lastran hellojava/tsJavaModule.ts
