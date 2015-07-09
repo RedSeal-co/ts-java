@@ -35,6 +35,10 @@ export module Java {
     [index: string]: string;
   }
 
+  export function getJava() {
+    return _java;
+  }
+
   export function ensureJvm(): Promise<void> {
     return _java.ensureJvm();
   }
