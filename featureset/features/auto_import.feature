@@ -5,7 +5,7 @@ Feature: Auto import
   So that my code can be immune to Java refactoring.
 
   A generated tsJavaModule.ts file exposes the function importClass(),
-  which can a class by its full class path, or by just its class name,
+  which can import a class by its full class path, or by just its class name,
   when the class name unambiguously determines the full class path.
 
   Background:

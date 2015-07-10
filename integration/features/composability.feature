@@ -31,7 +31,7 @@ Feature: Composability
     """
     Then it compiles and lints cleanly
 
-    Scenario: Classes from two different tsJavaModules may be imported
+  Scenario: Classes from two different tsJavaModules may be imported
     Given the above boilerplate with following scenario snippet:
     """
       var Object1: hellojava.Java.Object.Static = hellojava.Java.importClass('Object');
