@@ -16,34 +16,11 @@ in the Background section.
   Background:
     Given this boilerplate to intialize node-java:
     """
-    /// <reference path='../../typings/bluebird/bluebird.d.ts' />
-    /// <reference path='../../typings/node/node.d.ts' />
-    /// <reference path='../../typings/glob/glob.d.ts' />
-    /// <reference path='../../hellojava/java.d.ts'/>
+    import hellojava = require('../tsJavaModule');
+    import Java = hellojava.Java;
 
-    import glob = require('glob');
-    import java = require('java');
-    import BluePromise = require('bluebird');
-    var promisify = require('bluebird').promisify;
-
-    java.asyncOptions = {
-      syncSuffix: 'Sync',
-      asyncSuffix: '',
-      promiseSuffix: 'Promise',
-      promisify: promisify
-    };
-
-    function before(): Promise<void> {
-      var globP = promisify(glob);
-      return globP('hellojava/target/**/*.jar')
-        .then((filenames: string[]) => {
-          filenames.forEach((name: string) => { java.classpath.push(name); });
-        });
-    }
-
-    java.registerClientP(before);
-    java.ensureJvm().then((): void => {
-      var HelloJava = java.import('com.redseal.hellojava.HelloJava');
+    Java.ensureJvm().then((): void => {
+      var HelloJava = Java.importClass('com.redseal.hellojava.HelloJava');
       {{{ scenario_snippet }}}
     });
 
@@ -52,7 +29,7 @@ in the Background section.
   Scenario: Hello Java with sync calls
     Given the above boilerplate with following scenario snippet:
     """
-    console.log(HelloJava.sayHelloSync());
+    console.log(HelloJava.sayHello());
     """
     Then it compiles and lints cleanly
     And it runs and produces output:
@@ -64,7 +41,7 @@ in the Background section.
   Scenario: Hello Java with async calls using callbacks
     Given the above boilerplate with following scenario snippet:
     """
-    HelloJava.sayHello((err: Error, result: string) => console.log(result));
+    HelloJava.sayHelloA((err: Error, result: string) => console.log(result));
     """
     Then it compiles and lints cleanly
     And it runs and produces output:
@@ -76,7 +53,7 @@ in the Background section.
   Scenario: Hello Java with async calls using promises
     Given the above boilerplate with following scenario snippet:
     """
-    HelloJava.sayHelloPromise().then((result: string) => console.log(result));
+    HelloJava.sayHelloP().then((result: string) => console.log(result));
     """
     Then it compiles and lints cleanly
     And it runs and produces output:

@@ -30,13 +30,16 @@ interface TsJavaOptions {
   outputPath?: string;
     // The path to write the output java.d.ts file to. Defaults to 'java.d.ts'.
 
+  javaTypingsPath?: string;
+    // The path to typings/java/java.d.ts. Defaults to 'typings/java/java.d.ts'.
+
   promisesPath?: string;
     // The path for the .d.ts file for the promises library.
     // Defaults to '../bluebird/bluebird.d.ts'.
     // Promises libraries other than bluebird are currently not supported, though might work.
 
-  autoImportPath?: string;
-    // The path where ts-java will write a source file defining the autoImport function.
+  tsJavaModulePath?: string;
+    // The path where ts-java will write the generated typescript source module.
 
   asyncOptions?: AsyncOptions;
     // The asyncOptions which will be used to initalize Java.

@@ -65,19 +65,21 @@ ts-java is configured by adding a `tsjava` property to the package.json file:
 }
 ```
 
-We'll explain what the properties `classpath`, `classes`, and `packages` mean below. Assuming they are properly specified, `ts-java` can be run in the project's root directory to generate a `java.d.ts` file:
+We'll explain what the properties `classpath`, `classes`, and `packages` mean below. Assuming they are properly specified, `ts-java` can be run in the project's root directory to generate a `tsJavaModule.ts` file (the name `tsJavaModule.ts` is customizable, see below):
 
 ```bash
 $ ts-java
 ts-java version 1.0.3
-Generated ./java.d.ts with 13 classes.
+Generated tsJavaModule.ts with 13 classes.
 Excluded 20 classes referenced as method parameters.
 Excluded 6 classes referenced as *interfaces*.
 Excluded 1 classes referenced as *superclasses*.
 $
 ```
 
-The `tsjava` property in the `package.json` must define three nested properties:
+The `tsjava` property in the `package.json` must define four nested properties:
+
+* `tsJavaModulePath`: The file path for the output file. In this README we assume the file is named `tsJavaModule.ts`, but you're free to give it any name you choose, and to specify that it be written to a directory, e.g. `./lib/myJavaModule.ts`.
 
 * `classpath`: an array of glob expressions for the files to be added to the java classpath. It should be the same classpath that you will use to initialize node-java to run your application. In addition to the classes specified in `classpath`, `ts-java` automatically includes the Java runtime library classes.
 
@@ -88,6 +90,22 @@ The `tsjava` property in the `package.json` must define three nested properties:
     The first form matches all classes directly in `path.to.some.package` but does not match any nested packages. The second form matches all classes in all packages rooted at `path.to.some.package`.
     
 * `classes`: an array of full class paths for classes that ts-java will generate interfaces for. If you want some but not all classes in a package, specify those classes here.
+
+The `tsjava` property may also define these optional nested properties:
+
+* `asyncOptions`: An object specifying the suffixes to use for the three variants of java methods created by [node-java](https://github.com/joeferner/node-java). See the [AsyncOptions](https://github.com/joeferner/node-java#asyncoptions-control-over-the-generation-of-sync-async--promise-method-variants) section of the node-java README. However, `ts-java` imposes constraints on the values that may be specified, due to the fact that generated `tsJavaModule.ts` must be compatible with the core node-java API defined in `DefinitelyTyped/java/java.d.ts`. The asyncOptions assumed by `java/java.d.ts` are:
+
+```
+    "asyncOptions": {
+      "syncSuffix": "",
+      "asyncSuffix": "A",
+      "promiseSuffix": "P"
+    }
+```
+
+If you don't need all three types of method variants (sync, async, promise) you may omit the corresponding suffix. In that case, `ts-java` will not generate declarations for methods of that variant. If you want to change the suffix type, you will need to create your own `java/java.d.ts` to use instead of the version maintained in DefinitelyTyped.
+
+* `javaTypingsPath`: The relative path to the `java.d.ts`. This defaults to `typings/java/java.d.ts`, as installed by `tsd` from DefinitelyTyped.
 
 ### Command Line Options
 
@@ -164,7 +182,7 @@ These details are useful while refining the configuration to select the exact se
 
 #### Why not simply include all classes?
 
-You certainly can. But we expect that most node applications that use Java libraries will only use a subset of the classes implemented in the libraries. Including all classes results in a larger `java.d.ts` file, which can slow down Typescript compilation, and also make it more cumbersome to use a `java.d.ts` file as documentation for the Java library's API.
+You certainly can. But we expect that most node applications that use Java libraries will only use a subset of the classes implemented in the libraries. Including all classes results in a larger `tsJavaModule.ts` file, which can slow down Typescript compilation, and also make it more cumbersome to use a `tsJavaModule.ts` file as documentation for the Java library's API.
 
 #### What happens with excluded classes?
 
@@ -177,7 +195,9 @@ If the excluded class is referenced as an interface or superclass, the Typescrip
 `ts-java` always includes `java.lang.Object` and `java.lang.String`, but any other Java Runtime classes you need must be specified in either the `packages` or `classes` sections of the `tsjava` configuration.
 
 
-## Class name aliases and AutoImport
+## The structure of the generated tsJavaModule.ts file
+
+`ts-java` generates a Typescript source file which you must arrange to compile with the rest of your Typescript sources. The file declares interfaces for all of the Java classes specified in your package.json tsjava configuration, along with a few helper functions that you can use to import Java classes.
 
 All Java classes are declared to exist in the Typescript module `Java`. Each Java package is mapped to a Typescript module. For example, a class such as `java.lang.String` is declared in nested Typescript modules as:
 
@@ -192,7 +212,7 @@ declare module Java {
   ...
 }
 ```
-In your Typescript application, you can refer to Java classes using fully qualified type paths such as `Java.java.lang.String`. Clearly this is too verbose. `ts-java` addresses this by declaring type aliases for all classes that have unique class names. The `java.d.ts` file includes a section like this:
+In your Typescript application, you can refer to Java classes using fully qualified type paths such as `Java.java.lang.String`. Clearly this is too verbose. `ts-java` addresses this by declaring type aliases for all classes that have unique class names. The `tsJavaModule.ts` file includes a section like this:
 
 ```typescript
 declare module Java {
@@ -213,28 +233,27 @@ To get access to a class via node-java, you typically use `java.import()`, such 
   var String = java.import('java.lang.String');
 ```
 
-`ts-java` provides a feature to make this simpler, which is enabled by adding an `autoImportPath` property to the `tsjava` property of your package.json file, specifying the path to which `tsjava` should write a Typescript source file. For example:
+`ts-java` provides wrapper function `importClass()` that you must use instead to import Java classes. This function may be called with either the full class path, or with just the class name, whenever that class name uniquely determines one class from the set of classes you configured.
 
-```json
-"tsjava": {
-  "classpath": [
-    "target/dependency/**/*.jar"
-  ],
-  "autoImportPath": "lib/autoImport.ts",
-  ...
-  },
-...
-```
-
-Your application can then do this:
+You application will typically use the `tsJavaModule.ts` file as follows:
 
 ```typescript
-import autoImport = require('lib/autoImport');
-...
-var String = autoImport('String');
+    import hellojava = require('../tsJavaModule');
+    import Java = hellojava.Java;
+
+    Java.ensureJvm().then((): void => {
+        var HelloJava = Java.importClass('HelloJava');
+	    ...
+    });
 ```
 
-See `featureset/features/auto_import.feature` for more information.
+See `featureset/features/auto_import.feature` for more information about using `importClass()` with short class names.
+
+## Composing two or more Java libraries
+
+If you are developing a large node application using multiple Java libraries you have a choice on how you use `ts-java`. You may generate a single `tsJavaModule.ts` file with all Java classes you use, or you may generate multiple modules reflecting the logical separation of the Java libraries you use. Each generated `tsJavaModule.ts` file is self-contained and can peacefully coexist with other `tsJavaModule.ts` files in one node process. The only subtlety we want to point out here has to to with passing objects between Java modules. Two independently generated `tsJavaModule.ts` files will contain some Java classes in common. At the very least they will each include `java.lang.Object` and `java.lang.String`, but they will likely include other classes. All such overlapping classes will generate interfaces that are largely compatible, but it is possible that there will be minor differences that will cause Typescript to think the classes are not compatible. 
+
+For example, suppose in one library you include `java.lang.Class`, and in the other library you do not. This will cause `ts-java` to generate different signatures for the `getClass()` method of `java.lang.Object`.  Because of this, if code in your application needs to pass a Java object obtained from one ts-java module to another ts-java module you may need to use type casts/assertions. See `integration/features/composability.feature` for more information.
 
 ## Examples
 
@@ -252,10 +271,14 @@ This directory contains Cucumber `.feature` files that are intended to provide g
 
 #### reflection
 
-`ts-java` is written in Typescript and uses Java [Reflection](http://docs.oracle.com/javase/8/docs/api/java/lang/reflect/package-summary.html), so it needs a `java.d.ts` file (in `lib/java.d.ts`). The `reflection/` directory uses `ts-java` to generate this `java.d.ts` file. We did this by bootstrapping from a hand-coded `java.d.ts` file, and then switching to the generated `java.d.ts` file once `ts-java` was able to generate a valid file. The project `Makefile` contains rules to declare the build broken if the `java.d.ts` generated in `reflection/` differs from `lib/java.d.ts` used by `ts-java` sources, forcing us to keep the file up to date.
+`ts-java` is written in Typescript and uses Java [Reflection](http://docs.oracle.com/javase/8/docs/api/java/lang/reflect/package-summary.html), so it needs a `tsJavaModule.ts` file (in `lib/reflection.ts`). The `reflection/` directory uses `ts-java` to generate this `reflection/tsJavaModule.ts` file. The project `Makefile` contains rules to declare the build broken if the `reflection/tsJavaModule.ts` differs from `lib/reflection.ts`, forcing us to keep the file up to date.
 
 #### tinkerpop
 
 [Tinkerpop3](http://www.tinkerpop.com/) is an An Open Source Graph Computing Framework and is the primary use case that motivated us to create ts-java. If you are also a Tinkerpop user, check out [ts-tinkerpop](https://github.com/RedSeal-co/ts-tinkerpop), a small library with utilities built on top of the Tinkerpop interfaces exposed by the `java.d.ts` declaration file.
+
+#### integration
+
+The directory `integration/` contains a cucumber feature file that illustrates the integration of multiple independently generated ts-java modules, by using the ts-java modules created for `hellojava`, `featureset`, and `reflection`.
 
 [java]: http://en.wikipedia.org/wiki/Java_(programming_language)

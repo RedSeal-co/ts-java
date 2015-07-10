@@ -5,7 +5,7 @@
         ["_", "isNull"],
         ["_", "isDefined"]
     ],
-    "class-name": true,
+    "class-name": false,
     "comment-format": [true,
         "check-space"
     ],

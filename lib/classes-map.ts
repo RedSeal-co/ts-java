@@ -4,7 +4,6 @@
 /// <reference path="../typings/lodash/lodash.d.ts" />
 /// <reference path='../typings/node/node.d.ts' />
 /// <reference path='./zip.d.ts' />
-/// <reference path='./java.d.ts' />
 
 'use strict';
 
@@ -19,7 +18,10 @@ import TsJavaOptions = require('./TsJavaOptions');
 import Work = require('./work');
 import zip = require('zip');
 
-var openAsync = BluePromise.promisify(fs.open, fs);
+import reflection = require('./reflection');
+import Java = reflection.Java;
+
+var openAsync = BluePromise.promisify(fs.open);
 
 var dlog = debug('ts-java:classes-map');
 
@@ -68,7 +70,6 @@ class ClassesMap {
 
   private classCache: Immutable.Map<string, Java.Class>;
 
-  private java: Java.NodeAPI;
   private options: TsJavaOptions;
 
   private classes: ClassDefinitionMap;
@@ -85,8 +86,7 @@ class ClassesMap {
 
   private interfaceDepthCache: Immutable.Map<string, number>;
 
-  constructor(java: Java.NodeAPI, options: TsJavaOptions) {
-    this.java = java;
+  constructor(options: TsJavaOptions) {
     this.options = options;
 
     this.classCache = Immutable.Map<string, Java.Class>();
@@ -265,6 +265,8 @@ class ClassesMap {
       if (!this.shortToLongNameMap || this.shortToLongNameMap[shortName] === typeName) {
         typeName = shortName;
       }
+      // Add the 'Java.' namespace
+      typeName = 'Java.' + typeName;
     } else {
       dlog('Unhandled type:', typeName);
       this.unhandledTypes = this.unhandledTypes.add(typeName);
@@ -304,32 +306,32 @@ class ClassesMap {
 
     var signature = this.methodSignature(method);
 
-    var modifiers: number = method.getModifiersSync();
+    var modifiers: number = method.getModifiers();
     var isStatic: boolean = (modifiers & 8) === 8;
 
     var returnType: string = 'void';
-    if ('getReturnTypeSync' in method) {
-      returnType = (<Java.Method>method).getReturnTypeSync().getNameSync();
+    if ('getReturnType' in method) {
+      returnType = (<Java.Method>method).getReturnType().getName();
     } else {
       // It is convenient to declare the return type for a constructor to be the type of the class,
       // possibly transformed by tsTypeName. This is because node-java will always convert boxed primitive
       // types to the corresponding javascript primitives, e.g. java.lang.String -> string, and
       // java.lang.Integer -> number.
-      returnType = method.getDeclaringClassSync().getNameSync();
+      returnType = method.getDeclaringClass().getName();
     }
 
     var methodMap: MethodDefinition = {
-      name: method.getNameSync(),
-      declared: method.getDeclaringClassSync().getNameSync(),
+      name: method.getName(),
+      declared: method.getDeclaringClass().getName(),
       returns: returnType,
       tsReturns: this.tsTypeName(returnType, ParamContext.eReturn),
-      paramNames: _.map(method.getParametersSync(), (p: Java.Parameter) => { return p.getNameSync(); }),
-      paramTypes: _.map(method.getParameterTypesSync(), (p: Java.Class) => { return p.getNameSync(); }),
-      tsParamTypes: _.map(method.getParameterTypesSync(), (p: Java.Class) => { return this.tsTypeName(p.getNameSync()); }),
+      paramNames: _.map(method.getParameters(), (p: Java.Parameter) => { return p.getName(); }),
+      paramTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return p.getName(); }),
+      tsParamTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return this.tsTypeName(p.getName()); }),
       isStatic: isStatic,
-      isVarArgs: method.isVarArgsSync(),
-      generic_proto: method.toGenericStringSync(),
-      plain_proto: method.toStringSync(),
+      isVarArgs: method.isVarArgs(),
+      generic_proto: method.toGenericString(),
+      plain_proto: method.toString(),
       signature: signature
     };
 
@@ -339,14 +341,14 @@ class ClassesMap {
   // *mapClassMethods()*: return a methodMap array for the methods of a class
   // declared public only for unit tests
   public mapClassMethods(className: string, clazz: Java.Class): Array<MethodDefinition> {
-    return _.map(clazz.getMethodsSync(), function (m: Java.Method) { return this.mapMethod(m); }, this);
+    return _.map(clazz.getMethods(), function (m: Java.Method) { return this.mapMethod(m); }, this);
   }
 
   // *mapClass()*: return a map of all useful properties of a class.
   // declared public only for unit tests
   public mapClass(className: string, work: Work): ClassDefinition {
     var clazz: Java.Class = this.getClass(className);
-    assert.strictEqual(className, clazz.getNameSync());
+    assert.strictEqual(className, clazz.getName());
 
     // Get the superclass of the class, if it exists, and is an included class.
     // If the immediate type is not an included class, we ascend up the ancestry
@@ -354,15 +356,15 @@ class ClassesMap {
     // class to not have a superclass, even though it does.
     // We report all such skipped superclasses in the summary diagnostics.
     // The developer can then choose to add any of these classes to the seed classes list.
-    var superclass: Java.Class = clazz.getSuperclassSync();
-    while (superclass && !this.isIncludedClass(superclass.getNameSync())) {
-      this.unhandledSuperClasses = this.unhandledSuperClasses.add(superclass.getNameSync());
-      superclass = superclass.getSuperclassSync();
+    var superclass: Java.Class = clazz.getSuperclass();
+    while (superclass && !this.isIncludedClass(superclass.getName())) {
+      this.unhandledSuperClasses = this.unhandledSuperClasses.add(superclass.getName());
+      superclass = superclass.getSuperclass();
     }
 
     var interfaces = this.mapClassInterfaces(className, clazz).sort();
     if (superclass) {
-      interfaces.unshift(superclass.getNameSync());
+      interfaces.unshift(superclass.getName());
     }
 
     interfaces.forEach((intfName: string) => {
@@ -390,9 +392,9 @@ class ClassesMap {
       useAlias = false;
     }
 
-    var isInterface = clazz.isInterfaceSync();
-    var isPrimitive = clazz.isPrimitiveSync();
-    var isEnum = clazz.isEnumSync();
+    var isInterface = clazz.isInterface();
+    var isPrimitive = clazz.isPrimitive();
+    var isEnum = clazz.isEnum();
 
     function bySignature(a: MethodDefinition, b: MethodDefinition) {
       return a.signature.localeCompare(b.signature);
@@ -425,7 +427,7 @@ class ClassesMap {
       tsType: this.tsTypeName(className),
       isInterface: isInterface,
       isPrimitive: isPrimitive,
-      superclass: superclass === null ? null : superclass.getNameSync(),
+      superclass: superclass === null ? null : superclass.getName(),
       interfaces: interfaces,
       tsInterfaces: tsInterfaces,
       methods: methods,
@@ -473,13 +475,13 @@ class ClassesMap {
   // *mapClassInterfaces()*: Find the direct interfaces of className.
   // declared public only for unit tests
   public mapClassInterfaces(className: string, clazz: Java.Class) : Array<string> {
-    assert.strictEqual(clazz.getNameSync(), className);
+    assert.strictEqual(clazz.getName(), className);
     var interfaces: Array<string> = this.resolveInterfaces(clazz).toArray();
 
     // Methods of Object must always be available on any instance variable, even variables whose static
     // type is a Java interface. Java does this implicitly. We have to do it explicitly.
     var javaLangObject = 'java.lang.Object';
-    if (interfaces.length === 0 && className !== javaLangObject && clazz.getSuperclassSync() === null) {
+    if (interfaces.length === 0 && className !== javaLangObject && clazz.getSuperclass() === null) {
       interfaces.push(javaLangObject);
     }
 
@@ -517,8 +519,8 @@ class ClassesMap {
   private resolveInterfaces(clazz: Java.Class): Immutable.Set<string> {
     var result = Immutable.Set<string>();
 
-    _.forEach(clazz.getInterfacesSync(), (intf: Java.Class): void => {
-      var intfName: string = intf.getNameSync();
+    _.forEach(clazz.getInterfaces(), (intf: Java.Class): void => {
+      var intfName: string = intf.getName();
       if (this.isIncludedClass(intfName)) {
         result = result.add(intfName);
       } else {
@@ -534,7 +536,7 @@ class ClassesMap {
 
   // *typeEncoding()*: return the JNI encoding string for a java class
   private typeEncoding(clazz: Java.Class): string {
-    var name = clazz.getNameSync();
+    var name = clazz.getName();
     var primitives: StringDictionary = {
       boolean: 'Z',
       byte: 'B',
@@ -548,12 +550,12 @@ class ClassesMap {
     };
 
     var encoding: string;
-    if (clazz.isPrimitiveSync()) {
+    if (clazz.isPrimitive()) {
       encoding = primitives[name];
-    } else if (clazz.isArraySync()) {
+    } else if (clazz.isArray()) {
       encoding = name;
     } else {
-      encoding = clazz.getCanonicalNameSync();
+      encoding = clazz.getCanonicalName();
       assert.ok(encoding, 'typeEncoding cannot handle type');
       encoding = 'L' + encoding + ';';
     }
@@ -565,29 +567,29 @@ class ClassesMap {
   // encoding the method name, types of parameters, and the return type.
   // This string may be passed as the method name to java.callMethod() in order to execute a specific variant.
   private methodSignature(method: Java.Executable): string {
-    var name = method.getNameSync();
-    var paramTypes = method.getParameterTypesSync();
+    var name = method.getName();
+    var paramTypes = method.getParameterTypes();
     var sigs = paramTypes.map((p: Java.Class) => { return this.typeEncoding(p); });
     var signature = name + '(' + sigs.join('') + ')';
-    if ('getReturnTypeSync' in method) {
+    if ('getReturnType' in method) {
       // methodSignature can be called on either a constructor or regular method.
       // constructors don't have return types.
-      signature += this.typeEncoding((<Java.Method>method).getReturnTypeSync());
+      signature += this.typeEncoding((<Java.Method>method).getReturnType());
     }
     return signature;
   }
 
   // *mapField()*: return a map of useful properties of a field.
   private mapField(field: Java.Field): FieldDefinition {
-    var name: string = field.getNameSync();
-    var fieldType: Java.Class = field.getTypeSync();
-    var fieldTypeName: string = fieldType.getNameSync();
-    var declaredIn: string = field.getDeclaringClassSync().getNameSync();
+    var name: string = field.getName();
+    var fieldType: Java.Class = field.getType();
+    var fieldTypeName: string = fieldType.getName();
+    var declaredIn: string = field.getDeclaringClass().getName();
     var tsType: string = this.tsTypeName(fieldTypeName, ParamContext.eReturn);
 
-    var modifiers: number = field.getModifiersSync();
+    var modifiers: number = field.getModifiers();
     var isStatic: boolean = (modifiers & 8) === 8;
-    var isSynthetic: boolean = field.isSyntheticSync();
+    var isSynthetic: boolean = field.isSynthetic();
 
     var fieldDefinition: FieldDefinition = {
       name: name,
@@ -606,13 +608,13 @@ class ClassesMap {
     // For reasons I don't understand, it seems that getFields() can return duplicates.
     // TODO: Figure out why there are duplicates, as perhaps there is a better fix.
     // In the meantime, we dedup here.
-    var allFields: Array<FieldDefinition> = _.map(clazz.getFieldsSync(), function (f: Java.Field) { return this.mapField(f); }, this);
+    var allFields: Array<FieldDefinition> = _.map(clazz.getFields(), function (f: Java.Field) { return this.mapField(f); }, this);
     return _.uniq(allFields, false, 'name');
   }
 
   // *mapClassConstructors()*: return a methodMap array for the constructors of a class
   private mapClassConstructors(className: string, clazz: Java.Class): Array<MethodDefinition> {
-    return _.map(clazz.getConstructorsSync(), function (m: Java.Constructor) { return this.mapMethod(m); }, this);
+    return _.map(clazz.getConstructors(), function (m: Java.Constructor) { return this.mapMethod(m); }, this);
   }
 
   // *compareVariants()*: Compare two method definitions, which should be two variants with the same method name.
@@ -751,7 +753,7 @@ class ClassesMap {
   private getWhitedListedClassesInJar(jarpath: string): BluePromise<Array<string>> {
     dlog('getWhitedListedClassesInJar started for:', jarpath);
     var result: Array<string> = [];
-    return openAsync(jarpath, 'r', '0666')
+    return openAsync(jarpath, 'r')
       .then((fd: number) => {
         var reader = zip.Reader(fd);
         reader.forEach((entry: zip.Entry) => {
@@ -810,15 +812,15 @@ class ClassesMap {
 
   // *loadClassCache()*: Load all classes seen in prescan, pruning any non-public classes.
   private loadClassCache(): BluePromise<void> {
-    var Modifier: Java.Modifier.Static = this.java.import('java.lang.reflect.Modifier');
+    var Modifier: Java.Modifier.Static = Java.importClass('java.lang.reflect.Modifier');
     var nonPublic = Immutable.Set<string>();
-    var classLoader = this.java.getClassLoader();
+    var classLoader = Java.getClassLoader();
     this.allClasses.forEach((className: string): void => {
-      var clazz: Java.Class = classLoader.loadClassSync(className);
-      var modifiers: number = clazz.getModifiersSync();
-      var isPublic: boolean = Modifier.isPublicSync(modifiers);
-      var isPrivate: boolean = Modifier.isPrivateSync(modifiers);
-      var isProtected: boolean = Modifier.isProtectedSync(modifiers);
+      var clazz: Java.Class = classLoader.loadClass(className);
+      var modifiers: number = clazz.getModifiers();
+      var isPublic: boolean = Modifier.isPublic(modifiers);
+      var isPrivate: boolean = Modifier.isPrivate(modifiers);
+      var isProtected: boolean = Modifier.isProtected(modifiers);
       if (isPublic) {
         this.classCache = this.classCache.set(className, clazz);
       } else {

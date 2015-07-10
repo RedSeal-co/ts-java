@@ -8,26 +8,15 @@ So I can understand how to primitive types and be aware of some limitations.
     Given this boilerplate to intialize node-java:
     """
     /// <reference path='../../typings/power-assert/power-assert.d.ts' />
-    /// <reference path='../../typings/node/node.d.ts' />
-    /// <reference path='../../typings/glob/glob.d.ts' />
-    /// <reference path='../../featureset/java.d.ts'/>
 
     import assert = require('power-assert');
-    import glob = require('glob');
-    import java = require('java');
+    import java = require('../tsJavaModule');
     import util = require('util');
 
-    function before(done: Java.Callback<void>): void {
-      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
-        filenames.forEach((name: string) => { java.classpath.push(name); });
-        done();
-      });
-    }
+    import Java = java.Java;
 
-    java.registerClient(before);
-
-    java.ensureJvm(() => {
-      var SomeClass = java.import('com.redseal.featureset.SomeClass');
+    Java.ensureJvm().then(() => {
+      var SomeClass = Java.importClass('com.redseal.featureset.SomeClass');
       var something: Java.SomeInterface = new SomeClass();
       {{{ scenario_snippet }}}
     });
@@ -37,7 +26,7 @@ So I can understand how to primitive types and be aware of some limitations.
   Scenario: Java functions returning java.lang.String values return javascript strings.
     Given the above boilerplate with following scenario snippet:
     """
-    var str: string = something.getStringSync();
+    var str: string = something.getString();
     assert.strictEqual(typeof str, 'string');
     assert.strictEqual(str, 'Just some class.');
     """
@@ -47,8 +36,8 @@ So I can understand how to primitive types and be aware of some limitations.
   Scenario: Java functions taking java.lang.String values accept javascript strings.
     Given the above boilerplate with following scenario snippet:
     """
-    something.setStringSync('foo');
-    var str: string = something.getStringSync();
+    something.setString('foo');
+    var str: string = something.getString();
     assert.strictEqual(typeof str, 'string');
     assert.strictEqual(str, 'foo');
     """
@@ -58,7 +47,7 @@ So I can understand how to primitive types and be aware of some limitations.
   Scenario: Java functions returning int values return javascript numbers.
     Given the above boilerplate with following scenario snippet:
     """
-    var num: number = something.getIntSync();
+    var num: number = something.getInt();
     assert.strictEqual(typeof num, 'number');
     assert.strictEqual(num, 42);
     """
@@ -68,8 +57,8 @@ So I can understand how to primitive types and be aware of some limitations.
   Scenario: Java functions taking int values accept javascript numbers.
     Given the above boilerplate with following scenario snippet:
     """
-    something.setIntSync(999);
-    var num: number = something.getIntSync();
+    something.setInt(999);
+    var num: number = something.getInt();
     assert.strictEqual(typeof num, 'number');
     assert.strictEqual(num, 999);
     """
@@ -79,7 +68,7 @@ So I can understand how to primitive types and be aware of some limitations.
   Scenario: Java functions returning long values return javascript objects containing both a number and a string.
     Given the above boilerplate with following scenario snippet:
     """
-    var num: Java.longValue_t = something.getLongSync();
+    var num: Java.longValue_t = something.getLong();
     assert.strictEqual(typeof num, 'object');
     assert.strictEqual(num.longValue, '9223372036854775807');
     assert.equal(num, 9223372036854776000);
@@ -93,7 +82,7 @@ So I can understand how to primitive types and be aware of some limitations.
   Scenario: Java functions returning boolean values return javascript booleans.
     Given the above boilerplate with following scenario snippet:
     """
-    var val: boolean = something.getBooleanSync();
+    var val: boolean = something.getBoolean();
     assert.strictEqual(typeof val, 'boolean');
     assert.strictEqual(val, true);
     """
@@ -103,7 +92,7 @@ So I can understand how to primitive types and be aware of some limitations.
   Scenario: Java functions returning double values return javascript numbers.
     Given the above boilerplate with following scenario snippet:
     """
-    var val: number = something.getDoubleSync();
+    var val: number = something.getDouble();
     assert.strictEqual(typeof val, 'number');
     assert.strictEqual(val, 3.141592653589793);
     """
@@ -115,15 +104,15 @@ So I can understand how to primitive types and be aware of some limitations.
     """
     // Node-java always converts wrapper class instances for primitive types to
     // the corresponding primitive types, even via newInstance().
-    var str: string = java.newInstanceSync('java.lang.String', 'hello');
+    var str: string = Java.newInstance('java.lang.String', 'hello');
     assert.strictEqual(typeof str, 'string');
     assert.strictEqual(str, 'hello');
 
-    var num: number = java.newInstanceSync('java.lang.Integer', 42);
+    var num: number = Java.newInstance('java.lang.Integer', 42);
     assert.strictEqual(typeof num, 'number');
     assert.strictEqual(num, 42);
 
-    java.newInstance('java.lang.Double', 2.71828, (err: Error, num: number) => {
+    Java.newInstanceA('java.lang.Double', 2.71828, (err: Error, num: number) => {
       assert.strictEqual(typeof num, 'number');
       assert.strictEqual(num, 2.71828);
     });
@@ -136,25 +125,25 @@ So I can understand how to primitive types and be aware of some limitations.
     """
     var result: Java.object_t;
 
-    // Each of the getFooObjectSync() methods below is declared to return a java.lang.Object,
+    // Each of the getFooObject() methods below is declared to return a java.lang.Object,
     // but actually returns a specific type that can be coerced to a javascript type.
     // The special type Java.object_t makes it easy to work with such results.
     // Note that Java.object_t is declared as:
     // type object_t = java.lang.Object | string | number | longValue_t;
 
-    result = something.getStringObjectSync();
+    result = something.getStringObject();
     assert.strictEqual(typeof result, 'string');
     assert.strictEqual(result, 'A String');
 
-    result = something.getShortObjectSync();
+    result = something.getShortObject();
     assert.strictEqual(typeof result, 'number');
     assert.strictEqual(result, 42);
 
-    result = something.getDoubleObjectSync();
+    result = something.getDoubleObject();
     assert.strictEqual(typeof result, 'number');
     assert.strictEqual(result, 3.141592653589793);
 
-    result = something.getLongObjectSync();
+    result = something.getLongObject();
     assert.strictEqual(typeof result, 'object');
     assert.strictEqual((<Java.longValue_t>result).longValue, '9223372036854775807');
     assert.equal(result, 9223372036854776000);
@@ -168,13 +157,13 @@ So I can understand how to primitive types and be aware of some limitations.
   Scenario: newArray returns java object wrapper for the array.
     Given the above boilerplate with following scenario snippet:
     """
-    var arr: Java.array_t<Java.java.lang.String> = java.newArray('java.lang.String', ['hello', 'world']);
+    var arr: Java.array_t<Java.java.lang.String> = Java.newArray('java.lang.String', ['hello', 'world']);
     console.log(typeof arr, arr);
 
     // TODO: ts-java needs generics to support something like the following:
-    // var Arrays = java.import('java.util.Arrays');
+    // var Arrays = java.importClass('java.util.Arrays');
     // var list: Java.java.util.List = Arrays.asList(arr);
-    // console.log(list.toStringSync());
+    // console.log(list.toString());
 
     """
     Then it compiles and lints cleanly

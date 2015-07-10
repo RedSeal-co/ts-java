@@ -5,10 +5,14 @@
 /// <reference path='../../typings/chalk/chalk.d.ts' />
 /// <reference path="../../typings/debug/debug.d.ts"/>
 /// <reference path="../../typings/handlebars/handlebars.d.ts"/>
+/// <reference path='../../typings/mkdirp/mkdirp.d.ts' />
 /// <reference path="../../typings/node/node.d.ts"/>
 /// <reference path='../../lib/read-package-json.d.ts' />
 
 'use strict';
+
+declare function require(name: string): any;
+require('source-map-support').install();
 
 import BluePromise = require('bluebird');
 import chai = require('chai');
@@ -17,6 +21,7 @@ import childProcess = require('child_process');
 import debug = require('debug');
 import fs = require('fs');
 import handlebars = require('handlebars');
+import mkdirp = require('mkdirp');
 import path = require('path');
 import readJson = require('read-package-json');
 
@@ -24,6 +29,7 @@ import readJson = require('read-package-json');
 import Callback = cucumber.StepCallback;
 
 var readJsonPromise = BluePromise.promisify(readJson);
+var mkdirpPromise = BluePromise.promisify(mkdirp);
 
 // ### World
 // Interface to the "world" for these steps.
@@ -104,10 +110,13 @@ function wrapper() {
 
     world.testPackageName = dirParts[0];
 
-    // Create a sample program source file each scenario.
-    world.sampleProgramPath = path.join(dirParts[0], 'o', name);
-    dlog('Sample program path:', world.sampleProgramPath);
-    callback();
+    var sourceDirPath = path.join(dirParts[0], 'o-' + dirParts[2]);
+    mkdirpPromise(sourceDirPath).then(() => {
+      // Create a sample program source file each scenario.
+      world.sampleProgramPath = path.join(sourceDirPath, name);
+      dlog('Sample program path:', world.sampleProgramPath);
+      callback();
+    });
   });
 
   this.Given(/^the default TinkerPop packages$/, function (callback: Callback) {
@@ -154,7 +163,7 @@ function wrapper() {
     var compileCmd: string = './node_modules/.bin/tsc --module commonjs --target ES5 --noImplicitAny --sourceMap '
                            + world.sampleProgramPath;
     execChild(world, compileCmd, () => {
-      expect(world.stdout).to.contain(expected);
+      expect(world.stdout).to.match(new RegExp(expected));
       callback();
     });
   });
@@ -187,19 +196,19 @@ function wrapper() {
     });
   });
 
-  this.Given(/^that ts\-java has been run and autoImport\.ts has compiled and linted cleanly\.$/, function (callback: Callback) {
+  this.Given(/^that ts\-java has been run and tsJavaModule\.ts has compiled and linted cleanly\.$/, function (callback: Callback) {
     var world = <World> this;
     var packageJsonPath = world.testPackageName + '/package.json';
     readJsonPromise(packageJsonPath, console.error, false)
       .then((json: any) => {
-        var autoImportFilePath: string = world.testPackageName + '/' + json.tsjava.autoImportPath;
+        var tsJavaModuleFilePath: string = world.testPackageName + '/' + json.tsjava.tsJavaModulePath;
         var compileCmd: string = './node_modules/.bin/tsc --module commonjs --target ES5 --noImplicitAny --sourceMap '
-                               + autoImportFilePath;
+                               + tsJavaModuleFilePath;
         execChild(world, compileCmd, () => {
           expect(world.error).to.equal(null);
           expect(world.stdout).to.equal('');
           expect(world.stderr).to.equal('');
-          var lintCmd: string = './node_modules/.bin/tslint --config tslint.json --file ' + autoImportFilePath;
+          var lintCmd: string = './node_modules/.bin/tslint --config tslint.json --file ' + tsJavaModuleFilePath;
           execChild(world, lintCmd, () => {
             expect(world.error).to.equal(null);
             expect(world.stdout).to.equal('');

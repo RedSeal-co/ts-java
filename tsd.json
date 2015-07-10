@@ -6,52 +6,55 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "mocha/mocha.d.ts": {
-      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
     },
     "chai/chai.d.ts": {
-      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
     },
     "lodash/lodash.d.ts": {
-      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
     },
     "node/node.d.ts": {
-      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
     },
     "handlebars/handlebars.d.ts": {
-      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
     },
     "mkdirp/mkdirp.d.ts": {
-      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
     },
     "commander/commander.d.ts": {
-      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
     },
     "debug/debug.d.ts": {
-      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
     },
     "glob/glob.d.ts": {
-      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
     },
     "minimatch/minimatch.d.ts": {
-      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
     },
     "bluebird/bluebird.d.ts": {
-      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
     },
     "chalk/chalk.d.ts": {
-      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
     },
     "cucumber/cucumber.d.ts": {
-      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
     },
     "power-assert/power-assert.d.ts": {
-      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
     },
     "power-assert-formatter/power-assert-formatter.d.ts": {
-      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
     },
     "empower/empower.d.ts": {
-      "commit": "16603733c8080bd05e556acb8b47ca5ce902c081"
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
+    },
+    "java/java.d.ts": {
+      "commit": "a691b92b6194edc7598d186d6d53ae9011a47c22"
     }
   }
 }

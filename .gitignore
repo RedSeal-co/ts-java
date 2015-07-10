@@ -2,6 +2,7 @@ node_modules/
 typings/
 doc/
 o/
+o-*.feature/
 
 *.js
 !bin/*.js

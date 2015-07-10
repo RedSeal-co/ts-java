@@ -1,6 +1,5 @@
 // classes-map-test.ts
 ///<reference path='../lib/find-java-home.d.ts' />
-///<reference path='../lib/java.d.ts' />
 ///<reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 ///<reference path='../typings/chai/chai.d.ts'/>
 ///<reference path='../typings/glob/glob.d.ts' />
@@ -21,12 +20,13 @@ import debug = require('debug');
 import findJavaHome = require('find-java-home');
 import glob = require('glob');
 import Immutable = require('immutable');
-import java = require('java');
 import ParamContext = require('../lib/paramcontext');
 import path = require('path');
 import TsJavaOptions = require('../lib/TsJavaOptions');
 import TsJavaMain = require('../lib/ts-java-main');
 import Work = require('../lib/work');
+
+import reflection = require('../lib/reflection');
 
 var dlog = debug('ts-java:classes-map-test');
 var findJavaHomePromise = BluePromise.promisify(findJavaHome);
@@ -86,7 +86,7 @@ describe('ClassesMap', () => {
     it('should return a valid Class object for java.lang.Object', () => {
       var clazz = classesMap.getClass('java.lang.Object');
       expect(clazz).to.be.ok;
-      expect(clazz.getNameSync()).to.equal('java.lang.Object');
+      expect(clazz.getName()).to.equal('java.lang.Object');
     });
     it('should fail for an invalid class name', () => {
       expect(function () { classesMap.getClass('net.lang.Object'); }).to.throw(/java.lang.ClassNotFoundException/);
@@ -94,7 +94,7 @@ describe('ClassesMap', () => {
     it('should return a valid Class object for com.tinkerpop.gremlin.structure.Edge', () => {
       var clazz = classesMap.getClass('com.tinkerpop.gremlin.structure.Edge');
       expect(clazz).to.be.ok;
-      expect(clazz.getNameSync()).to.equal('com.tinkerpop.gremlin.structure.Edge');
+      expect(clazz.getName()).to.equal('com.tinkerpop.gremlin.structure.Edge');
     });
   });
 
@@ -161,7 +161,7 @@ describe('ClassesMap', () => {
       expect(classesMap.tsTypeName('java.lang.Short')).to.equal('short_t');
       expect(classesMap.tsTypeName('java.lang.String')).to.equal('string_t');
       expect(classesMap.tsTypeName('Ljava.lang.Object;')).to.equal('object_t');
-      expect(classesMap.tsTypeName('Ljava.util.function.Function;')).to.equal('Function');
+      expect(classesMap.tsTypeName('Ljava.util.function.Function;')).to.equal('Java.Function');
     });
     it('it should translate Java primitive classes to TypeScript types for function return results', () => {
       expect(classesMap.tsTypeName('java.lang.Boolean', ParamContext.eReturn)).to.equal('boolean');

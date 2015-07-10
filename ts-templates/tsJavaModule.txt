@@ -1,0 +1,269 @@
+// Generated using the following tsjava options:
+// tsJavaModulePath:
+//   {{ config.tsJavaModulePath}}
+// classpath:
+{{#each classpath}}
+//   {{this}}
+{{/each}}
+// classes:
+{{#if config.classes}}
+{{#each config.classes }}
+//   {{this}}
+{{/each}}
+{{/if}}
+{{#unless config.classes}}
+//   <none>
+{{/unless}}
+// packages:
+{{#if config.packages}}
+{{#each config.packages }}
+//   {{this}}
+{{/each}}
+{{/if}}
+{{#unless config.packages}}
+//   <none>
+{{/unless}}
+{{#with classes}}
+
+declare function require(name: string): any;
+require('source-map-support').install();
+
+import _java = require('java');
+import BluePromise = require('bluebird');
+import path = require('path');
+
+_java.asyncOptions = {
+    syncSuffix: '',
+    asyncSuffix: 'A',
+    promiseSuffix: 'P',
+    promisify: BluePromise.promisify
+};
+
+// JVM initialization callback which adds tsjava.classpath to the JVM classpath.
+function beforeJvm(): BluePromise<void> {
+  var moduleJars: string[] = [{{#each @root.classpath}}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}];
+  moduleJars.forEach((jarPath: string) => {
+    _java.classpath.push(path.join(__dirname, '{{@root.classpathAdjust}}', jarPath));
+  });
+  return BluePromise.resolve();
+}
+
+_java.registerClientP(beforeJvm);
+
+export module Java {
+  'use strict';
+
+  interface StringDict {
+    [index: string]: string;
+  }
+
+  export function getJava() {
+    return _java;
+  }
+
+  export function ensureJvm(): Promise<void> {
+    return _java.ensureJvm();
+  }
+
+  {{#hasClass 'java.lang.ClassLoader'}}
+  export function getClassLoader(): Java.java.lang.ClassLoader {
+    return _java.getClassLoader();
+  }
+  {{/hasClass}}
+
+  {{#each this}}
+  {{#if useAlias}}
+  export function importClass(className: '{{alias}}'): Java.{{quotedPkgName}}.{{shortName}}.Static;
+  {{/if}}
+  {{/each}}
+  {{#each this}}
+  export function importClass(className: '{{packageName}}.{{shortName}}'): Java.{{quotedPkgName}}.{{shortName}}.Static;
+  {{/each}}
+  export function importClass(className: string): any;
+  export function importClass(className: string): any {
+    var shortToLongMap: StringDict = {
+      {{#each this}}
+      {{#if useAlias}}
+      '{{alias}}': '{{packageName}}.{{shortName}}'{{#unless @last}},{{/unless}}
+      {{/if}}
+      {{/each}}
+    };
+
+    if (className in shortToLongMap) {
+      className = shortToLongMap[className];
+    }
+    return _java.import(className);
+  }
+
+  export interface Callback<T> {
+    (err?: Error, result?: T): void;
+  }
+
+  export function instanceOf(javaObject: any, className: string): boolean {
+    return _java.instanceOf(javaObject, className);
+  }
+
+{{#hasClass 'java.lang.Short'}}  export function newShort(val: number): Java.java.lang.Short { return _java.newShort(val); }{{/hasClass}}
+{{#hasClass 'java.lang.Long'}}  export function newLong(val: number): Java.java.lang.Long { return _java.newLong(val); }{{/hasClass}}
+{{#hasClass 'java.lang.Float'}}  export function newFloat(val: number): Java.java.lang.Float { return _java.newFloat(val); }{{/hasClass}}
+{{#hasClass 'java.lang.Double'}}  export function newDouble(val: number): Java.java.lang.Double { return _java.newDouble(val); }{{/hasClass}}
+
+  {{#each this}}
+  {{#each constructors}}
+  export function newInstanceA(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this norest=true}}}{{/if}}, cb: Callback<{{{tsReturns}}}>): void;
+  {{/each}}
+  {{/each}}
+  export function newInstanceA(className: string, ...args: any[]): void;
+  export function newInstanceA(className: string, ...args: any[]): any {
+    args.unshift(className);
+    return _java.newInstance.apply(_java, args);
+  }
+
+  {{#each this}}
+  {{#each constructors}}
+  export function newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{{tsReturns}}};
+  {{/each}}
+  {{/each}}
+  export function newInstance(className: string, ...args: any[]): any;
+  export function newInstance(className: string, ...args: any[]): any {
+    args.unshift(className);
+    return _java.newInstanceSync.apply(_java, args);
+  }
+
+  {{#each this}}
+  {{#each constructors}}
+  export function newInstanceP(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{{tsReturns}}}>;
+  {{/each}}
+  {{/each}}
+  export function newInstanceP(className: string, ...args: any[]): Promise<any>;
+  export function newInstanceP(className: string, ...args: any[]): Promise<any> {
+    args.unshift(className);
+    return _java.newInstanceP.apply(_java, args);
+  }
+
+  {{#each this}}
+  export function newArray(className: '{{packageName}}.{{shortName}}', arg: {{tsType}}[]): array_t<{{quotedPkgName}}.{{shortName}}>;
+  {{/each}}
+  export function newArray<T>(className: string, arg: any[]): array_t<T>;
+  export function newArray<T>(className: string, arg: any[]): array_t<T> {
+    return _java.newArray(className, arg);
+  }
+
+  // export module Java {
+
+  // Node-java has special handling for methods that return long or java.lang.Long,
+  // returning a Javascript Number but with an additional property longValue.
+  export interface longValue_t extends Number {
+    longValue: string;
+  }
+
+  // Node-java can automatically coerce a javascript string into a java.lang.String.
+  // This special type alias allows to declare that possiblity to Typescript.
+  export type string_t = string | Java.java.lang.String;
+
+  // Java methods that take java.lang.Object parameters implicitly will take a java.lang.String.
+  // But string_t is not sufficient for this case, we need object_t.
+  export type object_t = Java.java.lang.Object | string | boolean | number | longValue_t;
+
+  // Java methods that take long or java.lang.Long parameters may take javascript numbers,
+  // longValue_t (see above) or java.lang.Long.
+  // This special type alias allows to declare that possiblity to Typescript.
+  export type long_t = number | longValue_t {{#hasClass 'java.lang.Long'}}| Java.java.lang.Long{{/hasClass}};
+
+  // Handling of other primitive numeric types is simpler, as there is no loss of precision.
+  export type boolean_t = boolean {{#hasClass 'java.lang.Boolean'}}| Java.java.lang.Boolean{{/hasClass}};
+  export type short_t = number {{#hasClass 'java.lang.Short'}}| Java.java.lang.Short{{/hasClass}};
+  export type integer_t = number {{#hasClass 'java.lang.Integer'}}| Java.java.lang.Integer{{/hasClass}};
+  export type double_t = number {{#hasClass 'java.lang.Double'}}| Java.java.lang.Double{{/hasClass}};
+  export type float_t = number {{#hasClass 'java.lang.Float'}}| Java.java.lang.Float{{/hasClass}};
+  export type number_t = number {{#hasClass 'java.lang.Number'}}| Java.java.lang.Number{{/hasClass}};
+
+  export interface array_t<T> extends Java.java.lang.Object {
+    // This is an opaque type for a java array_t T[];
+    // Use Java.newArray<T>(className, [...]) to create wherever a Java method expects a T[],
+    // most notably for vararg parameteters.
+    __dummy: T;
+  }
+
+  export type object_array_t = array_t<Java.java.lang.Object> | object_t[];
+
+  {{#each this}}
+  {{#if useAlias}}
+  export import {{alias}} = {{quotedPkgName}}.{{shortName}};
+  {{/if}}
+  {{/each}}
+
+  {{#each this}}
+  export module {{quotedPkgName}} {
+    export interface {{shortName}} {{#if tsInterfaces}}extends {{#join tsInterfaces ', '}}{{this}}{{/join}}{{/if}} {
+      {{#each fields}}
+      {{~#if isStatic~}}
+      {{~else}}
+      {{name}}: {{{tsType}}};
+      {{/if~}}
+      {{/each}}
+      {{#each variants}}
+      {{#each this}}
+      {{#unless isStatic}}
+      // {{{generic_proto}}}
+      {{#ifdef @root.opts.asyncSuffix}}
+      {{name}}{{@root.opts.asyncSuffix}}({{#if tsParamTypes}}{{{margs this norest=true}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
+      {{/ifdef~}}
+      {{#ifdef @root.opts.syncSuffix}}
+      {{name}}{{@root.opts.syncSuffix}}({{{margs this}}}): {{{tsReturns}}};
+      {{#if isVarArgs}}
+      {{name}}{{@root.opts.syncSuffix}}({{{margs this norest=true}}}): {{{tsReturns}}};
+      {{/if}}
+      {{/ifdef~}}
+      {{#ifdef @root.opts.promiseSuffix}}
+      {{name}}{{@root.opts.promiseSuffix}}({{{margs this}}}): Promise<{{{tsReturns}}}>;
+      {{#if isVarArgs}}
+      {{name}}{{@root.opts.promiseSuffix}}({{{margs this norest=true}}}): Promise<{{{tsReturns}}}>;
+      {{/if}}
+      {{/ifdef~}}
+      {{/unless}}
+      {{/each}}
+      {{/each}}
+    }
+    export module {{shortName}} {
+      export interface Static {
+        {{#each fields}}
+        {{~#if isStatic}}
+        {{name}}: {{{tsType}}};
+        {{/if~}}
+        {{/each}}
+        {{#each constructors}}
+        new ({{{margs this}}}): {{../quotedPkgName}}.{{../shortName}};
+        {{/each}}
+        {{#each variants}}
+        {{#each this}}
+        {{#if isStatic}}
+        // {{{generic_proto}}}
+        {{#ifdef @root.opts.asyncSuffix}}
+        {{name}}{{@root.opts.asyncSuffix}}({{#if tsParamTypes}}{{{margs this norest=true}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
+        {{/ifdef~}}
+        {{#ifdef @root.opts.syncSuffix}}
+        {{name}}{{@root.opts.syncSuffix}}({{{margs this}}}): {{{tsReturns}}};
+        {{#if isVarArgs}}
+        {{name}}{{@root.opts.syncSuffix}}({{{margs this norest=true}}}): {{{tsReturns}}};
+        {{/if}}
+        {{/ifdef~}}
+        {{#ifdef @root.opts.promiseSuffix}}
+        {{name}}{{@root.opts.promiseSuffix}}({{{margs this}}}): Promise<{{{tsReturns}}}>;
+        {{#if isVarArgs}}
+        {{name}}{{@root.opts.promiseSuffix}}({{{margs this norest=true}}}): Promise<{{{tsReturns}}}>;
+        {{/if}}
+        {{/ifdef~}}
+        {{/if}}
+        {{/each}}
+        {{/each}}
+      }
+    }
+  }
+
+  {{/each}}
+
+  // } // module Java
+
+} // module Module
+{{/with}}

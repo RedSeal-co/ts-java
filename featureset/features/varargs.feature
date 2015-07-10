@@ -15,35 +15,14 @@ See also arrays.feature.
   Background:
     Given this boilerplate to intialize node-java:
     """
-    /// <reference path='../../featureset/java.d.ts'/>
-    /// <reference path='../../typings/bluebird/bluebird.d.ts' />
-    /// <reference path='../../typings/glob/glob.d.ts' />
-    /// <reference path='../../typings/node/node.d.ts' />
     /// <reference path='../../typings/power-assert/power-assert.d.ts' />
 
     import assert = require('power-assert');
-    import BluePromise = require('bluebird');
-    import glob = require('glob');
-    import java = require('java');
+    import java = require('../tsJavaModule');
+    import Java = java.Java;
 
-    java.asyncOptions = {
-      syncSuffix: 'Sync',
-      asyncSuffix: '',
-      promiseSuffix: 'Promise',
-      promisify: BluePromise.promisify
-    };
-
-    function before(done: Java.Callback<void>): void {
-      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
-        filenames.forEach((name: string) => { java.classpath.push(name); });
-        done();
-      });
-    }
-
-    java.registerClient(before);
-
-    java.ensureJvm(() => {
-      var SomeClass = java.import('com.redseal.featureset.SomeClass');
+    Java.ensureJvm().then(() => {
+      var SomeClass = Java.importClass('com.redseal.featureset.SomeClass');
       var something: Java.SomeInterface = new SomeClass();
       {{{ scenario_snippet }}}
     });
@@ -53,8 +32,8 @@ See also arrays.feature.
   Scenario: Varargs with no args
     Given the above boilerplate with following scenario snippet:
     """
-    something.setListVarArgsSync();
-    assert.strictEqual(something.joinListSync('--'), '');
+    something.setListVarArgs();
+    assert.strictEqual(something.joinList('--'), '');
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
@@ -62,8 +41,8 @@ See also arrays.feature.
   Scenario: Varargs with one argument
     Given the above boilerplate with following scenario snippet:
     """
-    something.setListVarArgsSync('hello');
-    assert.strictEqual(something.joinListSync('--'), 'hello');
+    something.setListVarArgs('hello');
+    assert.strictEqual(something.joinList('--'), 'hello');
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
@@ -71,8 +50,8 @@ See also arrays.feature.
   Scenario: Varargs with two arguments
     Given the above boilerplate with following scenario snippet:
     """
-    something.setListVarArgsSync('hello', 'world');
-    assert.strictEqual(something.joinListSync('--'), 'hello--world');
+    something.setListVarArgs('hello', 'world');
+    assert.strictEqual(something.joinList('--'), 'hello--world');
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
@@ -80,8 +59,8 @@ See also arrays.feature.
   Scenario: Varargs with many arguments
     Given the above boilerplate with following scenario snippet:
     """
-    something.setListVarArgsSync('a', 'b', 'c', 'd', 'e');
-    assert.strictEqual(something.joinListSync('--'), 'a--b--c--d--e');
+    something.setListVarArgs('a', 'b', 'c', 'd', 'e');
+    assert.strictEqual(something.joinList('--'), 'a--b--c--d--e');
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
@@ -89,9 +68,9 @@ See also arrays.feature.
   Scenario: Explicit empty array passed to varargs parameter requires newArray when array type is not Object
     Given the above boilerplate with following scenario snippet:
     """
-    var empty = java.newArray('java.lang.String', []);
-    something.setListVarArgsSync(empty);
-    assert.strictEqual(something.joinListSync('--'), '');
+    var empty = Java.newArray('java.lang.String', []);
+    something.setListVarArgs(empty);
+    assert.strictEqual(something.joinList('--'), '');
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
@@ -99,7 +78,7 @@ See also arrays.feature.
   Scenario: Plain empty array passed to varargs parameter yields error when array type is not Object
     Given the above boilerplate with following scenario snippet:
     """
-    something.setListVarArgsSync([]);
+    something.setListVarArgs([]);
     """
     When compiled it produces this error containing this snippet:
     """
@@ -109,9 +88,9 @@ See also arrays.feature.
   Scenario: Explicit non-empty array passed to varargs parameter requires newArray when array type is not Object
     Given the above boilerplate with following scenario snippet:
     """
-    var arr = java.newArray('java.lang.String', ['hello', 'world']);
-    something.setListVarArgsSync(arr);
-    assert.strictEqual(something.joinListSync('--'), 'hello--world');
+    var arr = Java.newArray('java.lang.String', ['hello', 'world']);
+    something.setListVarArgs(arr);
+    assert.strictEqual(something.joinList('--'), 'hello--world');
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
@@ -119,7 +98,7 @@ See also arrays.feature.
   Scenario: Plain non-empty array passed to varargs parameter yields error when array type is not Object
     Given the above boilerplate with following scenario snippet:
     """
-    something.setListVarArgsSync(['hello', 'world']);
+    something.setListVarArgs(['hello', 'world']);
     """
     When compiled it produces this error containing this snippet:
     """
@@ -129,7 +108,7 @@ See also arrays.feature.
   Scenario: Bug 91797958
     Given the above boilerplate with following scenario snippet:
     """
-    something.setObjectsVarArgsPromise(['hello', 'world']).then((result: string) => {
+    something.setObjectsVarArgsP(['hello', 'world']).then((result: string) => {
       assert.strictEqual(result, 'Ack from setObjectsVarArgs(Object... args)');
     });
     """

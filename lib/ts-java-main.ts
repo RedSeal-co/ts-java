@@ -14,6 +14,7 @@
 'use strict';
 
 import _ = require('lodash');
+import AsyncOptions = require('./AsyncOptions');
 import BluePromise = require('bluebird');
 import chalk = require('chalk');
 import ClassesMap = require('../lib/classes-map');
@@ -33,13 +34,37 @@ import TsJavaOptions = require('../lib/TsJavaOptions');
 import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 
+// Typescript & bluebird.promisify needs some assistance with functions such as fs.writefile.
+// Node.d.ts declares writeFile as follows, with the exception that the callback argument is declared optional.
+interface WriteFile {
+  (filename: string, data: any, callback: (err: NodeJS.ErrnoException) => void): void;
+}
+
 BluePromise.longStackTraces();
-var writeFilePromise = BluePromise.promisify(fs.writeFile);
+var writeFilePromise = BluePromise.promisify(<WriteFile> fs.writeFile);
 var readFilePromise = BluePromise.promisify(fs.readFile);
 var mkdirpPromise = BluePromise.promisify(mkdirp);
 var readJsonPromise = BluePromise.promisify(readJson);
 var globPromise = BluePromise.promisify(glob);
 var findJavaHomePromise = BluePromise.promisify(findJavaHome);
+
+// ts-java must use asyncOptions that are 'compatible' with the java/java.d.ts in Definitely typed,
+// which uses the following settings.
+// Options are incompatible if a different value is defined for any of the three properties,
+// but any of them can be left undefined.
+var expectedAsyncOptions: AsyncOptions = {
+  syncSuffix: '',
+  asyncSuffix: 'A',
+  promiseSuffix: 'P'
+};
+
+function areCompatibleAsyncOptions(opts: AsyncOptions): boolean {
+  return _.isEqual(expectedAsyncOptions, _.defaults({}, opts, expectedAsyncOptions));
+}
+
+interface Func {
+  (result: any): void;
+}
 
 var dlog = debug('ts-java:main');
 var bold = chalk.bold;
@@ -64,7 +89,7 @@ class Main {
 
   run(): BluePromise<ClassesMap> {
     return this.load()
-      .then(() => BluePromise.join(this.writeJsons(), this.writeInterpolatedFiles(), this.writeAutoImport()))
+      .then(() => BluePromise.join(this.writeJsons(), this.writeInterpolatedFiles(), this.writeTsJavaModule()))
       .then(() => dlog('run() completed.'))
       .then(() => this.outputSummaryDiagnostics())
       .then(() => this.classesMap);
@@ -75,7 +100,7 @@ class Main {
     return start
       .then(() => this.initJava())
       .then(() => {
-        this.classesMap = new ClassesMap(java, this.options);
+        this.classesMap = new ClassesMap(this.options);
         return this.classesMap.initialize();
       })
       .then(() => this.classesMap);
@@ -101,12 +126,17 @@ class Main {
     if (this.options.granularity !== 'class') {
       this.options.granularity = 'package';
     }
-    if (!this.options.outputPath) {
-      this.options.outputPath = 'typings/java/java.d.ts';
-    }
     if (!this.options.promisesPath) {
       // TODO: Provide more control over promises
       this.options.promisesPath = '../bluebird/bluebird.d.ts';
+    }
+    if (!this.options.javaTypingsPath) {
+      this.options.javaTypingsPath = 'typings/java/java.d.ts';
+    }
+    if (!this.options.asyncOptions) {
+      this.options.asyncOptions = expectedAsyncOptions;
+    } else if (!areCompatibleAsyncOptions(this.options.asyncOptions)) {
+      console.warn(warn('tsjava.asyncOptions are not compatible with the asyncOptions used in the standard typings/java/java.d.ts'));
     }
     if (!this.options.packages && this.options.whiteList) {
       console.warn(warn('tsjava.whiteList in package.json is deprecated. Please use tsjava.packages instead.'));
@@ -142,12 +172,14 @@ class Main {
     dlog('writeJsons() entered');
     return mkdirpPromise('o/json')
       .then(() => {
-        return _.map(_.keys(classes), (className: string) => {
+        var parray: BluePromise<void>[] = _.map(_.keys(classes), (className: string) => {
           var classMap = classes[className];
-          return writeFilePromise('o/json/' + classMap.shortName + '.json', JSON.stringify(classMap, null, '  '));
+          var p: BluePromise<any> = writeFilePromise('o/json/' + classMap.shortName + '.json', JSON.stringify(classMap, null, '  '));
+          return p;
         });
+        return parray;
       })
-      .then((promises: Promise<any[]>) => BluePromise.all(promises))
+      .then((promises: BluePromise<void>[]) => BluePromise.all(promises))
       .then(() => dlog('writeJsons() completed.'));
   }
 
@@ -160,29 +192,35 @@ class Main {
         var classes: ClassDefinitionMap = classesMap.getClasses();
         return _.map(_.keys(classes), (name: string) => tsWriter.writeLibraryClassFile(name, this.options.granularity));
       })
-      .then((promises: Promise<any[]>) => BluePromise.all(promises))
+      .then((promises: Promise<any>[]) => BluePromise.all(promises))
       .then(() => dlog('writeClassFiles() completed.'));
   }
 
   private writePackageFiles(classesMap: ClassesMap): BluePromise<void> {
     dlog('writePackageFiles() entered');
-    var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
-    var tsWriter = new CodeWriter(classesMap, templatesDirPath);
-    return mkdirpPromise(path.dirname(this.options.outputPath))
-      .then(() => tsWriter.writePackageFile(this.options))
-      .then(() => dlog('writePackageFiles() completed'));
+    if (!this.options.outputPath) {
+      dlog('No java.d.ts outputPath specified, skipping generation.');
+      return BluePromise.resolve();
+    } else {
+      var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
+      var tsWriter = new CodeWriter(classesMap, templatesDirPath);
+      return mkdirpPromise(path.dirname(this.options.outputPath))
+        .then(() => tsWriter.writePackageFile(this.options))
+        .then(() => dlog('writePackageFiles() completed'));
+    }
   }
 
-  private writeAutoImport(): BluePromise<void> {
-    dlog('writeAutoImport() entered');
-    if (this.options.autoImportPath === undefined) {
+  private writeTsJavaModule(): BluePromise<void> {
+    dlog('writeTsJavaModule() entered');
+    if (this.options.tsJavaModulePath === undefined) {
+      dlog('No tsJavaModulePath specified, skipping generation.');
       return BluePromise.resolve();
     } else {
       var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
       var tsWriter = new CodeWriter(this.classesMap, templatesDirPath);
-      return mkdirpPromise(path.dirname(this.options.autoImportPath))
-        .then(() => tsWriter.writeAutoImportFile(this.options))
-        .then(() => dlog('writeAutoImport() completed'));
+      return mkdirpPromise(path.dirname(this.options.tsJavaModulePath))
+        .then(() => tsWriter.writeTsJavaModule(this.options))
+        .then(() => dlog('writeTsJavaModule() completed'));
     }
   }
 
@@ -220,7 +258,14 @@ class Main {
       console.log(bold('Generated classes:'));
       classList.forEach((clazz: string) => console.log('  ', clazz));
     } else {
-      console.log('Generated %s with %d classes.', this.options.outputPath, classList.length);
+      // TODO: remove support for generating java.d.ts files.
+      if (this.options.outputPath) {
+        console.log('Generated %s with %d classes.', this.options.outputPath, classList.length);
+      }
+      // TODO: always generate tsJavaModule.ts files, by using a default when value not specified.
+      if (this.options.tsJavaModulePath) {
+        console.log('Generated %s with %d classes.', this.options.tsJavaModulePath, classList.length);
+      }
     }
 
     if (!this.classesMap.unhandledTypes.isEmpty()) {

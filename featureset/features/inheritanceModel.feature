@@ -31,27 +31,12 @@ Feature: Inheritance Model
     Given this boilerplate to intialize node-java:
     """
     /// <reference path='../../typings/power-assert/power-assert.d.ts' />
-    /// <reference path='../../typings/lodash/lodash.d.ts' />
-    /// <reference path='../../typings/node/node.d.ts' />
-    /// <reference path='../../typings/glob/glob.d.ts' />
-    /// <reference path='../../featureset/java.d.ts'/>
 
-    import _ = require('lodash');
-    import glob = require('glob');
-    import java = require('java');
     import assert = require('power-assert');
-    import autoImport = require('../../featureset/o/autoImport');
+    import java = require('../tsJavaModule');
+    import Java = java.Java;
 
-    function before(done: Java.Callback<void>): void {
-      glob('featureset/target/**/*.jar', (err: Error, filenames: string[]): void => {
-        filenames.forEach((name: string) => { java.classpath.push(name); });
-        done();
-      });
-    }
-
-    java.registerClient(before);
-
-    java.ensureJvm(() => {
+    Java.ensureJvm().then(() => {
       {{{ scenario_snippet }}}
     });
 
@@ -61,12 +46,12 @@ Feature: Inheritance Model
     Given the above boilerplate with following scenario snippet:
     """
     function getClassOfSomeInterator(it: Java.Iterator): string {
-      return it.getClassSync().getNameSync();
+      return it.getClass().getName();
     }
 
-    var ArrayList = autoImport('ArrayList');
+    var ArrayList = Java.importClass('ArrayList');
     var list = new ArrayList();
-    var itName: string = getClassOfSomeInterator(list.iteratorSync());
+    var itName: string = getClassOfSomeInterator(list.iterator());
     assert.strictEqual(itName, 'java.util.ArrayList$Itr');
 
     """
@@ -78,22 +63,22 @@ Feature: Inheritance Model
     """
     // The Step class is a snippet that reproduced a problem exposed in Tinkerpop 3.0.0M9.
     // It resulted in a java.d.ts file that could not be compiled.
-    var Step: Java.Step.Static = java.import('com.redseal.featureset.overloading.Step');
+    var Step: Java.Step.Static = Java.importClass('com.redseal.featureset.overloading.Step');
     """
     Then it compiles and lints cleanly
 
   Scenario: Java classes that override one overloaded method variant have access to all inherited method variants.
     Given the above boilerplate with following scenario snippet:
     """
-    var Overloading$Foo = autoImport('Overloading$Foo');
+    var Overloading$Foo = Java.importClass('Overloading$Foo');
     var foo = new Overloading$Foo();
 
     // These two calls are for variants from java.lang.Object, not explicitly overridden in Overloading$Foo
-    foo.wait(java.newLong(1), (err: Error): void => { /* empty */ }); // wait for 1 millisecond
-    foo.wait(java.newLong(1), 1, (err: Error): void => { /* empty */ }); // wait for 1001 nanoseconds
+    foo.waitA(Java.newLong(1), (err: Error): void => { /* empty */ }); // wait for 1 millisecond
+    foo.waitA(Java.newLong(1), 1, (err: Error): void => { /* empty */ }); // wait for 1001 nanoseconds
 
     // This call is for a variant of wait() declared in Overloading$Foo
-    foo.wait(java.newDouble(0.000001), (err: Error): void => { /* empty */ }); // wait for 1 milliscond
+    foo.waitA(Java.newDouble(0.000001), (err: Error): void => { /* empty */ }); // wait for 1 milliscond
     """
     Then it compiles and lints cleanly
     And it runs and produces no output
