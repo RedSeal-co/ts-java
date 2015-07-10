@@ -191,11 +191,11 @@ class CodeWriter {
     var relativePath = path.relative(tsJavaModuleDir, process.cwd());
 
     var context = {
+      config: options,
       classes: this.sortedClasses,
       opts: options.asyncOptions,
       classpath: classpath,
-      classpathAdjust: relativePath,
-      name: 'todo_module_name_here' // TODO: arrange for the module name to be here
+      classpathAdjust: relativePath
     };
 
     var outputBaseName = path.basename(options.tsJavaModulePath);

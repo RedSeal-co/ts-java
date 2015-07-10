@@ -1,3 +1,28 @@
+// Generated using the following tsjava options:
+// tsJavaModulePath:
+//   {{ config.tsJavaModulePath}}
+// classpath:
+{{#each classpath}}
+//   {{this}}
+{{/each}}
+// classes:
+{{#if config.classes}}
+{{#each config.classes }}
+//   {{this}}
+{{/each}}
+{{/if}}
+{{#unless config.classes}}
+//   <none>
+{{/unless}}
+// packages:
+{{#if config.packages}}
+{{#each config.packages }}
+//   {{this}}
+{{/each}}
+{{/if}}
+{{#unless config.packages}}
+//   <none>
+{{/unless}}
 {{#with classes}}
 
 declare function require(name: string): any;
