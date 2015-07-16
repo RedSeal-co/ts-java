@@ -55,7 +55,9 @@ export module Java {
     [index: string]: string;
   }
 
-  export function getJava() {
+  export type NodeJavaAPI = typeof _java;
+
+  export function getJava(): NodeJavaAPI {
     return _java;
   }
 
