@@ -17,7 +17,7 @@ STEPS_OBJS=$(patsubst %.ts,%.js,$(STEPS_SRC))
 LIBS_SRC=$(filter-out %.d.ts,$(wildcard lib/*.ts))
 LIBS_OBJS=$(patsubst %.ts,%.js,$(LIBS_SRC))
 
-LINT=./node_modules/.bin/tslint --config tslint.json --file
+LINT=./node_modules/.bin/tslint --config tslint.json
 
 TSC=./node_modules/.bin/tsc
 TSC_OPTS=--module commonjs --target ES5 --sourceMap --noEmitOnError --noImplicitAny
