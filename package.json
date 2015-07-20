@@ -41,9 +41,9 @@
     "cucumber": "^0.4.8",
     "groc": "^0.8.0",
     "mocha": "^2.2.3",
-    "tsd": ">=0.6.0-beta.5",
-    "tslint": "^2.1.1",
-    "typescript": "^1.4.1"
+    "tsd": "=0.6.3",
+    "tslint": "=2.1.1",
+    "typescript": "=1.4.1"
   },
   "directories": {
     "test": "test"
