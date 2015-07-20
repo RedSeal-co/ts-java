@@ -72,6 +72,8 @@
 //   com.tinkerpop.gremlin.structure.*
 //   com.tinkerpop.gremlin.tinkergraph.structure.*
 
+/* tslint:disable:max-line-length */
+
 declare function require(name: string): any;
 require('source-map-support').install();
 
