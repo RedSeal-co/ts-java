@@ -24,7 +24,7 @@
 //   com.redseal.featureset.**
 //   java.util.*
 
-/* tslint:disable:max-line-length */
+/* tslint:disable:max-line-length class-name */
 
 declare function require(name: string): any;
 require('source-map-support').install();
