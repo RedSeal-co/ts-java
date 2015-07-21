@@ -138,7 +138,7 @@ function wrapper() {
       expect(world.error).to.equal(null);
       expect(world.stdout).to.equal('');
       expect(world.stderr).to.equal('');
-      var lintCmd: string = './node_modules/.bin/tslint --config tslint.json --file ' + world.sampleProgramPath;
+      var lintCmd: string = './node_modules/.bin/tslint --config tslint.json ' + world.sampleProgramPath;
       execChild(world, lintCmd, () => {
         expect(world.error).to.equal(null);
         expect(world.stdout).to.equal('');
@@ -208,7 +208,7 @@ function wrapper() {
           expect(world.error).to.equal(null);
           expect(world.stdout).to.equal('');
           expect(world.stderr).to.equal('');
-          var lintCmd: string = './node_modules/.bin/tslint --config tslint.json --file ' + tsJavaModuleFilePath;
+          var lintCmd: string = './node_modules/.bin/tslint --config tslint.json ' + tsJavaModuleFilePath;
           execChild(world, lintCmd, () => {
             expect(world.error).to.equal(null);
             expect(world.stdout).to.equal('');

@@ -12,6 +12,8 @@
 // packages:
 //   <none>
 
+/* tslint:disable:max-line-length */
+
 declare function require(name: string): any;
 require('source-map-support').install();
 
