@@ -610,9 +610,18 @@ class ClassesMap {
     // For instance fields, we should keep only the fields declared in this class.
     // We'll have access to inherited fields through normal inheritance.
     // If we kept the inherited fields, it would result in duplicate definitions in the derived classes.
-    allFieldDefs = _.filter(allFieldDefs, (f: FieldDefinition) => f.isStatic || f.declaredIn === clazz.getName());
+    var instanceFieldDefs: Array<FieldDefinition> = _.filter(allFieldDefs, (f: FieldDefinition) => {
+      return !f.isStatic && f.declaredIn === clazz.getName();
+    });
 
-    return allFieldDefs;
+    // For static fields we should keep all inherited fields, since the .Static interface of a class
+    // does not extend the .Static interface of its parent(s).
+    // But we can't simply keep all static fields, because (apparently) a class can redefine a static
+    // field with the same name as an inherited field.
+    var staticFieldDefs: Array<FieldDefinition>  = _.filter(allFieldDefs, (f: FieldDefinition) => f.isStatic);
+    staticFieldDefs = _.uniq(staticFieldDefs, false, 'name');
+
+    return instanceFieldDefs.concat(staticFieldDefs);
   }
 
   // *mapClassConstructors()*: return a methodMap array for the constructors of a class
