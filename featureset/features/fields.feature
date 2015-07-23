@@ -102,3 +102,14 @@ I want to understand how to use public fields in Typescript.
     error TS2339: Property 'mPackageInt' does not exist on type 'Thing'.
     """
 
+  Scenario: A static field may have the same name as a static field in a superclass
+    Given the above boilerplate with following scenario snippet:
+    """
+    var SomeAbstractClass = Java.importClass('SomeAbstractClass');
+    var SomeClass = Java.importClass('SomeClass');
+    assert.strictEqual(SomeAbstractClass.mField, 1);
+    assert.strictEqual(SomeClass.mField, 2);
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+

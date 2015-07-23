@@ -2091,6 +2091,7 @@ export module Java {
     }
     export module SomeAbstractClass {
       export interface Static {
+        mField: number;
         new (): com.redseal.featureset.SomeAbstractClass;
       }
     }
@@ -2237,6 +2238,7 @@ export module Java {
     }
     export module SomeClass {
       export interface Static {
+        mField: number;
         new (arg0: integer_t, arg1: long_t, arg2: string_t, arg3: boolean_t, arg4: double_t): com.redseal.featureset.SomeClass;
         new (): com.redseal.featureset.SomeClass;
       }
