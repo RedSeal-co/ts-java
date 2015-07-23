@@ -73,7 +73,8 @@
       "javax.script.ScriptContext",
       "javax.script.ScriptEngine",
       "javax.script.ScriptEngineFactory",
-      "org.apache.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine"
+      "org.apache.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine",
+      "org.codehaus.groovy.tools.shell.Groovysh"
     ],
     "packages": [
       "org.apache.tinkerpop.gremlin.groovy.function.*",

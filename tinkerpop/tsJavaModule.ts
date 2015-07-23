@@ -107,6 +107,7 @@
 //   javax.script.ScriptEngine
 //   javax.script.ScriptEngineFactory
 //   org.apache.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine
+//   org.codehaus.groovy.tools.shell.Groovysh
 // packages:
 //   org.apache.tinkerpop.gremlin.groovy.function.*
 //   org.apache.tinkerpop.gremlin.process.computer.*
@@ -467,6 +468,7 @@ export module Java {
   export function importClass(className: 'ScriptEngineCache'): Java.org.apache.tinkerpop.gremlin.util.ScriptEngineCache.Static;
   export function importClass(className: 'Serializer'): Java.org.apache.tinkerpop.gremlin.util.Serializer.Static;
   export function importClass(className: 'TimeUtil'): Java.org.apache.tinkerpop.gremlin.util.TimeUtil.Static;
+  export function importClass(className: 'Groovysh'): Java.org.codehaus.groovy.tools.shell.Groovysh.Static;
   export function importClass(className: 'groovy.lang.Binding'): Java.groovy.lang.Binding.Static;
   export function importClass(className: 'groovy.lang.Closure'): Java.groovy.lang.Closure.Static;
   export function importClass(className: 'groovy.lang.DelegatingMetaClass'): Java.groovy.lang.DelegatingMetaClass.Static;
@@ -763,6 +765,7 @@ export module Java {
   export function importClass(className: 'org.apache.tinkerpop.gremlin.util.ScriptEngineCache'): Java.org.apache.tinkerpop.gremlin.util.ScriptEngineCache.Static;
   export function importClass(className: 'org.apache.tinkerpop.gremlin.util.Serializer'): Java.org.apache.tinkerpop.gremlin.util.Serializer.Static;
   export function importClass(className: 'org.apache.tinkerpop.gremlin.util.TimeUtil'): Java.org.apache.tinkerpop.gremlin.util.TimeUtil.Static;
+  export function importClass(className: 'org.codehaus.groovy.tools.shell.Groovysh'): Java.org.codehaus.groovy.tools.shell.Groovysh.Static;
   export function importClass(className: string): any;
   export function importClass(className: string): any {
     var shortToLongMap: StringDict = {
@@ -1060,7 +1063,8 @@ export module Java {
       'Gremlin': 'org.apache.tinkerpop.gremlin.util.Gremlin',
       'ScriptEngineCache': 'org.apache.tinkerpop.gremlin.util.ScriptEngineCache',
       'Serializer': 'org.apache.tinkerpop.gremlin.util.Serializer',
-      'TimeUtil': 'org.apache.tinkerpop.gremlin.util.TimeUtil'
+      'TimeUtil': 'org.apache.tinkerpop.gremlin.util.TimeUtil',
+      'Groovysh': 'org.codehaus.groovy.tools.shell.Groovysh'
     };
 
     if (className in shortToLongMap) {
@@ -1237,6 +1241,11 @@ export module Java {
   export function newInstanceA(className: 'org.apache.tinkerpop.gremlin.util.function.ChainedComparator', arg0: Java.List, cb: Callback<Java.ChainedComparator>): void;
   export function newInstanceA(className: 'org.apache.tinkerpop.gremlin.util.function.ConstantSupplier', arg0: object_t, cb: Callback<Java.ConstantSupplier>): void;
   export function newInstanceA(className: 'org.apache.tinkerpop.gremlin.util.function.ScriptEngineLambda', arg0: string_t, arg1: string_t, cb: Callback<Java.ScriptEngineLambda>): void;
+  export function newInstanceA(className: 'org.codehaus.groovy.tools.shell.Groovysh', arg0: Java.ClassLoader, arg1: Java.Binding, arg2: object_t, arg3: Java.Closure, cb: Callback<Java.Groovysh>): void;
+  export function newInstanceA(className: 'org.codehaus.groovy.tools.shell.Groovysh', arg0: Java.ClassLoader, arg1: Java.Binding, arg2: object_t, cb: Callback<Java.Groovysh>): void;
+  export function newInstanceA(className: 'org.codehaus.groovy.tools.shell.Groovysh', arg0: Java.Binding, arg1: object_t, cb: Callback<Java.Groovysh>): void;
+  export function newInstanceA(className: 'org.codehaus.groovy.tools.shell.Groovysh', arg0: object_t, cb: Callback<Java.Groovysh>): void;
+  export function newInstanceA(className: 'org.codehaus.groovy.tools.shell.Groovysh', cb: Callback<Java.Groovysh>): void;
   export function newInstanceA(className: string, ...args: any[]): void;
   export function newInstanceA(className: string, ...args: any[]): any {
     args.unshift(className);
@@ -1398,6 +1407,11 @@ export module Java {
   export function newInstance(className: 'org.apache.tinkerpop.gremlin.util.function.ChainedComparator', arg0: Java.List): Java.ChainedComparator;
   export function newInstance(className: 'org.apache.tinkerpop.gremlin.util.function.ConstantSupplier', arg0: object_t): Java.ConstantSupplier;
   export function newInstance(className: 'org.apache.tinkerpop.gremlin.util.function.ScriptEngineLambda', arg0: string_t, arg1: string_t): Java.ScriptEngineLambda;
+  export function newInstance(className: 'org.codehaus.groovy.tools.shell.Groovysh', arg0: Java.ClassLoader, arg1: Java.Binding, arg2: object_t, arg3: Java.Closure): Java.Groovysh;
+  export function newInstance(className: 'org.codehaus.groovy.tools.shell.Groovysh', arg0: Java.ClassLoader, arg1: Java.Binding, arg2: object_t): Java.Groovysh;
+  export function newInstance(className: 'org.codehaus.groovy.tools.shell.Groovysh', arg0: Java.Binding, arg1: object_t): Java.Groovysh;
+  export function newInstance(className: 'org.codehaus.groovy.tools.shell.Groovysh', arg0: object_t): Java.Groovysh;
+  export function newInstance(className: 'org.codehaus.groovy.tools.shell.Groovysh'): Java.Groovysh;
   export function newInstance(className: string, ...args: any[]): any;
   export function newInstance(className: string, ...args: any[]): any {
     args.unshift(className);
@@ -1559,6 +1573,11 @@ export module Java {
   export function newInstanceP(className: 'org.apache.tinkerpop.gremlin.util.function.ChainedComparator', arg0: Java.List): Promise<Java.ChainedComparator>;
   export function newInstanceP(className: 'org.apache.tinkerpop.gremlin.util.function.ConstantSupplier', arg0: object_t): Promise<Java.ConstantSupplier>;
   export function newInstanceP(className: 'org.apache.tinkerpop.gremlin.util.function.ScriptEngineLambda', arg0: string_t, arg1: string_t): Promise<Java.ScriptEngineLambda>;
+  export function newInstanceP(className: 'org.codehaus.groovy.tools.shell.Groovysh', arg0: Java.ClassLoader, arg1: Java.Binding, arg2: object_t, arg3: Java.Closure): Promise<Java.Groovysh>;
+  export function newInstanceP(className: 'org.codehaus.groovy.tools.shell.Groovysh', arg0: Java.ClassLoader, arg1: Java.Binding, arg2: object_t): Promise<Java.Groovysh>;
+  export function newInstanceP(className: 'org.codehaus.groovy.tools.shell.Groovysh', arg0: Java.Binding, arg1: object_t): Promise<Java.Groovysh>;
+  export function newInstanceP(className: 'org.codehaus.groovy.tools.shell.Groovysh', arg0: object_t): Promise<Java.Groovysh>;
+  export function newInstanceP(className: 'org.codehaus.groovy.tools.shell.Groovysh'): Promise<Java.Groovysh>;
   export function newInstanceP(className: string, ...args: any[]): Promise<any>;
   export function newInstanceP(className: string, ...args: any[]): Promise<any> {
     args.unshift(className);
@@ -1861,6 +1880,7 @@ export module Java {
   export function newArray(className: 'org.apache.tinkerpop.gremlin.util.ScriptEngineCache', arg: Java.ScriptEngineCache[]): array_t<org.apache.tinkerpop.gremlin.util.ScriptEngineCache>;
   export function newArray(className: 'org.apache.tinkerpop.gremlin.util.Serializer', arg: Java.Serializer[]): array_t<org.apache.tinkerpop.gremlin.util.Serializer>;
   export function newArray(className: 'org.apache.tinkerpop.gremlin.util.TimeUtil', arg: Java.TimeUtil[]): array_t<org.apache.tinkerpop.gremlin.util.TimeUtil>;
+  export function newArray(className: 'org.codehaus.groovy.tools.shell.Groovysh', arg: Java.Groovysh[]): array_t<org.codehaus.groovy.tools.shell.Groovysh>;
   export function newArray<T>(className: string, arg: any[]): array_t<T>;
   export function newArray<T>(className: string, arg: any[]): array_t<T> {
     return _java.newArray(className, arg);
@@ -2199,6 +2219,7 @@ export module Java {
   export import ScriptEngineCache = org.apache.tinkerpop.gremlin.util.ScriptEngineCache;
   export import Serializer = org.apache.tinkerpop.gremlin.util.Serializer;
   export import TimeUtil = org.apache.tinkerpop.gremlin.util.TimeUtil;
+  export import Groovysh = org.codehaus.groovy.tools.shell.Groovysh;
 
   export module groovy.lang {
     export interface Binding extends Java.groovy.lang.GroovyObjectSupport {
@@ -23268,6 +23289,197 @@ export module Java {
         // public static long org.apache.tinkerpop.gremlin.util.TimeUtil.timeSince(long,java.util.concurrent.TimeUnit)
         timeSince(arg0: long_t, arg1: object_t): longValue_t;
         timeSinceP(arg0: long_t, arg1: object_t): Promise<longValue_t>;
+      }
+    }
+  }
+
+  export module org.codehaus.groovy.tools.shell {
+    export interface Groovysh extends Java.java.lang.Object {
+      // public void org.codehaus.groovy.tools.shell.Groovysh.displayBuffer(java.util.List)
+      displayBuffer(arg0: Java.List): void;
+      displayBufferP(arg0: Java.List): Promise<void>;
+      // public void org.codehaus.groovy.tools.shell.Groovysh.displayWelcomeBanner(org.codehaus.groovy.tools.shell.InteractiveShellRunner)
+      displayWelcomeBanner(arg0: object_t): void;
+      displayWelcomeBannerP(arg0: object_t): Promise<void>;
+      // public boolean java.lang.Object.equals(java.lang.Object)
+      equals(arg0: object_t): boolean;
+      equalsP(arg0: object_t): Promise<boolean>;
+      // public java.lang.Object org.codehaus.groovy.tools.shell.Groovysh.execute(java.lang.String)
+      execute(arg0: string_t): object_t;
+      executeP(arg0: string_t): Promise<object_t>;
+      // public org.codehaus.groovy.tools.shell.Command org.codehaus.groovy.tools.shell.Shell.findCommand(java.lang.String,java.util.List<java.lang.String>)
+      findCommand(arg0: string_t, arg1: Java.List): object_t;
+      findCommandP(arg0: string_t, arg1: Java.List): Promise<object_t>;
+      // public org.codehaus.groovy.tools.shell.Command org.codehaus.groovy.tools.shell.Shell.findCommand(java.lang.String)
+      findCommand(arg0: string_t): object_t;
+      findCommandP(arg0: string_t): Promise<object_t>;
+      // public final org.codehaus.groovy.tools.shell.BufferManager org.codehaus.groovy.tools.shell.Groovysh.getBuffers()
+      getBuffers(): object_t;
+      getBuffersP(): Promise<object_t>;
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClass(): Java.Class;
+      getClassP(): Promise<Java.Class>;
+      // public final groovy.lang.Closure org.codehaus.groovy.tools.shell.Groovysh.getDefaultErrorHook()
+      getDefaultErrorHook(): Java.Closure;
+      getDefaultErrorHookP(): Promise<Java.Closure>;
+      // public final groovy.lang.Closure org.codehaus.groovy.tools.shell.Groovysh.getDefaultResultHook()
+      getDefaultResultHook(): Java.Closure;
+      getDefaultResultHookP(): Promise<Java.Closure>;
+      // public groovy.lang.Closure org.codehaus.groovy.tools.shell.Groovysh.getErrorHook()
+      getErrorHook(): Java.Closure;
+      getErrorHookP(): Promise<Java.Closure>;
+      // public java.lang.String org.codehaus.groovy.tools.shell.Groovysh.getEvictedLine()
+      getEvictedLine(): string;
+      getEvictedLineP(): Promise<string>;
+      // public jline.console.history.FileHistory org.codehaus.groovy.tools.shell.Groovysh.getHistory()
+      getHistory(): object_t;
+      getHistoryP(): Promise<object_t>;
+      // public boolean org.codehaus.groovy.tools.shell.Groovysh.getHistoryFull()
+      getHistoryFull(): boolean;
+      getHistoryFullP(): Promise<boolean>;
+      // public final java.util.List<java.lang.String> org.codehaus.groovy.tools.shell.Groovysh.getImports()
+      getImports(): Java.List;
+      getImportsP(): Promise<Java.List>;
+      // public java.lang.String org.codehaus.groovy.tools.shell.Groovysh.getImportStatements()
+      getImportStatements(): string;
+      getImportStatementsP(): Promise<string>;
+      // public java.lang.String org.codehaus.groovy.tools.shell.Groovysh.getIndentPrefix()
+      getIndentPrefix(): string;
+      getIndentPrefixP(): Promise<string>;
+      // public int org.codehaus.groovy.tools.shell.Groovysh.getIndentSize()
+      getIndentSize(): number;
+      getIndentSizeP(): Promise<number>;
+      // public final org.codehaus.groovy.tools.shell.Interpreter org.codehaus.groovy.tools.shell.Groovysh.getInterp()
+      getInterp(): object_t;
+      getInterpP(): Promise<object_t>;
+      // public final org.codehaus.groovy.tools.shell.IO org.codehaus.groovy.tools.shell.Shell.getIo()
+      getIo(): object_t;
+      getIoP(): Promise<object_t>;
+      // public groovy.lang.MetaClass org.codehaus.groovy.tools.shell.Shell.getMetaClass()
+      getMetaClass(): Java.MetaClass;
+      getMetaClassP(): Promise<Java.MetaClass>;
+      // public org.codehaus.groovy.tools.shell.util.PackageHelper org.codehaus.groovy.tools.shell.Groovysh.getPackageHelper()
+      getPackageHelper(): object_t;
+      getPackageHelperP(): Promise<object_t>;
+      // public final org.codehaus.groovy.tools.shell.Parser org.codehaus.groovy.tools.shell.Groovysh.getParser()
+      getParser(): object_t;
+      getParserP(): Promise<object_t>;
+      // public java.lang.Object org.codehaus.groovy.tools.shell.Shell.getProperty(java.lang.String)
+      getProperty(arg0: string_t): object_t;
+      getPropertyP(arg0: string_t): Promise<object_t>;
+      // public final org.codehaus.groovy.tools.shell.CommandRegistry org.codehaus.groovy.tools.shell.Shell.getRegistry()
+      getRegistry(): object_t;
+      getRegistryP(): Promise<object_t>;
+      // public groovy.lang.Closure org.codehaus.groovy.tools.shell.Groovysh.getResultHook()
+      getResultHook(): Java.Closure;
+      getResultHookP(): Promise<Java.Closure>;
+      // public org.codehaus.groovy.tools.shell.InteractiveShellRunner org.codehaus.groovy.tools.shell.Groovysh.getRunner()
+      getRunner(): object_t;
+      getRunnerP(): Promise<object_t>;
+      // public java.io.File org.codehaus.groovy.tools.shell.Groovysh.getUserStateDirectory()
+      getUserStateDirectory(): object_t;
+      getUserStateDirectoryP(): Promise<object_t>;
+      // public native int java.lang.Object.hashCode()
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
+      // public java.lang.Object org.codehaus.groovy.tools.shell.Shell.invokeMethod(java.lang.String,java.lang.Object)
+      invokeMethod(arg0: string_t, arg1: object_t): object_t;
+      invokeMethodP(arg0: string_t, arg1: object_t): Promise<object_t>;
+      // public boolean org.codehaus.groovy.tools.shell.Shell.isExecutable(java.lang.String)
+      isExecutable(arg0: string_t): boolean;
+      isExecutableP(arg0: string_t): Promise<boolean>;
+      // public boolean org.codehaus.groovy.tools.shell.Groovysh.isHistoryFull()
+      isHistoryFull(): boolean;
+      isHistoryFullP(): Promise<boolean>;
+      // public org.codehaus.groovy.tools.shell.Command org.codehaus.groovy.tools.shell.Shell.leftShift(org.codehaus.groovy.tools.shell.Command)
+      leftShift(arg0: object_t): object_t;
+      leftShiftP(arg0: object_t): Promise<object_t>;
+      // public java.lang.Object org.codehaus.groovy.tools.shell.Shell.leftShift(java.lang.String)
+      leftShift(arg0: string_t): object_t;
+      leftShiftP(arg0: string_t): Promise<object_t>;
+      // public final native void java.lang.Object.notify()
+      notify(): void;
+      notifyP(): Promise<void>;
+      // public final native void java.lang.Object.notifyAll()
+      notifyAll(): void;
+      notifyAllP(): Promise<void>;
+      // public org.codehaus.groovy.tools.shell.Command org.codehaus.groovy.tools.shell.Shell.register(org.codehaus.groovy.tools.shell.Command)
+      register(arg0: object_t): object_t;
+      registerP(arg0: object_t): Promise<object_t>;
+      // public java.lang.String org.codehaus.groovy.tools.shell.Groovysh.renderPrompt()
+      renderPrompt(): string;
+      renderPromptP(): Promise<string>;
+      // public int org.codehaus.groovy.tools.shell.Groovysh.run(java.lang.String,java.util.List<java.lang.String>)
+      run(arg0: string_t, arg1: Java.List): number;
+      runP(arg0: string_t, arg1: Java.List): Promise<number>;
+      // public int org.codehaus.groovy.tools.shell.Groovysh.run(java.lang.String)
+      run(arg0: string_t): number;
+      runP(arg0: string_t): Promise<number>;
+      // public void org.codehaus.groovy.tools.shell.Groovysh.setErrorHook(groovy.lang.Closure)
+      setErrorHook(arg0: Java.Closure): void;
+      setErrorHookP(arg0: Java.Closure): Promise<void>;
+      // public void org.codehaus.groovy.tools.shell.Groovysh.setEvictedLine(java.lang.String)
+      setEvictedLine(arg0: string_t): void;
+      setEvictedLineP(arg0: string_t): Promise<void>;
+      // public void org.codehaus.groovy.tools.shell.Groovysh.setHistory(jline.console.history.FileHistory)
+      setHistory(arg0: object_t): void;
+      setHistoryP(arg0: object_t): Promise<void>;
+      // public void org.codehaus.groovy.tools.shell.Groovysh.setHistoryFull(boolean)
+      setHistoryFull(arg0: boolean_t): void;
+      setHistoryFullP(arg0: boolean_t): Promise<void>;
+      // public void org.codehaus.groovy.tools.shell.Groovysh.setIndentSize(int)
+      setIndentSize(arg0: integer_t): void;
+      setIndentSizeP(arg0: integer_t): Promise<void>;
+      // public void org.codehaus.groovy.tools.shell.Shell.setMetaClass(groovy.lang.MetaClass)
+      setMetaClass(arg0: Java.MetaClass): void;
+      setMetaClassP(arg0: Java.MetaClass): Promise<void>;
+      // public void org.codehaus.groovy.tools.shell.Groovysh.setPackageHelper(org.codehaus.groovy.tools.shell.util.PackageHelper)
+      setPackageHelper(arg0: object_t): void;
+      setPackageHelperP(arg0: object_t): Promise<void>;
+      // public void org.codehaus.groovy.tools.shell.Shell.setProperty(java.lang.String,java.lang.Object)
+      setProperty(arg0: string_t, arg1: object_t): void;
+      setPropertyP(arg0: string_t, arg1: object_t): Promise<void>;
+      // public void org.codehaus.groovy.tools.shell.Groovysh.setResultHook(groovy.lang.Closure)
+      setResultHook(arg0: Java.Closure): void;
+      setResultHookP(arg0: Java.Closure): Promise<void>;
+      // public void org.codehaus.groovy.tools.shell.Groovysh.setRunner(org.codehaus.groovy.tools.shell.InteractiveShellRunner)
+      setRunner(arg0: object_t): void;
+      setRunnerP(arg0: object_t): Promise<void>;
+      // public groovy.lang.MetaClass org.codehaus.groovy.tools.shell.Groovysh.super$2$$getStaticMetaClass()
+      super$2$$getStaticMetaClass(): Java.MetaClass;
+      super$2$$getStaticMetaClassP(): Promise<Java.MetaClass>;
+      // public java.lang.Object org.codehaus.groovy.tools.shell.Groovysh.super$2$execute(java.lang.String)
+      super$2$execute(arg0: string_t): object_t;
+      super$2$executeP(arg0: string_t): Promise<object_t>;
+      // public java.lang.String java.lang.Object.toString()
+      toString(): string;
+      toStringP(): Promise<string>;
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      wait(arg0: long_t, arg1: integer_t): void;
+      waitP(arg0: long_t, arg1: integer_t): Promise<void>;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      wait(arg0: long_t): void;
+      waitP(arg0: long_t): Promise<void>;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      wait(): void;
+      waitP(): Promise<void>;
+    }
+    export module Groovysh {
+      export interface Static {
+        COLLECTED_BOUND_VARS_MAP_VARNAME: string;
+        INTERPRETER_MODE_PREFERENCE_KEY: string;
+        AUTOINDENT_PREFERENCE_KEY: string;
+        COLORS_PREFERENCE_KEY: string;
+        METACLASS_COMPLETION_PREFIX_LENGTH_PREFERENCE_KEY: string;
+        __$stMC: boolean;
+        new (arg0: Java.ClassLoader, arg1: Java.Binding, arg2: object_t, arg3: Java.Closure): org.codehaus.groovy.tools.shell.Groovysh;
+        new (arg0: Java.ClassLoader, arg1: Java.Binding, arg2: object_t): org.codehaus.groovy.tools.shell.Groovysh;
+        new (arg0: Java.Binding, arg1: object_t): org.codehaus.groovy.tools.shell.Groovysh;
+        new (arg0: object_t): org.codehaus.groovy.tools.shell.Groovysh;
+        new (): org.codehaus.groovy.tools.shell.Groovysh;
+        // public static boolean org.codehaus.groovy.tools.shell.Groovysh.isTypeOrMethodDeclaration(java.util.List<java.lang.String>)
+        isTypeOrMethodDeclaration(arg0: Java.List): boolean;
+        isTypeOrMethodDeclarationP(arg0: Java.List): Promise<boolean>;
       }
     }
   }
