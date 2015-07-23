@@ -306,8 +306,8 @@ class ClassesMap {
 
     var signature = this.methodSignature(method);
 
-    var modifiers: number = method.getModifiers();
-    var isStatic: boolean = (modifiers & 8) === 8;
+    var Modifier: Java.Modifier.Static = Java.importClass('java.lang.reflect.Modifier');
+    var isStatic: boolean = Modifier.isStatic(method.getModifiers());
 
     var returnType: string = 'void';
     if ('getReturnType' in method) {
@@ -587,8 +587,8 @@ class ClassesMap {
     var declaredIn: string = field.getDeclaringClass().getName();
     var tsType: string = this.tsTypeName(fieldTypeName, ParamContext.eReturn);
 
-    var modifiers: number = field.getModifiers();
-    var isStatic: boolean = (modifiers & 8) === 8;
+    var Modifier: Java.Modifier.Static = Java.importClass('java.lang.reflect.Modifier');
+    var isStatic: boolean = Modifier.isStatic(field.getModifiers());
     var isSynthetic: boolean = field.isSynthetic();
 
     var fieldDefinition: FieldDefinition = {
@@ -596,7 +596,6 @@ class ClassesMap {
       tsType: tsType,
       isStatic: isStatic,
       isSynthetic: isSynthetic,
-      modifiers: modifiers,
       declaredIn: declaredIn
     };
 
@@ -605,11 +604,15 @@ class ClassesMap {
 
   // *mapClassFields()*: return a FieldDefinition array for the fields of a class
   private mapClassFields(className: string, clazz: Java.Class): Array<FieldDefinition> {
-    // For reasons I don't understand, it seems that getFields() can return duplicates.
-    // TODO: Figure out why there are duplicates, as perhaps there is a better fix.
-    // In the meantime, we dedup here.
-    var allFields: Array<FieldDefinition> = _.map(clazz.getFields(), function (f: Java.Field) { return this.mapField(f); }, this);
-    return _.uniq(allFields, false, 'name');
+    var allFields: Array<Java.Field> = clazz.getFields();
+    var allFieldDefs: Array<FieldDefinition> = _.map(allFields, (f: Java.Field) => this.mapField(f));
+
+    // For instance fields, we should keep only the fields declared in this class.
+    // We'll have access to inherited fields through normal inheritance.
+    // If we kept the inherited fields, it would result in duplicate definitions in the derived classes.
+    allFieldDefs = _.filter(allFieldDefs, (f: FieldDefinition) => f.isStatic || f.declaredIn === clazz.getName());
+
+    return allFieldDefs;
   }
 
   // *mapClassConstructors()*: return a methodMap array for the constructors of a class
@@ -888,7 +891,6 @@ module ClassesMap {
     tsType: string;
     isStatic: boolean;
     isSynthetic: boolean;
-    modifiers: number;
     declaredIn: string;
   }
 
