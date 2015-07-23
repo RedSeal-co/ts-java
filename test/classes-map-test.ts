@@ -63,14 +63,14 @@ describe('ClassesMap', () => {
       // The tinkerpop package.json only includes specific tinkerpop packages and not package hierarchies.
       // So, inWhiteList will return true only for class paths that appear to be in one of the included packages,
       // but the class (in this case `Foo`) need not actually exist.
-      expect(classesMap.inWhiteList('com.tinkerpop.gremlin.process.Foo')).to.equal(true);
+      expect(classesMap.inWhiteList('org.apache.tinkerpop.gremlin.structure.Foo')).to.equal(true);
     });
     it('should return false for invalid class names', () => {
       expect(classesMap.inWhiteList('')).to.equal(false);
       expect(classesMap.inWhiteList('com')).to.equal(false);
       expect(classesMap.inWhiteList('java.util.Iterators')).to.equal(false);
-      expect(classesMap.inWhiteList('com.tinkerpop.gremlin')).to.equal(false);
-      expect(classesMap.inWhiteList('com.tinkerpop.Gremlin.Foo')).to.equal(false);
+      expect(classesMap.inWhiteList('org.apache.tinkerpop.gremlin')).to.equal(false);
+      expect(classesMap.inWhiteList('org.apache.tinkerpop.Gremlin.Foo')).to.equal(false);
     });
   });
 
@@ -78,7 +78,7 @@ describe('ClassesMap', () => {
     it('should give expected results for valid class names', () => {
       expect(classesMap.shortClassName('java.lang.Object')).to.equal('Object');
       expect(classesMap.shortClassName('java.util.Iterator')).to.equal('Iterator');
-      expect(classesMap.shortClassName('com.tinkerpop.gremlin.Foo')).to.equal('Foo');
+      expect(classesMap.shortClassName('org.apache.tinkerpop.gremlin.Foo')).to.equal('Foo');
     });
   });
 
@@ -91,10 +91,10 @@ describe('ClassesMap', () => {
     it('should fail for an invalid class name', () => {
       expect(function () { classesMap.getClass('net.lang.Object'); }).to.throw(/java.lang.ClassNotFoundException/);
     });
-    it('should return a valid Class object for com.tinkerpop.gremlin.structure.Edge', () => {
-      var clazz = classesMap.getClass('com.tinkerpop.gremlin.structure.Edge');
+    it('should return a valid Class object for org.apache.tinkerpop.gremlin.structure.Edge', () => {
+      var clazz = classesMap.getClass('org.apache.tinkerpop.gremlin.structure.Edge');
       expect(clazz).to.be.ok;
-      expect(clazz.getName()).to.equal('com.tinkerpop.gremlin.structure.Edge');
+      expect(clazz.getName()).to.equal('org.apache.tinkerpop.gremlin.structure.Edge');
     });
   });
 
@@ -112,13 +112,12 @@ describe('ClassesMap', () => {
       var expected = ['java.lang.Object'];
       expect(interfaces).to.deep.equal(expected);
     });
-    it('should find the interfaces of com.tinkerpop.gremlin.structure.Edge', () => {
-      var className = 'com.tinkerpop.gremlin.structure.Edge';
+    it('should find the interfaces of org.apache.tinkerpop.gremlin.structure.Edge', () => {
+      var className = 'org.apache.tinkerpop.gremlin.structure.Edge';
       var clazz = classesMap.getClass(className);
       var interfaces = classesMap.mapClassInterfaces(className, clazz);
       var expected = [
-        'com.tinkerpop.gremlin.structure.Element',
-        'com.tinkerpop.gremlin.process.graph.EdgeTraversal'
+        'org.apache.tinkerpop.gremlin.structure.Element'
       ];
       expect(interfaces).to.deep.equal(expected);
     });
