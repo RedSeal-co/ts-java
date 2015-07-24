@@ -75,6 +75,19 @@ export module Java {
   }
   {{/hasClass}}
 
+  // Return the fully qualified class path for a class name.
+  // Returns undefined if the className is ambiguous or not present in the configured classes.
+  export function fullyQualifiedName(className: string): string {
+    var shortToLongMap: StringDict = {
+      {{#each this}}
+      {{#if useAlias}}
+      '{{alias}}': '{{packageName}}.{{shortName}}'{{#unless @last}},{{/unless}}
+      {{/if}}
+      {{/each}}
+    };
+    return shortToLongMap[className];
+  }
+
   {{#each this}}
   {{#if useAlias}}
   export function importClass(className: '{{alias}}'): Java.{{quotedPkgName}}.{{shortName}}.Static;
@@ -85,18 +98,8 @@ export module Java {
   {{/each}}
   export function importClass(className: string): any;
   export function importClass(className: string): any {
-    var shortToLongMap: StringDict = {
-      {{#each this}}
-      {{#if useAlias}}
-      '{{alias}}': '{{packageName}}.{{shortName}}'{{#unless @last}},{{/unless}}
-      {{/if}}
-      {{/each}}
-    };
-
-    if (className in shortToLongMap) {
-      className = shortToLongMap[className];
-    }
-    return _java.import(className);
+    var fullName: string = fullyQualifiedName(className) || className;
+    return _java.import(fullName);
   }
 
   export interface Callback<T> {
