@@ -84,8 +84,12 @@ export module Java {
     (err?: Error, result?: T): void;
   }
 
+  // Returns true if javaObject is an instance of the named class, which may be a short className.
+  // Returns false if javaObject is not an instance of the named class.
+  // Throws an exception if the named class does not exist, or is an ambiguous short name.
   export function instanceOf(javaObject: any, className: string): boolean {
-    return _java.instanceOf(javaObject, className);
+    var fullName: string = fullyQualifiedName(className) || className;
+    return _java.instanceOf(javaObject, fullName);
   }
 
 
