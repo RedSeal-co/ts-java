@@ -57,6 +57,17 @@ export module Java {
   }
 
 
+  // Return the fully qualified class path for a class name.
+  // Returns undefined if the className is ambiguous or not present in the configured classes.
+  export function fullyQualifiedName(className: string): string {
+    var shortToLongMap: StringDict = {
+      'HelloJava': 'com.redseal.hellojava.HelloJava',
+      'Object': 'java.lang.Object',
+      'String': 'java.lang.String'
+    };
+    return shortToLongMap[className];
+  }
+
   export function importClass(className: 'HelloJava'): Java.com.redseal.hellojava.HelloJava.Static;
   export function importClass(className: 'Object'): Java.java.lang.Object.Static;
   export function importClass(className: 'String'): Java.java.lang.String.Static;
@@ -65,16 +76,8 @@ export module Java {
   export function importClass(className: 'java.lang.String'): Java.java.lang.String.Static;
   export function importClass(className: string): any;
   export function importClass(className: string): any {
-    var shortToLongMap: StringDict = {
-      'HelloJava': 'com.redseal.hellojava.HelloJava',
-      'Object': 'java.lang.Object',
-      'String': 'java.lang.String'
-    };
-
-    if (className in shortToLongMap) {
-      className = shortToLongMap[className];
-    }
-    return _java.import(className);
+    var fullName: string = fullyQualifiedName(className) || className;
+    return _java.import(fullName);
   }
 
   export interface Callback<T> {

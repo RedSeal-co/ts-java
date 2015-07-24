@@ -71,6 +71,28 @@ export module Java {
     return _java.getClassLoader();
   }
 
+  // Return the fully qualified class path for a class name.
+  // Returns undefined if the className is ambiguous or not present in the configured classes.
+  export function fullyQualifiedName(className: string): string {
+    var shortToLongMap: StringDict = {
+      'Boolean': 'java.lang.Boolean',
+      'Class': 'java.lang.Class',
+      'ClassLoader': 'java.lang.ClassLoader',
+      'Integer': 'java.lang.Integer',
+      'Object': 'java.lang.Object',
+      'AccessibleObject': 'java.lang.reflect.AccessibleObject',
+      'Constructor': 'java.lang.reflect.Constructor',
+      'Executable': 'java.lang.reflect.Executable',
+      'Field': 'java.lang.reflect.Field',
+      'Method': 'java.lang.reflect.Method',
+      'Modifier': 'java.lang.reflect.Modifier',
+      'Parameter': 'java.lang.reflect.Parameter',
+      'Type': 'java.lang.reflect.Type',
+      'String': 'java.lang.String'
+    };
+    return shortToLongMap[className];
+  }
+
   export function importClass(className: 'Boolean'): Java.java.lang.Boolean.Static;
   export function importClass(className: 'Class'): Java.java.lang.Class.Static;
   export function importClass(className: 'ClassLoader'): Java.java.lang.ClassLoader.Static;
@@ -101,27 +123,8 @@ export module Java {
   export function importClass(className: 'java.lang.String'): Java.java.lang.String.Static;
   export function importClass(className: string): any;
   export function importClass(className: string): any {
-    var shortToLongMap: StringDict = {
-      'Boolean': 'java.lang.Boolean',
-      'Class': 'java.lang.Class',
-      'ClassLoader': 'java.lang.ClassLoader',
-      'Integer': 'java.lang.Integer',
-      'Object': 'java.lang.Object',
-      'AccessibleObject': 'java.lang.reflect.AccessibleObject',
-      'Constructor': 'java.lang.reflect.Constructor',
-      'Executable': 'java.lang.reflect.Executable',
-      'Field': 'java.lang.reflect.Field',
-      'Method': 'java.lang.reflect.Method',
-      'Modifier': 'java.lang.reflect.Modifier',
-      'Parameter': 'java.lang.reflect.Parameter',
-      'Type': 'java.lang.reflect.Type',
-      'String': 'java.lang.String'
-    };
-
-    if (className in shortToLongMap) {
-      className = shortToLongMap[className];
-    }
-    return _java.import(className);
+    var fullName: string = fullyQualifiedName(className) || className;
+    return _java.import(fullName);
   }
 
   export interface Callback<T> {
