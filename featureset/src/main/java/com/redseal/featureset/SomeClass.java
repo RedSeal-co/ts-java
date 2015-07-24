@@ -29,6 +29,9 @@ public class SomeClass extends SomeAbstractClass {
         theDouble = d;
     }
 
+    // A static field with the same name is also declared in the superclass SomeAbstractClass
+    public static int mField = 2;
+
     private int theInt;
     private long theLong;
     private String theString;

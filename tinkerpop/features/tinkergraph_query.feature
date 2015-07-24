@@ -26,7 +26,7 @@ So I can leverage my knowledge of the Java TinkerPop API to write programs in Ty
     // Typescript types that will normally be implicit.
     TinkerFactory.createClassicP()
       .then((g: Java.TinkerGraph) => {
-        var travP: Promise<Java.GraphTraversal> = g.VP();
+        var travP: Promise<Java.GraphTraversal> = g.traversal().VP();
         travP = travP.then((trav: Java.GraphTraversal) => trav.valuesP('name', 'age'));
         travP.then((trav: Java.GraphTraversal) => trav.toListP())
           .then((vertList: Java.List) => console.log(vertList.toString()));
@@ -44,7 +44,7 @@ So I can leverage my knowledge of the Java TinkerPop API to write programs in Ty
     """
     // This is the same query, rewritten using the more typical idioms.
     var g: Java.TinkerGraph = TinkerFactory.createClassic();
-    g.V().values('name', 'age').toListP()
+    g.traversal().V().values('name', 'age').toListP()
       .then((vertList: Java.List) => console.log(vertList.toString()));
     """
     Then it compiles and lints cleanly

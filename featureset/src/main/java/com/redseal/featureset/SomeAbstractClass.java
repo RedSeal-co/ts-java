@@ -33,4 +33,7 @@ public abstract class SomeAbstractClass implements SomeInterface {
     public String joinList(String sep) {
         return String.join(sep, getList());
     }
+
+    // A static field with the same name is also declared in SomeClass
+    public static int mField = 1;
 }
