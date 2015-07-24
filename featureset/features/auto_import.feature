@@ -62,3 +62,27 @@ Feature: Auto import
     Then it compiles and lints cleanly
     And it runs and produces no output
 
+  Scenario: Fully qualified name for a valid short name
+    Given the above boilerplate with following scenario snippet:
+    """
+    assert.strictEqual('java.lang.Object', Java.fullyQualifiedName('Object'));
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
+  Scenario: Fully qualified name for a nonexistent name
+    Given the above boilerplate with following scenario snippet:
+    """
+    assert.strictEqual(undefined, Java.fullyQualifiedName('NonExistingClassName'));
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
+  Scenario: Fully qualified name for an ambiguous name
+    Given the above boilerplate with following scenario snippet:
+    """
+    assert.strictEqual(undefined, Java.fullyQualifiedName('Thing'));
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
