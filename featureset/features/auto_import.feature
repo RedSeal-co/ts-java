@@ -26,39 +26,99 @@ Feature: Auto import
     """
 
   Scenario: Nominal
-  Given the above boilerplate with following scenario snippet:
-  """
-  var SomeClass: Java.SomeClass.Static = Java.importClass('SomeClass');
-  var something: Java.SomeClass = new SomeClass();
-  """
-  Then it compiles and lints cleanly
-  And it runs and produces no output
+    Given the above boilerplate with following scenario snippet:
+    """
+    var SomeClass: Java.SomeClass.Static = Java.importClass('SomeClass');
+    var something: Java.SomeClass = new SomeClass();
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
 
   Scenario: Ambiguous
-  Given the above boilerplate with following scenario snippet:
-  """
-  assert.throws(() => Java.importClass('Thing'), /java.lang.NoClassDefFoundError: Thing/);
-  """
-  Then it compiles and lints cleanly
-  And it runs and produces no output
+    Given the above boilerplate with following scenario snippet:
+    """
+    assert.throws(() => Java.importClass('Thing'), /java.lang.NoClassDefFoundError: Thing/);
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
 
   Scenario: Reserved word in package namespace
-  # The package namespace java.util.function requires special handling since function is a reserved word
-  # in Typescript. The typescript module name is mapped to `function_` to avoid the conflict.
-  Given the above boilerplate with following scenario snippet:
-  """
-  var Function: Java.Function.Static = Java.importClass('Function');
-  var func: Java.java.util.function_.Function = Function.identity();
-  """
-  Then it compiles and lints cleanly
-  And it runs and produces no output
+    # The package namespace java.util.function requires special handling since function is a reserved word
+    # in Typescript. The typescript module name is mapped to `function_` to avoid the conflict.
+    Given the above boilerplate with following scenario snippet:
+    """
+    var Function: Java.Function.Static = Java.importClass('Function');
+    var func: Java.java.util.function_.Function = Function.identity();
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
 
   Scenario: import via full class path
-  Given the above boilerplate with following scenario snippet:
-  """
-  var Function: Java.Function.Static = Java.importClass('java.util.function.Function');
-  var func: Java.java.util.function_.Function = Function.identity();
-  """
-  Then it compiles and lints cleanly
-  And it runs and produces no output
+    Given the above boilerplate with following scenario snippet:
+    """
+    var Function: Java.Function.Static = Java.importClass('java.util.function.Function');
+    var func: Java.java.util.function_.Function = Function.identity();
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
+  Scenario: Fully qualified name for a valid short name
+    Given the above boilerplate with following scenario snippet:
+    """
+    assert.strictEqual('java.lang.Object', Java.fullyQualifiedName('Object'));
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
+  Scenario: Fully qualified name for a nonexistent name
+    Given the above boilerplate with following scenario snippet:
+    """
+    assert.strictEqual(undefined, Java.fullyQualifiedName('NonExistingClassName'));
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
+  Scenario: Fully qualified name for an ambiguous name
+    Given the above boilerplate with following scenario snippet:
+    """
+    assert.strictEqual(undefined, Java.fullyQualifiedName('Thing'));
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
+  Scenario: instanceOf for a valid short name
+    Given the above boilerplate with following scenario snippet:
+    """
+    var something: Java.SomeClass = Java.newInstance('com.redseal.featureset.SomeClass');
+
+    assert.strictEqual(true, Java.instanceOf(something, 'com.redseal.featureset.SomeClass'));
+    assert.strictEqual(true, Java.instanceOf(something, 'SomeClass'));
+
+    assert.strictEqual(true, Java.instanceOf(something, 'java.lang.Object'));
+    assert.strictEqual(true, Java.instanceOf(something, 'Object'));
+
+    assert.strictEqual(false, Java.instanceOf(something, 'java.lang.Long'));
+    assert.strictEqual(false, Java.instanceOf(something, 'Long'));
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
+  Scenario: instanceOf for a nonexistent name throws an exception
+    Given the above boilerplate with following scenario snippet:
+    """
+    var something: Java.SomeClass = Java.newInstance('com.redseal.featureset.SomeClass');
+    assert.throws(() => Java.instanceOf(something, 'xxx.yyy.NonExistingClassName'), /java.lang.NoClassDefFoundError/);
+    assert.throws(() => Java.instanceOf(something, 'NonExistingClassName'), /java.lang.NoClassDefFoundError/);
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
+  Scenario: instanceOf for an ambiguous name throws an exception
+    Given the above boilerplate with following scenario snippet:
+    """
+    var something: Java.SomeClass = Java.newInstance('com.redseal.featureset.SomeClass');
+    assert.throws(() => Java.instanceOf(something, 'Thing'), /java.lang.NoClassDefFoundError/);
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
 
