@@ -86,3 +86,39 @@ Feature: Auto import
     Then it compiles and lints cleanly
     And it runs and produces no output
 
+  Scenario: instanceOf for a valid short name
+    Given the above boilerplate with following scenario snippet:
+    """
+    var something: Java.SomeClass = Java.newInstance('com.redseal.featureset.SomeClass');
+
+    assert.strictEqual(true, Java.instanceOf(something, 'com.redseal.featureset.SomeClass'));
+    assert.strictEqual(true, Java.instanceOf(something, 'SomeClass'));
+
+    assert.strictEqual(true, Java.instanceOf(something, 'java.lang.Object'));
+    assert.strictEqual(true, Java.instanceOf(something, 'Object'));
+
+    assert.strictEqual(false, Java.instanceOf(something, 'java.lang.Long'));
+    assert.strictEqual(false, Java.instanceOf(something, 'Long'));
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
+  Scenario: instanceOf for a nonexistent name throws an exception
+    Given the above boilerplate with following scenario snippet:
+    """
+    var something: Java.SomeClass = Java.newInstance('com.redseal.featureset.SomeClass');
+    assert.throws(() => Java.instanceOf(something, 'xxx.yyy.NonExistingClassName'), /java.lang.NoClassDefFoundError/);
+    assert.throws(() => Java.instanceOf(something, 'NonExistingClassName'), /java.lang.NoClassDefFoundError/);
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
+  Scenario: instanceOf for an ambiguous name throws an exception
+    Given the above boilerplate with following scenario snippet:
+    """
+    var something: Java.SomeClass = Java.newInstance('com.redseal.featureset.SomeClass');
+    assert.throws(() => Java.instanceOf(something, 'Thing'), /java.lang.NoClassDefFoundError/);
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
