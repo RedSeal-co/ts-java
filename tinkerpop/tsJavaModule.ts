@@ -145,7 +145,8 @@ _java.asyncOptions = {
 function beforeJvm(): BluePromise<void> {
   var moduleJars: string[] = ['target/dependency/commons-configuration-1.10.jar', 'target/dependency/commons-lang-2.6.jar', 'target/dependency/commons-lang3-3.3.1.jar', 'target/dependency/gremlin-core-3.0.0-incubating.jar', 'target/dependency/gremlin-groovy-3.0.0-incubating.jar', 'target/dependency/gremlin-shaded-3.0.0-incubating.jar', 'target/dependency/groovy-2.4.1-indy.jar', 'target/dependency/groovy-2.4.1.jar', 'target/dependency/groovy-console-2.4.1.jar', 'target/dependency/groovy-groovysh-2.4.1-indy.jar', 'target/dependency/groovy-json-2.4.1-indy.jar', 'target/dependency/groovy-jsr223-2.4.1-indy.jar', 'target/dependency/groovy-sandbox-1.6.jar', 'target/dependency/groovy-swing-2.4.1.jar', 'target/dependency/groovy-templates-2.4.1.jar', 'target/dependency/groovy-xml-2.4.1.jar', 'target/dependency/hamcrest-core-1.3.jar', 'target/dependency/hppc-0.7.1.jar', 'target/dependency/ivy-2.3.0.jar', 'target/dependency/jackson-annotations-2.5.0.jar', 'target/dependency/jackson-core-2.5.3.jar', 'target/dependency/jackson-databind-2.5.3.jar', 'target/dependency/javatuples-1.2.jar', 'target/dependency/jcabi-log-0.14.jar', 'target/dependency/jcabi-manifests-1.1.jar', 'target/dependency/jcl-over-slf4j-1.7.12.jar', 'target/dependency/jline-2.12.jar', 'target/dependency/junit-4.11.jar', 'target/dependency/log4j-1.2.17.jar', 'target/dependency/slf4j-api-1.7.12.jar', 'target/dependency/slf4j-log4j12-1.7.12.jar', 'target/dependency/snakeyaml-1.15.jar', 'target/dependency/tinkergraph-gremlin-3.0.0-incubating.jar'];
   moduleJars.forEach((jarPath: string) => {
-    _java.classpath.push(path.join(__dirname, '', jarPath));
+    var fullJarPath: string = path.join(__dirname, '', jarPath);
+    _java.classpath.push(fullJarPath);
   });
   return BluePromise.resolve();
 }

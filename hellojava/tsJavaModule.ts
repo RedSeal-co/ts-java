@@ -32,7 +32,8 @@ _java.asyncOptions = {
 function beforeJvm(): BluePromise<void> {
   var moduleJars: string[] = ['target/hellojava-1.0.0.jar'];
   moduleJars.forEach((jarPath: string) => {
-    _java.classpath.push(path.join(__dirname, '', jarPath));
+    var fullJarPath: string = path.join(__dirname, '', jarPath);
+    _java.classpath.push(fullJarPath);
   });
   return BluePromise.resolve();
 }
