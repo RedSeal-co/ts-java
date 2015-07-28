@@ -34,7 +34,7 @@ import _java = require('java');
 import BluePromise = require('bluebird');
 import path = require('path');
 import debug = require('debug');
-var dlog = debug(__filename);
+var dlog = debug('tsJavaModule:' + __dirname);
 dlog('imported');
 
 _java.asyncOptions = {

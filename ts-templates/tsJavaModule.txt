@@ -34,7 +34,7 @@ import BluePromise = require('bluebird');
 import path = require('path');
 {{#if debug}}
 import debug = require('debug');
-var dlog = debug(__filename);
+var dlog = debug('tsJavaModule:' + __dirname);
 dlog('imported');
 {{/if}}
 
