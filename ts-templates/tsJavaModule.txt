@@ -114,6 +114,24 @@ export module Java {
     return _java.import(fullName);
   }
 
+  {{#each this}}
+  {{#if useAlias}}
+  export function asInstanceOf(obj: any, className: '{{alias}}'): Java.{{quotedPkgName}}.{{shortName}};
+  {{/if}}
+  {{/each}}
+  {{#each this}}
+  export function asInstanceOf(obj: any, className: '{{packageName}}.{{shortName}}'): Java.{{quotedPkgName}}.{{shortName}};
+  {{/each}}
+  export function asInstanceOf(obj: any, className: string): any;
+  export function asInstanceOf(obj: any, className: string): any {
+    var fullName: string = fullyQualifiedName(className) || className;
+    if (_java.instanceOf(obj, fullName)) {
+      return obj;
+    } else {
+      throw new Error('asInstanceOf fails, obj is not a ' + fullName);
+    }
+  }
+
   export interface Callback<T> {
     (err?: Error, result?: T): void;
   }
