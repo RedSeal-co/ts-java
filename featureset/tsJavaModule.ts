@@ -34,7 +34,8 @@ import _java = require('java');
 import BluePromise = require('bluebird');
 import path = require('path');
 import debug = require('debug');
-var dlog = debug('tsJavaModule');
+var dlog = debug('tsJavaModule:' + __dirname);
+dlog('imported');
 
 _java.asyncOptions = {
     syncSuffix: '',
@@ -42,6 +43,7 @@ _java.asyncOptions = {
     promiseSuffix: 'P',
     promisify: BluePromise.promisify
 };
+dlog('asyncOptions:', _java.asyncOptions);
 
 // JVM initialization callback which adds tsjava.classpath to the JVM classpath.
 function beforeJvm(): BluePromise<void> {
