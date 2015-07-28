@@ -122,3 +122,15 @@ Feature: Auto import
     Then it compiles and lints cleanly
     And it runs and produces no output
 
+  Scenario: the Static interface exposes the Java Class object
+    Given the above boilerplate with following scenario snippet:
+    """
+    var SomeClass: Java.SomeClass.Static = Java.importClass('SomeClass');
+    var clazz: Java.Class = SomeClass.class;
+    assert.strictEqual(clazz.getClass().getName(), 'java.lang.Class');
+    assert.strictEqual(clazz.getName(), 'com.redseal.featureset.SomeClass');
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
+
