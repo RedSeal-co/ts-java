@@ -255,7 +255,7 @@ export module Java {
         {{name}}: {{{tsType}}};
         {{/if~}}
         {{/each}}
-        {{#hasClass 'java.lang.Class'}}class: Java.Class;{{/hasClass}}
+        class: Java.{{#hasClass 'java.lang.Class'}}Class{{else}}Object{{/hasClass}};
         {{#each constructors}}
         new ({{{margs this}}}): {{../quotedPkgName}}.{{../shortName}};
         {{/each}}
