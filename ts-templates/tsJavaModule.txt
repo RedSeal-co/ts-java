@@ -23,7 +23,6 @@
 {{#unless config.packages}}
 //   <none>
 {{/unless}}
-{{#with classes}}
 
 /* tslint:disable:max-line-length class-name */
 
@@ -33,6 +32,10 @@ require('source-map-support').install();
 import _java = require('java');
 import BluePromise = require('bluebird');
 import path = require('path');
+{{#if debug}}
+import debug = require('debug');
+var dlog = debug('tsJavaModule');
+{{/if}}
 
 _java.asyncOptions = {
     syncSuffix: '',
@@ -45,13 +48,18 @@ _java.asyncOptions = {
 function beforeJvm(): BluePromise<void> {
   var moduleJars: string[] = [{{#each @root.classpath}}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}];
   moduleJars.forEach((jarPath: string) => {
-    _java.classpath.push(path.join(__dirname, '{{@root.classpathAdjust}}', jarPath));
+    var fullJarPath: string = path.join(__dirname, '{{@root.classpathAdjust}}', jarPath);
+{{#if debug}}
+    dlog('Adding to classpath:', fullJarPath);
+{{/if}}
+    _java.classpath.push(fullJarPath);
   });
   return BluePromise.resolve();
 }
 
 _java.registerClientP(beforeJvm);
 
+{{#with classes}}
 export module Java {
   'use strict';
 
