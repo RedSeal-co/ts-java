@@ -154,4 +154,25 @@ Feature: Auto import
     Then it compiles and lints cleanly
     And it runs and produces no output
 
+  Scenario: asInstanceOf with fully qualified class name
+    Given the above boilerplate with following scenario snippet:
+    """
+    var SomeClass: Java.SomeClass.Static = Java.importClass('SomeClass');
+    var obj: any = new SomeClass();   // intentionally drop type information
+
+    var some1: Java.Object = Java.asInstanceOf(obj, 'java.lang.Object');
+    assert.strictEqual(some1.getClass().getName(), 'com.redseal.featureset.SomeClass');
+
+    var some2: Java.SomeInterface = Java.asInstanceOf(obj, 'com.redseal.featureset.SomeInterface');
+    assert.strictEqual(some2.getClass().getName(), 'com.redseal.featureset.SomeClass');
+
+    var some3: Java.SomeAbstractClass = Java.asInstanceOf(obj, 'com.redseal.featureset.SomeAbstractClass');
+    assert.strictEqual(some3.getClass().getName(), 'com.redseal.featureset.SomeClass');
+
+    var some4: Java.SomeClass = Java.asInstanceOf(obj, 'com.redseal.featureset.SomeClass');
+    assert.strictEqual(some4.getClass().getName(), 'com.redseal.featureset.SomeClass');
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
 
