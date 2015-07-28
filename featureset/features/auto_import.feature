@@ -127,6 +127,7 @@ Feature: Auto import
     """
     var SomeClass: Java.SomeClass.Static = Java.importClass('SomeClass');
     var clazz: Java.Class = SomeClass.class;
+    assert.strictEqual(clazz.getClass().getName(), 'java.lang.Class');
     assert.strictEqual(clazz.getName(), 'com.redseal.featureset.SomeClass');
     """
     Then it compiles and lints cleanly
