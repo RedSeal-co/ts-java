@@ -175,4 +175,22 @@ Feature: Auto import
     Then it compiles and lints cleanly
     And it runs and produces no output
 
+  Scenario: asInstanceOf negative test cases
+    Given the above boilerplate with following scenario snippet:
+    """
+    var SomeClass: Java.SomeClass.Static = Java.importClass('SomeClass');
+    var obj: any = new SomeClass();   // intentionally drop type information
+
+    assert.throws(() => Java.asInstanceOf(obj, 'Bogus'), /java.lang.NoClassDefFoundError/);
+    assert.throws(() => Java.asInstanceOf(obj, 'java.lang.Objct'), /java.lang.NoClassDefFoundError/);
+
+    // ambiguous
+    assert.throws(() => Java.asInstanceOf(obj, 'Thing'), /java.lang.NoClassDefFoundError/);
+
+    // A valid classname, but not an inherited type
+    assert.throws(() => Java.asInstanceOf(obj, 'com.redseal.featureset.Thing'), /asInstanceOf fails, obj is not a/);
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
 
