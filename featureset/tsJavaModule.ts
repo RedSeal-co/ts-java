@@ -1605,6 +1605,7 @@ export module Java {
     }
     export module Thing {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t): com.redseal.featureset.ambiguous.Thing;
       }
     }
@@ -1651,6 +1652,7 @@ export module Java {
     }
     export module Thing$Nested {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -1719,6 +1721,7 @@ export module Java {
         mingus: Java.AnEnum;
         monk: Java.AnEnum;
         miles: Java.AnEnum;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOfA(arg0: Java.Class, arg1: string_t, cb: Callback<object_t>): void;
         valueOf(arg0: Java.Class, arg1: string_t): object_t;
@@ -1776,6 +1779,7 @@ export module Java {
     }
     export module AnonClassTest {
       export interface Static {
+        class: Java.Class;
         new (): com.redseal.featureset.AnonClassTest;
         // public static java.lang.String com.redseal.featureset.AnonClassTest.test()
         testA( cb: Callback<string>): void;
@@ -1826,6 +1830,7 @@ export module Java {
     }
     export module Overloading {
       export interface Static {
+        class: Java.Class;
         new (): com.redseal.featureset.overloading.Overloading;
       }
     }
@@ -1872,6 +1877,7 @@ export module Java {
     }
     export module Overloading$Bar {
       export interface Static {
+        class: Java.Class;
         new (): com.redseal.featureset.overloading.Overloading$Bar;
       }
     }
@@ -1926,6 +1932,7 @@ export module Java {
     }
     export module Overloading$Foo {
       export interface Static {
+        class: Java.Class;
         new (): com.redseal.featureset.overloading.Overloading$Foo;
       }
     }
@@ -1960,6 +1967,7 @@ export module Java {
     }
     export module Step {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -2106,6 +2114,7 @@ export module Java {
     export module SomeAbstractClass {
       export interface Static {
         mField: number;
+        class: Java.Class;
         new (): com.redseal.featureset.SomeAbstractClass;
       }
     }
@@ -2253,6 +2262,7 @@ export module Java {
     export module SomeClass {
       export interface Static {
         mField: number;
+        class: Java.Class;
         new (arg0: integer_t, arg1: long_t, arg2: string_t, arg3: boolean_t, arg4: double_t): com.redseal.featureset.SomeClass;
         new (): com.redseal.featureset.SomeClass;
       }
@@ -2364,6 +2374,7 @@ export module Java {
     }
     export module SomeInterface {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -2415,6 +2426,7 @@ export module Java {
     export module Thing {
       export interface Static {
         theStaticField: string;
+        class: Java.Class;
         new (arg0: integer_t): com.redseal.featureset.Thing;
       }
     }
@@ -2429,6 +2441,7 @@ export module Java {
     }
     export module TinyInterface {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -2489,6 +2502,7 @@ export module Java {
         TRUE: boolean;
         FALSE: boolean;
         TYPE: Java.Class;
+        class: Java.Class;
         new (arg0: string_t): java.lang.Boolean;
         new (arg0: boolean_t): java.lang.Boolean;
         // public static int java.lang.Boolean.compare(boolean,boolean)
@@ -2828,6 +2842,7 @@ export module Java {
     }
     export module Class {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.Class<?> java.lang.Class.forName(java.lang.String,boolean,java.lang.ClassLoader) throws java.lang.ClassNotFoundException
         forNameA(arg0: string_t, arg1: boolean_t, arg2: object_t, cb: Callback<Java.Class>): void;
         forName(arg0: string_t, arg1: boolean_t, arg2: object_t): Java.Class;
@@ -2932,6 +2947,7 @@ export module Java {
         SIZE: number;
         BYTES: number;
         TYPE: Java.Class;
+        class: Java.Class;
         new (arg0: string_t): java.lang.Double;
         new (arg0: double_t): java.lang.Double;
         // public static int java.lang.Double.compare(double,double)
@@ -3094,6 +3110,7 @@ export module Java {
         SIZE: number;
         BYTES: number;
         TYPE: Java.Class;
+        class: Java.Class;
         new (arg0: string_t): java.lang.Float;
         new (arg0: float_t): java.lang.Float;
         new (arg0: double_t): java.lang.Float;
@@ -3243,6 +3260,7 @@ export module Java {
         TYPE: Java.Class;
         SIZE: number;
         BYTES: number;
+        class: Java.Class;
         new (arg0: string_t): java.lang.Integer;
         new (arg0: integer_t): java.lang.Integer;
         // public static int java.lang.Integer.bitCount(int)
@@ -3475,6 +3493,7 @@ export module Java {
         TYPE: Java.Class;
         SIZE: number;
         BYTES: number;
+        class: Java.Class;
         new (arg0: string_t): java.lang.Long;
         new (arg0: long_t): java.lang.Long;
         // public static int java.lang.Long.bitCount(long)
@@ -3666,6 +3685,7 @@ export module Java {
     }
     export module Object {
       export interface Static {
+        class: Java.Class;
         new (): java.lang.Object;
       }
     }
@@ -3848,6 +3868,7 @@ export module Java {
       export interface Static {
         PUBLIC: number;
         DECLARED: number;
+        class: Java.Class;
         // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
         setAccessibleA(arg0: object_array_t, arg1: boolean_t, cb: Callback<void>): void;
         setAccessible(arg0: object_array_t, arg1: boolean_t): void;
@@ -3934,6 +3955,7 @@ export module Java {
         TYPE: Java.Class;
         SIZE: number;
         BYTES: number;
+        class: Java.Class;
         new (arg0: string_t): java.lang.Short;
         new (arg0: short_t): java.lang.Short;
         // public static int java.lang.Short.compare(short,short)
@@ -4238,6 +4260,7 @@ export module Java {
     export module String {
       export interface Static {
         CASE_INSENSITIVE_ORDER: Java.Comparator;
+        class: Java.Class;
         new (arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: object_t): java.lang.String;
         new (arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: string_t): java.lang.String;
         new (arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: integer_t): java.lang.String;
@@ -4436,6 +4459,7 @@ export module Java {
     }
     export module AbstractCollection {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -4601,6 +4625,7 @@ export module Java {
     }
     export module AbstractList {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -4738,6 +4763,7 @@ export module Java {
     }
     export module AbstractMap {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -4795,6 +4821,7 @@ export module Java {
     }
     export module AbstractMap$SimpleEntry {
       export interface Static {
+        class: Java.Class;
         new (arg0: object_t, arg1: object_t): java.util.AbstractMap$SimpleEntry;
         new (arg0: Java.Map$Entry): java.util.AbstractMap$SimpleEntry;
       }
@@ -4854,6 +4881,7 @@ export module Java {
     }
     export module AbstractMap$SimpleImmutableEntry {
       export interface Static {
+        class: Java.Class;
         new (arg0: object_t, arg1: object_t): java.util.AbstractMap$SimpleImmutableEntry;
         new (arg0: Java.Map$Entry): java.util.AbstractMap$SimpleImmutableEntry;
       }
@@ -4993,6 +5021,7 @@ export module Java {
     }
     export module AbstractQueue {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -5158,6 +5187,7 @@ export module Java {
     }
     export module AbstractSequentialList {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -5275,6 +5305,7 @@ export module Java {
     }
     export module AbstractSet {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -5488,6 +5519,7 @@ export module Java {
     }
     export module ArrayDeque {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Collection): java.util.ArrayDeque;
         new (arg0: integer_t): java.util.ArrayDeque;
         new (): java.util.ArrayDeque;
@@ -5668,6 +5700,7 @@ export module Java {
     }
     export module ArrayList {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Collection): java.util.ArrayList;
         new (arg0: integer_t): java.util.ArrayList;
         new (): java.util.ArrayList;
@@ -5716,6 +5749,7 @@ export module Java {
     }
     export module Arrays {
       export interface Static {
+        class: Java.Class;
         // public static <T> java.util.List<T> java.util.Arrays.asList(T...)
         asListA(arg0: object_array_t, cb: Callback<Java.List>): void;
         asList(...arg0: object_t[]): Java.List;
@@ -6383,6 +6417,7 @@ export module Java {
     }
     export module Base64 {
       export interface Static {
+        class: Java.Class;
         // public static java.util.Base64$Decoder java.util.Base64.getDecoder()
         getDecoderA( cb: Callback<Java.Base64$Decoder>): void;
         getDecoder(): Java.Base64$Decoder;
@@ -6476,6 +6511,7 @@ export module Java {
     }
     export module Base64$Decoder {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -6545,6 +6581,7 @@ export module Java {
     }
     export module Base64$Encoder {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -6702,6 +6739,7 @@ export module Java {
     }
     export module BitSet {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t): java.util.BitSet;
         new (): java.util.BitSet;
         // public static java.util.BitSet java.util.BitSet.valueOf(java.nio.LongBuffer)
@@ -6983,6 +7021,7 @@ export module Java {
         LONG_FORMAT: number;
         SHORT_STANDALONE: number;
         LONG_STANDALONE: number;
+        class: Java.Class;
         // public static java.util.Set<java.lang.String> java.util.Calendar.getAvailableCalendarTypes()
         getAvailableCalendarTypesA( cb: Callback<Java.Set>): void;
         getAvailableCalendarTypes(): Java.Set;
@@ -7110,6 +7149,7 @@ export module Java {
     }
     export module Calendar$Builder {
       export interface Static {
+        class: Java.Class;
         new (): java.util.Calendar$Builder;
       }
     }
@@ -7200,6 +7240,7 @@ export module Java {
     }
     export module Collection {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -7248,6 +7289,7 @@ export module Java {
         EMPTY_SET: Java.Set;
         EMPTY_LIST: Java.List;
         EMPTY_MAP: Java.Map;
+        class: Java.Class;
         // public static <T> boolean java.util.Collections.addAll(java.util.Collection<? super T>,T...)
         addAllA(arg0: Java.Collection, arg1: object_array_t, cb: Callback<boolean>): void;
         addAll(arg0: Java.Collection, ...arg1: object_t[]): boolean;
@@ -7559,6 +7601,7 @@ export module Java {
     }
     export module Comparator {
       export interface Static {
+        class: Java.Class;
         // public static <T,U> java.util.Comparator<T> java.util.Comparator.comparing(java.util.function.Function<? super T, ? extends U>,java.util.Comparator<? super U>)
         comparingA(arg0: Java.Function, arg1: Java.Comparator, cb: Callback<Java.Comparator>): void;
         comparing(arg0: Java.Function, arg1: Java.Comparator): Java.Comparator;
@@ -7688,6 +7731,7 @@ export module Java {
     }
     export module ConcurrentModificationException {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t, arg1: object_t): java.util.ConcurrentModificationException;
         new (arg0: object_t): java.util.ConcurrentModificationException;
         new (arg0: string_t): java.util.ConcurrentModificationException;
@@ -7765,6 +7809,7 @@ export module Java {
     }
     export module Currency {
       export interface Static {
+        class: Java.Class;
         // public static java.util.Set<java.util.Currency> java.util.Currency.getAvailableCurrencies()
         getAvailableCurrenciesA( cb: Callback<Java.Set>): void;
         getAvailableCurrencies(): Java.Set;
@@ -7918,6 +7963,7 @@ export module Java {
     }
     export module Date {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t, arg1: integer_t, arg2: integer_t, arg3: integer_t, arg4: integer_t, arg5: integer_t): java.util.Date;
         new (arg0: integer_t, arg1: integer_t, arg2: integer_t, arg3: integer_t, arg4: integer_t): java.util.Date;
         new (arg0: integer_t, arg1: integer_t, arg2: integer_t): java.util.Date;
@@ -8113,6 +8159,7 @@ export module Java {
     }
     export module Deque {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -8186,6 +8233,7 @@ export module Java {
     }
     export module Dictionary {
       export interface Static {
+        class: Java.Class;
         new (): java.util.Dictionary;
       }
     }
@@ -8264,6 +8312,7 @@ export module Java {
     }
     export module DoubleSummaryStatistics {
       export interface Static {
+        class: Java.Class;
         new (): java.util.DoubleSummaryStatistics;
       }
     }
@@ -8362,6 +8411,7 @@ export module Java {
     }
     export module DuplicateFormatFlagsException {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t): java.util.DuplicateFormatFlagsException;
       }
     }
@@ -8456,6 +8506,7 @@ export module Java {
     }
     export module EmptyStackException {
       export interface Static {
+        class: Java.Class;
         new (): java.util.EmptyStackException;
       }
     }
@@ -8474,6 +8525,7 @@ export module Java {
     }
     export module Enumeration {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -8623,6 +8675,7 @@ export module Java {
     }
     export module EnumMap {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.EnumMap): java.util.EnumMap;
         new (arg0: Java.Class): java.util.EnumMap;
         new (arg0: Java.Map): java.util.EnumMap;
@@ -8751,6 +8804,7 @@ export module Java {
     }
     export module EnumSet {
       export interface Static {
+        class: Java.Class;
         // public static <E> java.util.EnumSet<E> java.util.EnumSet.allOf(java.lang.Class<E>)
         allOfA(arg0: Java.Class, cb: Callback<Java.EnumSet>): void;
         allOf(arg0: Java.Class): Java.EnumSet;
@@ -8810,6 +8864,7 @@ export module Java {
     }
     export module EventListener {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -8859,6 +8914,7 @@ export module Java {
     }
     export module EventListenerProxy {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.EventListener): java.util.EventListenerProxy;
       }
     }
@@ -8909,6 +8965,7 @@ export module Java {
     }
     export module EventObject {
       export interface Static {
+        class: Java.Class;
         new (arg0: object_t): java.util.EventObject;
       }
     }
@@ -9011,6 +9068,7 @@ export module Java {
     }
     export module FormatFlagsConversionMismatchException {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t, arg1: object_t): java.util.FormatFlagsConversionMismatchException;
       }
     }
@@ -9025,6 +9083,7 @@ export module Java {
     }
     export module Formattable {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -9073,6 +9132,7 @@ export module Java {
         LEFT_JUSTIFY: number;
         UPPERCASE: number;
         ALTERNATE: number;
+        class: Java.Class;
       }
     }
   }
@@ -9150,6 +9210,7 @@ export module Java {
     }
     export module Formatter {
       export interface Static {
+        class: Java.Class;
         new (arg0: object_t, arg1: string_t, arg2: Java.Locale): java.util.Formatter;
         new (arg0: string_t, arg1: string_t, arg2: Java.Locale): java.util.Formatter;
         new (arg0: object_t, arg1: string_t, arg2: Java.Locale): java.util.Formatter;
@@ -9231,6 +9292,7 @@ export module Java {
       export interface Static {
         SCIENTIFIC: Java.Formatter$BigDecimalLayoutForm;
         DECIMAL_FLOAT: Java.Formatter$BigDecimalLayoutForm;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOfA(arg0: Java.Class, arg1: string_t, cb: Callback<object_t>): void;
         valueOf(arg0: Java.Class, arg1: string_t): object_t;
@@ -9336,6 +9398,7 @@ export module Java {
     }
     export module FormatterClosedException {
       export interface Static {
+        class: Java.Class;
         new (): java.util.FormatterClosedException;
       }
     }
@@ -9358,6 +9421,7 @@ export module Java {
     }
     export module Function {
       export interface Static {
+        class: Java.Class;
         // public static <T> java.util.function.Function<T, T> java.util.function.Function.identity()
         identityA( cb: Callback<Java.Function>): void;
         identity(): Java.Function;
@@ -9643,6 +9707,7 @@ export module Java {
         LONG_FORMAT: number;
         SHORT_STANDALONE: number;
         LONG_STANDALONE: number;
+        class: Java.Class;
         new (arg0: integer_t, arg1: integer_t, arg2: integer_t, arg3: integer_t, arg4: integer_t, arg5: integer_t): java.util.GregorianCalendar;
         new (arg0: integer_t, arg1: integer_t, arg2: integer_t, arg3: integer_t, arg4: integer_t): java.util.GregorianCalendar;
         new (arg0: integer_t, arg1: integer_t, arg2: integer_t): java.util.GregorianCalendar;
@@ -9819,6 +9884,7 @@ export module Java {
     }
     export module HashMap {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t, arg1: float_t): java.util.HashMap;
         new (arg0: Java.Map): java.util.HashMap;
         new (arg0: integer_t): java.util.HashMap;
@@ -9944,6 +10010,7 @@ export module Java {
     }
     export module HashSet {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t, arg1: float_t): java.util.HashSet;
         new (arg0: Java.Collection): java.util.HashSet;
         new (arg0: integer_t): java.util.HashSet;
@@ -10101,6 +10168,7 @@ export module Java {
     }
     export module Hashtable {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t, arg1: float_t): java.util.Hashtable;
         new (arg0: Java.Map): java.util.Hashtable;
         new (arg0: integer_t): java.util.Hashtable;
@@ -10246,6 +10314,7 @@ export module Java {
     }
     export module IdentityHashMap {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Map): java.util.IdentityHashMap;
         new (arg0: integer_t): java.util.IdentityHashMap;
         new (): java.util.IdentityHashMap;
@@ -10346,6 +10415,7 @@ export module Java {
     }
     export module IllegalFormatCodePointException {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t): java.util.IllegalFormatCodePointException;
       }
     }
@@ -10448,6 +10518,7 @@ export module Java {
     }
     export module IllegalFormatConversionException {
       export interface Static {
+        class: Java.Class;
         new (arg0: object_t, arg1: Java.Class): java.util.IllegalFormatConversionException;
       }
     }
@@ -10542,6 +10613,7 @@ export module Java {
     }
     export module IllegalFormatException {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -10639,6 +10711,7 @@ export module Java {
     }
     export module IllegalFormatFlagsException {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t): java.util.IllegalFormatFlagsException;
       }
     }
@@ -10737,6 +10810,7 @@ export module Java {
     }
     export module IllegalFormatPrecisionException {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t): java.util.IllegalFormatPrecisionException;
       }
     }
@@ -10835,6 +10909,7 @@ export module Java {
     }
     export module IllegalFormatWidthException {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t): java.util.IllegalFormatWidthException;
       }
     }
@@ -10933,6 +11008,7 @@ export module Java {
     }
     export module IllformedLocaleException {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t, arg1: integer_t): java.util.IllformedLocaleException;
         new (arg0: string_t): java.util.IllformedLocaleException;
         new (): java.util.IllformedLocaleException;
@@ -11029,6 +11105,7 @@ export module Java {
     }
     export module InputMismatchException {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t): java.util.InputMismatchException;
         new (): java.util.InputMismatchException;
       }
@@ -11108,6 +11185,7 @@ export module Java {
     }
     export module IntSummaryStatistics {
       export interface Static {
+        class: Java.Class;
         new (): java.util.IntSummaryStatistics;
       }
     }
@@ -11202,6 +11280,7 @@ export module Java {
     }
     export module InvalidPropertiesFormatException {
       export interface Static {
+        class: Java.Class;
         new (arg0: object_t): java.util.InvalidPropertiesFormatException;
         new (arg0: string_t): java.util.InvalidPropertiesFormatException;
       }
@@ -11229,6 +11308,7 @@ export module Java {
     }
     export module Iterator {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -11370,6 +11450,7 @@ export module Java {
     }
     export module LinkedHashMap {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t, arg1: float_t, arg2: boolean_t): java.util.LinkedHashMap;
         new (arg0: integer_t, arg1: float_t): java.util.LinkedHashMap;
         new (arg0: Java.Map): java.util.LinkedHashMap;
@@ -11496,6 +11577,7 @@ export module Java {
     }
     export module LinkedHashSet {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t, arg1: float_t): java.util.LinkedHashSet;
         new (arg0: Java.Collection): java.util.LinkedHashSet;
         new (arg0: integer_t): java.util.LinkedHashSet;
@@ -11757,6 +11839,7 @@ export module Java {
     }
     export module LinkedList {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Collection): java.util.LinkedList;
         new (): java.util.LinkedList;
       }
@@ -11896,6 +11979,7 @@ export module Java {
     }
     export module List {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -11945,6 +12029,7 @@ export module Java {
     }
     export module ListIterator {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -12026,6 +12111,7 @@ export module Java {
     }
     export module ListResourceBundle {
       export interface Static {
+        class: Java.Class;
         new (): java.util.ListResourceBundle;
         // public static final void java.util.ResourceBundle.clearCache(java.lang.ClassLoader)
         clearCacheA(arg0: object_t, cb: Callback<void>): void;
@@ -12228,6 +12314,7 @@ export module Java {
         ROOT: Java.Locale;
         PRIVATE_USE_EXTENSION: object_t;
         UNICODE_LOCALE_EXTENSION: object_t;
+        class: Java.Class;
         new (arg0: string_t, arg1: string_t, arg2: string_t): java.util.Locale;
         new (arg0: string_t, arg1: string_t): java.util.Locale;
         new (arg0: string_t): java.util.Locale;
@@ -12384,6 +12471,7 @@ export module Java {
     }
     export module Locale$Builder {
       export interface Static {
+        class: Java.Class;
         new (): java.util.Locale$Builder;
       }
     }
@@ -12452,6 +12540,7 @@ export module Java {
       export interface Static {
         DISPLAY: Java.Locale$Category;
         FORMAT: Java.Locale$Category;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOfA(arg0: Java.Class, arg1: string_t, cb: Callback<object_t>): void;
         valueOf(arg0: Java.Class, arg1: string_t): object_t;
@@ -12534,6 +12623,7 @@ export module Java {
         IGNORE_EXTENDED_RANGES: Java.Locale$FilteringMode;
         MAP_EXTENDED_RANGES: Java.Locale$FilteringMode;
         REJECT_EXTENDED_RANGES: Java.Locale$FilteringMode;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOfA(arg0: Java.Class, arg1: string_t, cb: Callback<object_t>): void;
         valueOf(arg0: Java.Class, arg1: string_t): object_t;
@@ -12601,6 +12691,7 @@ export module Java {
       export interface Static {
         MAX_WEIGHT: number;
         MIN_WEIGHT: number;
+        class: Java.Class;
         new (arg0: string_t, arg1: double_t): java.util.Locale$LanguageRange;
         new (arg0: string_t): java.util.Locale$LanguageRange;
         // public static java.util.List<java.util.Locale$LanguageRange> java.util.Locale$LanguageRange.mapEquivalents(java.util.List<java.util.Locale$LanguageRange>,java.util.Map<java.lang.String, java.util.List<java.lang.String>>)
@@ -12700,6 +12791,7 @@ export module Java {
     }
     export module LongSummaryStatistics {
       export interface Static {
+        class: Java.Class;
         new (): java.util.LongSummaryStatistics;
       }
     }
@@ -12810,6 +12902,7 @@ export module Java {
     }
     export module Map {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -12839,6 +12932,7 @@ export module Java {
     }
     export module Map$Entry {
       export interface Static {
+        class: Java.Class;
         // public static <K,V> java.util.Comparator<java.util.Map.java.util.Map$Entry<K, V>> java.util.Map$Entry.comparingByKey(java.util.Comparator<? super K>)
         comparingByKeyA(arg0: Java.Comparator, cb: Callback<Java.Comparator>): void;
         comparingByKey(arg0: Java.Comparator): Java.Comparator;
@@ -12952,6 +13046,7 @@ export module Java {
     }
     export module MissingFormatArgumentException {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t): java.util.MissingFormatArgumentException;
       }
     }
@@ -13050,6 +13145,7 @@ export module Java {
     }
     export module MissingFormatWidthException {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t): java.util.MissingFormatWidthException;
       }
     }
@@ -13152,6 +13248,7 @@ export module Java {
     }
     export module MissingResourceException {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t, arg1: string_t, arg2: string_t): java.util.MissingResourceException;
       }
     }
@@ -13358,6 +13455,7 @@ export module Java {
     }
     export module NavigableMap {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -13515,6 +13613,7 @@ export module Java {
     }
     export module NavigableSet {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -13608,6 +13707,7 @@ export module Java {
     }
     export module NoSuchElementException {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t): java.util.NoSuchElementException;
         new (): java.util.NoSuchElementException;
       }
@@ -13655,6 +13755,7 @@ export module Java {
     }
     export module Objects {
       export interface Static {
+        class: Java.Class;
         // public static <T> int java.util.Objects.compare(T,T,java.util.Comparator<? super T>)
         compareA(arg0: object_t, arg1: object_t, arg2: Java.Comparator, cb: Callback<number>): void;
         compare(arg0: object_t, arg1: object_t, arg2: Java.Comparator): number;
@@ -13778,6 +13879,7 @@ export module Java {
     }
     export module Observable {
       export interface Static {
+        class: Java.Class;
         new (): java.util.Observable;
       }
     }
@@ -13792,6 +13894,7 @@ export module Java {
     }
     export module Observer {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -13873,6 +13976,7 @@ export module Java {
     }
     export module Optional {
       export interface Static {
+        class: Java.Class;
         // public static <T> java.util.Optional<T> java.util.Optional.empty()
         emptyA( cb: Callback<Java.Optional>): void;
         empty(): Java.Optional;
@@ -13954,6 +14058,7 @@ export module Java {
     }
     export module OptionalDouble {
       export interface Static {
+        class: Java.Class;
         // public static java.util.OptionalDouble java.util.OptionalDouble.empty()
         emptyA( cb: Callback<Java.OptionalDouble>): void;
         empty(): Java.OptionalDouble;
@@ -14031,6 +14136,7 @@ export module Java {
     }
     export module OptionalInt {
       export interface Static {
+        class: Java.Class;
         // public static java.util.OptionalInt java.util.OptionalInt.empty()
         emptyA( cb: Callback<Java.OptionalInt>): void;
         empty(): Java.OptionalInt;
@@ -14108,6 +14214,7 @@ export module Java {
     }
     export module OptionalLong {
       export interface Static {
+        class: Java.Class;
         // public static java.util.OptionalLong java.util.OptionalLong.empty()
         emptyA( cb: Callback<Java.OptionalLong>): void;
         empty(): Java.OptionalLong;
@@ -14145,6 +14252,7 @@ export module Java {
     }
     export module PrimitiveIterator {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14186,6 +14294,7 @@ export module Java {
     }
     export module PrimitiveIterator$OfDouble {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14227,6 +14336,7 @@ export module Java {
     }
     export module PrimitiveIterator$OfInt {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14268,6 +14378,7 @@ export module Java {
     }
     export module PrimitiveIterator$OfLong {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14409,6 +14520,7 @@ export module Java {
     }
     export module PriorityQueue {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t, arg1: Java.Comparator): java.util.PriorityQueue;
         new (arg0: Java.PriorityQueue): java.util.PriorityQueue;
         new (arg0: Java.Comparator): java.util.PriorityQueue;
@@ -14629,6 +14741,7 @@ export module Java {
     }
     export module Properties {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Properties): java.util.Properties;
         new (): java.util.Properties;
       }
@@ -14696,6 +14809,7 @@ export module Java {
     }
     export module PropertyPermission {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t, arg1: string_t): java.util.PropertyPermission;
       }
     }
@@ -14778,6 +14892,7 @@ export module Java {
     }
     export module PropertyResourceBundle {
       export interface Static {
+        class: Java.Class;
         new (arg0: object_t): java.util.PropertyResourceBundle;
         new (arg0: object_t): java.util.PropertyResourceBundle;
         // public static final void java.util.ResourceBundle.clearCache(java.lang.ClassLoader)
@@ -14921,6 +15036,7 @@ export module Java {
     }
     export module Queue {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -15050,6 +15166,7 @@ export module Java {
     }
     export module Random {
       export interface Static {
+        class: Java.Class;
         new (arg0: long_t): java.util.Random;
         new (): java.util.Random;
       }
@@ -15061,6 +15178,7 @@ export module Java {
     }
     export module RandomAccess {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -15138,6 +15256,7 @@ export module Java {
     }
     export module ResourceBundle {
       export interface Static {
+        class: Java.Class;
         new (): java.util.ResourceBundle;
         // public static final void java.util.ResourceBundle.clearCache(java.lang.ClassLoader)
         clearCacheA(arg0: object_t, cb: Callback<void>): void;
@@ -15253,6 +15372,7 @@ export module Java {
         FORMAT_PROPERTIES: Java.List;
         TTL_DONT_CACHE: longValue_t;
         TTL_NO_EXPIRATION_CONTROL: longValue_t;
+        class: Java.Class;
         // public static final java.util.ResourceBundle$Control java.util.ResourceBundle$Control.getControl(java.util.List<java.lang.String>)
         getControlA(arg0: Java.List, cb: Callback<Java.ResourceBundle$Control>): void;
         getControl(arg0: Java.List): Java.ResourceBundle$Control;
@@ -15530,6 +15650,7 @@ export module Java {
     }
     export module Scanner {
       export interface Static {
+        class: Java.Class;
         new (arg0: object_t, arg1: string_t): java.util.Scanner;
         new (arg0: object_t, arg1: string_t): java.util.Scanner;
         new (arg0: object_t, arg1: string_t): java.util.Scanner;
@@ -15633,6 +15754,7 @@ export module Java {
     }
     export module ServiceConfigurationError {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t, arg1: object_t): java.util.ServiceConfigurationError;
         new (arg0: string_t): java.util.ServiceConfigurationError;
       }
@@ -15696,6 +15818,7 @@ export module Java {
     }
     export module ServiceLoader {
       export interface Static {
+        class: Java.Class;
         // public static <S> java.util.ServiceLoader<S> java.util.ServiceLoader.load(java.lang.Class<S>,java.lang.ClassLoader)
         loadA(arg0: Java.Class, arg1: object_t, cb: Callback<Java.ServiceLoader>): void;
         load(arg0: Java.Class, arg1: object_t): Java.ServiceLoader;
@@ -15797,6 +15920,7 @@ export module Java {
     }
     export module Set {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -15947,6 +16071,7 @@ export module Java {
         UTC_TIME: number;
         SHORT: number;
         LONG: number;
+        class: Java.Class;
         new (arg0: integer_t, arg1: string_t, arg2: integer_t, arg3: integer_t, arg4: integer_t, arg5: integer_t, arg6: integer_t, arg7: integer_t, arg8: integer_t, arg9: integer_t, arg10: integer_t, arg11: integer_t, arg12: integer_t): java.util.SimpleTimeZone;
         new (arg0: integer_t, arg1: string_t, arg2: integer_t, arg3: integer_t, arg4: integer_t, arg5: integer_t, arg6: integer_t, arg7: integer_t, arg8: integer_t, arg9: integer_t, arg10: integer_t): java.util.SimpleTimeZone;
         new (arg0: integer_t, arg1: string_t, arg2: integer_t, arg3: integer_t, arg4: integer_t, arg5: integer_t, arg6: integer_t, arg7: integer_t, arg8: integer_t, arg9: integer_t): java.util.SimpleTimeZone;
@@ -16108,6 +16233,7 @@ export module Java {
     }
     export module SortedMap {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -16221,6 +16347,7 @@ export module Java {
     }
     export module SortedSet {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -16270,6 +16397,7 @@ export module Java {
         IMMUTABLE: number;
         CONCURRENT: number;
         SUBSIZED: number;
+        class: Java.Class;
       }
     }
   }
@@ -16343,6 +16471,7 @@ export module Java {
         IMMUTABLE: number;
         CONCURRENT: number;
         SUBSIZED: number;
+        class: Java.Class;
       }
     }
   }
@@ -16416,6 +16545,7 @@ export module Java {
         IMMUTABLE: number;
         CONCURRENT: number;
         SUBSIZED: number;
+        class: Java.Class;
       }
     }
   }
@@ -16489,6 +16619,7 @@ export module Java {
         IMMUTABLE: number;
         CONCURRENT: number;
         SUBSIZED: number;
+        class: Java.Class;
       }
     }
   }
@@ -16550,6 +16681,7 @@ export module Java {
         IMMUTABLE: number;
         CONCURRENT: number;
         SUBSIZED: number;
+        class: Java.Class;
       }
     }
   }
@@ -16595,6 +16727,7 @@ export module Java {
     }
     export module Spliterators {
       export interface Static {
+        class: Java.Class;
         // public static java.util.Spliterator$OfDouble java.util.Spliterators.emptyDoubleSpliterator()
         emptyDoubleSpliteratorA( cb: Callback<Java.Spliterator$OfDouble>): void;
         emptyDoubleSpliterator(): Java.Spliterator$OfDouble;
@@ -16804,6 +16937,7 @@ export module Java {
         IMMUTABLE: number;
         CONCURRENT: number;
         SUBSIZED: number;
+        class: Java.Class;
       }
     }
   }
@@ -16913,6 +17047,7 @@ export module Java {
         IMMUTABLE: number;
         CONCURRENT: number;
         SUBSIZED: number;
+        class: Java.Class;
       }
     }
   }
@@ -17022,6 +17157,7 @@ export module Java {
         IMMUTABLE: number;
         CONCURRENT: number;
         SUBSIZED: number;
+        class: Java.Class;
       }
     }
   }
@@ -17107,6 +17243,7 @@ export module Java {
         IMMUTABLE: number;
         CONCURRENT: number;
         SUBSIZED: number;
+        class: Java.Class;
       }
     }
   }
@@ -17244,6 +17381,7 @@ export module Java {
     }
     export module SplittableRandom {
       export interface Static {
+        class: Java.Class;
         new (arg0: long_t): java.util.SplittableRandom;
         new (): java.util.SplittableRandom;
       }
@@ -17503,6 +17641,7 @@ export module Java {
     }
     export module Stack {
       export interface Static {
+        class: Java.Class;
         new (): java.util.Stack;
       }
     }
@@ -17565,6 +17704,7 @@ export module Java {
     }
     export module StringJoiner {
       export interface Static {
+        class: Java.Class;
         new (arg0: object_t, arg1: object_t, arg2: object_t): java.util.StringJoiner;
         new (arg0: object_t): java.util.StringJoiner;
       }
@@ -17636,6 +17776,7 @@ export module Java {
     }
     export module StringTokenizer {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t, arg1: string_t, arg2: boolean_t): java.util.StringTokenizer;
         new (arg0: string_t, arg1: string_t): java.util.StringTokenizer;
         new (arg0: string_t): java.util.StringTokenizer;
@@ -17716,6 +17857,7 @@ export module Java {
     }
     export module Timer {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t, arg1: boolean_t): java.util.Timer;
         new (arg0: string_t): java.util.Timer;
         new (arg0: boolean_t): java.util.Timer;
@@ -17777,6 +17919,7 @@ export module Java {
     }
     export module TimerTask {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -17892,6 +18035,7 @@ export module Java {
       export interface Static {
         SHORT: number;
         LONG: number;
+        class: Java.Class;
         new (): java.util.TimeZone;
         // public static synchronized java.lang.String[] java.util.TimeZone.getAvailableIDs(int)
         getAvailableIDsA(arg0: integer_t, cb: Callback<string[]>): void;
@@ -18010,6 +18154,7 @@ export module Java {
     }
     export module TooManyListenersException {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t): java.util.TooManyListenersException;
         new (): java.util.TooManyListenersException;
       }
@@ -18249,6 +18394,7 @@ export module Java {
     }
     export module TreeMap {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Comparator): java.util.TreeMap;
         new (arg0: Java.SortedMap): java.util.TreeMap;
         new (arg0: Java.Map): java.util.TreeMap;
@@ -18442,6 +18588,7 @@ export module Java {
     }
     export module TreeSet {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Comparator): java.util.TreeSet;
         new (arg0: Java.Collection): java.util.TreeSet;
         new (arg0: Java.SortedSet): java.util.TreeSet;
@@ -18543,6 +18690,7 @@ export module Java {
     }
     export module UnknownFormatConversionException {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t): java.util.UnknownFormatConversionException;
       }
     }
@@ -18641,6 +18789,7 @@ export module Java {
     }
     export module UnknownFormatFlagsException {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t): java.util.UnknownFormatFlagsException;
       }
     }
@@ -18723,6 +18872,7 @@ export module Java {
     }
     export module UUID {
       export interface Static {
+        class: Java.Class;
         new (arg0: long_t, arg1: long_t): java.util.UUID;
         // public static java.util.UUID java.util.UUID.fromString(java.lang.String)
         fromStringA(arg0: string_t, cb: Callback<Java.UUID>): void;
@@ -18973,6 +19123,7 @@ export module Java {
     }
     export module Vector {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t, arg1: integer_t): java.util.Vector;
         new (arg0: Java.Collection): java.util.Vector;
         new (arg0: integer_t): java.util.Vector;
@@ -19114,6 +19265,7 @@ export module Java {
     }
     export module WeakHashMap {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t, arg1: float_t): java.util.WeakHashMap;
         new (arg0: Java.Map): java.util.WeakHashMap;
         new (arg0: integer_t): java.util.WeakHashMap;

@@ -354,6 +354,7 @@ export module Java {
         TRUE: boolean;
         FALSE: boolean;
         TYPE: Java.Class;
+        class: Java.Class;
         new (arg0: string_t): java.lang.Boolean;
         new (arg0: boolean_t): java.lang.Boolean;
         // public static int java.lang.Boolean.compare(boolean,boolean)
@@ -693,6 +694,7 @@ export module Java {
     }
     export module Class {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.Class<?> java.lang.Class.forName(java.lang.String,boolean,java.lang.ClassLoader) throws java.lang.ClassNotFoundException
         forNameA(arg0: string_t, arg1: boolean_t, arg2: Java.ClassLoader, cb: Callback<Java.Class>): void;
         forName(arg0: string_t, arg1: boolean_t, arg2: Java.ClassLoader): Java.Class;
@@ -782,6 +784,7 @@ export module Java {
     }
     export module ClassLoader {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.ClassLoader java.lang.ClassLoader.getSystemClassLoader()
         getSystemClassLoaderA( cb: Callback<Java.ClassLoader>): void;
         getSystemClassLoader(): Java.ClassLoader;
@@ -880,6 +883,7 @@ export module Java {
         TYPE: Java.Class;
         SIZE: number;
         BYTES: number;
+        class: Java.Class;
         new (arg0: string_t): java.lang.Integer;
         new (arg0: integer_t): java.lang.Integer;
         // public static int java.lang.Integer.bitCount(int)
@@ -1075,6 +1079,7 @@ export module Java {
     }
     export module Object {
       export interface Static {
+        class: Java.Class;
         new (): java.lang.Object;
       }
     }
@@ -1157,6 +1162,7 @@ export module Java {
     }
     export module AccessibleObject {
       export interface Static {
+        class: Java.Class;
         // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
         setAccessibleA(arg0: array_t<Java.AccessibleObject>, arg1: boolean_t, cb: Callback<void>): void;
         setAccessible(arg0: array_t<Java.AccessibleObject>, arg1: boolean_t): void;
@@ -1322,6 +1328,7 @@ export module Java {
       export interface Static {
         PUBLIC: number;
         DECLARED: number;
+        class: Java.Class;
         // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
         setAccessibleA(arg0: array_t<Java.AccessibleObject>, arg1: boolean_t, cb: Callback<void>): void;
         setAccessible(arg0: array_t<Java.AccessibleObject>, arg1: boolean_t): void;
@@ -1481,6 +1488,7 @@ export module Java {
       export interface Static {
         PUBLIC: number;
         DECLARED: number;
+        class: Java.Class;
         // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
         setAccessibleA(arg0: array_t<Java.AccessibleObject>, arg1: boolean_t, cb: Callback<void>): void;
         setAccessible(arg0: array_t<Java.AccessibleObject>, arg1: boolean_t): void;
@@ -1676,6 +1684,7 @@ export module Java {
       export interface Static {
         PUBLIC: number;
         DECLARED: number;
+        class: Java.Class;
         // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
         setAccessibleA(arg0: array_t<Java.AccessibleObject>, arg1: boolean_t, cb: Callback<void>): void;
         setAccessible(arg0: array_t<Java.AccessibleObject>, arg1: boolean_t): void;
@@ -1861,6 +1870,7 @@ export module Java {
       export interface Static {
         PUBLIC: number;
         DECLARED: number;
+        class: Java.Class;
         // public static void java.lang.reflect.AccessibleObject.setAccessible(java.lang.reflect.AccessibleObject[],boolean) throws java.lang.SecurityException
         setAccessibleA(arg0: array_t<Java.AccessibleObject>, arg1: boolean_t, cb: Callback<void>): void;
         setAccessible(arg0: array_t<Java.AccessibleObject>, arg1: boolean_t): void;
@@ -1922,6 +1932,7 @@ export module Java {
         INTERFACE: number;
         ABSTRACT: number;
         STRICT: number;
+        class: Java.Class;
         new (): java.lang.reflect.Modifier;
         // public static int java.lang.reflect.Modifier.classModifiers()
         classModifiersA( cb: Callback<number>): void;
@@ -2112,6 +2123,7 @@ export module Java {
     }
     export module Parameter {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -2125,6 +2137,7 @@ export module Java {
     }
     export module Type {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -2379,6 +2392,7 @@ export module Java {
     export module String {
       export interface Static {
         CASE_INSENSITIVE_ORDER: object_t;
+        class: Java.Class;
         new (arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: object_t): java.lang.String;
         new (arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: string_t): java.lang.String;
         new (arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: integer_t): java.lang.String;

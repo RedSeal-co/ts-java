@@ -2288,6 +2288,7 @@ export module Java {
     }
     export module Binding {
       export interface Static {
+        class: Java.Class;
         new (arg0: array_t<string_t>): groovy.lang.Binding;
         new (arg0: Java.Map): groovy.lang.Binding;
         new (): groovy.lang.Binding;
@@ -2462,6 +2463,7 @@ export module Java {
         DONE: number;
         SKIP: number;
         IDENTITY: Java.Closure;
+        class: Java.Class;
         new (arg0: object_t, arg1: object_t): groovy.lang.Closure;
         new (arg0: object_t): groovy.lang.Closure;
       }
@@ -2629,6 +2631,7 @@ export module Java {
     }
     export module DelegatingMetaClass {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.MetaClass): groovy.lang.DelegatingMetaClass;
         new (arg0: Java.Class): groovy.lang.DelegatingMetaClass;
       }
@@ -2763,6 +2766,7 @@ export module Java {
     }
     export module GroovyClassLoader {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.ClassLoader, arg1: object_t, arg2: boolean_t): groovy.lang.GroovyClassLoader;
         new (arg0: Java.ClassLoader, arg1: object_t): groovy.lang.GroovyClassLoader;
         new (arg0: Java.GroovyClassLoader): groovy.lang.GroovyClassLoader;
@@ -2840,6 +2844,7 @@ export module Java {
     }
     export module GroovyCodeSource {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t, arg1: string_t, arg2: string_t): groovy.lang.GroovyCodeSource;
         new (arg0: object_t, arg1: string_t, arg2: string_t): groovy.lang.GroovyCodeSource;
         new (arg0: object_t, arg1: string_t): groovy.lang.GroovyCodeSource;
@@ -2897,6 +2902,7 @@ export module Java {
     }
     export module GroovyObjectSupport {
       export interface Static {
+        class: Java.Class;
         new (): groovy.lang.GroovyObjectSupport;
       }
     }
@@ -2910,6 +2916,7 @@ export module Java {
     }
     export module GroovyResourceLoader {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -3081,6 +3088,7 @@ export module Java {
     }
     export module IntRange {
       export interface Static {
+        class: Java.Class;
         new (arg0: boolean_t, arg1: integer_t, arg2: integer_t): groovy.lang.IntRange;
         new (arg0: integer_t, arg1: integer_t): groovy.lang.IntRange;
       }
@@ -3147,6 +3155,7 @@ export module Java {
     export module MetaBeanProperty {
       export interface Static {
         PROPERTY_SET_PREFIX: string;
+        class: Java.Class;
         new (arg0: string_t, arg1: Java.Class, arg2: Java.MetaMethod, arg3: Java.MetaMethod): groovy.lang.MetaBeanProperty;
         // public static java.lang.String groovy.lang.MetaProperty.getGetterName(java.lang.String,java.lang.Class)
         getGetterName(arg0: string_t, arg1: Java.Class): string;
@@ -3250,6 +3259,7 @@ export module Java {
     }
     export module MetaClass {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -3376,6 +3386,7 @@ export module Java {
     }
     export module MetaMethod {
       export interface Static {
+        class: Java.Class;
         new (arg0: array_t<Java.Class>): groovy.lang.MetaMethod;
         new (): groovy.lang.MetaMethod;
       }
@@ -3430,6 +3441,7 @@ export module Java {
     export module MetaProperty {
       export interface Static {
         PROPERTY_SET_PREFIX: string;
+        class: Java.Class;
         new (arg0: string_t, arg1: Java.Class): groovy.lang.MetaProperty;
         // public static java.lang.String groovy.lang.MetaProperty.getGetterName(java.lang.String,java.lang.Class)
         getGetterName(arg0: string_t, arg1: Java.Class): string;
@@ -3563,6 +3575,7 @@ export module Java {
     }
     export module Range {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -3620,6 +3633,7 @@ export module Java {
     }
     export module Reference {
       export interface Static {
+        class: Java.Class;
         new (arg0: object_t): groovy.lang.Reference;
         new (): groovy.lang.Reference;
       }
@@ -3691,6 +3705,7 @@ export module Java {
     }
     export module ByteArrayOutputStream {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t): java.io.ByteArrayOutputStream;
         new (): java.io.ByteArrayOutputStream;
       }
@@ -3762,6 +3777,7 @@ export module Java {
     }
     export module FileInputStream {
       export interface Static {
+        class: Java.Class;
         new (arg0: object_t): java.io.FileInputStream;
         new (arg0: string_t): java.io.FileInputStream;
         new (arg0: object_t): java.io.FileInputStream;
@@ -3822,6 +3838,7 @@ export module Java {
     }
     export module FileOutputStream {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t, arg1: boolean_t): java.io.FileOutputStream;
         new (arg0: object_t, arg1: boolean_t): java.io.FileOutputStream;
         new (arg0: object_t): java.io.FileOutputStream;
@@ -3890,6 +3907,7 @@ export module Java {
     }
     export module InputStream {
       export interface Static {
+        class: Java.Class;
         new (): java.io.InputStream;
       }
     }
@@ -3942,6 +3960,7 @@ export module Java {
     }
     export module OutputStream {
       export interface Static {
+        class: Java.Class;
         new (): java.io.OutputStream;
       }
     }
@@ -3991,6 +4010,7 @@ export module Java {
         TRUE: boolean;
         FALSE: boolean;
         TYPE: Java.Class;
+        class: Java.Class;
         new (arg0: string_t): java.lang.Boolean;
         new (arg0: boolean_t): java.lang.Boolean;
         // public static int java.lang.Boolean.compare(boolean,boolean)
@@ -4250,6 +4270,7 @@ export module Java {
     }
     export module Class {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.Class<?> java.lang.Class.forName(java.lang.String,boolean,java.lang.ClassLoader) throws java.lang.ClassNotFoundException
         forName(arg0: string_t, arg1: boolean_t, arg2: Java.ClassLoader): Java.Class;
         forNameP(arg0: string_t, arg1: boolean_t, arg2: Java.ClassLoader): Promise<Java.Class>;
@@ -4319,6 +4340,7 @@ export module Java {
     }
     export module ClassLoader {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.ClassLoader java.lang.ClassLoader.getSystemClassLoader()
         getSystemClassLoader(): Java.ClassLoader;
         getSystemClassLoaderP(): Promise<Java.ClassLoader>;
@@ -4408,6 +4430,7 @@ export module Java {
         SIZE: number;
         BYTES: number;
         TYPE: Java.Class;
+        class: Java.Class;
         new (arg0: string_t): java.lang.Double;
         new (arg0: double_t): java.lang.Double;
         // public static int java.lang.Double.compare(double,double)
@@ -4509,6 +4532,7 @@ export module Java {
     }
     export module Enum {
       export interface Static {
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -4589,6 +4613,7 @@ export module Java {
         SIZE: number;
         BYTES: number;
         TYPE: Java.Class;
+        class: Java.Class;
         new (arg0: string_t): java.lang.Float;
         new (arg0: float_t): java.lang.Float;
         new (arg0: double_t): java.lang.Float;
@@ -4705,6 +4730,7 @@ export module Java {
         TYPE: Java.Class;
         SIZE: number;
         BYTES: number;
+        class: Java.Class;
         new (arg0: string_t): java.lang.Integer;
         new (arg0: integer_t): java.lang.Integer;
         // public static int java.lang.Integer.bitCount(int)
@@ -4836,6 +4862,7 @@ export module Java {
     }
     export module Iterable {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -4901,6 +4928,7 @@ export module Java {
         TYPE: Java.Class;
         SIZE: number;
         BYTES: number;
+        class: Java.Class;
         new (arg0: string_t): java.lang.Long;
         new (arg0: long_t): java.lang.Long;
         // public static int java.lang.Long.bitCount(long)
@@ -5065,6 +5093,7 @@ export module Java {
     }
     export module Number {
       export interface Static {
+        class: Java.Class;
         new (): java.lang.Number;
       }
     }
@@ -5102,6 +5131,7 @@ export module Java {
     }
     export module Object {
       export interface Static {
+        class: Java.Class;
         new (): java.lang.Object;
       }
     }
@@ -5139,6 +5169,7 @@ export module Java {
     }
     export module Array {
       export interface Static {
+        class: Java.Class;
         // public static native java.lang.Object java.lang.reflect.Array.get(java.lang.Object,int) throws java.lang.IllegalArgumentException,java.lang.ArrayIndexOutOfBoundsException
         get(arg0: object_t, arg1: integer_t): object_t;
         getP(arg0: object_t, arg1: integer_t): Promise<object_t>;
@@ -5269,6 +5300,7 @@ export module Java {
         TYPE: Java.Class;
         SIZE: number;
         BYTES: number;
+        class: Java.Class;
         new (arg0: string_t): java.lang.Short;
         new (arg0: short_t): java.lang.Short;
         // public static int java.lang.Short.compare(short,short)
@@ -5500,6 +5532,7 @@ export module Java {
     export module String {
       export interface Static {
         CASE_INSENSITIVE_ORDER: Java.Comparator;
+        class: Java.Class;
         new (arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: Java.Charset): java.lang.String;
         new (arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: string_t): java.lang.String;
         new (arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: integer_t): java.lang.String;
@@ -5644,6 +5677,7 @@ export module Java {
     }
     export module Charset {
       export interface Static {
+        class: Java.Class;
         // public static java.util.SortedMap<java.lang.String, java.nio.charset.Charset> java.nio.charset.Charset.availableCharsets()
         availableCharsets(): object_t;
         availableCharsetsP(): Promise<object_t>;
@@ -5698,6 +5732,7 @@ export module Java {
         UTF_16BE: Java.Charset;
         UTF_16LE: Java.Charset;
         UTF_16: Java.Charset;
+        class: Java.Class;
       }
     }
   }
@@ -5788,6 +5823,7 @@ export module Java {
     }
     export module AbstractCollection {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -5914,6 +5950,7 @@ export module Java {
     }
     export module AbstractList {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -6019,6 +6056,7 @@ export module Java {
     }
     export module AbstractMap {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -6109,6 +6147,7 @@ export module Java {
     }
     export module AbstractSet {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -6244,6 +6283,7 @@ export module Java {
     }
     export module ArrayList {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Collection): java.util.ArrayList;
         new (arg0: integer_t): java.util.ArrayList;
         new (): java.util.ArrayList;
@@ -6316,6 +6356,7 @@ export module Java {
     }
     export module Collection {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -6352,6 +6393,7 @@ export module Java {
     }
     export module Comparator {
       export interface Static {
+        class: Java.Class;
         // public static <T,U> java.util.Comparator<T> java.util.Comparator.comparing(java.util.function.Function<? super T, ? extends U>,java.util.Comparator<? super U>)
         comparing(arg0: Java.Function, arg1: Java.Comparator): Java.Comparator;
         comparingP(arg0: Java.Function, arg1: Java.Comparator): Promise<Java.Comparator>;
@@ -6394,6 +6436,7 @@ export module Java {
     }
     export module BiConsumer {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -6409,6 +6452,7 @@ export module Java {
     }
     export module BiFunction {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -6424,6 +6468,7 @@ export module Java {
     }
     export module BinaryOperator {
       export interface Static {
+        class: Java.Class;
         // public static <T> java.util.function.BinaryOperator<T> java.util.function.BinaryOperator.maxBy(java.util.Comparator<? super T>)
         maxBy(arg0: Java.Comparator): Java.BinaryOperator;
         maxByP(arg0: Java.Comparator): Promise<Java.BinaryOperator>;
@@ -6451,6 +6496,7 @@ export module Java {
     }
     export module BiPredicate {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -6466,6 +6512,7 @@ export module Java {
     }
     export module Consumer {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -6484,6 +6531,7 @@ export module Java {
     }
     export module Function {
       export interface Static {
+        class: Java.Class;
         // public static <T> java.util.function.Function<T, T> java.util.function.Function.identity()
         identity(): Java.Function;
         identityP(): Promise<Java.Function>;
@@ -6508,6 +6556,7 @@ export module Java {
     }
     export module Predicate {
       export interface Static {
+        class: Java.Class;
         // public static <T> java.util.function.Predicate<T> java.util.function.Predicate.isEqual(java.lang.Object)
         isEqual(arg0: object_t): Java.Predicate;
         isEqualP(arg0: object_t): Promise<Java.Predicate>;
@@ -6523,6 +6572,7 @@ export module Java {
     }
     export module Supplier {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -6541,6 +6591,7 @@ export module Java {
     }
     export module UnaryOperator {
       export interface Static {
+        class: Java.Class;
         // public static <T> java.util.function.UnaryOperator<T> java.util.function.UnaryOperator.identity()
         identity(): Java.UnaryOperator;
         identityP(): Promise<Java.UnaryOperator>;
@@ -6655,6 +6706,7 @@ export module Java {
     }
     export module HashMap {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t, arg1: float_t): java.util.HashMap;
         new (arg0: Java.Map): java.util.HashMap;
         new (arg0: integer_t): java.util.HashMap;
@@ -6752,6 +6804,7 @@ export module Java {
     }
     export module HashSet {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t, arg1: float_t): java.util.HashSet;
         new (arg0: Java.Collection): java.util.HashSet;
         new (arg0: integer_t): java.util.HashSet;
@@ -6777,6 +6830,7 @@ export module Java {
     }
     export module Iterator {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -6885,6 +6939,7 @@ export module Java {
     }
     export module LinkedHashMap {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t, arg1: float_t, arg2: boolean_t): java.util.LinkedHashMap;
         new (arg0: integer_t, arg1: float_t): java.util.LinkedHashMap;
         new (arg0: Java.Map): java.util.LinkedHashMap;
@@ -6995,6 +7050,7 @@ export module Java {
     }
     export module List {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -7034,6 +7090,7 @@ export module Java {
     }
     export module ListIterator {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -7118,6 +7175,7 @@ export module Java {
     }
     export module Map {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -7142,6 +7200,7 @@ export module Java {
     }
     export module Map$Entry {
       export interface Static {
+        class: Java.Class;
         // public static <K,V> java.util.Comparator<java.util.Map.java.util.Map$Entry<K, V>> java.util.Map$Entry.comparingByKey(java.util.Comparator<? super K>)
         comparingByKey(arg0: Java.Comparator): Java.Comparator;
         comparingByKeyP(arg0: Java.Comparator): Promise<Java.Comparator>;
@@ -7226,6 +7285,7 @@ export module Java {
     }
     export module NoSuchElementException {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t): java.util.NoSuchElementException;
         new (): java.util.NoSuchElementException;
       }
@@ -7291,6 +7351,7 @@ export module Java {
     }
     export module Optional {
       export interface Static {
+        class: Java.Class;
         // public static <T> java.util.Optional<T> java.util.Optional.empty()
         empty(): Java.Optional;
         emptyP(): Promise<Java.Optional>;
@@ -7369,6 +7430,7 @@ export module Java {
     }
     export module Set {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -7454,6 +7516,7 @@ export module Java {
         NAME: string;
         LANGUAGE: string;
         LANGUAGE_VERSION: string;
+        class: Java.Class;
         new (arg0: Java.Bindings): javax.script.AbstractScriptEngine;
         new (): javax.script.AbstractScriptEngine;
       }
@@ -7543,6 +7606,7 @@ export module Java {
     }
     export module Bindings {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -7591,6 +7655,7 @@ export module Java {
     }
     export module CompiledScript {
       export interface Static {
+        class: Java.Class;
         new (): javax.script.CompiledScript;
       }
     }
@@ -7645,6 +7710,7 @@ export module Java {
       export interface Static {
         ENGINE_SCOPE: number;
         GLOBAL_SCOPE: number;
+        class: Java.Class;
       }
     }
   }
@@ -7703,6 +7769,7 @@ export module Java {
         NAME: string;
         LANGUAGE: string;
         LANGUAGE_VERSION: string;
+        class: Java.Class;
       }
     }
   }
@@ -7752,6 +7819,7 @@ export module Java {
     }
     export module ScriptEngineFactory {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -7812,6 +7880,7 @@ export module Java {
     }
     export module GComparator {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Closure): org.apache.tinkerpop.gremlin.groovy.function_.GComparator;
         // public static org.apache.tinkerpop.gremlin.groovy.function.GComparator[] org.apache.tinkerpop.gremlin.groovy.function.GComparator.make(groovy.lang.Closure...)
         make(...arg0: Java.Closure[]): Java.GComparator[];
@@ -7863,6 +7932,7 @@ export module Java {
     }
     export module GFunction {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Closure): org.apache.tinkerpop.gremlin.groovy.function_.GFunction;
         // public static org.apache.tinkerpop.gremlin.groovy.function.GFunction[] org.apache.tinkerpop.gremlin.groovy.function.GFunction.make(groovy.lang.Closure...)
         make(...arg0: Java.Closure[]): Java.GFunction[];
@@ -7908,6 +7978,7 @@ export module Java {
     }
     export module GSupplier {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Closure): org.apache.tinkerpop.gremlin.groovy.function_.GSupplier;
         // public static org.apache.tinkerpop.gremlin.groovy.function.GSupplier[] org.apache.tinkerpop.gremlin.groovy.function.GSupplier.make(groovy.lang.Closure...)
         make(...arg0: Java.Closure[]): Java.GSupplier[];
@@ -7959,6 +8030,7 @@ export module Java {
     }
     export module GUnaryOperator {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Closure): org.apache.tinkerpop.gremlin.groovy.function_.GUnaryOperator;
         // public static org.apache.tinkerpop.gremlin.groovy.function.GUnaryOperator[] org.apache.tinkerpop.gremlin.groovy.function.GUnaryOperator.make(groovy.lang.Closure...)
         make(...arg0: Java.Closure[]): Java.GUnaryOperator[];
@@ -8108,6 +8180,7 @@ export module Java {
         NAME: string;
         LANGUAGE: string;
         LANGUAGE_VERSION: string;
+        class: Java.Class;
         new (arg0: object_t, arg1: object_t, arg2: long_t): org.apache.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
         new (arg0: object_t, arg1: object_t): org.apache.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
         new (arg0: object_t): org.apache.tinkerpop.gremlin.groovy.jsr223.GremlinGroovyScriptEngine;
@@ -8130,6 +8203,7 @@ export module Java {
     }
     export module ComputerResult {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -8157,6 +8231,7 @@ export module Java {
     }
     export module GraphComputer {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -8193,6 +8268,7 @@ export module Java {
     }
     export module GraphComputer$Exceptions {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.UnsupportedOperationException org.apache.tinkerpop.gremlin.process.computer.GraphComputer$Exceptions.adjacentVertexEdgesAndVerticesCanNotBeReadOrUpdated()
         adjacentVertexEdgesAndVerticesCanNotBeReadOrUpdated(): object_t;
         adjacentVertexEdgesAndVerticesCanNotBeReadOrUpdatedP(): Promise<object_t>;
@@ -8268,6 +8344,7 @@ export module Java {
     }
     export module GraphComputer$Features {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -8322,6 +8399,7 @@ export module Java {
         NOTHING: Java.GraphComputer$Persist;
         VERTEX_PROPERTIES: Java.GraphComputer$Persist;
         EDGES: Java.GraphComputer$Persist;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -8384,6 +8462,7 @@ export module Java {
       export interface Static {
         ORIGINAL: Java.GraphComputer$ResultGraph;
         NEW: Java.GraphComputer$ResultGraph;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -8435,6 +8514,7 @@ export module Java {
     }
     export module KeyValue {
       export interface Static {
+        class: Java.Class;
         new (arg0: object_t, arg1: object_t): org.apache.tinkerpop.gremlin.process.computer.KeyValue;
       }
     }
@@ -8488,6 +8568,7 @@ export module Java {
     export module MapReduce {
       export interface Static {
         MAP_REDUCE: string;
+        class: Java.Class;
         // public static <M> M org.apache.tinkerpop.gremlin.process.computer.MapReduce.createMapReduce(org.apache.tinkerpop.gremlin.structure.Graph,org.apache.commons.configuration.Configuration)
         createMapReduce(arg0: Java.Graph, arg1: object_t): Java.MapReduce;
         createMapReduceP(arg0: Java.Graph, arg1: object_t): Promise<Java.MapReduce>;
@@ -8506,6 +8587,7 @@ export module Java {
     }
     export module MapReduce$MapEmitter {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -8545,6 +8627,7 @@ export module Java {
     }
     export module MapReduce$NullObject {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.process.computer.MapReduce$NullObject;
         // public static org.apache.tinkerpop.gremlin.process.computer.MapReduce$NullObject org.apache.tinkerpop.gremlin.process.computer.MapReduce$NullObject.instance()
         instance(): Java.MapReduce$NullObject;
@@ -8564,6 +8647,7 @@ export module Java {
     }
     export module MapReduce$ReduceEmitter {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -8618,6 +8702,7 @@ export module Java {
         MAP: Java.MapReduce$Stage;
         COMBINE: Java.MapReduce$Stage;
         REDUCE: Java.MapReduce$Stage;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -8669,6 +8754,7 @@ export module Java {
     }
     export module Memory {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -8723,6 +8809,7 @@ export module Java {
     }
     export module Memory$Admin {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -8759,6 +8846,7 @@ export module Java {
     }
     export module Memory$Exceptions {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.UnsupportedOperationException org.apache.tinkerpop.gremlin.process.computer.Memory$Exceptions.dataTypeOfMemoryValueNotSupported(java.lang.Object)
         dataTypeOfMemoryValueNotSupported(arg0: object_t): object_t;
         dataTypeOfMemoryValueNotSupportedP(arg0: object_t): Promise<object_t>;
@@ -8789,6 +8877,7 @@ export module Java {
     }
     export module MessageCombiner {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -8825,6 +8914,7 @@ export module Java {
     }
     export module MessageScope {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.process.computer.MessageScope;
       }
     }
@@ -8865,6 +8955,7 @@ export module Java {
     }
     export module MessageScope$Global {
       export interface Static {
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.process.computer.MessageScope$Global org.apache.tinkerpop.gremlin.process.computer.MessageScope$Global.instance()
         instance(): Java.MessageScope$Global;
         instanceP(): Promise<Java.MessageScope$Global>;
@@ -8920,6 +9011,7 @@ export module Java {
     }
     export module MessageScope$Local {
       export interface Static {
+        class: Java.Class;
         // public static <M> org.apache.tinkerpop.gremlin.process.computer.MessageScope.org.apache.tinkerpop.gremlin.process.computer.MessageScope$Local<M> org.apache.tinkerpop.gremlin.process.computer.MessageScope$Local.of(java.util.function.Supplier<? extends org.apache.tinkerpop.gremlin.process.traversal.Traversal<org.apache.tinkerpop.gremlin.structure.Vertex, org.apache.tinkerpop.gremlin.structure.Edge>>,java.util.function.BiFunction<M, org.apache.tinkerpop.gremlin.structure.Edge, M>)
         of(arg0: Java.Supplier, arg1: Java.BiFunction): Java.MessageScope$Local;
         ofP(arg0: Java.Supplier, arg1: Java.BiFunction): Promise<Java.MessageScope$Local>;
@@ -8968,6 +9060,7 @@ export module Java {
     }
     export module MessageScope$Local$ReverseTraversalSupplier {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.MessageScope$Local): org.apache.tinkerpop.gremlin.process.computer.MessageScope$Local$ReverseTraversalSupplier;
       }
     }
@@ -8984,6 +9077,7 @@ export module Java {
     }
     export module Messenger {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -9026,6 +9120,7 @@ export module Java {
     }
     export module SingleMessenger {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Messenger, arg1: object_t): org.apache.tinkerpop.gremlin.process.computer.traversal.SingleMessenger;
       }
     }
@@ -9126,6 +9221,7 @@ export module Java {
         HALTED_TRAVERSERS: string;
         TRAVERSAL_SUPPLIER: string;
         VERTEX_PROGRAM: string;
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.process.computer.traversal.TraversalVertexProgram$Builder org.apache.tinkerpop.gremlin.process.computer.traversal.TraversalVertexProgram.build()
         build(): Java.TraversalVertexProgram$Builder;
         buildP(): Promise<Java.TraversalVertexProgram$Builder>;
@@ -9188,6 +9284,7 @@ export module Java {
     export module TraversalVertexProgram$Builder {
       export interface Static {
         GREMLIN_GROOVY: string;
+        class: Java.Class;
       }
     }
   }
@@ -9230,6 +9327,7 @@ export module Java {
     }
     export module TraversalVertexProgramMessageCombiner {
       export interface Static {
+        class: Java.Class;
         // public static java.util.Optional<org.apache.tinkerpop.gremlin.process.computer.traversal.TraversalVertexProgramMessageCombiner> org.apache.tinkerpop.gremlin.process.computer.traversal.TraversalVertexProgramMessageCombiner.instance()
         instance(): Java.Optional;
         instanceP(): Promise<Java.Optional>;
@@ -9269,6 +9367,7 @@ export module Java {
     }
     export module TraverserExecutor {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.process.computer.traversal.TraverserExecutor;
         // public static boolean org.apache.tinkerpop.gremlin.process.computer.traversal.TraverserExecutor.execute(org.apache.tinkerpop.gremlin.structure.Vertex,org.apache.tinkerpop.gremlin.process.computer.Messenger<org.apache.tinkerpop.gremlin.process.traversal.traverser.util.TraverserSet<?>>,org.apache.tinkerpop.gremlin.process.traversal.util.TraversalMatrix<?, ?>)
         execute(arg0: Java.Vertex, arg1: Java.Messenger, arg2: Java.TraversalMatrix): boolean;
@@ -9361,6 +9460,7 @@ export module Java {
     export module VertexTraversalSideEffects {
       export interface Static {
         SIDE_EFFECTS: string;
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.process.traversal.TraversalSideEffects org.apache.tinkerpop.gremlin.process.computer.traversal.VertexTraversalSideEffects.of(org.apache.tinkerpop.gremlin.structure.Vertex)
         of(arg0: Java.Vertex): Java.TraversalSideEffects;
         ofP(arg0: Java.Vertex): Promise<Java.TraversalSideEffects>;
@@ -9422,6 +9522,7 @@ export module Java {
     export module VertexProgram {
       export interface Static {
         VERTEX_PROGRAM: string;
+        class: Java.Class;
         // public static <V> V org.apache.tinkerpop.gremlin.process.computer.VertexProgram.createVertexProgram(org.apache.tinkerpop.gremlin.structure.Graph,org.apache.commons.configuration.Configuration)
         createVertexProgram(arg0: Java.Graph, arg1: object_t): Java.VertexProgram;
         createVertexProgramP(arg0: Java.Graph, arg1: object_t): Promise<Java.VertexProgram>;
@@ -9442,6 +9543,7 @@ export module Java {
     }
     export module VertexProgram$Builder {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -9481,6 +9583,7 @@ export module Java {
     }
     export module VertexProgram$Features {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -9553,6 +9656,7 @@ export module Java {
         gte: Java.Compare;
         lt: Java.Compare;
         lte: Java.Compare;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -9633,6 +9737,7 @@ export module Java {
       export interface Static {
         within: Java.Contains;
         without: Java.Contains;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -9678,6 +9783,7 @@ export module Java {
     }
     export module __ {
       export interface Static {
+        class: Java.Class;
         // public static <A> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal<A, A> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.__(A...)
         __(...arg0: object_t[]): Java.GraphTraversal;
         __(arg0: object_array_t): Java.GraphTraversal;
@@ -10837,6 +10943,7 @@ export module Java {
     }
     export module DefaultGraphTraversal {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Graph): org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.DefaultGraphTraversal;
         new (): org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.DefaultGraphTraversal;
       }
@@ -11521,6 +11628,7 @@ export module Java {
     }
     export module EmptyGraphTraversal {
       export interface Static {
+        class: Java.Class;
         // public static <A,B> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.EmptyGraphTraversal<A, B> org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.EmptyGraphTraversal.instance()
         instance(): Java.EmptyGraphTraversal;
         instanceP(): Promise<Java.EmptyGraphTraversal>;
@@ -12089,6 +12197,7 @@ export module Java {
     }
     export module GraphTraversal {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -12738,6 +12847,7 @@ export module Java {
     }
     export module GraphTraversal$Admin {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -12828,6 +12938,7 @@ export module Java {
     }
     export module GraphTraversalSource {
       export interface Static {
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource$Builder org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource.build()
         build(): Java.GraphTraversalSource$Builder;
         buildP(): Promise<Java.GraphTraversalSource$Builder>;
@@ -12897,6 +13008,7 @@ export module Java {
     }
     export module GraphTraversalSource$Builder {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -12969,6 +13081,7 @@ export module Java {
     }
     export module GraphTraversalSource$GraphTraversalSourceStub {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.GraphTraversal$Admin, arg1: boolean_t): org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource$GraphTraversalSourceStub;
       }
     }
@@ -13018,6 +13131,7 @@ export module Java {
     }
     export module ComputerTraversalEngine {
       export interface Static {
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.process.traversal.engine.ComputerTraversalEngine$Builder org.apache.tinkerpop.gremlin.process.traversal.engine.ComputerTraversalEngine.build()
         build(): Java.ComputerTraversalEngine$Builder;
         buildP(): Promise<Java.ComputerTraversalEngine$Builder>;
@@ -13072,6 +13186,7 @@ export module Java {
     }
     export module ComputerTraversalEngine$Builder {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.process.traversal.engine.ComputerTraversalEngine$Builder;
       }
     }
@@ -13127,6 +13242,7 @@ export module Java {
     }
     export module ComputerTraversalEngine$ComputerResultStrategy {
       export interface Static {
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.process.traversal.engine.ComputerTraversalEngine$ComputerResultStrategy org.apache.tinkerpop.gremlin.process.traversal.engine.ComputerTraversalEngine$ComputerResultStrategy.instance()
         instance(): Java.ComputerTraversalEngine$ComputerResultStrategy;
         instanceP(): Promise<Java.ComputerTraversalEngine$ComputerResultStrategy>;
@@ -13178,6 +13294,7 @@ export module Java {
     }
     export module StandardTraversalEngine {
       export interface Static {
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.process.traversal.engine.StandardTraversalEngine$Builder org.apache.tinkerpop.gremlin.process.traversal.engine.StandardTraversalEngine.build()
         build(): Java.StandardTraversalEngine$Builder;
         buildP(): Promise<Java.StandardTraversalEngine$Builder>;
@@ -13229,6 +13346,7 @@ export module Java {
     }
     export module StandardTraversalEngine$Builder {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.process.traversal.engine.StandardTraversalEngine$Builder;
       }
     }
@@ -13293,6 +13411,7 @@ export module Java {
         div: Java.Operator;
         min: Java.Operator;
         max: Java.Operator;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -13387,6 +13506,7 @@ export module Java {
         keyDecr: Java.Order;
         valueDecr: Java.Order;
         shuffle: Java.Order;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -13471,6 +13591,7 @@ export module Java {
     }
     export module P {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.BiPredicate, arg1: object_t): org.apache.tinkerpop.gremlin.process.traversal.P;
         // public static <V> org.apache.tinkerpop.gremlin.process.traversal.P<V> org.apache.tinkerpop.gremlin.process.traversal.P.between(V,V)
         between(arg0: object_t, arg1: object_t): Java.P;
@@ -13577,6 +13698,7 @@ export module Java {
     }
     export module Path {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -13613,6 +13735,7 @@ export module Java {
     }
     export module Path$Exceptions {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.process.traversal.Path$Exceptions;
         // public static java.lang.IllegalArgumentException org.apache.tinkerpop.gremlin.process.traversal.Path$Exceptions.stepWithProvidedLabelDoesNotExist(java.lang.String)
         stepWithProvidedLabelDoesNotExist(arg0: string_t): object_t;
@@ -13671,6 +13794,7 @@ export module Java {
         first: Java.Pop;
         last: Java.Pop;
         all: Java.Pop;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -13736,6 +13860,7 @@ export module Java {
       export interface Static {
         global: Java.Scope;
         local: Java.Scope;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -13820,6 +13945,7 @@ export module Java {
     }
     export module Step {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -13871,6 +13997,7 @@ export module Java {
     }
     export module Traversal {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14003,6 +14130,7 @@ export module Java {
     }
     export module Traversal$Admin {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14039,6 +14167,7 @@ export module Java {
     }
     export module Traversal$Exceptions {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.process.traversal.Traversal$Exceptions;
         // public static java.lang.IllegalStateException org.apache.tinkerpop.gremlin.process.traversal.Traversal$Exceptions.traversalIsLocked()
         traversalIsLocked(): object_t;
@@ -14067,6 +14196,7 @@ export module Java {
     }
     export module TraversalEngine {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14085,6 +14215,7 @@ export module Java {
     }
     export module TraversalEngine$Builder {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14138,6 +14269,7 @@ export module Java {
       export interface Static {
         STANDARD: Java.TraversalEngine$Type;
         COMPUTER: Java.TraversalEngine$Type;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -14202,6 +14334,7 @@ export module Java {
     export module TraversalSideEffects {
       export interface Static {
         SIDE_EFFECTS: string;
+        class: Java.Class;
       }
     }
   }
@@ -14238,6 +14371,7 @@ export module Java {
     }
     export module TraversalSideEffects$Exceptions {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.process.traversal.TraversalSideEffects$Exceptions;
         // public static java.lang.UnsupportedOperationException org.apache.tinkerpop.gremlin.process.traversal.TraversalSideEffects$Exceptions.dataTypeOfSideEffectValueNotSupported(java.lang.Object)
         dataTypeOfSideEffectValueNotSupported(arg0: object_t): object_t;
@@ -14272,6 +14406,7 @@ export module Java {
     }
     export module TraversalSource {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14293,6 +14428,7 @@ export module Java {
     }
     export module TraversalSource$Builder {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14328,6 +14464,7 @@ export module Java {
     export module TraversalStrategies {
       export interface Static {
         STRATEGY_CATEGORIES: Java.List;
+        class: Java.Class;
         // public static java.util.List<org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategy<?>> org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategies.sortStrategies(java.util.List<org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategy<?>>)
         sortStrategies(arg0: Java.List): Java.List;
         sortStrategiesP(arg0: Java.List): Promise<Java.List>;
@@ -14370,6 +14507,7 @@ export module Java {
     }
     export module TraversalStrategies$GlobalCache {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategies$GlobalCache;
         // public static org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategies org.apache.tinkerpop.gremlin.process.traversal.TraversalStrategies$GlobalCache.getStrategies(java.lang.Class<? extends org.apache.tinkerpop.gremlin.structure.Graph>)
         getStrategies(arg0: Java.Class): Java.TraversalStrategies;
@@ -14404,6 +14542,7 @@ export module Java {
     }
     export module TraversalStrategy {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14431,6 +14570,7 @@ export module Java {
     }
     export module TraversalStrategy$DecorationStrategy {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14458,6 +14598,7 @@ export module Java {
     }
     export module TraversalStrategy$FinalizationStrategy {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14485,6 +14626,7 @@ export module Java {
     }
     export module TraversalStrategy$OptimizationStrategy {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14512,6 +14654,7 @@ export module Java {
     }
     export module TraversalStrategy$VendorOptimizationStrategy {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14539,6 +14682,7 @@ export module Java {
     }
     export module TraversalStrategy$VerificationStrategy {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14590,6 +14734,7 @@ export module Java {
     }
     export module Traverser {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14684,6 +14829,7 @@ export module Java {
     export module Traverser$Admin {
       export interface Static {
         HALT: string;
+        class: Java.Class;
       }
     }
   }
@@ -14702,6 +14848,7 @@ export module Java {
     }
     export module TraverserGenerator {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -14786,6 +14933,7 @@ export module Java {
     }
     export module AndP {
       export interface Static {
+        class: Java.Class;
         new (...arg0: Java.P[]): org.apache.tinkerpop.gremlin.process.traversal.util.AndP;
         // public static <V> org.apache.tinkerpop.gremlin.process.traversal.P<V> org.apache.tinkerpop.gremlin.process.traversal.P.between(V,V)
         between(arg0: object_t, arg1: object_t): Java.P;
@@ -14917,6 +15065,7 @@ export module Java {
     }
     export module ConjunctionP {
       export interface Static {
+        class: Java.Class;
         new (...arg0: Java.P[]): org.apache.tinkerpop.gremlin.process.traversal.util.ConjunctionP;
         // public static <V> org.apache.tinkerpop.gremlin.process.traversal.P<V> org.apache.tinkerpop.gremlin.process.traversal.P.between(V,V)
         between(arg0: object_t, arg1: object_t): Java.P;
@@ -15129,6 +15278,7 @@ export module Java {
     }
     export module DefaultTraversal {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Graph): org.apache.tinkerpop.gremlin.process.traversal.util.DefaultTraversal;
         new (): org.apache.tinkerpop.gremlin.process.traversal.util.DefaultTraversal;
       }
@@ -15219,6 +15369,7 @@ export module Java {
     export module DefaultTraversalSideEffects {
       export interface Static {
         SIDE_EFFECTS: string;
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.process.traversal.util.DefaultTraversalSideEffects;
       }
     }
@@ -15288,6 +15439,7 @@ export module Java {
     export module DefaultTraversalStrategies {
       export interface Static {
         STRATEGY_CATEGORIES: Java.List;
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.process.traversal.util.DefaultTraversalStrategies;
       }
     }
@@ -15394,6 +15546,7 @@ export module Java {
     }
     export module DependantMutableMetrics {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t, arg1: string_t, arg2: Java.DependantMutableMetrics): org.apache.tinkerpop.gremlin.process.traversal.util.DependantMutableMetrics;
       }
     }
@@ -15557,6 +15710,7 @@ export module Java {
     }
     export module EmptyTraversal {
       export interface Static {
+        class: Java.Class;
         // public static <A,B> org.apache.tinkerpop.gremlin.process.traversal.util.EmptyTraversal<A, B> org.apache.tinkerpop.gremlin.process.traversal.util.EmptyTraversal.instance()
         instance(): Java.EmptyTraversal;
         instanceP(): Promise<Java.EmptyTraversal>;
@@ -15645,6 +15799,7 @@ export module Java {
     export module EmptyTraversalSideEffects {
       export interface Static {
         SIDE_EFFECTS: string;
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.process.traversal.util.EmptyTraversalSideEffects org.apache.tinkerpop.gremlin.process.traversal.util.EmptyTraversalSideEffects.instance()
         instance(): Java.EmptyTraversalSideEffects;
         instanceP(): Promise<Java.EmptyTraversalSideEffects>;
@@ -15713,6 +15868,7 @@ export module Java {
     export module EmptyTraversalStrategies {
       export interface Static {
         STRATEGY_CATEGORIES: Java.List;
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.process.traversal.util.EmptyTraversalStrategies org.apache.tinkerpop.gremlin.process.traversal.util.EmptyTraversalStrategies.instance()
         instance(): Java.EmptyTraversalStrategies;
         instanceP(): Promise<Java.EmptyTraversalStrategies>;
@@ -15788,6 +15944,7 @@ export module Java {
     }
     export module FastNoSuchElementException {
       export interface Static {
+        class: Java.Class;
         // public static java.util.NoSuchElementException org.apache.tinkerpop.gremlin.process.traversal.util.FastNoSuchElementException.instance()
         instance(): Java.NoSuchElementException;
         instanceP(): Promise<Java.NoSuchElementException>;
@@ -15857,6 +16014,7 @@ export module Java {
     }
     export module ImmutableMetrics {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -15893,6 +16051,7 @@ export module Java {
     }
     export module Metrics {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -15995,6 +16154,7 @@ export module Java {
     }
     export module MutableMetrics {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t, arg1: string_t): org.apache.tinkerpop.gremlin.process.traversal.util.MutableMetrics;
       }
     }
@@ -16080,6 +16240,7 @@ export module Java {
     }
     export module OrP {
       export interface Static {
+        class: Java.Class;
         new (...arg0: Java.P[]): org.apache.tinkerpop.gremlin.process.traversal.util.OrP;
         // public static <V> org.apache.tinkerpop.gremlin.process.traversal.P<V> org.apache.tinkerpop.gremlin.process.traversal.P.between(V,V)
         between(arg0: object_t, arg1: object_t): Java.P;
@@ -16166,6 +16327,7 @@ export module Java {
     }
     export module SideEffectHelper {
       export interface Static {
+        class: Java.Class;
         // public static void org.apache.tinkerpop.gremlin.process.traversal.util.SideEffectHelper.validateSideEffect(java.lang.String,java.lang.Object) throws java.lang.IllegalArgumentException
         validateSideEffect(arg0: string_t, arg1: object_t): void;
         validateSideEffectP(arg0: string_t, arg1: object_t): Promise<void>;
@@ -16233,6 +16395,7 @@ export module Java {
         ELEMENT_COUNT_ID: string;
         TRAVERSER_COUNT_ID: string;
         PERCENT_DURATION_KEY: string;
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.process.traversal.util.StandardTraversalMetrics;
         // public static org.apache.tinkerpop.gremlin.process.traversal.util.StandardTraversalMetrics org.apache.tinkerpop.gremlin.process.traversal.util.StandardTraversalMetrics.merge(java.util.Iterator<org.apache.tinkerpop.gremlin.process.traversal.util.StandardTraversalMetrics>)
         merge(arg0: Java.Iterator): Java.StandardTraversalMetrics;
@@ -16280,6 +16443,7 @@ export module Java {
     }
     export module StepPosition {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.process.traversal.util.StepPosition;
       }
     }
@@ -16329,6 +16493,7 @@ export module Java {
     }
     export module TraversalClassFunction {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Class): org.apache.tinkerpop.gremlin.process.traversal.util.TraversalClassFunction;
       }
     }
@@ -16366,6 +16531,7 @@ export module Java {
     }
     export module TraversalHelper {
       export interface Static {
+        class: Java.Class;
         // public static <S> void org.apache.tinkerpop.gremlin.process.traversal.util.TraversalHelper.addToCollection(java.util.Collection<S>,S,long)
         addToCollection(arg0: Java.Collection, arg1: object_t, arg2: long_t): void;
         addToCollectionP(arg0: Java.Collection, arg1: object_t, arg2: long_t): Promise<void>;
@@ -16477,6 +16643,7 @@ export module Java {
     }
     export module TraversalMatrix {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Traversal$Admin): org.apache.tinkerpop.gremlin.process.traversal.util.TraversalMatrix;
       }
     }
@@ -16503,6 +16670,7 @@ export module Java {
         ELEMENT_COUNT_ID: string;
         TRAVERSER_COUNT_ID: string;
         PERCENT_DURATION_KEY: string;
+        class: Java.Class;
       }
     }
   }
@@ -16551,6 +16719,7 @@ export module Java {
     }
     export module TraversalObjectFunction {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Traversal$Admin): org.apache.tinkerpop.gremlin.process.traversal.util.TraversalObjectFunction;
       }
     }
@@ -16612,6 +16781,7 @@ export module Java {
     }
     export module TraversalRing {
       export interface Static {
+        class: Java.Class;
         new (...arg0: Java.Traversal$Admin[]): org.apache.tinkerpop.gremlin.process.traversal.util.TraversalRing;
       }
     }
@@ -16661,6 +16831,7 @@ export module Java {
     }
     export module TraversalScriptFunction {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.TraversalSource$Builder, arg1: string_t, arg2: string_t, ...arg3: object_t[]): org.apache.tinkerpop.gremlin.process.traversal.util.TraversalScriptFunction;
       }
     }
@@ -16698,6 +16869,7 @@ export module Java {
     }
     export module TraversalScriptHelper {
       export interface Static {
+        class: Java.Class;
         // public static <S,E> org.apache.tinkerpop.gremlin.process.traversal.Traversal.org.apache.tinkerpop.gremlin.process.traversal.Traversal$Admin<S, E> org.apache.tinkerpop.gremlin.process.traversal.util.TraversalScriptHelper.compute(org.apache.tinkerpop.gremlin.structure.Graph,org.apache.tinkerpop.gremlin.process.traversal.TraversalSource$Builder,java.lang.String,java.lang.String,java.lang.Object...)
         compute(arg0: Java.Graph, arg1: Java.TraversalSource$Builder, arg2: string_t, arg3: string_t, ...arg4: object_t[]): Java.Traversal$Admin;
         compute(arg0: Java.Graph, arg1: Java.TraversalSource$Builder, arg2: string_t, arg3: string_t, arg4: object_array_t): Java.Traversal$Admin;
@@ -16744,6 +16916,7 @@ export module Java {
     }
     export module TraversalUtil {
       export interface Static {
+        class: Java.Class;
         // public static final <S,E> E org.apache.tinkerpop.gremlin.process.traversal.util.TraversalUtil.apply(org.apache.tinkerpop.gremlin.process.traversal.Traverser.org.apache.tinkerpop.gremlin.process.traversal.Traverser$Admin<S>,org.apache.tinkerpop.gremlin.process.traversal.Traversal.org.apache.tinkerpop.gremlin.process.traversal.Traversal$Admin<S, E>)
         apply(arg0: Java.Traverser$Admin, arg1: Java.Traversal$Admin): object_t;
         applyP(arg0: Java.Traverser$Admin, arg1: Java.Traversal$Admin): Promise<object_t>;
@@ -16829,6 +17002,7 @@ export module Java {
         IN: Java.Direction;
         BOTH: Java.Direction;
         proper: Java.Direction[];
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -16894,6 +17068,7 @@ export module Java {
     export module Edge {
       export interface Static {
         DEFAULT_LABEL: string;
+        class: Java.Class;
       }
     }
   }
@@ -16930,6 +17105,7 @@ export module Java {
     }
     export module Edge$Exceptions {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.IllegalStateException org.apache.tinkerpop.gremlin.structure.Edge$Exceptions.edgeRemovalNotSupported()
         edgeRemovalNotSupported(): object_t;
         edgeRemovalNotSupportedP(): Promise<object_t>;
@@ -17003,6 +17179,7 @@ export module Java {
     }
     export module Element {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -17039,6 +17216,7 @@ export module Java {
     }
     export module Element$Exceptions {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.IllegalStateException org.apache.tinkerpop.gremlin.structure.Element$Exceptions.elementAlreadyRemoved(java.lang.Class<? extends org.apache.tinkerpop.gremlin.structure.Element>,java.lang.Object)
         elementAlreadyRemoved(arg0: Java.Class, arg1: object_t): object_t;
         elementAlreadyRemovedP(arg0: Java.Class, arg1: object_t): Promise<object_t>;
@@ -17118,6 +17296,7 @@ export module Java {
     export module Graph {
       export interface Static {
         GRAPH: string;
+        class: Java.Class;
       }
     }
   }
@@ -17154,6 +17333,7 @@ export module Java {
     }
     export module Graph$Exceptions {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.structure.Graph$Exceptions;
         // public static java.lang.IllegalArgumentException org.apache.tinkerpop.gremlin.structure.Graph$Exceptions.argumentCanNotBeNull(java.lang.String)
         argumentCanNotBeNull(arg0: string_t): object_t;
@@ -17209,6 +17389,7 @@ export module Java {
     }
     export module Graph$Features {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -17290,6 +17471,7 @@ export module Java {
         FEATURE_STRING_ARRAY_VALUES: string;
         FEATURE_STRING_VALUES: string;
         FEATURE_UNIFORM_LIST_VALUES: string;
+        class: Java.Class;
       }
     }
   }
@@ -17345,6 +17527,7 @@ export module Java {
         FEATURE_ANY_IDS: string;
         FEATURE_ADD_PROPERTY: string;
         FEATURE_REMOVE_PROPERTY: string;
+        class: Java.Class;
       }
     }
   }
@@ -17430,6 +17613,7 @@ export module Java {
         FEATURE_STRING_ARRAY_VALUES: string;
         FEATURE_STRING_VALUES: string;
         FEATURE_UNIFORM_LIST_VALUES: string;
+        class: Java.Class;
       }
     }
   }
@@ -17474,6 +17658,7 @@ export module Java {
         FEATURE_ANY_IDS: string;
         FEATURE_ADD_PROPERTY: string;
         FEATURE_REMOVE_PROPERTY: string;
+        class: Java.Class;
       }
     }
   }
@@ -17483,6 +17668,7 @@ export module Java {
     }
     export module Graph$Features$FeatureSet {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -17511,6 +17697,7 @@ export module Java {
         FEATURE_TRANSACTIONS: string;
         FEATURE_PERSISTENCE: string;
         FEATURE_THREADED_TRANSACTIONS: string;
+        class: Java.Class;
       }
     }
   }
@@ -17596,6 +17783,7 @@ export module Java {
         FEATURE_STRING_ARRAY_VALUES: string;
         FEATURE_STRING_VALUES: string;
         FEATURE_UNIFORM_LIST_VALUES: string;
+        class: Java.Class;
       }
     }
   }
@@ -17681,6 +17869,7 @@ export module Java {
         FEATURE_STRING_ARRAY_VALUES: string;
         FEATURE_STRING_VALUES: string;
         FEATURE_UNIFORM_LIST_VALUES: string;
+        class: Java.Class;
       }
     }
   }
@@ -17747,6 +17936,7 @@ export module Java {
         FEATURE_ANY_IDS: string;
         FEATURE_ADD_PROPERTY: string;
         FEATURE_REMOVE_PROPERTY: string;
+        class: Java.Class;
       }
     }
   }
@@ -17867,6 +18057,7 @@ export module Java {
         FEATURE_STRING_ARRAY_VALUES: string;
         FEATURE_STRING_VALUES: string;
         FEATURE_UNIFORM_LIST_VALUES: string;
+        class: Java.Class;
       }
     }
   }
@@ -17903,6 +18094,7 @@ export module Java {
     }
     export module Graph$Hidden {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.structure.Graph$Hidden;
         // public static java.lang.String org.apache.tinkerpop.gremlin.structure.Graph$Hidden.hide(java.lang.String)
         hide(arg0: string_t): string;
@@ -17948,6 +18140,7 @@ export module Java {
         SUITE_GROOVY_ENVIRONMENT: string;
         SUITE_GROOVY_ENVIRONMENT_INTEGRATE: string;
         SUITE_GROOVY_ENVIRONMENT_PERFORMANCE: string;
+        class: Java.Class;
       }
     }
   }
@@ -17972,6 +18165,7 @@ export module Java {
     }
     export module Graph$OptIns {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -18005,6 +18199,7 @@ export module Java {
     }
     export module Graph$OptOut {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -18029,6 +18224,7 @@ export module Java {
     }
     export module Graph$OptOuts {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -18053,6 +18249,7 @@ export module Java {
     }
     export module Graph$Variables {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -18089,6 +18286,7 @@ export module Java {
     }
     export module Graph$Variables$Exceptions {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.UnsupportedOperationException org.apache.tinkerpop.gremlin.structure.Graph$Variables$Exceptions.dataTypeOfVariableValueNotSupported(java.lang.Object)
         dataTypeOfVariableValueNotSupported(arg0: object_t): object_t;
         dataTypeOfVariableValueNotSupportedP(arg0: object_t): Promise<object_t>;
@@ -18143,6 +18341,7 @@ export module Java {
     }
     export module AbstractIoRegistry {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.structure.io.AbstractIoRegistry;
       }
     }
@@ -18180,6 +18379,7 @@ export module Java {
     }
     export module GraphMigrator {
       export interface Static {
+        class: Java.Class;
         // public static void org.apache.tinkerpop.gremlin.structure.io.GraphMigrator.migrateGraph(org.apache.tinkerpop.gremlin.structure.Graph,org.apache.tinkerpop.gremlin.structure.Graph,org.apache.tinkerpop.gremlin.structure.io.GraphReader,org.apache.tinkerpop.gremlin.structure.io.GraphWriter) throws java.io.IOException
         migrateGraph(arg0: Java.Graph, arg1: Java.Graph, arg2: Java.GraphReader, arg3: Java.GraphWriter): void;
         migrateGraphP(arg0: Java.Graph, arg1: Java.Graph, arg2: Java.GraphReader, arg3: Java.GraphWriter): Promise<void>;
@@ -18219,6 +18419,7 @@ export module Java {
     }
     export module GraphReader {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -18231,6 +18432,7 @@ export module Java {
     }
     export module GraphReader$ReaderBuilder {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -18291,6 +18493,7 @@ export module Java {
     }
     export module GraphSONIo {
       export interface Static {
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.structure.io.Io.org.apache.tinkerpop.gremlin.structure.io.Io$Builder<org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONIo> org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONIo.build()
         build(): Java.Io$Builder;
         buildP(): Promise<Java.Io$Builder>;
@@ -18342,6 +18545,7 @@ export module Java {
     }
     export module GraphSONIo$Builder {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONIo$Builder;
       }
     }
@@ -18388,6 +18592,7 @@ export module Java {
     }
     export module GraphSONMapper {
       export interface Static {
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper$Builder org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper.build()
         build(): Java.GraphSONMapper$Builder;
         buildP(): Promise<Java.GraphSONMapper$Builder>;
@@ -18454,6 +18659,7 @@ export module Java {
     }
     export module GraphSONMapper$Builder {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -18514,6 +18720,7 @@ export module Java {
     }
     export module GraphSONReader {
       export interface Static {
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONReader$Builder org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONReader.build()
         build(): Java.GraphSONReader$Builder;
         buildP(): Promise<Java.GraphSONReader$Builder>;
@@ -18565,6 +18772,7 @@ export module Java {
     }
     export module GraphSONReader$Builder {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -18623,6 +18831,7 @@ export module Java {
         NAME: string;
         COUNTS: string;
         ANNOTATIONS: string;
+        class: Java.Class;
       }
     }
   }
@@ -18659,6 +18868,7 @@ export module Java {
     }
     export module GraphSONUtil {
       export interface Static {
+        class: Java.Class;
         // public static void org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONUtil.writeWithType(java.lang.String,java.lang.Object,com.fasterxml.jackson.core.JsonGenerator,com.fasterxml.jackson.databind.SerializerProvider,com.fasterxml.jackson.databind.jsontype.TypeSerializer) throws java.io.IOException
         writeWithType(arg0: string_t, arg1: object_t, arg2: object_t, arg3: object_t, arg4: object_t): void;
         writeWithTypeP(arg0: string_t, arg1: object_t, arg2: object_t, arg3: object_t, arg4: object_t): Promise<void>;
@@ -18720,6 +18930,7 @@ export module Java {
     export module GraphSONVersion {
       export interface Static {
         V1_0: Java.GraphSONVersion;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -18792,6 +19003,7 @@ export module Java {
     }
     export module GraphSONWriter {
       export interface Static {
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter$Builder org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter.build()
         build(): Java.GraphSONWriter$Builder;
         buildP(): Promise<Java.GraphSONWriter$Builder>;
@@ -18840,6 +19052,7 @@ export module Java {
     }
     export module GraphSONWriter$Builder {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -18900,6 +19113,7 @@ export module Java {
     }
     export module LegacyGraphSONReader {
       export interface Static {
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.structure.io.graphson.LegacyGraphSONReader$Builder org.apache.tinkerpop.gremlin.structure.io.graphson.LegacyGraphSONReader.build()
         build(): Java.LegacyGraphSONReader$Builder;
         buildP(): Promise<Java.LegacyGraphSONReader$Builder>;
@@ -18951,6 +19165,7 @@ export module Java {
     }
     export module LegacyGraphSONReader$Builder {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -19008,6 +19223,7 @@ export module Java {
         VERTICES: string;
         EDGES: string;
         MODE: string;
+        class: Java.Class;
       }
     }
   }
@@ -19044,6 +19260,7 @@ export module Java {
     }
     export module GraphWriter {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -19056,6 +19273,7 @@ export module Java {
     }
     export module GraphWriter$WriterBuilder {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -19080,6 +19298,7 @@ export module Java {
     }
     export module Io {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -19098,6 +19317,7 @@ export module Java {
     }
     export module Io$Builder {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -19134,6 +19354,7 @@ export module Java {
     }
     export module Io$Exceptions {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.structure.io.Io$Exceptions;
         // public static java.lang.UnsupportedOperationException org.apache.tinkerpop.gremlin.structure.io.Io$Exceptions.readerFormatIsForFullGraphSerializationOnly(java.lang.Class<? extends org.apache.tinkerpop.gremlin.structure.io.GraphReader>)
         readerFormatIsForFullGraphSerializationOnly(arg0: Java.Class): object_t;
@@ -19177,6 +19398,7 @@ export module Java {
     }
     export module IoCore {
       export interface Static {
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.structure.io.Io.org.apache.tinkerpop.gremlin.structure.io.Io$Builder<org.apache.tinkerpop.gremlin.structure.io.graphml.GraphMLIo> org.apache.tinkerpop.gremlin.structure.io.IoCore.graphml()
         graphml(): Java.Io$Builder;
         graphmlP(): Promise<Java.Io$Builder>;
@@ -19201,6 +19423,7 @@ export module Java {
     }
     export module IoRegistry {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -19213,6 +19436,7 @@ export module Java {
     }
     export module Mapper {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -19225,6 +19449,7 @@ export module Java {
     }
     export module Mapper$Builder {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -19261,6 +19486,7 @@ export module Java {
     }
     export module Property {
       export interface Static {
+        class: Java.Class;
         // public static <V> org.apache.tinkerpop.gremlin.structure.Property<V> org.apache.tinkerpop.gremlin.structure.Property.empty()
         empty(): Java.Property;
         emptyP(): Promise<Java.Property>;
@@ -19300,6 +19526,7 @@ export module Java {
     }
     export module Property$Exceptions {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.IllegalArgumentException org.apache.tinkerpop.gremlin.structure.Property$Exceptions.dataTypeOfPropertyValueNotSupported(java.lang.Object)
         dataTypeOfPropertyValueNotSupported(arg0: object_t): object_t;
         dataTypeOfPropertyValueNotSupportedP(arg0: object_t): Promise<object_t>;
@@ -19383,6 +19610,7 @@ export module Java {
       export interface Static {
         PROPERTY: Java.PropertyType;
         VALUE: Java.PropertyType;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -19462,6 +19690,7 @@ export module Java {
         id: Java.T;
         key: Java.T;
         value: Java.T;
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.structure.T org.apache.tinkerpop.gremlin.structure.T.fromString(java.lang.String)
         fromString(arg0: string_t): Java.T;
         fromStringP(arg0: string_t): Promise<Java.T>;
@@ -19522,6 +19751,7 @@ export module Java {
     }
     export module Transaction {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -19582,6 +19812,7 @@ export module Java {
         COMMIT: Java.Transaction$CLOSE_BEHAVIOR;
         ROLLBACK: Java.Transaction$CLOSE_BEHAVIOR;
         MANUAL: Java.Transaction$CLOSE_BEHAVIOR;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -19627,6 +19858,7 @@ export module Java {
     }
     export module Transaction$Exceptions {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.IllegalArgumentException org.apache.tinkerpop.gremlin.structure.Transaction$Exceptions.onCloseBehaviorCannotBeNull()
         onCloseBehaviorCannotBeNull(): object_t;
         onCloseBehaviorCannotBeNullP(): Promise<object_t>;
@@ -19704,6 +19936,7 @@ export module Java {
       export interface Static {
         AUTO: Java.Transaction$READ_WRITE_BEHAVIOR;
         MANUAL: Java.Transaction$READ_WRITE_BEHAVIOR;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -19766,6 +19999,7 @@ export module Java {
       export interface Static {
         COMMIT: Java.Transaction$Status;
         ROLLBACK: Java.Transaction$Status;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -19846,6 +20080,7 @@ export module Java {
       export interface Static {
         DEFAULT_DELAY_MS: longValue_t;
         DEFAULT_TRIES: number;
+        class: Java.Class;
         new (arg0: Java.Graph, arg1: Java.Function): org.apache.tinkerpop.gremlin.structure.Transaction$Workload;
       }
     }
@@ -19922,6 +20157,7 @@ export module Java {
     }
     export module AbstractTransaction {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Graph): org.apache.tinkerpop.gremlin.structure.util.AbstractTransaction;
       }
     }
@@ -19995,6 +20231,7 @@ export module Java {
     }
     export module AbstractTransaction$TransactionException {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t, arg1: object_t): org.apache.tinkerpop.gremlin.structure.util.AbstractTransaction$TransactionException;
         new (arg0: object_t): org.apache.tinkerpop.gremlin.structure.util.AbstractTransaction$TransactionException;
         new (arg0: string_t): org.apache.tinkerpop.gremlin.structure.util.AbstractTransaction$TransactionException;
@@ -20013,6 +20250,7 @@ export module Java {
     }
     export module Attachable {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -20049,6 +20287,7 @@ export module Java {
     }
     export module Attachable$Exceptions {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.IllegalStateException org.apache.tinkerpop.gremlin.structure.util.Attachable$Exceptions.canNotGetAttachableFromHostGraph(org.apache.tinkerpop.gremlin.structure.util.Attachable<?>,org.apache.tinkerpop.gremlin.structure.Graph)
         canNotGetAttachableFromHostGraph(arg0: Java.Attachable, arg1: Java.Graph): object_t;
         canNotGetAttachableFromHostGraphP(arg0: Java.Attachable, arg1: Java.Graph): Promise<object_t>;
@@ -20094,6 +20333,7 @@ export module Java {
     }
     export module Attachable$Method {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.structure.util.Attachable$Method;
         // public static <V> java.util.function.Function<org.apache.tinkerpop.gremlin.structure.util.Attachable<V>, V> org.apache.tinkerpop.gremlin.structure.util.Attachable$Method.create(org.apache.tinkerpop.gremlin.structure.util.Host)
         create(arg0: Java.Host): Java.Function;
@@ -20192,6 +20432,7 @@ export module Java {
         VERTEX_COMPARATOR: Java.Comparator;
         EDGE_COMPARATOR: Java.Comparator;
         PROPERTY_COMPARATOR: Java.Comparator;
+        class: Java.Class;
       }
     }
   }
@@ -20228,6 +20469,7 @@ export module Java {
     }
     export module ElementHelper {
       export interface Static {
+        class: Java.Class;
         // public static boolean org.apache.tinkerpop.gremlin.structure.util.ElementHelper.areEqual(org.apache.tinkerpop.gremlin.structure.VertexProperty,org.apache.tinkerpop.gremlin.structure.VertexProperty)
         areEqual(arg0: Java.VertexProperty, arg1: Java.VertexProperty): boolean;
         areEqualP(arg0: Java.VertexProperty, arg1: Java.VertexProperty): Promise<boolean>;
@@ -20392,6 +20634,7 @@ export module Java {
     }
     export module FeatureDescriptor {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -20428,6 +20671,7 @@ export module Java {
     }
     export module GraphFactory {
       export interface Static {
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.structure.Graph org.apache.tinkerpop.gremlin.structure.util.GraphFactory.open(org.apache.commons.configuration.Configuration)
         open(arg0: object_t): Java.Graph;
         openP(arg0: object_t): Promise<Java.Graph>;
@@ -20473,6 +20717,7 @@ export module Java {
     }
     export module GraphVariableHelper {
       export interface Static {
+        class: Java.Class;
         // public static void org.apache.tinkerpop.gremlin.structure.util.GraphVariableHelper.validateVariable(java.lang.String,java.lang.Object) throws java.lang.IllegalArgumentException
         validateVariable(arg0: string_t, arg1: object_t): void;
         validateVariableP(arg0: string_t, arg1: object_t): Promise<void>;
@@ -20485,6 +20730,7 @@ export module Java {
     }
     export module Host {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -20521,6 +20767,7 @@ export module Java {
     }
     export module StringFactory {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.String org.apache.tinkerpop.gremlin.structure.util.StringFactory.computeResultString(org.apache.tinkerpop.gremlin.process.computer.ComputerResult)
         computeResultString(arg0: Java.ComputerResult): string;
         computeResultStringP(arg0: Java.ComputerResult): Promise<string>;
@@ -20659,6 +20906,7 @@ export module Java {
       export interface Static {
         DEFAULT_LABEL: string;
         EMPTY_ARGS: object_t[];
+        class: Java.Class;
       }
     }
   }
@@ -20695,6 +20943,7 @@ export module Java {
     }
     export module Vertex$Exceptions {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.IllegalStateException org.apache.tinkerpop.gremlin.structure.Vertex$Exceptions.edgeAdditionsNotSupported()
         edgeAdditionsNotSupported(): object_t;
         edgeAdditionsNotSupportedP(): Promise<object_t>;
@@ -20781,6 +21030,7 @@ export module Java {
     export module VertexProperty {
       export interface Static {
         DEFAULT_LABEL: string;
+        class: Java.Class;
         // public static <V> org.apache.tinkerpop.gremlin.structure.VertexProperty<V> org.apache.tinkerpop.gremlin.structure.VertexProperty.empty()
         empty(): Java.VertexProperty;
         emptyP(): Promise<Java.VertexProperty>;
@@ -20841,6 +21091,7 @@ export module Java {
         single: Java.VertexProperty$Cardinality;
         list: Java.VertexProperty$Cardinality;
         set: Java.VertexProperty$Cardinality;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -20886,6 +21137,7 @@ export module Java {
     }
     export module VertexProperty$Exceptions {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.UnsupportedOperationException org.apache.tinkerpop.gremlin.structure.VertexProperty$Exceptions.metaPropertiesNotSupported()
         metaPropertiesNotSupported(): object_t;
         metaPropertiesNotSupportedP(): Promise<object_t>;
@@ -20952,6 +21204,7 @@ export module Java {
     }
     export module TinkerGraphComputer {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.TinkerGraph): org.apache.tinkerpop.gremlin.tinkergraph.process.computer.TinkerGraphComputer;
       }
     }
@@ -21004,6 +21257,7 @@ export module Java {
     }
     export module TinkerGraphComputerView {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.TinkerGraph, arg1: Java.Set): org.apache.tinkerpop.gremlin.tinkergraph.process.computer.TinkerGraphComputerView;
       }
     }
@@ -21049,6 +21303,7 @@ export module Java {
     }
     export module TinkerMapEmitter {
       export interface Static {
+        class: Java.Class;
         new (arg0: boolean_t): org.apache.tinkerpop.gremlin.tinkergraph.process.computer.TinkerMapEmitter;
       }
     }
@@ -21134,6 +21389,7 @@ export module Java {
     }
     export module TinkerMemory {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.VertexProgram, arg1: Java.Set): org.apache.tinkerpop.gremlin.tinkergraph.process.computer.TinkerMemory;
       }
     }
@@ -21177,6 +21433,7 @@ export module Java {
     }
     export module TinkerMessenger {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Vertex, arg1: object_t, arg2: Java.Optional): org.apache.tinkerpop.gremlin.tinkergraph.process.computer.TinkerMessenger;
       }
     }
@@ -21220,6 +21477,7 @@ export module Java {
     }
     export module TinkerReduceEmitter {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.tinkergraph.process.computer.TinkerReduceEmitter;
       }
     }
@@ -21284,6 +21542,7 @@ export module Java {
     }
     export module TinkerWorkerPool {
       export interface Static {
+        class: Java.Class;
         new (arg0: integer_t): org.apache.tinkerpop.gremlin.tinkergraph.process.computer.TinkerWorkerPool;
       }
     }
@@ -21368,6 +21627,7 @@ export module Java {
     export module TinkerEdge {
       export interface Static {
         DEFAULT_LABEL: string;
+        class: Java.Class;
       }
     }
   }
@@ -21438,6 +21698,7 @@ export module Java {
     }
     export module TinkerElement {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -21474,6 +21735,7 @@ export module Java {
     }
     export module TinkerFactory {
       export interface Static {
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerFactory.createClassic()
         createClassic(): Java.TinkerGraph;
         createClassicP(): Promise<Java.TinkerGraph>;
@@ -21593,6 +21855,7 @@ export module Java {
         CONFIG_VERTEX_PROPERTY_ID: string;
         CONFIG_DEFAULT_VERTEX_PROPERTY_CARDINALITY: string;
         GRAPH: string;
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph.open(org.apache.commons.configuration.Configuration)
         open(arg0: object_t): Java.TinkerGraph;
         openP(arg0: object_t): Promise<Java.TinkerGraph>;
@@ -21663,6 +21926,7 @@ export module Java {
         INTEGER: Java.TinkerGraph$DefaultIdManager;
         UUID: Java.TinkerGraph$DefaultIdManager;
         ANY: Java.TinkerGraph$DefaultIdManager;
+        class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
         valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
@@ -21690,6 +21954,7 @@ export module Java {
     }
     export module TinkerGraph$IdManager {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -21772,6 +22037,7 @@ export module Java {
         FEATURE_ANY_IDS: string;
         FEATURE_ADD_PROPERTY: string;
         FEATURE_REMOVE_PROPERTY: string;
+        class: Java.Class;
       }
     }
   }
@@ -21820,6 +22086,7 @@ export module Java {
     }
     export module TinkerGraph$TinkerGraphFeatures {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -21875,6 +22142,7 @@ export module Java {
         FEATURE_TRANSACTIONS: string;
         FEATURE_PERSISTENCE: string;
         FEATURE_THREADED_TRANSACTIONS: string;
+        class: Java.Class;
       }
     }
   }
@@ -21968,6 +22236,7 @@ export module Java {
         FEATURE_ANY_IDS: string;
         FEATURE_ADD_PROPERTY: string;
         FEATURE_REMOVE_PROPERTY: string;
+        class: Java.Class;
       }
     }
   }
@@ -22115,6 +22384,7 @@ export module Java {
         FEATURE_STRING_ARRAY_VALUES: string;
         FEATURE_STRING_VALUES: string;
         FEATURE_UNIFORM_LIST_VALUES: string;
+        class: Java.Class;
       }
     }
   }
@@ -22166,6 +22436,7 @@ export module Java {
     }
     export module TinkerGraphVariables {
       export interface Static {
+        class: Java.Class;
         new (): org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraphVariables;
       }
     }
@@ -22203,6 +22474,7 @@ export module Java {
     }
     export module TinkerHelper {
       export interface Static {
+        class: Java.Class;
         // public static void org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerHelper.autoUpdateIndex(org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerVertex,java.lang.String,java.lang.Object,java.lang.Object)
         autoUpdateIndex(arg0: Java.TinkerVertex, arg1: string_t, arg2: object_t, arg3: object_t): void;
         autoUpdateIndexP(arg0: Java.TinkerVertex, arg1: string_t, arg2: object_t, arg3: object_t): Promise<void>;
@@ -22315,6 +22587,7 @@ export module Java {
     }
     export module TinkerProperty {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.Element, arg1: string_t, arg2: object_t): org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerProperty;
       }
     }
@@ -22419,6 +22692,7 @@ export module Java {
       export interface Static {
         DEFAULT_LABEL: string;
         EMPTY_ARGS: object_t[];
+        class: Java.Class;
       }
     }
   }
@@ -22517,6 +22791,7 @@ export module Java {
     export module TinkerVertexProperty {
       export interface Static {
         DEFAULT_LABEL: string;
+        class: Java.Class;
         new (arg0: object_t, arg1: Java.TinkerVertex, arg2: string_t, arg3: object_t, ...arg4: object_t[]): org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerVertexProperty;
         new (arg0: Java.TinkerVertex, arg1: string_t, arg2: object_t, ...arg3: object_t[]): org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerVertexProperty;
       }
@@ -22561,6 +22836,7 @@ export module Java {
     }
     export module ArrayListSupplier {
       export interface Static {
+        class: Java.Class;
         // public static <A> org.apache.tinkerpop.gremlin.util.function.ArrayListSupplier<A> org.apache.tinkerpop.gremlin.util.function.ArrayListSupplier.instance()
         instance(): Java.ArrayListSupplier;
         instanceP(): Promise<Java.ArrayListSupplier>;
@@ -22606,6 +22882,7 @@ export module Java {
     }
     export module BulkSetSupplier {
       export interface Static {
+        class: Java.Class;
         // public static <A> org.apache.tinkerpop.gremlin.util.function.BulkSetSupplier<A> org.apache.tinkerpop.gremlin.util.function.BulkSetSupplier.instance()
         instance(): Java.BulkSetSupplier;
         instanceP(): Promise<Java.BulkSetSupplier>;
@@ -22669,6 +22946,7 @@ export module Java {
     }
     export module ChainedComparator {
       export interface Static {
+        class: Java.Class;
         new (arg0: Java.List): org.apache.tinkerpop.gremlin.util.function_.ChainedComparator;
       }
     }
@@ -22709,6 +22987,7 @@ export module Java {
     }
     export module ConstantSupplier {
       export interface Static {
+        class: Java.Class;
         new (arg0: object_t): org.apache.tinkerpop.gremlin.util.function_.ConstantSupplier;
       }
     }
@@ -22746,6 +23025,7 @@ export module Java {
     }
     export module FunctionUtils {
       export interface Static {
+        class: Java.Class;
         // public static <T,U> java.util.function.BiConsumer<T, U> org.apache.tinkerpop.gremlin.util.function.FunctionUtils.wrapBiConsumer(org.apache.tinkerpop.gremlin.util.function.ThrowingBiConsumer<T, U>)
         wrapBiConsumer(arg0: Java.ThrowingBiConsumer): Java.BiConsumer;
         wrapBiConsumerP(arg0: Java.ThrowingBiConsumer): Promise<Java.BiConsumer>;
@@ -22800,6 +23080,7 @@ export module Java {
     }
     export module HashMapSupplier {
       export interface Static {
+        class: Java.Class;
         // public static <K,V> org.apache.tinkerpop.gremlin.util.function.HashMapSupplier<K, V> org.apache.tinkerpop.gremlin.util.function.HashMapSupplier.instance()
         instance(): Java.HashMapSupplier;
         instanceP(): Promise<Java.HashMapSupplier>;
@@ -22845,6 +23126,7 @@ export module Java {
     }
     export module HashSetSupplier {
       export interface Static {
+        class: Java.Class;
         // public static <A> org.apache.tinkerpop.gremlin.util.function.HashSetSupplier<A> org.apache.tinkerpop.gremlin.util.function.HashSetSupplier.instance()
         instance(): Java.HashSetSupplier;
         instanceP(): Promise<Java.HashSetSupplier>;
@@ -22890,6 +23172,7 @@ export module Java {
     }
     export module MeanNumberSupplier {
       export interface Static {
+        class: Java.Class;
         // public static org.apache.tinkerpop.gremlin.util.function.MeanNumberSupplier org.apache.tinkerpop.gremlin.util.function.MeanNumberSupplier.instance()
         instance(): Java.MeanNumberSupplier;
         instanceP(): Promise<Java.MeanNumberSupplier>;
@@ -22971,6 +23254,7 @@ export module Java {
     }
     export module ScriptEngineLambda {
       export interface Static {
+        class: Java.Class;
         new (arg0: string_t, arg1: string_t): org.apache.tinkerpop.gremlin.util.function_.ScriptEngineLambda;
       }
     }
@@ -22984,6 +23268,7 @@ export module Java {
     }
     export module ThrowingBiConsumer {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -22996,6 +23281,7 @@ export module Java {
     }
     export module ThrowingConsumer {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -23008,6 +23294,7 @@ export module Java {
     }
     export module ThrowingFunction {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -23020,6 +23307,7 @@ export module Java {
     }
     export module ThrowingSupplier {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -23035,6 +23323,7 @@ export module Java {
     }
     export module TraversableLambda {
       export interface Static {
+        class: Java.Class;
         // public static <T> T org.apache.tinkerpop.gremlin.util.function.TraversableLambda.tryAndClone(java.lang.Object) throws java.lang.CloneNotSupportedException
         tryAndClone(arg0: object_t): object_t;
         tryAndCloneP(arg0: object_t): Promise<object_t>;
@@ -23080,6 +23369,7 @@ export module Java {
     }
     export module TreeSupplier {
       export interface Static {
+        class: Java.Class;
         // public static <A> org.apache.tinkerpop.gremlin.util.function.TreeSupplier<A> org.apache.tinkerpop.gremlin.util.function.TreeSupplier.instance()
         instance(): Java.TreeSupplier;
         instanceP(): Promise<Java.TreeSupplier>;
@@ -23098,6 +23388,7 @@ export module Java {
     }
     export module TriConsumer {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -23113,6 +23404,7 @@ export module Java {
     }
     export module TriFunction {
       export interface Static {
+        class: Java.Class;
       }
     }
   }
@@ -23149,6 +23441,7 @@ export module Java {
     }
     export module Gremlin {
       export interface Static {
+        class: Java.Class;
         // public static void org.apache.tinkerpop.gremlin.util.Gremlin.main(java.lang.String[]) throws java.io.IOException
         main(arg0: array_t<string_t>): void;
         mainP(arg0: array_t<string_t>): Promise<void>;
@@ -23192,6 +23485,7 @@ export module Java {
     export module ScriptEngineCache {
       export interface Static {
         DEFAULT_SCRIPT_ENGINE: string;
+        class: Java.Class;
         // public static javax.script.ScriptEngine org.apache.tinkerpop.gremlin.util.ScriptEngineCache.get(java.lang.String)
         get(arg0: string_t): Java.ScriptEngine;
         getP(arg0: string_t): Promise<Java.ScriptEngine>;
@@ -23231,6 +23525,7 @@ export module Java {
     }
     export module Serializer {
       export interface Static {
+        class: Java.Class;
         // public static java.lang.Object org.apache.tinkerpop.gremlin.util.Serializer.deserializeObject(byte[]) throws java.io.IOException,java.lang.ClassNotFoundException
         deserializeObject(arg0: object_array_t): object_t;
         deserializeObjectP(arg0: object_array_t): Promise<object_t>;
@@ -23273,6 +23568,7 @@ export module Java {
     }
     export module TimeUtil {
       export interface Static {
+        class: Java.Class;
         // public static double org.apache.tinkerpop.gremlin.util.TimeUtil.clock(int,java.lang.Runnable)
         clock(arg0: integer_t, arg1: object_t): number;
         clockP(arg0: integer_t, arg1: object_t): Promise<number>;
@@ -23480,6 +23776,7 @@ export module Java {
         COLORS_PREFERENCE_KEY: string;
         METACLASS_COMPLETION_PREFIX_LENGTH_PREFERENCE_KEY: string;
         __$stMC: boolean;
+        class: Java.Class;
         new (arg0: Java.ClassLoader, arg1: Java.Binding, arg2: object_t, arg3: Java.Closure): org.codehaus.groovy.tools.shell.Groovysh;
         new (arg0: Java.ClassLoader, arg1: Java.Binding, arg2: object_t): org.codehaus.groovy.tools.shell.Groovysh;
         new (arg0: Java.Binding, arg1: object_t): org.codehaus.groovy.tools.shell.Groovysh;
