@@ -33,6 +33,10 @@ interface TsJavaOptions {
   javaTypingsPath?: string;
     // The path to typings/java/java.d.ts. Defaults to 'typings/java/java.d.ts'.
 
+  debugTypingsPath?: string;
+    // The path to typings/debug/debug.d.ts to use in tsJavaModule.ts.
+    // If undefined, don't generate debug code in tsJavaModule.ts
+
   promisesPath?: string;
     // The path for the .d.ts file for the promises library.
     // Defaults to '../bluebird/bluebird.d.ts'.

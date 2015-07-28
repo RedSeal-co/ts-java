@@ -24,7 +24,7 @@
     "debug": "^2.1.1",
     "find-java-home": "^0.1.2",
     "glob": "^4.5.3",
-    "handlebars": "^2.0.0",
+    "handlebars": "^3.0.3",
     "immutable": "^3.3.0",
     "java": "^0.5.1",
     "lodash": "^2.4.1",

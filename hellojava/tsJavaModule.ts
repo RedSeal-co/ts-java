@@ -32,7 +32,8 @@ _java.asyncOptions = {
 function beforeJvm(): BluePromise<void> {
   var moduleJars: string[] = ['target/hellojava-1.0.0.jar'];
   moduleJars.forEach((jarPath: string) => {
-    _java.classpath.push(path.join(__dirname, '', jarPath));
+    var fullJarPath: string = path.join(__dirname, '', jarPath);
+    _java.classpath.push(fullJarPath);
   });
   return BluePromise.resolve();
 }
@@ -257,6 +258,7 @@ export module Java {
     }
     export module HelloJava {
       export interface Static {
+        class: Java.Object;
         new (): com.redseal.hellojava.HelloJava;
         // public static java.lang.String com.redseal.hellojava.HelloJava.sayHello()
         sayHelloA( cb: Callback<string>): void;
@@ -307,6 +309,7 @@ export module Java {
     }
     export module Object {
       export interface Static {
+        class: Java.Object;
         new (): java.lang.Object;
       }
     }
@@ -562,6 +565,7 @@ export module Java {
     export module String {
       export interface Static {
         CASE_INSENSITIVE_ORDER: object_t;
+        class: Java.Object;
         new (arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t): java.lang.String;
         new (arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: string_t): java.lang.String;
         new (arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t): java.lang.String;
