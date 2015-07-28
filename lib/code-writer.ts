@@ -29,6 +29,7 @@ interface EndFn {
 
 interface HandlebarHelperOptions {
   fn: Function;
+  inverse: Function;
   hash: any;
 }
 
@@ -117,7 +118,9 @@ class CodeWriter {
     handlebars.registerHelper('hasClass', (className: string, options: HandlebarHelperOptions) => {
       if (this.classes[className]) {
         return options.fn(this.classes[className]);
-      }
+      } else {
+        return options.inverse(this);
+     }
     });
     handlebars.registerHelper('ifdef', function(conditional: any, options: HandlebarHelperOptions) {
       if (conditional !== undefined) {
