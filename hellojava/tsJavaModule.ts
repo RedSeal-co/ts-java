@@ -81,6 +81,22 @@ export module Java {
     return _java.import(fullName);
   }
 
+  export function asInstanceOf(obj: any, className: 'HelloJava'): Java.com.redseal.hellojava.HelloJava;
+  export function asInstanceOf(obj: any, className: 'Object'): Java.java.lang.Object;
+  export function asInstanceOf(obj: any, className: 'String'): Java.java.lang.String;
+  export function asInstanceOf(obj: any, className: 'com.redseal.hellojava.HelloJava'): Java.com.redseal.hellojava.HelloJava;
+  export function asInstanceOf(obj: any, className: 'java.lang.Object'): Java.java.lang.Object;
+  export function asInstanceOf(obj: any, className: 'java.lang.String'): Java.java.lang.String;
+  export function asInstanceOf(obj: any, className: string): any;
+  export function asInstanceOf(obj: any, className: string): any {
+    var fullName: string = fullyQualifiedName(className) || className;
+    if (_java.instanceOf(obj, fullName)) {
+      return obj;
+    } else {
+      throw new Error('asInstanceOf fails, obj is not a ' + fullName);
+    }
+  }
+
   export interface Callback<T> {
     (err?: Error, result?: T): void;
   }
