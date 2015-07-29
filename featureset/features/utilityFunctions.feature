@@ -13,6 +13,7 @@ Feature: Utility Functions
     /// <reference path='../../typings/power-assert/power-assert.d.ts' />
 
     import assert = require('power-assert');
+    import BluePromise = require('bluebird');
     import java = require('../tsJavaModule');
     import Java = java.Java;
 
@@ -88,3 +89,20 @@ Feature: Utility Functions
     Then it compiles and lints cleanly
     And it runs and produces no output
 
+  Scenario: forEach
+    # forEach is a like array.forEach(), but for java classes implementing the java.util.Iterator interface
+    Given the above boilerplate with following scenario snippet:
+    """
+    var list: Java.ArrayList = Java.newInstance('java.util.ArrayList');
+    list.add('a');
+    list.add(42);
+    list.add(true);
+    var results: Java.object_t[] = [];
+    Java.forEach(list.iterator(), (item: Java.object_t): BluePromise<void> => {
+      results.push(item);
+      return BluePromise.resolve();
+    })
+    .then(() => assert.deepEqual(results, ['a', 42, true]));
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
