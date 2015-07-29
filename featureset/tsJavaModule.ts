@@ -16,6 +16,7 @@
 //   java.lang.Float
 //   java.lang.Integer
 //   java.lang.Long
+//   java.lang.Number
 //   java.lang.reflect.Method
 //   java.lang.Short
 //   java.util.function.Function
@@ -403,6 +404,7 @@ export module Java {
   export function importClass(className: 'java.lang.Float'): Java.java.lang.Float.Static;
   export function importClass(className: 'java.lang.Integer'): Java.java.lang.Integer.Static;
   export function importClass(className: 'java.lang.Long'): Java.java.lang.Long.Static;
+  export function importClass(className: 'java.lang.Number'): Java.java.lang.Number.Static;
   export function importClass(className: 'java.lang.Object'): Java.java.lang.Object.Static;
   export function importClass(className: 'java.lang.reflect.Method'): Java.java.lang.reflect.Method.Static;
   export function importClass(className: 'java.lang.Short'): Java.java.lang.Short.Static;
@@ -711,6 +713,7 @@ export module Java {
   export function asInstanceOf(obj: any, className: 'java.lang.Float'): Java.java.lang.Float;
   export function asInstanceOf(obj: any, className: 'java.lang.Integer'): Java.java.lang.Integer;
   export function asInstanceOf(obj: any, className: 'java.lang.Long'): Java.java.lang.Long;
+  export function asInstanceOf(obj: any, className: 'java.lang.Number'): Java.java.lang.Number;
   export function asInstanceOf(obj: any, className: 'java.lang.Object'): Java.java.lang.Object;
   export function asInstanceOf(obj: any, className: 'java.lang.reflect.Method'): Java.java.lang.reflect.Method;
   export function asInstanceOf(obj: any, className: 'java.lang.Short'): Java.java.lang.Short;
@@ -891,6 +894,7 @@ export module Java {
   export function newInstanceA(className: 'java.lang.Integer', arg0: integer_t, cb: Callback<number>): void;
   export function newInstanceA(className: 'java.lang.Long', arg0: string_t, cb: Callback<longValue_t>): void;
   export function newInstanceA(className: 'java.lang.Long', arg0: long_t, cb: Callback<longValue_t>): void;
+  export function newInstanceA(className: 'java.lang.Number', cb: Callback<number>): void;
   export function newInstanceA(className: 'java.lang.Object', cb: Callback<object_t>): void;
   export function newInstanceA(className: 'java.lang.Short', arg0: string_t, cb: Callback<number>): void;
   export function newInstanceA(className: 'java.lang.Short', arg0: short_t, cb: Callback<number>): void;
@@ -1108,6 +1112,7 @@ export module Java {
   export function newInstance(className: 'java.lang.Integer', arg0: integer_t): number;
   export function newInstance(className: 'java.lang.Long', arg0: string_t): longValue_t;
   export function newInstance(className: 'java.lang.Long', arg0: long_t): longValue_t;
+  export function newInstance(className: 'java.lang.Number'): number;
   export function newInstance(className: 'java.lang.Object'): object_t;
   export function newInstance(className: 'java.lang.Short', arg0: string_t): number;
   export function newInstance(className: 'java.lang.Short', arg0: short_t): number;
@@ -1325,6 +1330,7 @@ export module Java {
   export function newInstanceP(className: 'java.lang.Integer', arg0: integer_t): Promise<number>;
   export function newInstanceP(className: 'java.lang.Long', arg0: string_t): Promise<longValue_t>;
   export function newInstanceP(className: 'java.lang.Long', arg0: long_t): Promise<longValue_t>;
+  export function newInstanceP(className: 'java.lang.Number'): Promise<number>;
   export function newInstanceP(className: 'java.lang.Object'): Promise<object_t>;
   export function newInstanceP(className: 'java.lang.Short', arg0: string_t): Promise<number>;
   export function newInstanceP(className: 'java.lang.Short', arg0: short_t): Promise<number>;
@@ -1541,6 +1547,7 @@ export module Java {
   export function newArray(className: 'java.lang.Float', arg: float_t[]): array_t<java.lang.Float>;
   export function newArray(className: 'java.lang.Integer', arg: integer_t[]): array_t<java.lang.Integer>;
   export function newArray(className: 'java.lang.Long', arg: long_t[]): array_t<java.lang.Long>;
+  export function newArray(className: 'java.lang.Number', arg: number_t[]): array_t<java.lang.Number>;
   export function newArray(className: 'java.lang.Object', arg: object_t[]): array_t<java.lang.Object>;
   export function newArray(className: 'java.lang.reflect.Method', arg: Java.Method[]): array_t<java.lang.reflect.Method>;
   export function newArray(className: 'java.lang.Short', arg: short_t[]): array_t<java.lang.Short>;
@@ -1706,7 +1713,7 @@ export module Java {
   export type integer_t = number | Java.java.lang.Integer;
   export type double_t = number | Java.java.lang.Double;
   export type float_t = number | Java.java.lang.Float;
-  export type number_t = number ;
+  export type number_t = number | Java.java.lang.Number;
 
   export interface array_t<T> extends Java.java.lang.Object {
     // This is an opaque type for a java array_t T[];
@@ -3168,8 +3175,8 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Double extends Java.java.lang.Object {
-      // public byte java.lang.Double.byteValue()
+    export interface Double extends Java.java.lang.Number {
+      // public byte java.lang.Number.byteValue()
       byteValueA( cb: Callback<object_t>): void;
       byteValue(): object_t;
       byteValueP(): Promise<object_t>;
@@ -3181,7 +3188,7 @@ export module Java {
       compareToA(arg0: double_t, cb: Callback<number>): void;
       compareTo(arg0: double_t): number;
       compareToP(arg0: double_t): Promise<number>;
-      // public double java.lang.Double.doubleValue()
+      // public abstract double java.lang.Number.doubleValue()
       doubleValueA( cb: Callback<number>): void;
       doubleValue(): number;
       doubleValueP(): Promise<number>;
@@ -3189,7 +3196,7 @@ export module Java {
       equalsA(arg0: object_t, cb: Callback<boolean>): void;
       equals(arg0: object_t): boolean;
       equalsP(arg0: object_t): Promise<boolean>;
-      // public float java.lang.Double.floatValue()
+      // public abstract float java.lang.Number.floatValue()
       floatValueA( cb: Callback<number>): void;
       floatValue(): number;
       floatValueP(): Promise<number>;
@@ -3201,7 +3208,7 @@ export module Java {
       hashCodeA( cb: Callback<number>): void;
       hashCode(): number;
       hashCodeP(): Promise<number>;
-      // public int java.lang.Double.intValue()
+      // public abstract int java.lang.Number.intValue()
       intValueA( cb: Callback<number>): void;
       intValue(): number;
       intValueP(): Promise<number>;
@@ -3213,7 +3220,7 @@ export module Java {
       isNaNA( cb: Callback<boolean>): void;
       isNaN(): boolean;
       isNaNP(): Promise<boolean>;
-      // public long java.lang.Double.longValue()
+      // public abstract long java.lang.Number.longValue()
       longValueA( cb: Callback<longValue_t>): void;
       longValue(): longValue_t;
       longValueP(): Promise<longValue_t>;
@@ -3225,7 +3232,7 @@ export module Java {
       notifyAllA( cb: Callback<void>): void;
       notifyAll(): void;
       notifyAllP(): Promise<void>;
-      // public short java.lang.Double.shortValue()
+      // public short java.lang.Number.shortValue()
       shortValueA( cb: Callback<number>): void;
       shortValue(): number;
       shortValueP(): Promise<number>;
@@ -3331,8 +3338,8 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Float extends Java.java.lang.Object {
-      // public byte java.lang.Float.byteValue()
+    export interface Float extends Java.java.lang.Number {
+      // public byte java.lang.Number.byteValue()
       byteValueA( cb: Callback<object_t>): void;
       byteValue(): object_t;
       byteValueP(): Promise<object_t>;
@@ -3344,7 +3351,7 @@ export module Java {
       compareToA(arg0: float_t, cb: Callback<number>): void;
       compareTo(arg0: float_t): number;
       compareToP(arg0: float_t): Promise<number>;
-      // public double java.lang.Float.doubleValue()
+      // public abstract double java.lang.Number.doubleValue()
       doubleValueA( cb: Callback<number>): void;
       doubleValue(): number;
       doubleValueP(): Promise<number>;
@@ -3352,7 +3359,7 @@ export module Java {
       equalsA(arg0: object_t, cb: Callback<boolean>): void;
       equals(arg0: object_t): boolean;
       equalsP(arg0: object_t): Promise<boolean>;
-      // public float java.lang.Float.floatValue()
+      // public abstract float java.lang.Number.floatValue()
       floatValueA( cb: Callback<number>): void;
       floatValue(): number;
       floatValueP(): Promise<number>;
@@ -3364,7 +3371,7 @@ export module Java {
       hashCodeA( cb: Callback<number>): void;
       hashCode(): number;
       hashCodeP(): Promise<number>;
-      // public int java.lang.Float.intValue()
+      // public abstract int java.lang.Number.intValue()
       intValueA( cb: Callback<number>): void;
       intValue(): number;
       intValueP(): Promise<number>;
@@ -3376,7 +3383,7 @@ export module Java {
       isNaNA( cb: Callback<boolean>): void;
       isNaN(): boolean;
       isNaNP(): Promise<boolean>;
-      // public long java.lang.Float.longValue()
+      // public abstract long java.lang.Number.longValue()
       longValueA( cb: Callback<longValue_t>): void;
       longValue(): longValue_t;
       longValueP(): Promise<longValue_t>;
@@ -3388,7 +3395,7 @@ export module Java {
       notifyAllA( cb: Callback<void>): void;
       notifyAll(): void;
       notifyAllP(): Promise<void>;
-      // public short java.lang.Float.shortValue()
+      // public short java.lang.Number.shortValue()
       shortValueA( cb: Callback<number>): void;
       shortValue(): number;
       shortValueP(): Promise<number>;
@@ -3495,8 +3502,8 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Integer extends Java.java.lang.Object {
-      // public byte java.lang.Integer.byteValue()
+    export interface Integer extends Java.java.lang.Number {
+      // public byte java.lang.Number.byteValue()
       byteValueA( cb: Callback<object_t>): void;
       byteValue(): object_t;
       byteValueP(): Promise<object_t>;
@@ -3508,7 +3515,7 @@ export module Java {
       compareToA(arg0: object_t, cb: Callback<number>): void;
       compareTo(arg0: object_t): number;
       compareToP(arg0: object_t): Promise<number>;
-      // public double java.lang.Integer.doubleValue()
+      // public abstract double java.lang.Number.doubleValue()
       doubleValueA( cb: Callback<number>): void;
       doubleValue(): number;
       doubleValueP(): Promise<number>;
@@ -3516,7 +3523,7 @@ export module Java {
       equalsA(arg0: object_t, cb: Callback<boolean>): void;
       equals(arg0: object_t): boolean;
       equalsP(arg0: object_t): Promise<boolean>;
-      // public float java.lang.Integer.floatValue()
+      // public abstract float java.lang.Number.floatValue()
       floatValueA( cb: Callback<number>): void;
       floatValue(): number;
       floatValueP(): Promise<number>;
@@ -3528,11 +3535,11 @@ export module Java {
       hashCodeA( cb: Callback<number>): void;
       hashCode(): number;
       hashCodeP(): Promise<number>;
-      // public int java.lang.Integer.intValue()
+      // public abstract int java.lang.Number.intValue()
       intValueA( cb: Callback<number>): void;
       intValue(): number;
       intValueP(): Promise<number>;
-      // public long java.lang.Integer.longValue()
+      // public abstract long java.lang.Number.longValue()
       longValueA( cb: Callback<longValue_t>): void;
       longValue(): longValue_t;
       longValueP(): Promise<longValue_t>;
@@ -3544,7 +3551,7 @@ export module Java {
       notifyAllA( cb: Callback<void>): void;
       notifyAll(): void;
       notifyAllP(): Promise<void>;
-      // public short java.lang.Integer.shortValue()
+      // public short java.lang.Number.shortValue()
       shortValueA( cb: Callback<number>): void;
       shortValue(): number;
       shortValueP(): Promise<number>;
@@ -3728,8 +3735,8 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Long extends Java.java.lang.Object {
-      // public byte java.lang.Long.byteValue()
+    export interface Long extends Java.java.lang.Number {
+      // public byte java.lang.Number.byteValue()
       byteValueA( cb: Callback<object_t>): void;
       byteValue(): object_t;
       byteValueP(): Promise<object_t>;
@@ -3741,7 +3748,7 @@ export module Java {
       compareToA(arg0: long_t, cb: Callback<number>): void;
       compareTo(arg0: long_t): number;
       compareToP(arg0: long_t): Promise<number>;
-      // public double java.lang.Long.doubleValue()
+      // public abstract double java.lang.Number.doubleValue()
       doubleValueA( cb: Callback<number>): void;
       doubleValue(): number;
       doubleValueP(): Promise<number>;
@@ -3749,7 +3756,7 @@ export module Java {
       equalsA(arg0: object_t, cb: Callback<boolean>): void;
       equals(arg0: object_t): boolean;
       equalsP(arg0: object_t): Promise<boolean>;
-      // public float java.lang.Long.floatValue()
+      // public abstract float java.lang.Number.floatValue()
       floatValueA( cb: Callback<number>): void;
       floatValue(): number;
       floatValueP(): Promise<number>;
@@ -3761,11 +3768,11 @@ export module Java {
       hashCodeA( cb: Callback<number>): void;
       hashCode(): number;
       hashCodeP(): Promise<number>;
-      // public int java.lang.Long.intValue()
+      // public abstract int java.lang.Number.intValue()
       intValueA( cb: Callback<number>): void;
       intValue(): number;
       intValueP(): Promise<number>;
-      // public long java.lang.Long.longValue()
+      // public abstract long java.lang.Number.longValue()
       longValueA( cb: Callback<longValue_t>): void;
       longValue(): longValue_t;
       longValueP(): Promise<longValue_t>;
@@ -3777,7 +3784,7 @@ export module Java {
       notifyAllA( cb: Callback<void>): void;
       notifyAll(): void;
       notifyAllP(): Promise<void>;
-      // public short java.lang.Long.shortValue()
+      // public short java.lang.Number.shortValue()
       shortValueA( cb: Callback<number>): void;
       shortValue(): number;
       shortValueP(): Promise<number>;
@@ -3952,6 +3959,77 @@ export module Java {
         valueOfA(arg0: long_t, cb: Callback<longValue_t>): void;
         valueOf(arg0: long_t): longValue_t;
         valueOfP(arg0: long_t): Promise<longValue_t>;
+      }
+    }
+  }
+
+  export module java.lang {
+    export interface Number extends Java.java.lang.Object {
+      // public byte java.lang.Number.byteValue()
+      byteValueA( cb: Callback<object_t>): void;
+      byteValue(): object_t;
+      byteValueP(): Promise<object_t>;
+      // public abstract double java.lang.Number.doubleValue()
+      doubleValueA( cb: Callback<number>): void;
+      doubleValue(): number;
+      doubleValueP(): Promise<number>;
+      // public boolean java.lang.Object.equals(java.lang.Object)
+      equalsA(arg0: object_t, cb: Callback<boolean>): void;
+      equals(arg0: object_t): boolean;
+      equalsP(arg0: object_t): Promise<boolean>;
+      // public abstract float java.lang.Number.floatValue()
+      floatValueA( cb: Callback<number>): void;
+      floatValue(): number;
+      floatValueP(): Promise<number>;
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClassA( cb: Callback<Java.Class>): void;
+      getClass(): Java.Class;
+      getClassP(): Promise<Java.Class>;
+      // public native int java.lang.Object.hashCode()
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
+      // public abstract int java.lang.Number.intValue()
+      intValueA( cb: Callback<number>): void;
+      intValue(): number;
+      intValueP(): Promise<number>;
+      // public abstract long java.lang.Number.longValue()
+      longValueA( cb: Callback<longValue_t>): void;
+      longValue(): longValue_t;
+      longValueP(): Promise<longValue_t>;
+      // public final native void java.lang.Object.notify()
+      notifyA( cb: Callback<void>): void;
+      notify(): void;
+      notifyP(): Promise<void>;
+      // public final native void java.lang.Object.notifyAll()
+      notifyAllA( cb: Callback<void>): void;
+      notifyAll(): void;
+      notifyAllP(): Promise<void>;
+      // public short java.lang.Number.shortValue()
+      shortValueA( cb: Callback<number>): void;
+      shortValue(): number;
+      shortValueP(): Promise<number>;
+      // public java.lang.String java.lang.Object.toString()
+      toStringA( cb: Callback<string>): void;
+      toString(): string;
+      toStringP(): Promise<string>;
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      waitA(arg0: long_t, arg1: integer_t, cb: Callback<void>): void;
+      wait(arg0: long_t, arg1: integer_t): void;
+      waitP(arg0: long_t, arg1: integer_t): Promise<void>;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      waitA(arg0: long_t, cb: Callback<void>): void;
+      wait(arg0: long_t): void;
+      waitP(arg0: long_t): Promise<void>;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      waitA( cb: Callback<void>): void;
+      wait(): void;
+      waitP(): Promise<void>;
+    }
+    export module Number {
+      export interface Static {
+        class: Java.Class;
+        new (): java.lang.Number;
       }
     }
   }
@@ -4190,8 +4268,8 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Short extends Java.java.lang.Object {
-      // public byte java.lang.Short.byteValue()
+    export interface Short extends Java.java.lang.Number {
+      // public byte java.lang.Number.byteValue()
       byteValueA( cb: Callback<object_t>): void;
       byteValue(): object_t;
       byteValueP(): Promise<object_t>;
@@ -4203,7 +4281,7 @@ export module Java {
       compareToA(arg0: short_t, cb: Callback<number>): void;
       compareTo(arg0: short_t): number;
       compareToP(arg0: short_t): Promise<number>;
-      // public double java.lang.Short.doubleValue()
+      // public abstract double java.lang.Number.doubleValue()
       doubleValueA( cb: Callback<number>): void;
       doubleValue(): number;
       doubleValueP(): Promise<number>;
@@ -4211,7 +4289,7 @@ export module Java {
       equalsA(arg0: object_t, cb: Callback<boolean>): void;
       equals(arg0: object_t): boolean;
       equalsP(arg0: object_t): Promise<boolean>;
-      // public float java.lang.Short.floatValue()
+      // public abstract float java.lang.Number.floatValue()
       floatValueA( cb: Callback<number>): void;
       floatValue(): number;
       floatValueP(): Promise<number>;
@@ -4223,11 +4301,11 @@ export module Java {
       hashCodeA( cb: Callback<number>): void;
       hashCode(): number;
       hashCodeP(): Promise<number>;
-      // public int java.lang.Short.intValue()
+      // public abstract int java.lang.Number.intValue()
       intValueA( cb: Callback<number>): void;
       intValue(): number;
       intValueP(): Promise<number>;
-      // public long java.lang.Short.longValue()
+      // public abstract long java.lang.Number.longValue()
       longValueA( cb: Callback<longValue_t>): void;
       longValue(): longValue_t;
       longValueP(): Promise<longValue_t>;
@@ -4239,7 +4317,7 @@ export module Java {
       notifyAllA( cb: Callback<void>): void;
       notifyAll(): void;
       notifyAllP(): Promise<void>;
-      // public short java.lang.Short.shortValue()
+      // public short java.lang.Number.shortValue()
       shortValueA( cb: Callback<number>): void;
       shortValue(): number;
       shortValueP(): Promise<number>;
