@@ -128,6 +128,44 @@ export module Java {
     return _java.import(fullName);
   }
 
+  export function asInstanceOf(obj: any, className: 'Boolean'): Java.java.lang.Boolean;
+  export function asInstanceOf(obj: any, className: 'Class'): Java.java.lang.Class;
+  export function asInstanceOf(obj: any, className: 'ClassLoader'): Java.java.lang.ClassLoader;
+  export function asInstanceOf(obj: any, className: 'Integer'): Java.java.lang.Integer;
+  export function asInstanceOf(obj: any, className: 'Object'): Java.java.lang.Object;
+  export function asInstanceOf(obj: any, className: 'AccessibleObject'): Java.java.lang.reflect.AccessibleObject;
+  export function asInstanceOf(obj: any, className: 'Constructor'): Java.java.lang.reflect.Constructor;
+  export function asInstanceOf(obj: any, className: 'Executable'): Java.java.lang.reflect.Executable;
+  export function asInstanceOf(obj: any, className: 'Field'): Java.java.lang.reflect.Field;
+  export function asInstanceOf(obj: any, className: 'Method'): Java.java.lang.reflect.Method;
+  export function asInstanceOf(obj: any, className: 'Modifier'): Java.java.lang.reflect.Modifier;
+  export function asInstanceOf(obj: any, className: 'Parameter'): Java.java.lang.reflect.Parameter;
+  export function asInstanceOf(obj: any, className: 'Type'): Java.java.lang.reflect.Type;
+  export function asInstanceOf(obj: any, className: 'String'): Java.java.lang.String;
+  export function asInstanceOf(obj: any, className: 'java.lang.Boolean'): Java.java.lang.Boolean;
+  export function asInstanceOf(obj: any, className: 'java.lang.Class'): Java.java.lang.Class;
+  export function asInstanceOf(obj: any, className: 'java.lang.ClassLoader'): Java.java.lang.ClassLoader;
+  export function asInstanceOf(obj: any, className: 'java.lang.Integer'): Java.java.lang.Integer;
+  export function asInstanceOf(obj: any, className: 'java.lang.Object'): Java.java.lang.Object;
+  export function asInstanceOf(obj: any, className: 'java.lang.reflect.AccessibleObject'): Java.java.lang.reflect.AccessibleObject;
+  export function asInstanceOf(obj: any, className: 'java.lang.reflect.Constructor'): Java.java.lang.reflect.Constructor;
+  export function asInstanceOf(obj: any, className: 'java.lang.reflect.Executable'): Java.java.lang.reflect.Executable;
+  export function asInstanceOf(obj: any, className: 'java.lang.reflect.Field'): Java.java.lang.reflect.Field;
+  export function asInstanceOf(obj: any, className: 'java.lang.reflect.Method'): Java.java.lang.reflect.Method;
+  export function asInstanceOf(obj: any, className: 'java.lang.reflect.Modifier'): Java.java.lang.reflect.Modifier;
+  export function asInstanceOf(obj: any, className: 'java.lang.reflect.Parameter'): Java.java.lang.reflect.Parameter;
+  export function asInstanceOf(obj: any, className: 'java.lang.reflect.Type'): Java.java.lang.reflect.Type;
+  export function asInstanceOf(obj: any, className: 'java.lang.String'): Java.java.lang.String;
+  export function asInstanceOf(obj: any, className: string): any;
+  export function asInstanceOf(obj: any, className: string): any {
+    var fullName: string = fullyQualifiedName(className) || className;
+    if (_java.instanceOf(obj, fullName)) {
+      return obj;
+    } else {
+      throw new Error('asInstanceOf fails, obj is not a ' + fullName);
+    }
+  }
+
   export interface Callback<T> {
     (err?: Error, result?: T): void;
   }

@@ -39,7 +39,7 @@ describe('ClassesMap', () => {
   var classesMap: ClassesMap = undefined;
 
   before((): BluePromise<void> => {
-    process.chdir('tinkerpop');
+    process.chdir('featureset');
     expect(classesMap).to.not.exist;
     tsJavaMain = new TsJavaMain(path.join('package.json'));
     return tsJavaMain.load().then((_classesMap: ClassesMap) => {
@@ -59,18 +59,12 @@ describe('ClassesMap', () => {
     it('should return true for valid class names', () => {
       expect(classesMap.inWhiteList('java.lang.Object')).to.equal(true);
       expect(classesMap.inWhiteList('java.util.Iterator')).to.equal(true);
-
-      // The tinkerpop package.json only includes specific tinkerpop packages and not package hierarchies.
-      // So, inWhiteList will return true only for class paths that appear to be in one of the included packages,
-      // but the class (in this case `Foo`) need not actually exist.
-      expect(classesMap.inWhiteList('org.apache.tinkerpop.gremlin.structure.Foo')).to.equal(true);
+      expect(classesMap.inWhiteList('com.redseal.featureset.Foo')).to.equal(true);
     });
     it('should return false for invalid class names', () => {
       expect(classesMap.inWhiteList('')).to.equal(false);
       expect(classesMap.inWhiteList('com')).to.equal(false);
-      expect(classesMap.inWhiteList('java.util.Iterators')).to.equal(false);
-      expect(classesMap.inWhiteList('org.apache.tinkerpop.gremlin')).to.equal(false);
-      expect(classesMap.inWhiteList('org.apache.tinkerpop.Gremlin.Foo')).to.equal(false);
+      expect(classesMap.inWhiteList('com.redseal.featureset')).to.equal(false);
     });
   });
 
@@ -78,7 +72,7 @@ describe('ClassesMap', () => {
     it('should give expected results for valid class names', () => {
       expect(classesMap.shortClassName('java.lang.Object')).to.equal('Object');
       expect(classesMap.shortClassName('java.util.Iterator')).to.equal('Iterator');
-      expect(classesMap.shortClassName('org.apache.tinkerpop.gremlin.Foo')).to.equal('Foo');
+      expect(classesMap.shortClassName('com.redseal.featureset.SomeClass')).to.equal('SomeClass');
     });
   });
 
@@ -91,10 +85,10 @@ describe('ClassesMap', () => {
     it('should fail for an invalid class name', () => {
       expect(function () { classesMap.getClass('net.lang.Object'); }).to.throw(/java.lang.ClassNotFoundException/);
     });
-    it('should return a valid Class object for org.apache.tinkerpop.gremlin.structure.Edge', () => {
-      var clazz = classesMap.getClass('org.apache.tinkerpop.gremlin.structure.Edge');
+    it('should return a valid Class object for com.redseal.featureset.SomeClass', () => {
+      var clazz = classesMap.getClass('com.redseal.featureset.SomeClass');
       expect(clazz).to.be.ok;
-      expect(clazz.getName()).to.equal('org.apache.tinkerpop.gremlin.structure.Edge');
+      expect(clazz.getName()).to.equal('com.redseal.featureset.SomeClass');
     });
   });
 
@@ -105,20 +99,11 @@ describe('ClassesMap', () => {
       var interfaces = classesMap.mapClassInterfaces(className, clazz);
       expect(interfaces).to.deep.equal([]);
     });
-    it('should find one interface for java.util.Iterator', () => {
-      var className = 'java.util.Iterator';
+    it('should find the interfaces of com.redseal.featureset.SomeAbstractClass', () => {
+      var className = 'com.redseal.featureset.SomeAbstractClass';
       var clazz = classesMap.getClass(className);
       var interfaces = classesMap.mapClassInterfaces(className, clazz);
-      var expected = ['java.lang.Object'];
-      expect(interfaces).to.deep.equal(expected);
-    });
-    it('should find the interfaces of org.apache.tinkerpop.gremlin.structure.Edge', () => {
-      var className = 'org.apache.tinkerpop.gremlin.structure.Edge';
-      var clazz = classesMap.getClass(className);
-      var interfaces = classesMap.mapClassInterfaces(className, clazz);
-      var expected = [
-        'org.apache.tinkerpop.gremlin.structure.Element'
-      ];
+      var expected: string[] = [ 'com.redseal.featureset.SomeInterface' ];
       expect(interfaces).to.deep.equal(expected);
     });
   });

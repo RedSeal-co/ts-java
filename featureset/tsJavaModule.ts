@@ -16,6 +16,7 @@
 //   java.lang.Float
 //   java.lang.Integer
 //   java.lang.Long
+//   java.lang.Number
 //   java.lang.reflect.Method
 //   java.lang.Short
 //   java.util.function.Function
@@ -403,6 +404,7 @@ export module Java {
   export function importClass(className: 'java.lang.Float'): Java.java.lang.Float.Static;
   export function importClass(className: 'java.lang.Integer'): Java.java.lang.Integer.Static;
   export function importClass(className: 'java.lang.Long'): Java.java.lang.Long.Static;
+  export function importClass(className: 'java.lang.Number'): Java.java.lang.Number.Static;
   export function importClass(className: 'java.lang.Object'): Java.java.lang.Object.Static;
   export function importClass(className: 'java.lang.reflect.Method'): Java.java.lang.reflect.Method.Static;
   export function importClass(className: 'java.lang.Short'): Java.java.lang.Short.Static;
@@ -542,6 +544,319 @@ export module Java {
     return _java.import(fullName);
   }
 
+  export function asInstanceOf(obj: any, className: 'Thing$Nested'): Java.com.redseal.featureset.ambiguous.Thing$Nested;
+  export function asInstanceOf(obj: any, className: 'AnEnum'): Java.com.redseal.featureset.AnEnum;
+  export function asInstanceOf(obj: any, className: 'AnonClassTest'): Java.com.redseal.featureset.AnonClassTest;
+  export function asInstanceOf(obj: any, className: 'Overloading'): Java.com.redseal.featureset.overloading.Overloading;
+  export function asInstanceOf(obj: any, className: 'Overloading$Bar'): Java.com.redseal.featureset.overloading.Overloading$Bar;
+  export function asInstanceOf(obj: any, className: 'Overloading$Foo'): Java.com.redseal.featureset.overloading.Overloading$Foo;
+  export function asInstanceOf(obj: any, className: 'Step'): Java.com.redseal.featureset.overloading.Step;
+  export function asInstanceOf(obj: any, className: 'SomeAbstractClass'): Java.com.redseal.featureset.SomeAbstractClass;
+  export function asInstanceOf(obj: any, className: 'SomeClass'): Java.com.redseal.featureset.SomeClass;
+  export function asInstanceOf(obj: any, className: 'SomeInterface'): Java.com.redseal.featureset.SomeInterface;
+  export function asInstanceOf(obj: any, className: 'TinyInterface'): Java.com.redseal.featureset.TinyInterface;
+  export function asInstanceOf(obj: any, className: 'Boolean'): Java.java.lang.Boolean;
+  export function asInstanceOf(obj: any, className: 'Class'): Java.java.lang.Class;
+  export function asInstanceOf(obj: any, className: 'Double'): Java.java.lang.Double;
+  export function asInstanceOf(obj: any, className: 'Float'): Java.java.lang.Float;
+  export function asInstanceOf(obj: any, className: 'Integer'): Java.java.lang.Integer;
+  export function asInstanceOf(obj: any, className: 'Long'): Java.java.lang.Long;
+  export function asInstanceOf(obj: any, className: 'Object'): Java.java.lang.Object;
+  export function asInstanceOf(obj: any, className: 'Method'): Java.java.lang.reflect.Method;
+  export function asInstanceOf(obj: any, className: 'Short'): Java.java.lang.Short;
+  export function asInstanceOf(obj: any, className: 'String'): Java.java.lang.String;
+  export function asInstanceOf(obj: any, className: 'AbstractCollection'): Java.java.util.AbstractCollection;
+  export function asInstanceOf(obj: any, className: 'AbstractList'): Java.java.util.AbstractList;
+  export function asInstanceOf(obj: any, className: 'AbstractMap'): Java.java.util.AbstractMap;
+  export function asInstanceOf(obj: any, className: 'AbstractMap$SimpleEntry'): Java.java.util.AbstractMap$SimpleEntry;
+  export function asInstanceOf(obj: any, className: 'AbstractMap$SimpleImmutableEntry'): Java.java.util.AbstractMap$SimpleImmutableEntry;
+  export function asInstanceOf(obj: any, className: 'AbstractQueue'): Java.java.util.AbstractQueue;
+  export function asInstanceOf(obj: any, className: 'AbstractSequentialList'): Java.java.util.AbstractSequentialList;
+  export function asInstanceOf(obj: any, className: 'AbstractSet'): Java.java.util.AbstractSet;
+  export function asInstanceOf(obj: any, className: 'ArrayDeque'): Java.java.util.ArrayDeque;
+  export function asInstanceOf(obj: any, className: 'ArrayList'): Java.java.util.ArrayList;
+  export function asInstanceOf(obj: any, className: 'Arrays'): Java.java.util.Arrays;
+  export function asInstanceOf(obj: any, className: 'Base64'): Java.java.util.Base64;
+  export function asInstanceOf(obj: any, className: 'Base64$Decoder'): Java.java.util.Base64$Decoder;
+  export function asInstanceOf(obj: any, className: 'Base64$Encoder'): Java.java.util.Base64$Encoder;
+  export function asInstanceOf(obj: any, className: 'BitSet'): Java.java.util.BitSet;
+  export function asInstanceOf(obj: any, className: 'Calendar'): Java.java.util.Calendar;
+  export function asInstanceOf(obj: any, className: 'Calendar$Builder'): Java.java.util.Calendar$Builder;
+  export function asInstanceOf(obj: any, className: 'Collection'): Java.java.util.Collection;
+  export function asInstanceOf(obj: any, className: 'Collections'): Java.java.util.Collections;
+  export function asInstanceOf(obj: any, className: 'Comparator'): Java.java.util.Comparator;
+  export function asInstanceOf(obj: any, className: 'ConcurrentModificationException'): Java.java.util.ConcurrentModificationException;
+  export function asInstanceOf(obj: any, className: 'Currency'): Java.java.util.Currency;
+  export function asInstanceOf(obj: any, className: 'Date'): Java.java.util.Date;
+  export function asInstanceOf(obj: any, className: 'Deque'): Java.java.util.Deque;
+  export function asInstanceOf(obj: any, className: 'Dictionary'): Java.java.util.Dictionary;
+  export function asInstanceOf(obj: any, className: 'DoubleSummaryStatistics'): Java.java.util.DoubleSummaryStatistics;
+  export function asInstanceOf(obj: any, className: 'DuplicateFormatFlagsException'): Java.java.util.DuplicateFormatFlagsException;
+  export function asInstanceOf(obj: any, className: 'EmptyStackException'): Java.java.util.EmptyStackException;
+  export function asInstanceOf(obj: any, className: 'Enumeration'): Java.java.util.Enumeration;
+  export function asInstanceOf(obj: any, className: 'EnumMap'): Java.java.util.EnumMap;
+  export function asInstanceOf(obj: any, className: 'EnumSet'): Java.java.util.EnumSet;
+  export function asInstanceOf(obj: any, className: 'EventListener'): Java.java.util.EventListener;
+  export function asInstanceOf(obj: any, className: 'EventListenerProxy'): Java.java.util.EventListenerProxy;
+  export function asInstanceOf(obj: any, className: 'EventObject'): Java.java.util.EventObject;
+  export function asInstanceOf(obj: any, className: 'FormatFlagsConversionMismatchException'): Java.java.util.FormatFlagsConversionMismatchException;
+  export function asInstanceOf(obj: any, className: 'Formattable'): Java.java.util.Formattable;
+  export function asInstanceOf(obj: any, className: 'FormattableFlags'): Java.java.util.FormattableFlags;
+  export function asInstanceOf(obj: any, className: 'Formatter'): Java.java.util.Formatter;
+  export function asInstanceOf(obj: any, className: 'Formatter$BigDecimalLayoutForm'): Java.java.util.Formatter$BigDecimalLayoutForm;
+  export function asInstanceOf(obj: any, className: 'FormatterClosedException'): Java.java.util.FormatterClosedException;
+  export function asInstanceOf(obj: any, className: 'Function'): Java.java.util.function_.Function;
+  export function asInstanceOf(obj: any, className: 'GregorianCalendar'): Java.java.util.GregorianCalendar;
+  export function asInstanceOf(obj: any, className: 'HashMap'): Java.java.util.HashMap;
+  export function asInstanceOf(obj: any, className: 'HashSet'): Java.java.util.HashSet;
+  export function asInstanceOf(obj: any, className: 'Hashtable'): Java.java.util.Hashtable;
+  export function asInstanceOf(obj: any, className: 'IdentityHashMap'): Java.java.util.IdentityHashMap;
+  export function asInstanceOf(obj: any, className: 'IllegalFormatCodePointException'): Java.java.util.IllegalFormatCodePointException;
+  export function asInstanceOf(obj: any, className: 'IllegalFormatConversionException'): Java.java.util.IllegalFormatConversionException;
+  export function asInstanceOf(obj: any, className: 'IllegalFormatException'): Java.java.util.IllegalFormatException;
+  export function asInstanceOf(obj: any, className: 'IllegalFormatFlagsException'): Java.java.util.IllegalFormatFlagsException;
+  export function asInstanceOf(obj: any, className: 'IllegalFormatPrecisionException'): Java.java.util.IllegalFormatPrecisionException;
+  export function asInstanceOf(obj: any, className: 'IllegalFormatWidthException'): Java.java.util.IllegalFormatWidthException;
+  export function asInstanceOf(obj: any, className: 'IllformedLocaleException'): Java.java.util.IllformedLocaleException;
+  export function asInstanceOf(obj: any, className: 'InputMismatchException'): Java.java.util.InputMismatchException;
+  export function asInstanceOf(obj: any, className: 'IntSummaryStatistics'): Java.java.util.IntSummaryStatistics;
+  export function asInstanceOf(obj: any, className: 'InvalidPropertiesFormatException'): Java.java.util.InvalidPropertiesFormatException;
+  export function asInstanceOf(obj: any, className: 'Iterator'): Java.java.util.Iterator;
+  export function asInstanceOf(obj: any, className: 'LinkedHashMap'): Java.java.util.LinkedHashMap;
+  export function asInstanceOf(obj: any, className: 'LinkedHashSet'): Java.java.util.LinkedHashSet;
+  export function asInstanceOf(obj: any, className: 'LinkedList'): Java.java.util.LinkedList;
+  export function asInstanceOf(obj: any, className: 'List'): Java.java.util.List;
+  export function asInstanceOf(obj: any, className: 'ListIterator'): Java.java.util.ListIterator;
+  export function asInstanceOf(obj: any, className: 'ListResourceBundle'): Java.java.util.ListResourceBundle;
+  export function asInstanceOf(obj: any, className: 'Locale'): Java.java.util.Locale;
+  export function asInstanceOf(obj: any, className: 'Locale$Builder'): Java.java.util.Locale$Builder;
+  export function asInstanceOf(obj: any, className: 'Locale$Category'): Java.java.util.Locale$Category;
+  export function asInstanceOf(obj: any, className: 'Locale$FilteringMode'): Java.java.util.Locale$FilteringMode;
+  export function asInstanceOf(obj: any, className: 'Locale$LanguageRange'): Java.java.util.Locale$LanguageRange;
+  export function asInstanceOf(obj: any, className: 'LongSummaryStatistics'): Java.java.util.LongSummaryStatistics;
+  export function asInstanceOf(obj: any, className: 'Map'): Java.java.util.Map;
+  export function asInstanceOf(obj: any, className: 'Map$Entry'): Java.java.util.Map$Entry;
+  export function asInstanceOf(obj: any, className: 'MissingFormatArgumentException'): Java.java.util.MissingFormatArgumentException;
+  export function asInstanceOf(obj: any, className: 'MissingFormatWidthException'): Java.java.util.MissingFormatWidthException;
+  export function asInstanceOf(obj: any, className: 'MissingResourceException'): Java.java.util.MissingResourceException;
+  export function asInstanceOf(obj: any, className: 'NavigableMap'): Java.java.util.NavigableMap;
+  export function asInstanceOf(obj: any, className: 'NavigableSet'): Java.java.util.NavigableSet;
+  export function asInstanceOf(obj: any, className: 'NoSuchElementException'): Java.java.util.NoSuchElementException;
+  export function asInstanceOf(obj: any, className: 'Objects'): Java.java.util.Objects;
+  export function asInstanceOf(obj: any, className: 'Observable'): Java.java.util.Observable;
+  export function asInstanceOf(obj: any, className: 'Observer'): Java.java.util.Observer;
+  export function asInstanceOf(obj: any, className: 'Optional'): Java.java.util.Optional;
+  export function asInstanceOf(obj: any, className: 'OptionalDouble'): Java.java.util.OptionalDouble;
+  export function asInstanceOf(obj: any, className: 'OptionalInt'): Java.java.util.OptionalInt;
+  export function asInstanceOf(obj: any, className: 'OptionalLong'): Java.java.util.OptionalLong;
+  export function asInstanceOf(obj: any, className: 'PrimitiveIterator'): Java.java.util.PrimitiveIterator;
+  export function asInstanceOf(obj: any, className: 'PrimitiveIterator$OfDouble'): Java.java.util.PrimitiveIterator$OfDouble;
+  export function asInstanceOf(obj: any, className: 'PrimitiveIterator$OfInt'): Java.java.util.PrimitiveIterator$OfInt;
+  export function asInstanceOf(obj: any, className: 'PrimitiveIterator$OfLong'): Java.java.util.PrimitiveIterator$OfLong;
+  export function asInstanceOf(obj: any, className: 'PriorityQueue'): Java.java.util.PriorityQueue;
+  export function asInstanceOf(obj: any, className: 'Properties'): Java.java.util.Properties;
+  export function asInstanceOf(obj: any, className: 'PropertyPermission'): Java.java.util.PropertyPermission;
+  export function asInstanceOf(obj: any, className: 'PropertyResourceBundle'): Java.java.util.PropertyResourceBundle;
+  export function asInstanceOf(obj: any, className: 'Queue'): Java.java.util.Queue;
+  export function asInstanceOf(obj: any, className: 'Random'): Java.java.util.Random;
+  export function asInstanceOf(obj: any, className: 'RandomAccess'): Java.java.util.RandomAccess;
+  export function asInstanceOf(obj: any, className: 'ResourceBundle'): Java.java.util.ResourceBundle;
+  export function asInstanceOf(obj: any, className: 'ResourceBundle$Control'): Java.java.util.ResourceBundle$Control;
+  export function asInstanceOf(obj: any, className: 'Scanner'): Java.java.util.Scanner;
+  export function asInstanceOf(obj: any, className: 'ServiceConfigurationError'): Java.java.util.ServiceConfigurationError;
+  export function asInstanceOf(obj: any, className: 'ServiceLoader'): Java.java.util.ServiceLoader;
+  export function asInstanceOf(obj: any, className: 'Set'): Java.java.util.Set;
+  export function asInstanceOf(obj: any, className: 'SimpleTimeZone'): Java.java.util.SimpleTimeZone;
+  export function asInstanceOf(obj: any, className: 'SortedMap'): Java.java.util.SortedMap;
+  export function asInstanceOf(obj: any, className: 'SortedSet'): Java.java.util.SortedSet;
+  export function asInstanceOf(obj: any, className: 'Spliterator'): Java.java.util.Spliterator;
+  export function asInstanceOf(obj: any, className: 'Spliterator$OfDouble'): Java.java.util.Spliterator$OfDouble;
+  export function asInstanceOf(obj: any, className: 'Spliterator$OfInt'): Java.java.util.Spliterator$OfInt;
+  export function asInstanceOf(obj: any, className: 'Spliterator$OfLong'): Java.java.util.Spliterator$OfLong;
+  export function asInstanceOf(obj: any, className: 'Spliterator$OfPrimitive'): Java.java.util.Spliterator$OfPrimitive;
+  export function asInstanceOf(obj: any, className: 'Spliterators'): Java.java.util.Spliterators;
+  export function asInstanceOf(obj: any, className: 'Spliterators$AbstractDoubleSpliterator'): Java.java.util.Spliterators$AbstractDoubleSpliterator;
+  export function asInstanceOf(obj: any, className: 'Spliterators$AbstractIntSpliterator'): Java.java.util.Spliterators$AbstractIntSpliterator;
+  export function asInstanceOf(obj: any, className: 'Spliterators$AbstractLongSpliterator'): Java.java.util.Spliterators$AbstractLongSpliterator;
+  export function asInstanceOf(obj: any, className: 'Spliterators$AbstractSpliterator'): Java.java.util.Spliterators$AbstractSpliterator;
+  export function asInstanceOf(obj: any, className: 'SplittableRandom'): Java.java.util.SplittableRandom;
+  export function asInstanceOf(obj: any, className: 'Stack'): Java.java.util.Stack;
+  export function asInstanceOf(obj: any, className: 'StringJoiner'): Java.java.util.StringJoiner;
+  export function asInstanceOf(obj: any, className: 'StringTokenizer'): Java.java.util.StringTokenizer;
+  export function asInstanceOf(obj: any, className: 'Timer'): Java.java.util.Timer;
+  export function asInstanceOf(obj: any, className: 'TimerTask'): Java.java.util.TimerTask;
+  export function asInstanceOf(obj: any, className: 'TimeZone'): Java.java.util.TimeZone;
+  export function asInstanceOf(obj: any, className: 'TooManyListenersException'): Java.java.util.TooManyListenersException;
+  export function asInstanceOf(obj: any, className: 'TreeMap'): Java.java.util.TreeMap;
+  export function asInstanceOf(obj: any, className: 'TreeSet'): Java.java.util.TreeSet;
+  export function asInstanceOf(obj: any, className: 'UnknownFormatConversionException'): Java.java.util.UnknownFormatConversionException;
+  export function asInstanceOf(obj: any, className: 'UnknownFormatFlagsException'): Java.java.util.UnknownFormatFlagsException;
+  export function asInstanceOf(obj: any, className: 'UUID'): Java.java.util.UUID;
+  export function asInstanceOf(obj: any, className: 'Vector'): Java.java.util.Vector;
+  export function asInstanceOf(obj: any, className: 'WeakHashMap'): Java.java.util.WeakHashMap;
+  export function asInstanceOf(obj: any, className: 'com.redseal.featureset.ambiguous.Thing'): Java.com.redseal.featureset.ambiguous.Thing;
+  export function asInstanceOf(obj: any, className: 'com.redseal.featureset.ambiguous.Thing$Nested'): Java.com.redseal.featureset.ambiguous.Thing$Nested;
+  export function asInstanceOf(obj: any, className: 'com.redseal.featureset.AnEnum'): Java.com.redseal.featureset.AnEnum;
+  export function asInstanceOf(obj: any, className: 'com.redseal.featureset.AnonClassTest'): Java.com.redseal.featureset.AnonClassTest;
+  export function asInstanceOf(obj: any, className: 'com.redseal.featureset.overloading.Overloading'): Java.com.redseal.featureset.overloading.Overloading;
+  export function asInstanceOf(obj: any, className: 'com.redseal.featureset.overloading.Overloading$Bar'): Java.com.redseal.featureset.overloading.Overloading$Bar;
+  export function asInstanceOf(obj: any, className: 'com.redseal.featureset.overloading.Overloading$Foo'): Java.com.redseal.featureset.overloading.Overloading$Foo;
+  export function asInstanceOf(obj: any, className: 'com.redseal.featureset.overloading.Step'): Java.com.redseal.featureset.overloading.Step;
+  export function asInstanceOf(obj: any, className: 'com.redseal.featureset.SomeAbstractClass'): Java.com.redseal.featureset.SomeAbstractClass;
+  export function asInstanceOf(obj: any, className: 'com.redseal.featureset.SomeClass'): Java.com.redseal.featureset.SomeClass;
+  export function asInstanceOf(obj: any, className: 'com.redseal.featureset.SomeInterface'): Java.com.redseal.featureset.SomeInterface;
+  export function asInstanceOf(obj: any, className: 'com.redseal.featureset.Thing'): Java.com.redseal.featureset.Thing;
+  export function asInstanceOf(obj: any, className: 'com.redseal.featureset.TinyInterface'): Java.com.redseal.featureset.TinyInterface;
+  export function asInstanceOf(obj: any, className: 'java.lang.Boolean'): Java.java.lang.Boolean;
+  export function asInstanceOf(obj: any, className: 'java.lang.Class'): Java.java.lang.Class;
+  export function asInstanceOf(obj: any, className: 'java.lang.Double'): Java.java.lang.Double;
+  export function asInstanceOf(obj: any, className: 'java.lang.Float'): Java.java.lang.Float;
+  export function asInstanceOf(obj: any, className: 'java.lang.Integer'): Java.java.lang.Integer;
+  export function asInstanceOf(obj: any, className: 'java.lang.Long'): Java.java.lang.Long;
+  export function asInstanceOf(obj: any, className: 'java.lang.Number'): Java.java.lang.Number;
+  export function asInstanceOf(obj: any, className: 'java.lang.Object'): Java.java.lang.Object;
+  export function asInstanceOf(obj: any, className: 'java.lang.reflect.Method'): Java.java.lang.reflect.Method;
+  export function asInstanceOf(obj: any, className: 'java.lang.Short'): Java.java.lang.Short;
+  export function asInstanceOf(obj: any, className: 'java.lang.String'): Java.java.lang.String;
+  export function asInstanceOf(obj: any, className: 'java.util.AbstractCollection'): Java.java.util.AbstractCollection;
+  export function asInstanceOf(obj: any, className: 'java.util.AbstractList'): Java.java.util.AbstractList;
+  export function asInstanceOf(obj: any, className: 'java.util.AbstractMap'): Java.java.util.AbstractMap;
+  export function asInstanceOf(obj: any, className: 'java.util.AbstractMap$SimpleEntry'): Java.java.util.AbstractMap$SimpleEntry;
+  export function asInstanceOf(obj: any, className: 'java.util.AbstractMap$SimpleImmutableEntry'): Java.java.util.AbstractMap$SimpleImmutableEntry;
+  export function asInstanceOf(obj: any, className: 'java.util.AbstractQueue'): Java.java.util.AbstractQueue;
+  export function asInstanceOf(obj: any, className: 'java.util.AbstractSequentialList'): Java.java.util.AbstractSequentialList;
+  export function asInstanceOf(obj: any, className: 'java.util.AbstractSet'): Java.java.util.AbstractSet;
+  export function asInstanceOf(obj: any, className: 'java.util.ArrayDeque'): Java.java.util.ArrayDeque;
+  export function asInstanceOf(obj: any, className: 'java.util.ArrayList'): Java.java.util.ArrayList;
+  export function asInstanceOf(obj: any, className: 'java.util.Arrays'): Java.java.util.Arrays;
+  export function asInstanceOf(obj: any, className: 'java.util.Base64'): Java.java.util.Base64;
+  export function asInstanceOf(obj: any, className: 'java.util.Base64$Decoder'): Java.java.util.Base64$Decoder;
+  export function asInstanceOf(obj: any, className: 'java.util.Base64$Encoder'): Java.java.util.Base64$Encoder;
+  export function asInstanceOf(obj: any, className: 'java.util.BitSet'): Java.java.util.BitSet;
+  export function asInstanceOf(obj: any, className: 'java.util.Calendar'): Java.java.util.Calendar;
+  export function asInstanceOf(obj: any, className: 'java.util.Calendar$Builder'): Java.java.util.Calendar$Builder;
+  export function asInstanceOf(obj: any, className: 'java.util.Collection'): Java.java.util.Collection;
+  export function asInstanceOf(obj: any, className: 'java.util.Collections'): Java.java.util.Collections;
+  export function asInstanceOf(obj: any, className: 'java.util.Comparator'): Java.java.util.Comparator;
+  export function asInstanceOf(obj: any, className: 'java.util.ConcurrentModificationException'): Java.java.util.ConcurrentModificationException;
+  export function asInstanceOf(obj: any, className: 'java.util.Currency'): Java.java.util.Currency;
+  export function asInstanceOf(obj: any, className: 'java.util.Date'): Java.java.util.Date;
+  export function asInstanceOf(obj: any, className: 'java.util.Deque'): Java.java.util.Deque;
+  export function asInstanceOf(obj: any, className: 'java.util.Dictionary'): Java.java.util.Dictionary;
+  export function asInstanceOf(obj: any, className: 'java.util.DoubleSummaryStatistics'): Java.java.util.DoubleSummaryStatistics;
+  export function asInstanceOf(obj: any, className: 'java.util.DuplicateFormatFlagsException'): Java.java.util.DuplicateFormatFlagsException;
+  export function asInstanceOf(obj: any, className: 'java.util.EmptyStackException'): Java.java.util.EmptyStackException;
+  export function asInstanceOf(obj: any, className: 'java.util.Enumeration'): Java.java.util.Enumeration;
+  export function asInstanceOf(obj: any, className: 'java.util.EnumMap'): Java.java.util.EnumMap;
+  export function asInstanceOf(obj: any, className: 'java.util.EnumSet'): Java.java.util.EnumSet;
+  export function asInstanceOf(obj: any, className: 'java.util.EventListener'): Java.java.util.EventListener;
+  export function asInstanceOf(obj: any, className: 'java.util.EventListenerProxy'): Java.java.util.EventListenerProxy;
+  export function asInstanceOf(obj: any, className: 'java.util.EventObject'): Java.java.util.EventObject;
+  export function asInstanceOf(obj: any, className: 'java.util.FormatFlagsConversionMismatchException'): Java.java.util.FormatFlagsConversionMismatchException;
+  export function asInstanceOf(obj: any, className: 'java.util.Formattable'): Java.java.util.Formattable;
+  export function asInstanceOf(obj: any, className: 'java.util.FormattableFlags'): Java.java.util.FormattableFlags;
+  export function asInstanceOf(obj: any, className: 'java.util.Formatter'): Java.java.util.Formatter;
+  export function asInstanceOf(obj: any, className: 'java.util.Formatter$BigDecimalLayoutForm'): Java.java.util.Formatter$BigDecimalLayoutForm;
+  export function asInstanceOf(obj: any, className: 'java.util.FormatterClosedException'): Java.java.util.FormatterClosedException;
+  export function asInstanceOf(obj: any, className: 'java.util.function.Function'): Java.java.util.function_.Function;
+  export function asInstanceOf(obj: any, className: 'java.util.GregorianCalendar'): Java.java.util.GregorianCalendar;
+  export function asInstanceOf(obj: any, className: 'java.util.HashMap'): Java.java.util.HashMap;
+  export function asInstanceOf(obj: any, className: 'java.util.HashSet'): Java.java.util.HashSet;
+  export function asInstanceOf(obj: any, className: 'java.util.Hashtable'): Java.java.util.Hashtable;
+  export function asInstanceOf(obj: any, className: 'java.util.IdentityHashMap'): Java.java.util.IdentityHashMap;
+  export function asInstanceOf(obj: any, className: 'java.util.IllegalFormatCodePointException'): Java.java.util.IllegalFormatCodePointException;
+  export function asInstanceOf(obj: any, className: 'java.util.IllegalFormatConversionException'): Java.java.util.IllegalFormatConversionException;
+  export function asInstanceOf(obj: any, className: 'java.util.IllegalFormatException'): Java.java.util.IllegalFormatException;
+  export function asInstanceOf(obj: any, className: 'java.util.IllegalFormatFlagsException'): Java.java.util.IllegalFormatFlagsException;
+  export function asInstanceOf(obj: any, className: 'java.util.IllegalFormatPrecisionException'): Java.java.util.IllegalFormatPrecisionException;
+  export function asInstanceOf(obj: any, className: 'java.util.IllegalFormatWidthException'): Java.java.util.IllegalFormatWidthException;
+  export function asInstanceOf(obj: any, className: 'java.util.IllformedLocaleException'): Java.java.util.IllformedLocaleException;
+  export function asInstanceOf(obj: any, className: 'java.util.InputMismatchException'): Java.java.util.InputMismatchException;
+  export function asInstanceOf(obj: any, className: 'java.util.IntSummaryStatistics'): Java.java.util.IntSummaryStatistics;
+  export function asInstanceOf(obj: any, className: 'java.util.InvalidPropertiesFormatException'): Java.java.util.InvalidPropertiesFormatException;
+  export function asInstanceOf(obj: any, className: 'java.util.Iterator'): Java.java.util.Iterator;
+  export function asInstanceOf(obj: any, className: 'java.util.LinkedHashMap'): Java.java.util.LinkedHashMap;
+  export function asInstanceOf(obj: any, className: 'java.util.LinkedHashSet'): Java.java.util.LinkedHashSet;
+  export function asInstanceOf(obj: any, className: 'java.util.LinkedList'): Java.java.util.LinkedList;
+  export function asInstanceOf(obj: any, className: 'java.util.List'): Java.java.util.List;
+  export function asInstanceOf(obj: any, className: 'java.util.ListIterator'): Java.java.util.ListIterator;
+  export function asInstanceOf(obj: any, className: 'java.util.ListResourceBundle'): Java.java.util.ListResourceBundle;
+  export function asInstanceOf(obj: any, className: 'java.util.Locale'): Java.java.util.Locale;
+  export function asInstanceOf(obj: any, className: 'java.util.Locale$Builder'): Java.java.util.Locale$Builder;
+  export function asInstanceOf(obj: any, className: 'java.util.Locale$Category'): Java.java.util.Locale$Category;
+  export function asInstanceOf(obj: any, className: 'java.util.Locale$FilteringMode'): Java.java.util.Locale$FilteringMode;
+  export function asInstanceOf(obj: any, className: 'java.util.Locale$LanguageRange'): Java.java.util.Locale$LanguageRange;
+  export function asInstanceOf(obj: any, className: 'java.util.LongSummaryStatistics'): Java.java.util.LongSummaryStatistics;
+  export function asInstanceOf(obj: any, className: 'java.util.Map'): Java.java.util.Map;
+  export function asInstanceOf(obj: any, className: 'java.util.Map$Entry'): Java.java.util.Map$Entry;
+  export function asInstanceOf(obj: any, className: 'java.util.MissingFormatArgumentException'): Java.java.util.MissingFormatArgumentException;
+  export function asInstanceOf(obj: any, className: 'java.util.MissingFormatWidthException'): Java.java.util.MissingFormatWidthException;
+  export function asInstanceOf(obj: any, className: 'java.util.MissingResourceException'): Java.java.util.MissingResourceException;
+  export function asInstanceOf(obj: any, className: 'java.util.NavigableMap'): Java.java.util.NavigableMap;
+  export function asInstanceOf(obj: any, className: 'java.util.NavigableSet'): Java.java.util.NavigableSet;
+  export function asInstanceOf(obj: any, className: 'java.util.NoSuchElementException'): Java.java.util.NoSuchElementException;
+  export function asInstanceOf(obj: any, className: 'java.util.Objects'): Java.java.util.Objects;
+  export function asInstanceOf(obj: any, className: 'java.util.Observable'): Java.java.util.Observable;
+  export function asInstanceOf(obj: any, className: 'java.util.Observer'): Java.java.util.Observer;
+  export function asInstanceOf(obj: any, className: 'java.util.Optional'): Java.java.util.Optional;
+  export function asInstanceOf(obj: any, className: 'java.util.OptionalDouble'): Java.java.util.OptionalDouble;
+  export function asInstanceOf(obj: any, className: 'java.util.OptionalInt'): Java.java.util.OptionalInt;
+  export function asInstanceOf(obj: any, className: 'java.util.OptionalLong'): Java.java.util.OptionalLong;
+  export function asInstanceOf(obj: any, className: 'java.util.PrimitiveIterator'): Java.java.util.PrimitiveIterator;
+  export function asInstanceOf(obj: any, className: 'java.util.PrimitiveIterator$OfDouble'): Java.java.util.PrimitiveIterator$OfDouble;
+  export function asInstanceOf(obj: any, className: 'java.util.PrimitiveIterator$OfInt'): Java.java.util.PrimitiveIterator$OfInt;
+  export function asInstanceOf(obj: any, className: 'java.util.PrimitiveIterator$OfLong'): Java.java.util.PrimitiveIterator$OfLong;
+  export function asInstanceOf(obj: any, className: 'java.util.PriorityQueue'): Java.java.util.PriorityQueue;
+  export function asInstanceOf(obj: any, className: 'java.util.Properties'): Java.java.util.Properties;
+  export function asInstanceOf(obj: any, className: 'java.util.PropertyPermission'): Java.java.util.PropertyPermission;
+  export function asInstanceOf(obj: any, className: 'java.util.PropertyResourceBundle'): Java.java.util.PropertyResourceBundle;
+  export function asInstanceOf(obj: any, className: 'java.util.Queue'): Java.java.util.Queue;
+  export function asInstanceOf(obj: any, className: 'java.util.Random'): Java.java.util.Random;
+  export function asInstanceOf(obj: any, className: 'java.util.RandomAccess'): Java.java.util.RandomAccess;
+  export function asInstanceOf(obj: any, className: 'java.util.ResourceBundle'): Java.java.util.ResourceBundle;
+  export function asInstanceOf(obj: any, className: 'java.util.ResourceBundle$Control'): Java.java.util.ResourceBundle$Control;
+  export function asInstanceOf(obj: any, className: 'java.util.Scanner'): Java.java.util.Scanner;
+  export function asInstanceOf(obj: any, className: 'java.util.ServiceConfigurationError'): Java.java.util.ServiceConfigurationError;
+  export function asInstanceOf(obj: any, className: 'java.util.ServiceLoader'): Java.java.util.ServiceLoader;
+  export function asInstanceOf(obj: any, className: 'java.util.Set'): Java.java.util.Set;
+  export function asInstanceOf(obj: any, className: 'java.util.SimpleTimeZone'): Java.java.util.SimpleTimeZone;
+  export function asInstanceOf(obj: any, className: 'java.util.SortedMap'): Java.java.util.SortedMap;
+  export function asInstanceOf(obj: any, className: 'java.util.SortedSet'): Java.java.util.SortedSet;
+  export function asInstanceOf(obj: any, className: 'java.util.Spliterator'): Java.java.util.Spliterator;
+  export function asInstanceOf(obj: any, className: 'java.util.Spliterator$OfDouble'): Java.java.util.Spliterator$OfDouble;
+  export function asInstanceOf(obj: any, className: 'java.util.Spliterator$OfInt'): Java.java.util.Spliterator$OfInt;
+  export function asInstanceOf(obj: any, className: 'java.util.Spliterator$OfLong'): Java.java.util.Spliterator$OfLong;
+  export function asInstanceOf(obj: any, className: 'java.util.Spliterator$OfPrimitive'): Java.java.util.Spliterator$OfPrimitive;
+  export function asInstanceOf(obj: any, className: 'java.util.Spliterators'): Java.java.util.Spliterators;
+  export function asInstanceOf(obj: any, className: 'java.util.Spliterators$AbstractDoubleSpliterator'): Java.java.util.Spliterators$AbstractDoubleSpliterator;
+  export function asInstanceOf(obj: any, className: 'java.util.Spliterators$AbstractIntSpliterator'): Java.java.util.Spliterators$AbstractIntSpliterator;
+  export function asInstanceOf(obj: any, className: 'java.util.Spliterators$AbstractLongSpliterator'): Java.java.util.Spliterators$AbstractLongSpliterator;
+  export function asInstanceOf(obj: any, className: 'java.util.Spliterators$AbstractSpliterator'): Java.java.util.Spliterators$AbstractSpliterator;
+  export function asInstanceOf(obj: any, className: 'java.util.SplittableRandom'): Java.java.util.SplittableRandom;
+  export function asInstanceOf(obj: any, className: 'java.util.Stack'): Java.java.util.Stack;
+  export function asInstanceOf(obj: any, className: 'java.util.StringJoiner'): Java.java.util.StringJoiner;
+  export function asInstanceOf(obj: any, className: 'java.util.StringTokenizer'): Java.java.util.StringTokenizer;
+  export function asInstanceOf(obj: any, className: 'java.util.Timer'): Java.java.util.Timer;
+  export function asInstanceOf(obj: any, className: 'java.util.TimerTask'): Java.java.util.TimerTask;
+  export function asInstanceOf(obj: any, className: 'java.util.TimeZone'): Java.java.util.TimeZone;
+  export function asInstanceOf(obj: any, className: 'java.util.TooManyListenersException'): Java.java.util.TooManyListenersException;
+  export function asInstanceOf(obj: any, className: 'java.util.TreeMap'): Java.java.util.TreeMap;
+  export function asInstanceOf(obj: any, className: 'java.util.TreeSet'): Java.java.util.TreeSet;
+  export function asInstanceOf(obj: any, className: 'java.util.UnknownFormatConversionException'): Java.java.util.UnknownFormatConversionException;
+  export function asInstanceOf(obj: any, className: 'java.util.UnknownFormatFlagsException'): Java.java.util.UnknownFormatFlagsException;
+  export function asInstanceOf(obj: any, className: 'java.util.UUID'): Java.java.util.UUID;
+  export function asInstanceOf(obj: any, className: 'java.util.Vector'): Java.java.util.Vector;
+  export function asInstanceOf(obj: any, className: 'java.util.WeakHashMap'): Java.java.util.WeakHashMap;
+  export function asInstanceOf(obj: any, className: string): any;
+  export function asInstanceOf(obj: any, className: string): any {
+    var fullName: string = fullyQualifiedName(className) || className;
+    if (_java.instanceOf(obj, fullName)) {
+      return obj;
+    } else {
+      throw new Error('asInstanceOf fails, obj is not a ' + fullName);
+    }
+  }
+
   export interface Callback<T> {
     (err?: Error, result?: T): void;
   }
@@ -579,6 +894,7 @@ export module Java {
   export function newInstanceA(className: 'java.lang.Integer', arg0: integer_t, cb: Callback<number>): void;
   export function newInstanceA(className: 'java.lang.Long', arg0: string_t, cb: Callback<longValue_t>): void;
   export function newInstanceA(className: 'java.lang.Long', arg0: long_t, cb: Callback<longValue_t>): void;
+  export function newInstanceA(className: 'java.lang.Number', cb: Callback<number>): void;
   export function newInstanceA(className: 'java.lang.Object', cb: Callback<object_t>): void;
   export function newInstanceA(className: 'java.lang.Short', arg0: string_t, cb: Callback<number>): void;
   export function newInstanceA(className: 'java.lang.Short', arg0: short_t, cb: Callback<number>): void;
@@ -796,6 +1112,7 @@ export module Java {
   export function newInstance(className: 'java.lang.Integer', arg0: integer_t): number;
   export function newInstance(className: 'java.lang.Long', arg0: string_t): longValue_t;
   export function newInstance(className: 'java.lang.Long', arg0: long_t): longValue_t;
+  export function newInstance(className: 'java.lang.Number'): number;
   export function newInstance(className: 'java.lang.Object'): object_t;
   export function newInstance(className: 'java.lang.Short', arg0: string_t): number;
   export function newInstance(className: 'java.lang.Short', arg0: short_t): number;
@@ -1013,6 +1330,7 @@ export module Java {
   export function newInstanceP(className: 'java.lang.Integer', arg0: integer_t): Promise<number>;
   export function newInstanceP(className: 'java.lang.Long', arg0: string_t): Promise<longValue_t>;
   export function newInstanceP(className: 'java.lang.Long', arg0: long_t): Promise<longValue_t>;
+  export function newInstanceP(className: 'java.lang.Number'): Promise<number>;
   export function newInstanceP(className: 'java.lang.Object'): Promise<object_t>;
   export function newInstanceP(className: 'java.lang.Short', arg0: string_t): Promise<number>;
   export function newInstanceP(className: 'java.lang.Short', arg0: short_t): Promise<number>;
@@ -1229,6 +1547,7 @@ export module Java {
   export function newArray(className: 'java.lang.Float', arg: float_t[]): array_t<java.lang.Float>;
   export function newArray(className: 'java.lang.Integer', arg: integer_t[]): array_t<java.lang.Integer>;
   export function newArray(className: 'java.lang.Long', arg: long_t[]): array_t<java.lang.Long>;
+  export function newArray(className: 'java.lang.Number', arg: number_t[]): array_t<java.lang.Number>;
   export function newArray(className: 'java.lang.Object', arg: object_t[]): array_t<java.lang.Object>;
   export function newArray(className: 'java.lang.reflect.Method', arg: Java.Method[]): array_t<java.lang.reflect.Method>;
   export function newArray(className: 'java.lang.Short', arg: short_t[]): array_t<java.lang.Short>;
@@ -1394,7 +1713,7 @@ export module Java {
   export type integer_t = number | Java.java.lang.Integer;
   export type double_t = number | Java.java.lang.Double;
   export type float_t = number | Java.java.lang.Float;
-  export type number_t = number ;
+  export type number_t = number | Java.java.lang.Number;
 
   export interface array_t<T> extends Java.java.lang.Object {
     // This is an opaque type for a java array_t T[];
@@ -2856,8 +3175,8 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Double extends Java.java.lang.Object {
-      // public byte java.lang.Double.byteValue()
+    export interface Double extends Java.java.lang.Number {
+      // public byte java.lang.Number.byteValue()
       byteValueA( cb: Callback<object_t>): void;
       byteValue(): object_t;
       byteValueP(): Promise<object_t>;
@@ -2869,7 +3188,7 @@ export module Java {
       compareToA(arg0: double_t, cb: Callback<number>): void;
       compareTo(arg0: double_t): number;
       compareToP(arg0: double_t): Promise<number>;
-      // public double java.lang.Double.doubleValue()
+      // public abstract double java.lang.Number.doubleValue()
       doubleValueA( cb: Callback<number>): void;
       doubleValue(): number;
       doubleValueP(): Promise<number>;
@@ -2877,7 +3196,7 @@ export module Java {
       equalsA(arg0: object_t, cb: Callback<boolean>): void;
       equals(arg0: object_t): boolean;
       equalsP(arg0: object_t): Promise<boolean>;
-      // public float java.lang.Double.floatValue()
+      // public abstract float java.lang.Number.floatValue()
       floatValueA( cb: Callback<number>): void;
       floatValue(): number;
       floatValueP(): Promise<number>;
@@ -2889,7 +3208,7 @@ export module Java {
       hashCodeA( cb: Callback<number>): void;
       hashCode(): number;
       hashCodeP(): Promise<number>;
-      // public int java.lang.Double.intValue()
+      // public abstract int java.lang.Number.intValue()
       intValueA( cb: Callback<number>): void;
       intValue(): number;
       intValueP(): Promise<number>;
@@ -2901,7 +3220,7 @@ export module Java {
       isNaNA( cb: Callback<boolean>): void;
       isNaN(): boolean;
       isNaNP(): Promise<boolean>;
-      // public long java.lang.Double.longValue()
+      // public abstract long java.lang.Number.longValue()
       longValueA( cb: Callback<longValue_t>): void;
       longValue(): longValue_t;
       longValueP(): Promise<longValue_t>;
@@ -2913,7 +3232,7 @@ export module Java {
       notifyAllA( cb: Callback<void>): void;
       notifyAll(): void;
       notifyAllP(): Promise<void>;
-      // public short java.lang.Double.shortValue()
+      // public short java.lang.Number.shortValue()
       shortValueA( cb: Callback<number>): void;
       shortValue(): number;
       shortValueP(): Promise<number>;
@@ -3019,8 +3338,8 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Float extends Java.java.lang.Object {
-      // public byte java.lang.Float.byteValue()
+    export interface Float extends Java.java.lang.Number {
+      // public byte java.lang.Number.byteValue()
       byteValueA( cb: Callback<object_t>): void;
       byteValue(): object_t;
       byteValueP(): Promise<object_t>;
@@ -3032,7 +3351,7 @@ export module Java {
       compareToA(arg0: float_t, cb: Callback<number>): void;
       compareTo(arg0: float_t): number;
       compareToP(arg0: float_t): Promise<number>;
-      // public double java.lang.Float.doubleValue()
+      // public abstract double java.lang.Number.doubleValue()
       doubleValueA( cb: Callback<number>): void;
       doubleValue(): number;
       doubleValueP(): Promise<number>;
@@ -3040,7 +3359,7 @@ export module Java {
       equalsA(arg0: object_t, cb: Callback<boolean>): void;
       equals(arg0: object_t): boolean;
       equalsP(arg0: object_t): Promise<boolean>;
-      // public float java.lang.Float.floatValue()
+      // public abstract float java.lang.Number.floatValue()
       floatValueA( cb: Callback<number>): void;
       floatValue(): number;
       floatValueP(): Promise<number>;
@@ -3052,7 +3371,7 @@ export module Java {
       hashCodeA( cb: Callback<number>): void;
       hashCode(): number;
       hashCodeP(): Promise<number>;
-      // public int java.lang.Float.intValue()
+      // public abstract int java.lang.Number.intValue()
       intValueA( cb: Callback<number>): void;
       intValue(): number;
       intValueP(): Promise<number>;
@@ -3064,7 +3383,7 @@ export module Java {
       isNaNA( cb: Callback<boolean>): void;
       isNaN(): boolean;
       isNaNP(): Promise<boolean>;
-      // public long java.lang.Float.longValue()
+      // public abstract long java.lang.Number.longValue()
       longValueA( cb: Callback<longValue_t>): void;
       longValue(): longValue_t;
       longValueP(): Promise<longValue_t>;
@@ -3076,7 +3395,7 @@ export module Java {
       notifyAllA( cb: Callback<void>): void;
       notifyAll(): void;
       notifyAllP(): Promise<void>;
-      // public short java.lang.Float.shortValue()
+      // public short java.lang.Number.shortValue()
       shortValueA( cb: Callback<number>): void;
       shortValue(): number;
       shortValueP(): Promise<number>;
@@ -3183,8 +3502,8 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Integer extends Java.java.lang.Object {
-      // public byte java.lang.Integer.byteValue()
+    export interface Integer extends Java.java.lang.Number {
+      // public byte java.lang.Number.byteValue()
       byteValueA( cb: Callback<object_t>): void;
       byteValue(): object_t;
       byteValueP(): Promise<object_t>;
@@ -3196,7 +3515,7 @@ export module Java {
       compareToA(arg0: object_t, cb: Callback<number>): void;
       compareTo(arg0: object_t): number;
       compareToP(arg0: object_t): Promise<number>;
-      // public double java.lang.Integer.doubleValue()
+      // public abstract double java.lang.Number.doubleValue()
       doubleValueA( cb: Callback<number>): void;
       doubleValue(): number;
       doubleValueP(): Promise<number>;
@@ -3204,7 +3523,7 @@ export module Java {
       equalsA(arg0: object_t, cb: Callback<boolean>): void;
       equals(arg0: object_t): boolean;
       equalsP(arg0: object_t): Promise<boolean>;
-      // public float java.lang.Integer.floatValue()
+      // public abstract float java.lang.Number.floatValue()
       floatValueA( cb: Callback<number>): void;
       floatValue(): number;
       floatValueP(): Promise<number>;
@@ -3216,11 +3535,11 @@ export module Java {
       hashCodeA( cb: Callback<number>): void;
       hashCode(): number;
       hashCodeP(): Promise<number>;
-      // public int java.lang.Integer.intValue()
+      // public abstract int java.lang.Number.intValue()
       intValueA( cb: Callback<number>): void;
       intValue(): number;
       intValueP(): Promise<number>;
-      // public long java.lang.Integer.longValue()
+      // public abstract long java.lang.Number.longValue()
       longValueA( cb: Callback<longValue_t>): void;
       longValue(): longValue_t;
       longValueP(): Promise<longValue_t>;
@@ -3232,7 +3551,7 @@ export module Java {
       notifyAllA( cb: Callback<void>): void;
       notifyAll(): void;
       notifyAllP(): Promise<void>;
-      // public short java.lang.Integer.shortValue()
+      // public short java.lang.Number.shortValue()
       shortValueA( cb: Callback<number>): void;
       shortValue(): number;
       shortValueP(): Promise<number>;
@@ -3416,8 +3735,8 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Long extends Java.java.lang.Object {
-      // public byte java.lang.Long.byteValue()
+    export interface Long extends Java.java.lang.Number {
+      // public byte java.lang.Number.byteValue()
       byteValueA( cb: Callback<object_t>): void;
       byteValue(): object_t;
       byteValueP(): Promise<object_t>;
@@ -3429,7 +3748,7 @@ export module Java {
       compareToA(arg0: long_t, cb: Callback<number>): void;
       compareTo(arg0: long_t): number;
       compareToP(arg0: long_t): Promise<number>;
-      // public double java.lang.Long.doubleValue()
+      // public abstract double java.lang.Number.doubleValue()
       doubleValueA( cb: Callback<number>): void;
       doubleValue(): number;
       doubleValueP(): Promise<number>;
@@ -3437,7 +3756,7 @@ export module Java {
       equalsA(arg0: object_t, cb: Callback<boolean>): void;
       equals(arg0: object_t): boolean;
       equalsP(arg0: object_t): Promise<boolean>;
-      // public float java.lang.Long.floatValue()
+      // public abstract float java.lang.Number.floatValue()
       floatValueA( cb: Callback<number>): void;
       floatValue(): number;
       floatValueP(): Promise<number>;
@@ -3449,11 +3768,11 @@ export module Java {
       hashCodeA( cb: Callback<number>): void;
       hashCode(): number;
       hashCodeP(): Promise<number>;
-      // public int java.lang.Long.intValue()
+      // public abstract int java.lang.Number.intValue()
       intValueA( cb: Callback<number>): void;
       intValue(): number;
       intValueP(): Promise<number>;
-      // public long java.lang.Long.longValue()
+      // public abstract long java.lang.Number.longValue()
       longValueA( cb: Callback<longValue_t>): void;
       longValue(): longValue_t;
       longValueP(): Promise<longValue_t>;
@@ -3465,7 +3784,7 @@ export module Java {
       notifyAllA( cb: Callback<void>): void;
       notifyAll(): void;
       notifyAllP(): Promise<void>;
-      // public short java.lang.Long.shortValue()
+      // public short java.lang.Number.shortValue()
       shortValueA( cb: Callback<number>): void;
       shortValue(): number;
       shortValueP(): Promise<number>;
@@ -3640,6 +3959,77 @@ export module Java {
         valueOfA(arg0: long_t, cb: Callback<longValue_t>): void;
         valueOf(arg0: long_t): longValue_t;
         valueOfP(arg0: long_t): Promise<longValue_t>;
+      }
+    }
+  }
+
+  export module java.lang {
+    export interface Number extends Java.java.lang.Object {
+      // public byte java.lang.Number.byteValue()
+      byteValueA( cb: Callback<object_t>): void;
+      byteValue(): object_t;
+      byteValueP(): Promise<object_t>;
+      // public abstract double java.lang.Number.doubleValue()
+      doubleValueA( cb: Callback<number>): void;
+      doubleValue(): number;
+      doubleValueP(): Promise<number>;
+      // public boolean java.lang.Object.equals(java.lang.Object)
+      equalsA(arg0: object_t, cb: Callback<boolean>): void;
+      equals(arg0: object_t): boolean;
+      equalsP(arg0: object_t): Promise<boolean>;
+      // public abstract float java.lang.Number.floatValue()
+      floatValueA( cb: Callback<number>): void;
+      floatValue(): number;
+      floatValueP(): Promise<number>;
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClassA( cb: Callback<Java.Class>): void;
+      getClass(): Java.Class;
+      getClassP(): Promise<Java.Class>;
+      // public native int java.lang.Object.hashCode()
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
+      // public abstract int java.lang.Number.intValue()
+      intValueA( cb: Callback<number>): void;
+      intValue(): number;
+      intValueP(): Promise<number>;
+      // public abstract long java.lang.Number.longValue()
+      longValueA( cb: Callback<longValue_t>): void;
+      longValue(): longValue_t;
+      longValueP(): Promise<longValue_t>;
+      // public final native void java.lang.Object.notify()
+      notifyA( cb: Callback<void>): void;
+      notify(): void;
+      notifyP(): Promise<void>;
+      // public final native void java.lang.Object.notifyAll()
+      notifyAllA( cb: Callback<void>): void;
+      notifyAll(): void;
+      notifyAllP(): Promise<void>;
+      // public short java.lang.Number.shortValue()
+      shortValueA( cb: Callback<number>): void;
+      shortValue(): number;
+      shortValueP(): Promise<number>;
+      // public java.lang.String java.lang.Object.toString()
+      toStringA( cb: Callback<string>): void;
+      toString(): string;
+      toStringP(): Promise<string>;
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      waitA(arg0: long_t, arg1: integer_t, cb: Callback<void>): void;
+      wait(arg0: long_t, arg1: integer_t): void;
+      waitP(arg0: long_t, arg1: integer_t): Promise<void>;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      waitA(arg0: long_t, cb: Callback<void>): void;
+      wait(arg0: long_t): void;
+      waitP(arg0: long_t): Promise<void>;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      waitA( cb: Callback<void>): void;
+      wait(): void;
+      waitP(): Promise<void>;
+    }
+    export module Number {
+      export interface Static {
+        class: Java.Class;
+        new (): java.lang.Number;
       }
     }
   }
@@ -3878,8 +4268,8 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Short extends Java.java.lang.Object {
-      // public byte java.lang.Short.byteValue()
+    export interface Short extends Java.java.lang.Number {
+      // public byte java.lang.Number.byteValue()
       byteValueA( cb: Callback<object_t>): void;
       byteValue(): object_t;
       byteValueP(): Promise<object_t>;
@@ -3891,7 +4281,7 @@ export module Java {
       compareToA(arg0: short_t, cb: Callback<number>): void;
       compareTo(arg0: short_t): number;
       compareToP(arg0: short_t): Promise<number>;
-      // public double java.lang.Short.doubleValue()
+      // public abstract double java.lang.Number.doubleValue()
       doubleValueA( cb: Callback<number>): void;
       doubleValue(): number;
       doubleValueP(): Promise<number>;
@@ -3899,7 +4289,7 @@ export module Java {
       equalsA(arg0: object_t, cb: Callback<boolean>): void;
       equals(arg0: object_t): boolean;
       equalsP(arg0: object_t): Promise<boolean>;
-      // public float java.lang.Short.floatValue()
+      // public abstract float java.lang.Number.floatValue()
       floatValueA( cb: Callback<number>): void;
       floatValue(): number;
       floatValueP(): Promise<number>;
@@ -3911,11 +4301,11 @@ export module Java {
       hashCodeA( cb: Callback<number>): void;
       hashCode(): number;
       hashCodeP(): Promise<number>;
-      // public int java.lang.Short.intValue()
+      // public abstract int java.lang.Number.intValue()
       intValueA( cb: Callback<number>): void;
       intValue(): number;
       intValueP(): Promise<number>;
-      // public long java.lang.Short.longValue()
+      // public abstract long java.lang.Number.longValue()
       longValueA( cb: Callback<longValue_t>): void;
       longValue(): longValue_t;
       longValueP(): Promise<longValue_t>;
@@ -3927,7 +4317,7 @@ export module Java {
       notifyAllA( cb: Callback<void>): void;
       notifyAll(): void;
       notifyAllP(): Promise<void>;
-      // public short java.lang.Short.shortValue()
+      // public short java.lang.Number.shortValue()
       shortValueA( cb: Callback<number>): void;
       shortValue(): number;
       shortValueP(): Promise<number>;
