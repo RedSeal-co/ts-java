@@ -24422,4 +24422,32 @@ export module Java {
     return smellsLikeJavaObject(e) && _java.instanceOf(e, 'java.lang.Object');
   }
 
+  // #### `interface ConsumeObject`
+  // A function interface for Java Object consumer.
+  // See `forEach` below.
+  export interface ConsumeObject {
+    (item: Java.object_t): any | BluePromise<any>;
+  }
+
+  // #### `forEach(javaIterator: Java.Iterator, consumer: ConsumeObject)`
+  // Applies *consumer* to each Java.Object returned by the *javaIterator*.
+  // *javaIterator* may be any type that implements java.util.Iterator, including a tinkerpop Traversal.
+  // *consumer* is function that will do some work on a Java.Object asychronously, returning a Promise for its completion.
+  // Returns a promise that is resolved when all objects have been consumed.
+  export function forEach(javaIterator: Java.Iterator, consumer: ConsumeObject): BluePromise<void> {
+    function _eachIterator(javaIterator: Java.Iterator, consumer: ConsumeObject): BluePromise<void> {
+      return javaIterator.hasNextP()
+        .then((hasNext: boolean): BluePromise<void> => {
+          if (!hasNext) {
+            return BluePromise.resolve();
+          } else {
+            return javaIterator.nextP()
+              .then((obj: Java.object_t) => consumer(obj))
+              .then(() => _eachIterator(javaIterator, consumer));
+          }
+        });
+    }
+    return _eachIterator(javaIterator, consumer);
+  }
+
 } // module Java
