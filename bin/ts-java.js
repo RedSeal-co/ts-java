@@ -30,17 +30,25 @@ var helpText = [
 var tsJavaAppPackagePath = path.resolve(__dirname, '..', 'package.json');
 var packageJsonPath = path.resolve('.', 'package.json');
 var tsJavaVersion;
-readJsonPromise(tsJavaAppPackagePath, console.error, false).then(function (packageContents) {
+readJsonPromise(tsJavaAppPackagePath, console.error, false)
+    .then(function (packageContents) {
     tsJavaVersion = packageContents.version;
     console.log('ts-java version %s', tsJavaVersion);
-    program.version(tsJavaVersion).option('-q, --quiet', 'Run silently with no output').option('-d, --details', 'Output diagnostic details').option('-j, --json', 'Output json class descriptors for each class to o/json').on('--help', function () {
+    program
+        .version(tsJavaVersion)
+        .option('-q, --quiet', 'Run silently with no output')
+        .option('-d, --details', 'Output diagnostic details')
+        .option('-j, --json', 'Output json class descriptors for each class to o/json')
+        .on('--help', function () {
         _.forEach(helpText, function (line) { return console.log(chalk.bold(line)); });
     });
     program.parse(process.argv);
-}).then(function () {
+})
+    .then(function () {
     var main = new Main(packageJsonPath);
     return main.run();
-}).catch(function (err) {
+})
+    .catch(function (err) {
     if ('cause' in err && err.cause.code === 'ENOENT' && err.cause.path === packageJsonPath) {
         console.error(error('Not found:', packageJsonPath));
     }
@@ -52,5 +60,6 @@ readJsonPromise(tsJavaAppPackagePath, console.error, false).then(function (packa
     }
     program.help();
     process.exit(1);
-}).done();
+})
+    .done();
 //# sourceMappingURL=ts-java.js.map
