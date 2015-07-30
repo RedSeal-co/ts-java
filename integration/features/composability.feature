@@ -49,7 +49,7 @@ Feature: Composability
     """
     When compiled it produces this error containing this snippet:
     """
-    error TS2322: Type 'Static' is not assignable to type 'Static'.
+    error TS2322: Type 'Java.java.lang.Object.Static' is not assignable to type 'Java.java.lang.Object.Static'.
     """
 
   Scenario: The incompatibility might be in one direction only
@@ -103,7 +103,7 @@ Feature: Composability
     """
     When compiled it produces this error containing this snippet:
     """
-    error TS2352: Neither type 'Static' nor type 'Static' is assignable to the other.
+    error TS2352: Neither type 'Java.java.lang.Class.Static' nor type 'Java.java.lang.Class.Static' is assignable to the other.
     """
 
   Scenario: A sledgehammer double cast can then be used to workaround typescript type incompatibility
