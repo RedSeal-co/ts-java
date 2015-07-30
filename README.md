@@ -249,6 +249,43 @@ You application will typically use the `tsJavaModule.ts` file as follows:
 
 See `featureset/features/auto_import.feature` for more information about using `importClass()` with short class names.
 
+## Functions exported in the tsJavaModule.ts
+
+The generated tsJavaModule.ts file will re-export most of the function exported by the node-java module, as specified in [java.d.ts](https://github.com/RedSeal-co/DefinitelyTyped/blob/prod/java/java.d.ts). In addition, the tsJavaModule.ts file includes:
+
+#### `getJava(): NodeJavaAPI`
+Returns the underlying java module.
+
+#### `ensureJvm(): Promise<void>` 
+Ensures that the JVM has been created. Idempotent, i.e 2nd and subsequent calls are no-ops.
+
+#### `fullyQualifiedName(className: string): string`
+Given a short class name (or a fully qualified class name) return the fully qualified classname. If the class name string is unrecognized, return `undefined`.
+
+#### `importClass(className: string): <javaclasstype>`
+Given a short or fully qualified classname, import the class and return its Static interface. Throws an exception for unrecognized class names. For example, either `importClass('java.lang.Object')` or `importClass('Object')` will import the class and return the proxy object whose type is `Java.java.lang.Object.Static`. See `featureset/features/autoImport.feature` for more information.
+
+#### `asInstanceOf(obj: any, className: string): <javainstancetype>`
+Given an object and a short or fully qualified classname, return the object casted to the given class type, or throw an exception if the cast is not valid.
+
+#### `L(n: number): Java.longValue_t`
+Given a number, return a value of type `longValue_t`, capable of representing a 64-bit integer.
+*Defined only when java.lang.Long is included in the configuration.*
+
+#### `isLongValue(obj: any): boolean`
+Returns true if `obj` is a `longValue_t`.
+*Defined only when java.lang.Long is included in the configuration.*
+
+#### `isJavaObject(obj: any): boolean`
+Returns true if `obj` is a Java object instance.
+
+#### `instanceOf(obj: any, className: string): boolean`
+Returns true if `obj` is a Java object instance of the specified class.
+
+#### `forEach(javaIterator: Java.Iterator, consumer: ConsumeObject)`
+Like `array.forEach()`. Applies the `consumer` function to each element returned by the iterator. See the documentation in the generated tsJavaModule.ts file for the definition of the ConsumeObject interface. See also `featureset/features/utilityFunctions.feature` for an example of use.
+*Defined only when java.util.Iterator is included in the configuration.*
+
 ## Composing two or more Java libraries
 
 If you are developing a large node application using multiple Java libraries you have a choice on how you use `ts-java`. You may generate a single `tsJavaModule.ts` file with all Java classes you use, or you may generate multiple modules reflecting the logical separation of the Java libraries you use. Each generated `tsJavaModule.ts` file is self-contained and can peacefully coexist with other `tsJavaModule.ts` files in one node process. The only subtlety we want to point out here has to to with passing objects between Java modules. Two independently generated `tsJavaModule.ts` files will contain some Java classes in common. At the very least they will each include `java.lang.Object` and `java.lang.String`, but they will likely include other classes. All such overlapping classes will generate interfaces that are largely compatible, but it is possible that there will be minor differences that will cause Typescript to think the classes are not compatible. 

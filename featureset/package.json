@@ -19,7 +19,8 @@
       "java.lang.Number",
       "java.lang.reflect.Method",
       "java.lang.Short",
-      "java.util.function.Function"
+      "java.util.function.Function",
+      "java.util.Iterator"
     ],
     "packages": [
       "bogus.package.*",

@@ -30,6 +30,7 @@ declare function require(name: string): any;
 require('source-map-support').install();
 
 import _java = require('java');
+import _ = require('lodash');
 import BluePromise = require('bluebird');
 import path = require('path');
 {{#if debug}}
@@ -141,7 +142,7 @@ export module Java {
   // Throws an exception if the named class does not exist, or is an ambiguous short name.
   export function instanceOf(javaObject: any, className: string): boolean {
     var fullName: string = fullyQualifiedName(className) || className;
-    return _java.instanceOf(javaObject, fullName);
+    return smellsLikeJavaObject(javaObject) && _java.instanceOf(javaObject, fullName);
   }
 
 {{#hasClass 'java.lang.Short'}}  export function newShort(val: number): Java.java.lang.Short { return _java.newShort(val); }{{/hasClass}}
@@ -305,7 +306,64 @@ export module Java {
 
   {{/each}}
 
-  // } // module Java
+{{#hasClass 'java.lang.Long'}}
+  // ### `function L(n: number)`
+  // Produce a longValue_t literal.
+  export function L(n: number): Java.longValue_t {
+    return Java.newLong(n).longValue();
+  }
 
-} // module Module
+  // ### `function isLongValue(e: any)`
+  // Checks whether an object is a longValue_t, which is the representation of Java long primitives.
+  export function isLongValue(obj: any): boolean {
+    return _.isObject(obj) && obj instanceof Number && 'longValue' in obj && _.keys(obj).length === 1;
+  }
+{{/hasClass}}
+
+  // #### `function smellsLikeJavaObject(e: any)`
+  // Returns true if the obj 'smells' like a Java object.
+  // This is a light-weight test that will return false when `e` is clearly not a Java object,
+  // but it may have false positives. To be certain, use `isJavaObject(e)` or `instanceOf(e, classname)` instead.
+  function smellsLikeJavaObject(e: any): boolean {
+    return _.isObject(e) && !_.isArray(e) {{#hasClass 'java.lang.Long'}}&& !isLongValue(e){{/hasClass}};
+  }
+
+  // #### `function isJavaObject(e: any)`
+  // Returns true if the obj is a Java object.
+  // Useful for determining the runtime type of object_t returned by many java methods.
+  export function isJavaObject(e: any): boolean {
+    return smellsLikeJavaObject(e) && _java.instanceOf(e, 'java.lang.Object');
+  }
+
+{{#hasClass 'java.util.Iterator'}}
+  // #### `interface ConsumeObject`
+  // A function interface for Java Object consumer.
+  // See `forEach` below.
+  export interface ConsumeObject {
+    (item: Java.object_t): any | BluePromise<any>;
+  }
+
+  // #### `forEach(javaIterator: Java.Iterator, consumer: ConsumeObject)`
+  // Applies *consumer* to each Java.Object returned by the *javaIterator*.
+  // *javaIterator* may be any type that implements java.util.Iterator, including a tinkerpop Traversal.
+  // *consumer* is function that will do some work on a Java.Object asychronously, returning a Promise for its completion.
+  // Returns a promise that is resolved when all objects have been consumed.
+  export function forEach(javaIterator: Java.Iterator, consumer: ConsumeObject): BluePromise<void> {
+    function _eachIterator(javaIterator: Java.Iterator, consumer: ConsumeObject): BluePromise<void> {
+      return javaIterator.hasNextP()
+        .then((hasNext: boolean): BluePromise<void> => {
+          if (!hasNext) {
+            return BluePromise.resolve();
+          } else {
+            return javaIterator.nextP()
+              .then((obj: Java.object_t) => consumer(obj))
+              .then(() => _eachIterator(javaIterator, consumer));
+          }
+        });
+    }
+    return _eachIterator(javaIterator, consumer);
+  }
+
+{{/hasClass}}
+} // module Java
 {{/with}}
