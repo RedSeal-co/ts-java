@@ -185,12 +185,16 @@ export module Java {
     return _java.newInstanceP.apply(_java, args);
   }
 
+  export function newArray(className: 'HelloJava', arg: Java.HelloJava[]): array_t<com.redseal.hellojava.HelloJava>;
+  export function newArray(className: 'Object', arg: object_t[]): array_t<java.lang.Object>;
+  export function newArray(className: 'String', arg: string_t[]): array_t<java.lang.String>;
   export function newArray(className: 'com.redseal.hellojava.HelloJava', arg: Java.HelloJava[]): array_t<com.redseal.hellojava.HelloJava>;
   export function newArray(className: 'java.lang.Object', arg: object_t[]): array_t<java.lang.Object>;
   export function newArray(className: 'java.lang.String', arg: string_t[]): array_t<java.lang.String>;
   export function newArray<T>(className: string, arg: any[]): array_t<T>;
   export function newArray<T>(className: string, arg: any[]): array_t<T> {
-    return _java.newArray(className, arg);
+    var fullName: string = fullyQualifiedName(className) || className;
+    return _java.newArray(fullName, arg);
   }
 
   // export module Java {

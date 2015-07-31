@@ -266,6 +266,20 @@ export module Java {
     return _java.newInstanceP.apply(_java, args);
   }
 
+  export function newArray(className: 'Boolean', arg: boolean_t[]): array_t<java.lang.Boolean>;
+  export function newArray(className: 'Class', arg: Java.Class[]): array_t<java.lang.Class>;
+  export function newArray(className: 'ClassLoader', arg: Java.ClassLoader[]): array_t<java.lang.ClassLoader>;
+  export function newArray(className: 'Integer', arg: integer_t[]): array_t<java.lang.Integer>;
+  export function newArray(className: 'Object', arg: object_t[]): array_t<java.lang.Object>;
+  export function newArray(className: 'AccessibleObject', arg: Java.AccessibleObject[]): array_t<java.lang.reflect.AccessibleObject>;
+  export function newArray(className: 'Constructor', arg: Java.Constructor[]): array_t<java.lang.reflect.Constructor>;
+  export function newArray(className: 'Executable', arg: Java.Executable[]): array_t<java.lang.reflect.Executable>;
+  export function newArray(className: 'Field', arg: Java.Field[]): array_t<java.lang.reflect.Field>;
+  export function newArray(className: 'Method', arg: Java.Method[]): array_t<java.lang.reflect.Method>;
+  export function newArray(className: 'Modifier', arg: Java.Modifier[]): array_t<java.lang.reflect.Modifier>;
+  export function newArray(className: 'Parameter', arg: Java.Parameter[]): array_t<java.lang.reflect.Parameter>;
+  export function newArray(className: 'Type', arg: Java.Type[]): array_t<java.lang.reflect.Type>;
+  export function newArray(className: 'String', arg: string_t[]): array_t<java.lang.String>;
   export function newArray(className: 'java.lang.Boolean', arg: boolean_t[]): array_t<java.lang.Boolean>;
   export function newArray(className: 'java.lang.Class', arg: Java.Class[]): array_t<java.lang.Class>;
   export function newArray(className: 'java.lang.ClassLoader', arg: Java.ClassLoader[]): array_t<java.lang.ClassLoader>;
@@ -282,7 +296,8 @@ export module Java {
   export function newArray(className: 'java.lang.String', arg: string_t[]): array_t<java.lang.String>;
   export function newArray<T>(className: string, arg: any[]): array_t<T>;
   export function newArray<T>(className: string, arg: any[]): array_t<T> {
-    return _java.newArray(className, arg);
+    var fullName: string = fullyQualifiedName(className) || className;
+    return _java.newArray(fullName, arg);
   }
 
   // export module Java {
