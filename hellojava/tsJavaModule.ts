@@ -116,6 +116,23 @@ export module Java {
 
 
 
+  export function newInstanceA(className: '', cb: Callback<Java.HelloJava>): void;
+  export function newInstanceA(className: '', cb: Callback<object_t>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: string_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: string_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: string_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', cb: Callback<string>): void;
   export function newInstanceA(className: 'com.redseal.hellojava.HelloJava', cb: Callback<Java.HelloJava>): void;
   export function newInstanceA(className: 'java.lang.Object', cb: Callback<object_t>): void;
   export function newInstanceA(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t, cb: Callback<string>): void;
@@ -135,10 +152,28 @@ export module Java {
   export function newInstanceA(className: 'java.lang.String', cb: Callback<string>): void;
   export function newInstanceA(className: string, ...args: any[]): void;
   export function newInstanceA(className: string, ...args: any[]): any {
-    args.unshift(className);
+    var fullName: string = fullyQualifiedName(className) || className;
+    args.unshift(fullName);
     return _java.newInstance.apply(_java, args);
   }
 
+  export function newInstance(className: ''): Java.HelloJava;
+  export function newInstance(className: ''): object_t;
+  export function newInstance(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t): string;
+  export function newInstance(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: string_t): string;
+  export function newInstance(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t): string;
+  export function newInstance(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t): string;
+  export function newInstance(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t): string;
+  export function newInstance(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t): string;
+  export function newInstance(className: '', arg0: object_array_t, arg1: object_t): string;
+  export function newInstance(className: '', arg0: object_array_t, arg1: string_t): string;
+  export function newInstance(className: '', arg0: object_array_t, arg1: object_t): string;
+  export function newInstance(className: '', arg0: object_t): string;
+  export function newInstance(className: '', arg0: object_t): string;
+  export function newInstance(className: '', arg0: string_t): string;
+  export function newInstance(className: '', arg0: object_array_t): string;
+  export function newInstance(className: '', arg0: object_array_t): string;
+  export function newInstance(className: ''): string;
   export function newInstance(className: 'com.redseal.hellojava.HelloJava'): Java.HelloJava;
   export function newInstance(className: 'java.lang.Object'): object_t;
   export function newInstance(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t): string;
@@ -158,10 +193,28 @@ export module Java {
   export function newInstance(className: 'java.lang.String'): string;
   export function newInstance(className: string, ...args: any[]): any;
   export function newInstance(className: string, ...args: any[]): any {
-    args.unshift(className);
+    var fullName: string = fullyQualifiedName(className) || className;
+    args.unshift(fullName);
     return _java.newInstanceSync.apply(_java, args);
   }
 
+  export function newInstanceP(className: ''): Promise<Java.HelloJava>;
+  export function newInstanceP(className: ''): Promise<object_t>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: string_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: object_t, arg2: object_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: object_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: string_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: object_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: string_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t): Promise<string>;
+  export function newInstanceP(className: ''): Promise<string>;
   export function newInstanceP(className: 'com.redseal.hellojava.HelloJava'): Promise<Java.HelloJava>;
   export function newInstanceP(className: 'java.lang.Object'): Promise<object_t>;
   export function newInstanceP(className: 'java.lang.String', arg0: object_array_t, arg1: object_t, arg2: object_t, arg3: object_t): Promise<string>;
@@ -181,16 +234,21 @@ export module Java {
   export function newInstanceP(className: 'java.lang.String'): Promise<string>;
   export function newInstanceP(className: string, ...args: any[]): Promise<any>;
   export function newInstanceP(className: string, ...args: any[]): Promise<any> {
-    args.unshift(className);
+    var fullName: string = fullyQualifiedName(className) || className;
+    args.unshift(fullName);
     return _java.newInstanceP.apply(_java, args);
   }
 
+  export function newArray(className: 'HelloJava', arg: Java.HelloJava[]): array_t<com.redseal.hellojava.HelloJava>;
+  export function newArray(className: 'Object', arg: object_t[]): array_t<java.lang.Object>;
+  export function newArray(className: 'String', arg: string_t[]): array_t<java.lang.String>;
   export function newArray(className: 'com.redseal.hellojava.HelloJava', arg: Java.HelloJava[]): array_t<com.redseal.hellojava.HelloJava>;
   export function newArray(className: 'java.lang.Object', arg: object_t[]): array_t<java.lang.Object>;
   export function newArray(className: 'java.lang.String', arg: string_t[]): array_t<java.lang.String>;
   export function newArray<T>(className: string, arg: any[]): array_t<T>;
   export function newArray<T>(className: string, arg: any[]): array_t<T> {
-    return _java.newArray(className, arg);
+    var fullName: string = fullyQualifiedName(className) || className;
+    return _java.newArray(fullName, arg);
   }
 
   // export module Java {

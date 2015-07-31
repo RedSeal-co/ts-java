@@ -151,16 +151,31 @@ export module Java {
 {{#hasClass 'java.lang.Double'}}  export function newDouble(val: number): Java.java.lang.Double { return _java.newDouble(val); }{{/hasClass}}
 
   {{#each this}}
+  {{#if useAlias}}
+  {{#each constructors}}
+  export function newInstanceA(className: '{{alias}}'{{#if tsParamTypes}}, {{{margs this norest=true}}}{{/if}}, cb: Callback<{{{tsReturns}}}>): void;
+  {{/each}}
+  {{/if}}
+  {{/each}}
+  {{#each this}}
   {{#each constructors}}
   export function newInstanceA(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this norest=true}}}{{/if}}, cb: Callback<{{{tsReturns}}}>): void;
   {{/each}}
   {{/each}}
   export function newInstanceA(className: string, ...args: any[]): void;
   export function newInstanceA(className: string, ...args: any[]): any {
-    args.unshift(className);
+    var fullName: string = fullyQualifiedName(className) || className;
+    args.unshift(fullName);
     return _java.newInstance.apply(_java, args);
   }
 
+  {{#each this}}
+  {{#if useAlias}}
+  {{#each constructors}}
+  export function newInstance(className: '{{alias}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{{tsReturns}}};
+  {{/each}}
+  {{/if}}
+  {{/each}}
   {{#each this}}
   {{#each constructors}}
   export function newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{{tsReturns}}};
@@ -168,10 +183,18 @@ export module Java {
   {{/each}}
   export function newInstance(className: string, ...args: any[]): any;
   export function newInstance(className: string, ...args: any[]): any {
-    args.unshift(className);
+    var fullName: string = fullyQualifiedName(className) || className;
+    args.unshift(fullName);
     return _java.newInstanceSync.apply(_java, args);
   }
 
+  {{#each this}}
+  {{#if useAlias}}
+  {{#each constructors}}
+  export function newInstanceP(className: '{{alias}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{{tsReturns}}}>;
+  {{/each}}
+  {{/if}}
+  {{/each}}
   {{#each this}}
   {{#each constructors}}
   export function newInstanceP(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{{tsReturns}}}>;
@@ -179,16 +202,23 @@ export module Java {
   {{/each}}
   export function newInstanceP(className: string, ...args: any[]): Promise<any>;
   export function newInstanceP(className: string, ...args: any[]): Promise<any> {
-    args.unshift(className);
+    var fullName: string = fullyQualifiedName(className) || className;
+    args.unshift(fullName);
     return _java.newInstanceP.apply(_java, args);
   }
 
+  {{#each this}}
+  {{#if useAlias}}
+  export function newArray(className: '{{alias}}', arg: {{tsType}}[]): array_t<{{quotedPkgName}}.{{shortName}}>;
+  {{/if}}
+  {{/each}}
   {{#each this}}
   export function newArray(className: '{{packageName}}.{{shortName}}', arg: {{tsType}}[]): array_t<{{quotedPkgName}}.{{shortName}}>;
   {{/each}}
   export function newArray<T>(className: string, arg: any[]): array_t<T>;
   export function newArray<T>(className: string, arg: any[]): array_t<T> {
-    return _java.newArray(className, arg);
+    var fullName: string = fullyQualifiedName(className) || className;
+    return _java.newArray(fullName, arg);
   }
 
   // export module Java {
