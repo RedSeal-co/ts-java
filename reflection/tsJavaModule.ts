@@ -185,6 +185,27 @@ export module Java {
 
 
 
+  export function newInstanceA(className: '', arg0: string_t, cb: Callback<boolean>): void;
+  export function newInstanceA(className: '', arg0: boolean_t, cb: Callback<boolean>): void;
+  export function newInstanceA(className: '', arg0: string_t, cb: Callback<number>): void;
+  export function newInstanceA(className: '', arg0: integer_t, cb: Callback<number>): void;
+  export function newInstanceA(className: '', cb: Callback<object_t>): void;
+  export function newInstanceA(className: '', cb: Callback<Java.Modifier>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: string_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: integer_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: array_t<integer_t>, arg1: integer_t, arg2: integer_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: integer_t, arg2: integer_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: integer_t, arg2: integer_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: string_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, arg1: integer_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: string_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', arg0: object_array_t, cb: Callback<string>): void;
+  export function newInstanceA(className: '', cb: Callback<string>): void;
   export function newInstanceA(className: 'java.lang.Boolean', arg0: string_t, cb: Callback<boolean>): void;
   export function newInstanceA(className: 'java.lang.Boolean', arg0: boolean_t, cb: Callback<boolean>): void;
   export function newInstanceA(className: 'java.lang.Integer', arg0: string_t, cb: Callback<number>): void;
@@ -208,10 +229,32 @@ export module Java {
   export function newInstanceA(className: 'java.lang.String', cb: Callback<string>): void;
   export function newInstanceA(className: string, ...args: any[]): void;
   export function newInstanceA(className: string, ...args: any[]): any {
-    args.unshift(className);
+    var fullName: string = fullyQualifiedName(className) || className;
+    args.unshift(fullName);
     return _java.newInstance.apply(_java, args);
   }
 
+  export function newInstance(className: '', arg0: string_t): boolean;
+  export function newInstance(className: '', arg0: boolean_t): boolean;
+  export function newInstance(className: '', arg0: string_t): number;
+  export function newInstance(className: '', arg0: integer_t): number;
+  export function newInstance(className: ''): object_t;
+  export function newInstance(className: ''): Java.Modifier;
+  export function newInstance(className: '', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: object_t): string;
+  export function newInstance(className: '', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: string_t): string;
+  export function newInstance(className: '', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: integer_t): string;
+  export function newInstance(className: '', arg0: array_t<integer_t>, arg1: integer_t, arg2: integer_t): string;
+  export function newInstance(className: '', arg0: object_array_t, arg1: integer_t, arg2: integer_t): string;
+  export function newInstance(className: '', arg0: object_array_t, arg1: integer_t, arg2: integer_t): string;
+  export function newInstance(className: '', arg0: object_array_t, arg1: object_t): string;
+  export function newInstance(className: '', arg0: object_array_t, arg1: string_t): string;
+  export function newInstance(className: '', arg0: object_array_t, arg1: integer_t): string;
+  export function newInstance(className: '', arg0: object_t): string;
+  export function newInstance(className: '', arg0: object_t): string;
+  export function newInstance(className: '', arg0: string_t): string;
+  export function newInstance(className: '', arg0: object_array_t): string;
+  export function newInstance(className: '', arg0: object_array_t): string;
+  export function newInstance(className: ''): string;
   export function newInstance(className: 'java.lang.Boolean', arg0: string_t): boolean;
   export function newInstance(className: 'java.lang.Boolean', arg0: boolean_t): boolean;
   export function newInstance(className: 'java.lang.Integer', arg0: string_t): number;
@@ -235,10 +278,32 @@ export module Java {
   export function newInstance(className: 'java.lang.String'): string;
   export function newInstance(className: string, ...args: any[]): any;
   export function newInstance(className: string, ...args: any[]): any {
-    args.unshift(className);
+    var fullName: string = fullyQualifiedName(className) || className;
+    args.unshift(fullName);
     return _java.newInstanceSync.apply(_java, args);
   }
 
+  export function newInstanceP(className: '', arg0: string_t): Promise<boolean>;
+  export function newInstanceP(className: '', arg0: boolean_t): Promise<boolean>;
+  export function newInstanceP(className: '', arg0: string_t): Promise<number>;
+  export function newInstanceP(className: '', arg0: integer_t): Promise<number>;
+  export function newInstanceP(className: ''): Promise<object_t>;
+  export function newInstanceP(className: ''): Promise<Java.Modifier>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: object_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: string_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: integer_t, arg2: integer_t, arg3: integer_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: array_t<integer_t>, arg1: integer_t, arg2: integer_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: integer_t, arg2: integer_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: integer_t, arg2: integer_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: object_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: string_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t, arg1: integer_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: string_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t): Promise<string>;
+  export function newInstanceP(className: '', arg0: object_array_t): Promise<string>;
+  export function newInstanceP(className: ''): Promise<string>;
   export function newInstanceP(className: 'java.lang.Boolean', arg0: string_t): Promise<boolean>;
   export function newInstanceP(className: 'java.lang.Boolean', arg0: boolean_t): Promise<boolean>;
   export function newInstanceP(className: 'java.lang.Integer', arg0: string_t): Promise<number>;
@@ -262,7 +327,8 @@ export module Java {
   export function newInstanceP(className: 'java.lang.String'): Promise<string>;
   export function newInstanceP(className: string, ...args: any[]): Promise<any>;
   export function newInstanceP(className: string, ...args: any[]): Promise<any> {
-    args.unshift(className);
+    var fullName: string = fullyQualifiedName(className) || className;
+    args.unshift(fullName);
     return _java.newInstanceP.apply(_java, args);
   }
 
