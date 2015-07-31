@@ -24,7 +24,7 @@ Feature: Constructors
   Scenario: newInstance sync
     Given the above boilerplate with following scenario snippet:
     """
-    var something: Java.SomeClass = Java.newInstance('com.redseal.featureset.SomeClass');
+    var something: Java.SomeClass = Java.newInstance('SomeClass');
     console.log(something.getString());
     """
     Then it compiles and lints cleanly
@@ -37,7 +37,7 @@ Feature: Constructors
   Scenario: newInstance async
     Given the above boilerplate with following scenario snippet:
     """
-    Java.newInstanceA('com.redseal.featureset.SomeClass', (err: Error, something: Java.SomeClass) => {
+    Java.newInstanceA('SomeClass', (err: Error, something: Java.SomeClass) => {
       console.log(something.getString());
     });
     """
@@ -51,7 +51,7 @@ Feature: Constructors
   Scenario: newInstance promise
     Given the above boilerplate with following scenario snippet:
     """
-    Java.newInstanceP('com.redseal.featureset.SomeClass').then((something: Java.SomeClass) => {
+    Java.newInstanceP('SomeClass').then((something: Java.SomeClass) => {
       console.log(something.getString());
     });
     """
@@ -65,7 +65,7 @@ Feature: Constructors
   Scenario: new ClassName.Static
     Given the above boilerplate with following scenario snippet:
     """
-    var SomeClass: Java.com.redseal.featureset.SomeClass.Static = Java.importClass('com.redseal.featureset.SomeClass');
+    var SomeClass: Java.com.redseal.featureset.SomeClass.Static = Java.importClass('SomeClass');
     var something: Java.SomeClass = new SomeClass();
     console.log(something.getString());
     """
@@ -79,7 +79,7 @@ Feature: Constructors
   Scenario: Constructor with arguments
     Given the above boilerplate with following scenario snippet:
     """
-    var SomeClass: Java.com.redseal.featureset.SomeClass.Static = Java.importClass('com.redseal.featureset.SomeClass');
+    var SomeClass: Java.com.redseal.featureset.SomeClass.Static = Java.importClass('SomeClass');
     var something: Java.SomeClass = new SomeClass(1, 2, 'hello world', true, 3.14);
     console.log(something.getString());
     """
