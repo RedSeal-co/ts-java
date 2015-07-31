@@ -134,6 +134,16 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
     Then it compiles and lints cleanly
     And it runs and produces no output
 
+  Scenario: newArray can be used with short class names
+    Given the above boilerplate with following scenario snippet:
+    """
+    something.setList(Java.newArray('String', ['foo', 'bar']));
+    var arr: string[] = something.getList();
+    assert.deepEqual(arr, ['foo', 'bar']);
+    """
+    Then it compiles and lints cleanly
+    And it runs and produces no output
+
   Scenario: Setting 2d array is unsupported.
     # The node-java API `newArray()` only works with 1d arrays.
     # In the example below, `setArray()` expects an int[][] object.
