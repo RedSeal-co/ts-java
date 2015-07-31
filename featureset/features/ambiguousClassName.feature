@@ -64,5 +64,5 @@ I need to understand when ts-java declares short aliases for class paths.
     """
     When compiled it produces this error containing this snippet:
     """
-    error TS2322: Type 'Thing' is not assignable to type 'Thing'.
+    error TS2322: Type 'Java.com.redseal.featureset.ambiguous.Thing' is not assignable to type 'Java.com.redseal.featureset.Thing'
     """
