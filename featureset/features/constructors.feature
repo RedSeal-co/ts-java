@@ -34,6 +34,20 @@ Feature: Constructors
 
     """
 
+  Scenario: newInstance with short class name returns the right type
+    # Bug 100356736
+    # This test is designed to demonstrate that Java.newInstance('SomeClass')
+    # returns a value whose static type is not `any`, but the expected
+    # type `Java.SomeClass`.
+    Given the above boilerplate with following scenario snippet:
+    """
+    var something: Java.AnEnum = Java.newInstance('SomeClass');
+    """
+    When compiled it produces this error containing this snippet:
+    """
+    error TS2322: Type 'SomeClass' is not assignable to type 'AnEnum'
+    """
+
   Scenario: newInstance async
     Given the above boilerplate with following scenario snippet:
     """
