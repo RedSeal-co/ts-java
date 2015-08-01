@@ -153,7 +153,7 @@ export module Java {
   {{#each this}}
   {{#if useAlias}}
   {{#each constructors}}
-  export function newInstanceA(className: '{{alias}}'{{#if tsParamTypes}}, {{{margs this norest=true}}}{{/if}}, cb: Callback<{{{tsReturns}}}>): void;
+  export function newInstanceA(className: '{{../alias}}'{{#if tsParamTypes}}, {{{margs this norest=true}}}{{/if}}, cb: Callback<{{{tsReturns}}}>): void;
   {{/each}}
   {{/if}}
   {{/each}}
@@ -172,7 +172,7 @@ export module Java {
   {{#each this}}
   {{#if useAlias}}
   {{#each constructors}}
-  export function newInstance(className: '{{alias}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{{tsReturns}}};
+  export function newInstance(className: '{{../alias}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{{tsReturns}}};
   {{/each}}
   {{/if}}
   {{/each}}
@@ -191,7 +191,7 @@ export module Java {
   {{#each this}}
   {{#if useAlias}}
   {{#each constructors}}
-  export function newInstanceP(className: '{{alias}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{{tsReturns}}}>;
+  export function newInstanceP(className: '{{../alias}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{{tsReturns}}}>;
   {{/each}}
   {{/if}}
   {{/each}}
