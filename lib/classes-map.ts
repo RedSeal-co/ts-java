@@ -328,6 +328,7 @@ class ClassesMap {
       paramNames: _.map(method.getParameters(), (p: Java.Parameter) => { return p.getName(); }),
       paramTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return p.getName(); }),
       tsParamTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return this.tsTypeName(p.getName()); }),
+      tsGenericParamTypes: _.map(method.getGenericParameterTypes(), (p: Java.Type) => { return p.getTypeName(); }),
       isStatic: isStatic,
       isVarArgs: method.isVarArgs(),
       generic_proto: method.toGenericString(),
@@ -350,6 +351,8 @@ class ClassesMap {
     var clazz: Java.Class = this.getClass(className);
     assert.strictEqual(className, clazz.getName());
 
+    var genericName: string = clazz.toGenericString();
+
     // Get the superclass of the class, if it exists, and is an included class.
     // If the immediate type is not an included class, we ascend up the ancestry
     // until we find an included superclass. If none exists, we declare the
@@ -362,7 +365,7 @@ class ClassesMap {
       superclass = superclass.getSuperclass();
     }
 
-    var interfaces = this.mapClassInterfaces(className, clazz).sort();
+    var interfaces: Array<string> = this.mapClassInterfaces(className, clazz).sort();
     if (superclass) {
       interfaces.unshift(superclass.getName());
     }
@@ -375,6 +378,8 @@ class ClassesMap {
         work.setDone(intfName);
       }
     });
+
+    var genericInterfaces: Array<string> = _.map(clazz.getGenericInterfaces(), (genType: Java.Type) => genType.getTypeName());
 
     var methods: Array<MethodDefinition> = this.mapClassMethods(className, clazz).sort(bySignature);
     var fields: Array<FieldDefinition> = this.mapClassFields(className, clazz);
@@ -420,6 +425,7 @@ class ClassesMap {
     var classMap: ClassDefinition = {
       quotedPkgName: this.packageName(this.fixClassPath(className)),
       packageName: this.packageName(className),
+      genericName: genericName,
       fullName: className,
       shortName: shortName,
       alias: alias,
@@ -430,6 +436,7 @@ class ClassesMap {
       superclass: superclass === null ? null : superclass.getName(),
       interfaces: interfaces,
       tsInterfaces: tsInterfaces,
+      genericInterfaces: genericInterfaces,
       methods: methods,
       constructors: constructors.sort(this.compareVariants),
       variantsDict: variantsDict,
@@ -583,9 +590,11 @@ class ClassesMap {
   private mapField(field: Java.Field): FieldDefinition {
     var name: string = field.getName();
     var fieldType: Java.Class = field.getType();
+    var genericFieldType: Java.Type = field.getGenericType();
     var fieldTypeName: string = fieldType.getName();
     var declaredIn: string = field.getDeclaringClass().getName();
     var tsType: string = this.tsTypeName(fieldTypeName, ParamContext.eReturn);
+    var tsGenericType: string = genericFieldType.getTypeName();
 
     var Modifier: Java.Modifier.Static = Java.importClass('java.lang.reflect.Modifier');
     var isStatic: boolean = Modifier.isStatic(field.getModifiers());
@@ -594,6 +603,7 @@ class ClassesMap {
     var fieldDefinition: FieldDefinition = {
       name: name,
       tsType: tsType,
+      tsGenericType: tsGenericType,
       isStatic: isStatic,
       isSynthetic: isSynthetic,
       declaredIn: declaredIn
@@ -919,6 +929,7 @@ module ClassesMap {
     superclass: string;                // null if no superclass, otherwise class name
     interfaces: Array<string>;         // [ 'java.util.function.Function' ]
     tsInterfaces: Array<string>;       // [ 'java.util.function_.Function' ]
+    genericInterfaces: Array<string>;
     methods: Array<MethodDefinition>;  // definitions of all methods implemented by this class
     constructors: Array<MethodDefinition>; // definitions of all constructors for this class, may be empty.
     variantsDict: MethodsByNameBySignature;
