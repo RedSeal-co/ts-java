@@ -18,7 +18,8 @@
       "java.lang.reflect.Method",
       "java.lang.reflect.Modifier",
       "java.lang.reflect.Parameter",
-      "java.lang.reflect.Type"
+      "java.lang.reflect.Type",
+      "java.lang.reflect.TypeVariable"
     ],
     "packages": [
     ],

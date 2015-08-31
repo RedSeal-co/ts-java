@@ -21,6 +21,7 @@
 //   java.lang.reflect.Modifier
 //   java.lang.reflect.Parameter
 //   java.lang.reflect.Type
+//   java.lang.reflect.TypeVariable
 // packages:
 //   <none>
 
@@ -91,6 +92,7 @@ export module Java {
       'Modifier': 'java.lang.reflect.Modifier',
       'Parameter': 'java.lang.reflect.Parameter',
       'Type': 'java.lang.reflect.Type',
+      'TypeVariable': 'java.lang.reflect.TypeVariable',
       'String': 'java.lang.String'
     };
     return shortToLongMap[className];
@@ -109,6 +111,7 @@ export module Java {
   export function importClass(className: 'Modifier'): Java.java.lang.reflect.Modifier.Static;
   export function importClass(className: 'Parameter'): Java.java.lang.reflect.Parameter.Static;
   export function importClass(className: 'Type'): Java.java.lang.reflect.Type.Static;
+  export function importClass(className: 'TypeVariable'): Java.java.lang.reflect.TypeVariable.Static;
   export function importClass(className: 'String'): Java.java.lang.String.Static;
   export function importClass(className: 'java.lang.Boolean'): Java.java.lang.Boolean.Static;
   export function importClass(className: 'java.lang.Class'): Java.java.lang.Class.Static;
@@ -123,6 +126,7 @@ export module Java {
   export function importClass(className: 'java.lang.reflect.Modifier'): Java.java.lang.reflect.Modifier.Static;
   export function importClass(className: 'java.lang.reflect.Parameter'): Java.java.lang.reflect.Parameter.Static;
   export function importClass(className: 'java.lang.reflect.Type'): Java.java.lang.reflect.Type.Static;
+  export function importClass(className: 'java.lang.reflect.TypeVariable'): Java.java.lang.reflect.TypeVariable.Static;
   export function importClass(className: 'java.lang.String'): Java.java.lang.String.Static;
   export function importClass(className: string): any;
   export function importClass(className: string): any {
@@ -143,6 +147,7 @@ export module Java {
   export function asInstanceOf(obj: any, className: 'Modifier'): Java.java.lang.reflect.Modifier;
   export function asInstanceOf(obj: any, className: 'Parameter'): Java.java.lang.reflect.Parameter;
   export function asInstanceOf(obj: any, className: 'Type'): Java.java.lang.reflect.Type;
+  export function asInstanceOf(obj: any, className: 'TypeVariable'): Java.java.lang.reflect.TypeVariable;
   export function asInstanceOf(obj: any, className: 'String'): Java.java.lang.String;
   export function asInstanceOf(obj: any, className: 'java.lang.Boolean'): Java.java.lang.Boolean;
   export function asInstanceOf(obj: any, className: 'java.lang.Class'): Java.java.lang.Class;
@@ -157,6 +162,7 @@ export module Java {
   export function asInstanceOf(obj: any, className: 'java.lang.reflect.Modifier'): Java.java.lang.reflect.Modifier;
   export function asInstanceOf(obj: any, className: 'java.lang.reflect.Parameter'): Java.java.lang.reflect.Parameter;
   export function asInstanceOf(obj: any, className: 'java.lang.reflect.Type'): Java.java.lang.reflect.Type;
+  export function asInstanceOf(obj: any, className: 'java.lang.reflect.TypeVariable'): Java.java.lang.reflect.TypeVariable;
   export function asInstanceOf(obj: any, className: 'java.lang.String'): Java.java.lang.String;
   export function asInstanceOf(obj: any, className: string): any;
   export function asInstanceOf(obj: any, className: string): any {
@@ -345,6 +351,7 @@ export module Java {
   export function newArray(className: 'Modifier', arg: Java.Modifier[]): array_t<java.lang.reflect.Modifier>;
   export function newArray(className: 'Parameter', arg: Java.Parameter[]): array_t<java.lang.reflect.Parameter>;
   export function newArray(className: 'Type', arg: Java.Type[]): array_t<java.lang.reflect.Type>;
+  export function newArray(className: 'TypeVariable', arg: Java.TypeVariable[]): array_t<java.lang.reflect.TypeVariable>;
   export function newArray(className: 'String', arg: string_t[]): array_t<java.lang.String>;
   export function newArray(className: 'java.lang.Boolean', arg: boolean_t[]): array_t<java.lang.Boolean>;
   export function newArray(className: 'java.lang.Class', arg: Java.Class[]): array_t<java.lang.Class>;
@@ -359,6 +366,7 @@ export module Java {
   export function newArray(className: 'java.lang.reflect.Modifier', arg: Java.Modifier[]): array_t<java.lang.reflect.Modifier>;
   export function newArray(className: 'java.lang.reflect.Parameter', arg: Java.Parameter[]): array_t<java.lang.reflect.Parameter>;
   export function newArray(className: 'java.lang.reflect.Type', arg: Java.Type[]): array_t<java.lang.reflect.Type>;
+  export function newArray(className: 'java.lang.reflect.TypeVariable', arg: Java.TypeVariable[]): array_t<java.lang.reflect.TypeVariable>;
   export function newArray(className: 'java.lang.String', arg: string_t[]): array_t<java.lang.String>;
   export function newArray<T>(className: string, arg: any[]): array_t<T>;
   export function newArray<T>(className: string, arg: any[]): array_t<T> {
@@ -417,6 +425,7 @@ export module Java {
   export import Modifier = java.lang.reflect.Modifier;
   export import Parameter = java.lang.reflect.Parameter;
   export import Type = java.lang.reflect.Type;
+  export import TypeVariable = java.lang.reflect.TypeVariable;
   export import String = java.lang.String;
 
   export module java.lang {
@@ -725,9 +734,9 @@ export module Java {
       getTypeName(): string;
       getTypeNameP(): Promise<string>;
       // public java.lang.reflect.TypeVariable<java.lang.Class<T>>[] java.lang.Class.getTypeParameters()
-      getTypeParametersA( cb: Callback<object_t[]>): void;
-      getTypeParameters(): object_t[];
-      getTypeParametersP(): Promise<object_t[]>;
+      getTypeParametersA( cb: Callback<Java.TypeVariable[]>): void;
+      getTypeParameters(): Java.TypeVariable[];
+      getTypeParametersP(): Promise<Java.TypeVariable[]>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<number>): void;
       hashCode(): number;
@@ -1383,9 +1392,9 @@ export module Java {
       getParameterTypes(): Java.Class[];
       getParameterTypesP(): Promise<Java.Class[]>;
       // public abstract java.lang.reflect.TypeVariable<?>[] java.lang.reflect.Executable.getTypeParameters()
-      getTypeParametersA( cb: Callback<object_t[]>): void;
-      getTypeParameters(): object_t[];
-      getTypeParametersP(): Promise<object_t[]>;
+      getTypeParametersA( cb: Callback<Java.TypeVariable[]>): void;
+      getTypeParameters(): Java.TypeVariable[];
+      getTypeParametersP(): Promise<Java.TypeVariable[]>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<number>): void;
       hashCode(): number;
@@ -1549,9 +1558,9 @@ export module Java {
       getParameterTypes(): Java.Class[];
       getParameterTypesP(): Promise<Java.Class[]>;
       // public abstract java.lang.reflect.TypeVariable<?>[] java.lang.reflect.Executable.getTypeParameters()
-      getTypeParametersA( cb: Callback<object_t[]>): void;
-      getTypeParameters(): object_t[];
-      getTypeParametersP(): Promise<object_t[]>;
+      getTypeParametersA( cb: Callback<Java.TypeVariable[]>): void;
+      getTypeParameters(): Java.TypeVariable[];
+      getTypeParametersP(): Promise<Java.TypeVariable[]>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<number>): void;
       hashCode(): number;
@@ -1917,9 +1926,9 @@ export module Java {
       getReturnType(): Java.Class;
       getReturnTypeP(): Promise<Java.Class>;
       // public abstract java.lang.reflect.TypeVariable<?>[] java.lang.reflect.Executable.getTypeParameters()
-      getTypeParametersA( cb: Callback<object_t[]>): void;
-      getTypeParameters(): object_t[];
-      getTypeParametersP(): Promise<object_t[]>;
+      getTypeParametersA( cb: Callback<Java.TypeVariable[]>): void;
+      getTypeParameters(): Java.TypeVariable[];
+      getTypeParametersP(): Promise<Java.TypeVariable[]>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<number>): void;
       hashCode(): number;
@@ -2257,6 +2266,64 @@ export module Java {
       getTypeNameP(): Promise<string>;
     }
     export module Type {
+      export interface Static {
+        class: Java.Class;
+      }
+    }
+  }
+
+  export module java.lang.reflect {
+    export interface TypeVariable extends Java.java.lang.reflect.Type {
+      // public abstract java.lang.reflect.AnnotatedType[] java.lang.reflect.TypeVariable.getAnnotatedBounds()
+      getAnnotatedBoundsA( cb: Callback<object_t[]>): void;
+      getAnnotatedBounds(): object_t[];
+      getAnnotatedBoundsP(): Promise<object_t[]>;
+      // public abstract <T> T java.lang.reflect.AnnotatedElement.getAnnotation(java.lang.Class<T>)
+      getAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
+      getAnnotation(arg0: Java.Class): object_t;
+      getAnnotationP(arg0: Java.Class): Promise<object_t>;
+      // public abstract java.lang.annotation.Annotation[] java.lang.reflect.AnnotatedElement.getAnnotations()
+      getAnnotationsA( cb: Callback<object_t[]>): void;
+      getAnnotations(): object_t[];
+      getAnnotationsP(): Promise<object_t[]>;
+      // public default <T> T[] java.lang.reflect.AnnotatedElement.getAnnotationsByType(java.lang.Class<T>)
+      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
+      getAnnotationsByType(arg0: Java.Class): object_t[];
+      getAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      // public abstract java.lang.reflect.Type[] java.lang.reflect.TypeVariable.getBounds()
+      getBoundsA( cb: Callback<Java.Type[]>): void;
+      getBounds(): Java.Type[];
+      getBoundsP(): Promise<Java.Type[]>;
+      // public default <T> T java.lang.reflect.AnnotatedElement.getDeclaredAnnotation(java.lang.Class<T>)
+      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
+      getDeclaredAnnotation(arg0: Java.Class): object_t;
+      getDeclaredAnnotationP(arg0: Java.Class): Promise<object_t>;
+      // public abstract java.lang.annotation.Annotation[] java.lang.reflect.AnnotatedElement.getDeclaredAnnotations()
+      getDeclaredAnnotationsA( cb: Callback<object_t[]>): void;
+      getDeclaredAnnotations(): object_t[];
+      getDeclaredAnnotationsP(): Promise<object_t[]>;
+      // public default <T> T[] java.lang.reflect.AnnotatedElement.getDeclaredAnnotationsByType(java.lang.Class<T>)
+      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
+      getDeclaredAnnotationsByType(arg0: Java.Class): object_t[];
+      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      // public abstract D java.lang.reflect.TypeVariable.getGenericDeclaration()
+      getGenericDeclarationA( cb: Callback<object_t>): void;
+      getGenericDeclaration(): object_t;
+      getGenericDeclarationP(): Promise<object_t>;
+      // public abstract java.lang.String java.lang.reflect.TypeVariable.getName()
+      getNameA( cb: Callback<string>): void;
+      getName(): string;
+      getNameP(): Promise<string>;
+      // public default java.lang.String java.lang.reflect.Type.getTypeName()
+      getTypeNameA( cb: Callback<string>): void;
+      getTypeName(): string;
+      getTypeNameP(): Promise<string>;
+      // public default boolean java.lang.reflect.AnnotatedElement.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)
+      isAnnotationPresentA(arg0: Java.Class, cb: Callback<boolean>): void;
+      isAnnotationPresent(arg0: Java.Class): boolean;
+      isAnnotationPresentP(arg0: Java.Class): Promise<boolean>;
+    }
+    export module TypeVariable {
       export interface Static {
         class: Java.Class;
       }
