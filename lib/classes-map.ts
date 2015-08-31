@@ -353,6 +353,8 @@ class ClassesMap {
 
     var genericName: string = clazz.toGenericString();
 
+    var typeParms: Array<string> = _.map(clazz.getTypeParameters(), (t: Java.TypeVariable) => t.getName());
+
     // Get the superclass of the class, if it exists, and is an included class.
     // If the immediate type is not an included class, we ascend up the ancestry
     // until we find an included superclass. If none exists, we declare the
@@ -428,6 +430,7 @@ class ClassesMap {
       genericName: genericName,
       fullName: className,
       shortName: shortName,
+      typeParms: typeParms,
       alias: alias,
       useAlias: useAlias,
       tsType: this.tsTypeName(className),
@@ -920,6 +923,7 @@ module ClassesMap {
     packageName: string;               // 'java.util.function'
     fullName: string;                  // 'java.util.Iterator'
     shortName: string;                 // 'Iterator'
+    typeParms: Array<string>;
     alias: string;                     // This will be shortName, unless two classes have the same short name,
                                        // of if the short name conflicts with a Javascript type (e.g. Number).
     useAlias: boolean;                 // true if alias is the shortName.

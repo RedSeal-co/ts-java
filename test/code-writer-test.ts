@@ -105,6 +105,7 @@ describe('CodeWriter', () => {
         'genericName: public abstract interface java.util.function.Function<T,R>',
         'fullName: java.util.function.Function',
         'shortName: Function',
+        'typeParms: T,R',
         'alias: Function',
         'useAlias: true',
         'tsType: Java.Function',
