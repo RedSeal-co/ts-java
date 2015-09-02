@@ -1,7 +1,0 @@
-function {{{name}}}(_jThis) {
-  if (!(this instanceof {{{name}}})) {
-    return new {{{name}}}(_jThis);
-  }
-  this.jThis = _jThis;
-}
-
