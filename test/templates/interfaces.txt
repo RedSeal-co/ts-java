@@ -1,2 +1,0 @@
-Inherited interfaces for class {{this.fullName}}: 
-{{this.tsInterfaces}}

@@ -133,28 +133,6 @@ class CodeWriter {
   }
 
 
-  // *streamLibraryClassFile(): stream a complete source file for a java wrapper class.
-  streamLibraryClassFile(className: string, template: string, streamFn: StreamFn, endFn: EndFn): BluePromise<void> {
-    return streamFn(this.fill(template, this.classes[className]))
-      .then(() => { return endFn(); });
-  }
-
-
-  // *writeLibraryClassFile(): write a complete source file for a library class (lib/classWrapper.ts).
-  writeLibraryClassFile(className: string, template: string = 'sourcefile', ext: string = '.ts'): BluePromise<void> {
-    var classMap = this.classes[className];
-
-    var fileName = classMap.shortName;
-    var filePath = 'o/lib/' + fileName + ext;
-
-    var stream = fs.createWriteStream(filePath);
-    var streamFn: StreamFn = BluePromise.promisify(stream.write, stream);
-    var endFn: EndFn = BluePromise.promisify(stream.end, stream);
-
-    return this.streamLibraryClassFile(className, template, streamFn, endFn);
-  }
-
-
   // *streamPackageFile(): stream the java.d.ts file contents
   streamPackageFile(options: TsJavaOptions, streamFn: StreamFn, endFn: EndFn): BluePromise<void> {
     var context = {

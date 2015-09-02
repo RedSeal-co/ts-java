@@ -123,9 +123,6 @@ class Main {
   }
 
   private initFromOptions(): BluePromise<void>  {
-    if (this.options.granularity !== 'class') {
-      this.options.granularity = 'package';
-    }
     if (!this.options.promisesPath) {
       // TODO: Provide more control over promises
       this.options.promisesPath = '../bluebird/bluebird.d.ts';
@@ -150,7 +147,7 @@ class Main {
 
   private writeInterpolatedFiles() : BluePromise<void> {
     var classesMap: ClassesMap = this.classesMap;
-    return this.options.granularity === 'class' ? this.writeClassFiles(classesMap) : this.writePackageFiles(classesMap);
+    return this.writePackageFiles(classesMap);
   }
 
   private writeJsons(): BluePromise<void> {
@@ -171,19 +168,6 @@ class Main {
       })
       .then((promises: BluePromise<void>[]) => BluePromise.all(promises))
       .then(() => dlog('writeJsons() completed.'));
-  }
-
-  private writeClassFiles(classesMap: ClassesMap): BluePromise<void> {
-    dlog('writeClassFiles() entered');
-    return mkdirpPromise('o/lib')
-      .then(() => {
-        var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
-        var tsWriter = new CodeWriter(classesMap, templatesDirPath);
-        var classes: ClassDefinitionMap = classesMap.getClasses();
-        return _.map(_.keys(classes), (name: string) => tsWriter.writeLibraryClassFile(name, this.options.granularity));
-      })
-      .then((promises: Promise<any>[]) => BluePromise.all(promises))
-      .then(() => dlog('writeClassFiles() completed.'));
   }
 
   private writePackageFiles(classesMap: ClassesMap): BluePromise<void> {

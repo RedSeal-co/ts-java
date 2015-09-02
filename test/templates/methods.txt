@@ -1,4 +1,0 @@
-Method signatures for class {{this.fullName}}:
-{{#each this.methods}}
-{{{this.signature}}}
-{{/each}}
