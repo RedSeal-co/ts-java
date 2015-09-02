@@ -101,9 +101,6 @@ class ClassesMap {
 
     this.interfaceDepthCache = Immutable.Map<string, number>();
 
-    // TODO: remove these two lines when the deprecated `seedClasses` and `whiteList` are no longer needed.
-    options.packages = options.packages || options.whiteList;
-
     this.includedPatterns = Immutable.Set(_.map(this.options.packages, (expr: string) => {
       var pattern: RegExp = this.packageExpressionToRegExp(expr);
       dlog('package pattern:', pattern);

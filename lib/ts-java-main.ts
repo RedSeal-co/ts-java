@@ -138,11 +138,6 @@ class Main {
     } else if (!areCompatibleAsyncOptions(this.options.asyncOptions)) {
       console.warn(warn('tsjava.asyncOptions are not compatible with the asyncOptions used in the standard typings/java/java.d.ts'));
     }
-    if (!this.options.packages && this.options.whiteList) {
-      console.warn(warn('tsjava.whiteList in package.json is deprecated. Please use tsjava.packages instead.'));
-      this.options.packages = this.options.whiteList;
-      this.options.whiteList = undefined;
-    }
     var deprecated: string = _.find(this.options.packages, (s: string) => {
       return s.slice(-2) !== '.*' && s.slice(-3) !== '.**';
     });
