@@ -143,11 +143,6 @@ class Main {
       this.options.packages = this.options.whiteList;
       this.options.whiteList = undefined;
     }
-    if (!this.options.classes && this.options.seedClasses) {
-      console.warn(warn('tsjava.seedClasses in package.json is deprecated. Please use tsjava.classes instead.'));
-      this.options.classes = this.options.seedClasses;
-      this.options.seedClasses = undefined;
-    }
     var deprecated: string = _.find(this.options.packages, (s: string) => {
       return s.slice(-2) !== '.*' && s.slice(-3) !== '.**';
     });

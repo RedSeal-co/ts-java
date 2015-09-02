@@ -14,9 +14,6 @@ interface TsJavaOptions {
   classes?: Array<string>;
     // The set of java classes the application requires, for finer-grained control than packages.
 
-  seedClasses?: Array<string>;
-    // A deprecated alias for classes.
-
   packages?: Array<string>;
     // A set of packages class paths for packages to include.
     // All classes in each of these packages will be included.
