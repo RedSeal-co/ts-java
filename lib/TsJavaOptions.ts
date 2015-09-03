@@ -18,9 +18,6 @@ interface TsJavaOptions {
     // A set of packages class paths for packages to include.
     // All classes in each of these packages will be included.
 
-  outputPath?: string;
-    // The path to write the output java.d.ts file to. Defaults to 'java.d.ts'.
-
   javaTypingsPath?: string;
     // The path to typings/java/java.d.ts. Defaults to 'typings/java/java.d.ts'.
 

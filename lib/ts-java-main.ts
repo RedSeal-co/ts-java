@@ -89,7 +89,7 @@ class Main {
 
   run(): BluePromise<ClassesMap> {
     return this.load()
-      .then(() => BluePromise.join(this.writeJsons(), this.writeInterpolatedFiles(), this.writeTsJavaModule()))
+      .then(() => BluePromise.join(this.writeJsons(), this.writeTsJavaModule()))
       .then(() => dlog('run() completed.'))
       .then(() => this.outputSummaryDiagnostics())
       .then(() => this.classesMap);
@@ -145,11 +145,6 @@ class Main {
     return BluePromise.resolve();
   }
 
-  private writeInterpolatedFiles() : BluePromise<void> {
-    var classesMap: ClassesMap = this.classesMap;
-    return this.writePackageFiles(classesMap);
-  }
-
   private writeJsons(): BluePromise<void> {
     if (!program.opts().json) {
       return;
@@ -168,20 +163,6 @@ class Main {
       })
       .then((promises: BluePromise<void>[]) => BluePromise.all(promises))
       .then(() => dlog('writeJsons() completed.'));
-  }
-
-  private writePackageFiles(classesMap: ClassesMap): BluePromise<void> {
-    dlog('writePackageFiles() entered');
-    if (!this.options.outputPath) {
-      dlog('No java.d.ts outputPath specified, skipping generation.');
-      return BluePromise.resolve();
-    } else {
-      var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
-      var tsWriter = new CodeWriter(classesMap, templatesDirPath);
-      return mkdirpPromise(path.dirname(this.options.outputPath))
-        .then(() => tsWriter.writePackageFile(this.options))
-        .then(() => dlog('writePackageFiles() completed'));
-    }
   }
 
   private writeTsJavaModule(): BluePromise<void> {
@@ -232,10 +213,6 @@ class Main {
       console.log(bold('Generated classes:'));
       classList.forEach((clazz: string) => console.log('  ', clazz));
     } else {
-      // TODO: remove support for generating java.d.ts files.
-      if (this.options.outputPath) {
-        console.log('Generated %s with %d classes.', this.options.outputPath, classList.length);
-      }
       // TODO: always generate tsJavaModule.ts files, by using a default when value not specified.
       if (this.options.tsJavaModulePath) {
         console.log('Generated %s with %d classes.', this.options.tsJavaModulePath, classList.length);
