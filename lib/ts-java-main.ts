@@ -83,7 +83,14 @@ class Main {
     if (typeof param === 'string') {
       this.packagePath = param;
     } else {
-      this.options = param;
+      var defaults: TsJavaOptions = {
+        classpath: [],
+        tsJavaModulePath: 'tsJavaModule.ts',
+        promisesPath: '../bluebird/bluebird.d.ts',
+        javaTypingsPath: 'typings/java/java.d.ts',
+        asyncOptions: expectedAsyncOptions
+      };
+      this.options = <TsJavaOptions> _.assign(defaults, param);
     }
   }
 
@@ -123,19 +130,7 @@ class Main {
   }
 
   private initFromOptions(): BluePromise<void>  {
-    if (!this.options.tsJavaModulePath) {
-      this.options.tsJavaModulePath = 'tsJavaModule.ts';
-    }
-    if (!this.options.promisesPath) {
-      // TODO: Provide more control over promises
-      this.options.promisesPath = '../bluebird/bluebird.d.ts';
-    }
-    if (!this.options.javaTypingsPath) {
-      this.options.javaTypingsPath = 'typings/java/java.d.ts';
-    }
-    if (!this.options.asyncOptions) {
-      this.options.asyncOptions = expectedAsyncOptions;
-    } else if (!areCompatibleAsyncOptions(this.options.asyncOptions)) {
+    if (!areCompatibleAsyncOptions(this.options.asyncOptions)) {
       console.warn(warn('tsjava.asyncOptions are not compatible with the asyncOptions used in the standard typings/java/java.d.ts'));
     }
     var deprecated: string = _.find(this.options.packages, (s: string) => {
