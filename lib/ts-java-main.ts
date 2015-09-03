@@ -87,7 +87,8 @@ class Main {
         classpath: [],
         tsJavaModulePath: 'tsJavaModule.ts',
         javaTypingsPath: 'typings/java/java.d.ts',
-        asyncOptions: expectedAsyncOptions
+        asyncOptions: expectedAsyncOptions,
+        generics: false
       };
       this.options = <TsJavaOptions> _.assign(defaults, param);
     }

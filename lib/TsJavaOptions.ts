@@ -33,6 +33,10 @@ interface TsJavaOptions {
     // The asyncOptions which will be used to initalize Java.
     // Note, currently it is up to the developer to ensure the options specified here match
     // the options used to initalize the java module.
+
+  generics?: boolean;
+    // If true, the output tsJavaModule.ts file will map Java generics to Typescript generics.
+    // Defaults to false.
 }
 
 export = TsJavaOptions;
