@@ -123,6 +123,9 @@ class Main {
   }
 
   private initFromOptions(): BluePromise<void>  {
+    if (!this.options.tsJavaModulePath) {
+      this.options.tsJavaModulePath = 'tsJavaModule.ts';
+    }
     if (!this.options.promisesPath) {
       // TODO: Provide more control over promises
       this.options.promisesPath = '../bluebird/bluebird.d.ts';
@@ -213,10 +216,7 @@ class Main {
       console.log(bold('Generated classes:'));
       classList.forEach((clazz: string) => console.log('  ', clazz));
     } else {
-      // TODO: always generate tsJavaModule.ts files, by using a default when value not specified.
-      if (this.options.tsJavaModulePath) {
-        console.log('Generated %s with %d classes.', this.options.tsJavaModulePath, classList.length);
-      }
+      console.log('Generated %s with %d classes.', this.options.tsJavaModulePath, classList.length);
     }
 
     if (!this.classesMap.unhandledTypes.isEmpty()) {

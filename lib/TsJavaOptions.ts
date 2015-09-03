@@ -32,6 +32,7 @@ interface TsJavaOptions {
 
   tsJavaModulePath?: string;
     // The path where ts-java will write the generated typescript source module.
+    // Defaults to 'tsJavaModule.ts'.
 
   asyncOptions?: AsyncOptions;
     // The asyncOptions which will be used to initalize Java.
