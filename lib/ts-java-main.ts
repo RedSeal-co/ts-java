@@ -17,7 +17,7 @@ import _ = require('lodash');
 import AsyncOptions = require('./AsyncOptions');
 import BluePromise = require('bluebird');
 import chalk = require('chalk');
-import ClassesMap = require('../lib/classes-map');
+import { ClassesMap } from '../lib/classes-map';
 import CodeWriter = require('../lib/code-writer');
 import debug = require('debug');
 import findJavaHome = require('find-java-home');

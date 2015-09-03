@@ -15,7 +15,7 @@ require('source-map-support').install();
 import _ = require('lodash');
 import BluePromise = require('bluebird');
 import chai = require('chai');
-import ClassesMap = require('../lib/classes-map');
+import { ClassesMap } from '../lib/classes-map';
 import CodeWriter = require('../lib/code-writer');
 import concat = require('concat-stream');
 import glob = require('glob');

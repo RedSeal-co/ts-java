@@ -13,7 +13,6 @@ import BluePromise = require('bluebird');
 import debug = require('debug');
 import fs = require('fs');
 import Immutable = require('immutable');
-import ParamContext = require('./paramcontext');
 import TsJavaOptions = require('./TsJavaOptions');
 import Work = require('./work');
 import zip = require('zip');
@@ -52,11 +51,14 @@ import FieldDefinition = ClassesMap.FieldDefinition;
 import MethodDefinition = ClassesMap.MethodDefinition;
 import VariantsArray = ClassesMap.VariantsArray;
 
+export enum ParamContext {eInput, eReturn};
+
+
 // ## ClassesMap
 // ClassesMap is a map of a set of java classes/interfaces, containing information extracted via Java Reflection.
 // For each such class/interface, we extract the set of interfaces inherited/implemented by the class,
 // and information about all methods implemented by the class (directly or indirectly via inheritance).
-class ClassesMap {
+export class ClassesMap {
 
   // *unhandledTypes* is the set of all types that are not included by the configured classes/packages lists
   // yet are referenced by methods of classes that are included in the output java.d.ts file.
@@ -877,7 +879,7 @@ class ClassesMap {
   }
 }
 
-module ClassesMap {
+export module ClassesMap {
 
   'use strict';
 
@@ -944,5 +946,3 @@ module ClassesMap {
   }
 
 }
-
-export = ClassesMap;

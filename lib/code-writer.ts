@@ -10,7 +10,7 @@
 import _ = require('lodash');
 import assert = require('assert');
 import BluePromise = require('bluebird');
-import ClassesMap = require('./classes-map');
+import { ClassesMap } from './classes-map';
 import fs = require('fs');
 import glob = require('glob');
 import handlebars = require('handlebars');

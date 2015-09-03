@@ -14,13 +14,12 @@ require('source-map-support').install();
 
 import _ = require('lodash');
 import BluePromise = require('bluebird');
-import ClassesMap = require('../lib/classes-map');
+import { ClassesMap, ParamContext } from '../lib/classes-map';
 import chai = require('chai');
 import debug = require('debug');
 import findJavaHome = require('find-java-home');
 import glob = require('glob');
 import Immutable = require('immutable');
-import ParamContext = require('../lib/paramcontext');
 import path = require('path');
 import TsJavaOptions = require('../lib/TsJavaOptions');
 import TsJavaMain = require('../lib/ts-java-main');

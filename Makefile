@@ -165,8 +165,6 @@ bin/ts-java.sh: bin/ts-java.js lib/reflection.ts
 
 bin/ts-java.js : $(LIBS_OBJS)
 
-lib/classes-map.js : lib/paramcontext.ts
-
 lib/code-writer.js : lib/classes-map.ts
 
 test/classes-map-test.js test/code-writer-test.js : $(LIBS_SRC)
