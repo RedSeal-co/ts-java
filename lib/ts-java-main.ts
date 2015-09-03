@@ -86,7 +86,6 @@ class Main {
       var defaults: TsJavaOptions = {
         classpath: [],
         tsJavaModulePath: 'tsJavaModule.ts',
-        promisesPath: '../bluebird/bluebird.d.ts',
         javaTypingsPath: 'typings/java/java.d.ts',
         asyncOptions: expectedAsyncOptions
       };

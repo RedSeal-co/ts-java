@@ -25,11 +25,6 @@ interface TsJavaOptions {
     // The path to typings/debug/debug.d.ts to use in tsJavaModule.ts.
     // If undefined, don't generate debug code in tsJavaModule.ts
 
-  promisesPath?: string;
-    // The path for the .d.ts file for the promises library.
-    // Defaults to '../bluebird/bluebird.d.ts'.
-    // Promises libraries other than bluebird are currently not supported, though might work.
-
   tsJavaModulePath?: string;
     // The path where ts-java will write the generated typescript source module.
     // Defaults to 'tsJavaModule.ts'.
