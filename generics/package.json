@@ -1,0 +1,39 @@
+{
+  "tsjava": {
+    "tsJavaModulePath": "tsJavaModule.ts",
+    "promisesPath": "typings/bluebird/bluebird.d.ts",
+    "javaTypingsPath": "../typings/java/java.d.ts",
+    "debugTypingsPath": "../typings/debug/debug.d.ts",
+    "generics": true,
+    "classpath": [
+    ],
+    "classes": [
+      "java.lang.Boolean",
+      "java.lang.Class",
+      "java.lang.Double",
+      "java.lang.Enum",
+      "java.lang.Float",
+      "java.lang.Integer",
+      "java.lang.Iterable",
+      "java.lang.Long",
+      "java.lang.Number",
+      "java.lang.Short",
+      "java.util.Collection",
+      "java.util.function.Consumer",
+      "java.util.function.DoubleConsumer",
+      "java.util.function.Function",
+      "java.util.function.IntConsumer",
+      "java.util.function.LongConsumer",
+      "java.util.Iterator",
+      "java.util.List"
+    ],
+    "packages": [
+      "java.util.stream.**"
+    ],
+    "asyncOptions": {
+      "syncSuffix": "",
+      "asyncSuffix": "A",
+      "promiseSuffix": "P"
+    }
+  }
+}

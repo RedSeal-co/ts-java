@@ -35,6 +35,7 @@ compile: $(ALL_TS_OBJ)
 JAVAPKGS=\
 	hellojava \
 	featureset \
+	generics \
 	reflection \
 	tinkerpop
 
