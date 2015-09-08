@@ -130,6 +130,20 @@ class CodeWriter {
     handlebars.registerHelper('join', function(array: string[], sep: string, options: HandlebarHelperOptions ) {
       return array.map((item: string) => options.fn(item)).join(sep);
     });
+    handlebars.registerHelper('gentypes', function(array: string[], options: HandlebarHelperOptions ) {
+      if (array.length === 0) {
+        return '';
+      } else {
+        return '<' + array.join(' ,') + '>';
+      }
+    });
+    handlebars.registerHelper('usetypes', function(array: string[], options: HandlebarHelperOptions ) {
+      if (array.length === 0) {
+        return '';
+      } else {
+        return '<' + _.map(array, () => 'any').join(' ,') + '>';
+      }
+    });
   }
 
 

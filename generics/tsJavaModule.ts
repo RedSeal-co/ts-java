@@ -241,26 +241,26 @@ export module Java {
   }
 
   export function asInstanceOf(obj: any, className: 'Boolean'): Java.java.lang.Boolean;
-  export function asInstanceOf(obj: any, className: 'Class'): Java.java.lang.Class;
+  export function asInstanceOf(obj: any, className: 'Class'): Java.java.lang.Class<any>;
   export function asInstanceOf(obj: any, className: 'Double'): Java.java.lang.Double;
-  export function asInstanceOf(obj: any, className: 'Enum'): Java.java.lang.Enum;
+  export function asInstanceOf(obj: any, className: 'Enum'): Java.java.lang.Enum<any>;
   export function asInstanceOf(obj: any, className: 'Float'): Java.java.lang.Float;
   export function asInstanceOf(obj: any, className: 'Integer'): Java.java.lang.Integer;
-  export function asInstanceOf(obj: any, className: 'Iterable'): Java.java.lang.Iterable;
+  export function asInstanceOf(obj: any, className: 'Iterable'): Java.java.lang.Iterable<any>;
   export function asInstanceOf(obj: any, className: 'Long'): Java.java.lang.Long;
   export function asInstanceOf(obj: any, className: 'Object'): Java.java.lang.Object;
   export function asInstanceOf(obj: any, className: 'Short'): Java.java.lang.Short;
   export function asInstanceOf(obj: any, className: 'String'): Java.java.lang.String;
-  export function asInstanceOf(obj: any, className: 'Collection'): Java.java.util.Collection;
-  export function asInstanceOf(obj: any, className: 'Consumer'): Java.java.util.function_.Consumer;
+  export function asInstanceOf(obj: any, className: 'Collection'): Java.java.util.Collection<any>;
+  export function asInstanceOf(obj: any, className: 'Consumer'): Java.java.util.function_.Consumer<any>;
   export function asInstanceOf(obj: any, className: 'DoubleConsumer'): Java.java.util.function_.DoubleConsumer;
-  export function asInstanceOf(obj: any, className: 'Function'): Java.java.util.function_.Function;
+  export function asInstanceOf(obj: any, className: 'Function'): Java.java.util.function_.Function<any ,any>;
   export function asInstanceOf(obj: any, className: 'IntConsumer'): Java.java.util.function_.IntConsumer;
   export function asInstanceOf(obj: any, className: 'LongConsumer'): Java.java.util.function_.LongConsumer;
-  export function asInstanceOf(obj: any, className: 'Iterator'): Java.java.util.Iterator;
-  export function asInstanceOf(obj: any, className: 'List'): Java.java.util.List;
-  export function asInstanceOf(obj: any, className: 'BaseStream'): Java.java.util.stream.BaseStream;
-  export function asInstanceOf(obj: any, className: 'Collector'): Java.java.util.stream.Collector;
+  export function asInstanceOf(obj: any, className: 'Iterator'): Java.java.util.Iterator<any>;
+  export function asInstanceOf(obj: any, className: 'List'): Java.java.util.List<any>;
+  export function asInstanceOf(obj: any, className: 'BaseStream'): Java.java.util.stream.BaseStream<any ,any>;
+  export function asInstanceOf(obj: any, className: 'Collector'): Java.java.util.stream.Collector<any ,any ,any>;
   export function asInstanceOf(obj: any, className: 'Collector$Characteristics'): Java.java.util.stream.Collector$Characteristics;
   export function asInstanceOf(obj: any, className: 'Collectors'): Java.java.util.stream.Collectors;
   export function asInstanceOf(obj: any, className: 'DoubleStream'): Java.java.util.stream.DoubleStream;
@@ -269,46 +269,46 @@ export module Java {
   export function asInstanceOf(obj: any, className: 'IntStream$Builder'): Java.java.util.stream.IntStream$Builder;
   export function asInstanceOf(obj: any, className: 'LongStream'): Java.java.util.stream.LongStream;
   export function asInstanceOf(obj: any, className: 'LongStream$Builder'): Java.java.util.stream.LongStream$Builder;
-  export function asInstanceOf(obj: any, className: 'Node$Builder'): Java.java.util.stream.Node$Builder;
+  export function asInstanceOf(obj: any, className: 'Node$Builder'): Java.java.util.stream.Node$Builder<any>;
   export function asInstanceOf(obj: any, className: 'Node$Builder$OfDouble'): Java.java.util.stream.Node$Builder$OfDouble;
   export function asInstanceOf(obj: any, className: 'Node$Builder$OfInt'): Java.java.util.stream.Node$Builder$OfInt;
   export function asInstanceOf(obj: any, className: 'Node$Builder$OfLong'): Java.java.util.stream.Node$Builder$OfLong;
   export function asInstanceOf(obj: any, className: 'Node$OfDouble'): Java.java.util.stream.Node$OfDouble;
   export function asInstanceOf(obj: any, className: 'Node$OfInt'): Java.java.util.stream.Node$OfInt;
   export function asInstanceOf(obj: any, className: 'Node$OfLong'): Java.java.util.stream.Node$OfLong;
-  export function asInstanceOf(obj: any, className: 'Node$OfPrimitive'): Java.java.util.stream.Node$OfPrimitive;
-  export function asInstanceOf(obj: any, className: 'Sink$ChainedDouble'): Java.java.util.stream.Sink$ChainedDouble;
-  export function asInstanceOf(obj: any, className: 'Sink$ChainedInt'): Java.java.util.stream.Sink$ChainedInt;
-  export function asInstanceOf(obj: any, className: 'Sink$ChainedLong'): Java.java.util.stream.Sink$ChainedLong;
-  export function asInstanceOf(obj: any, className: 'Sink$ChainedReference'): Java.java.util.stream.Sink$ChainedReference;
+  export function asInstanceOf(obj: any, className: 'Node$OfPrimitive'): Java.java.util.stream.Node$OfPrimitive<any ,any ,any ,any ,any>;
+  export function asInstanceOf(obj: any, className: 'Sink$ChainedDouble'): Java.java.util.stream.Sink$ChainedDouble<any>;
+  export function asInstanceOf(obj: any, className: 'Sink$ChainedInt'): Java.java.util.stream.Sink$ChainedInt<any>;
+  export function asInstanceOf(obj: any, className: 'Sink$ChainedLong'): Java.java.util.stream.Sink$ChainedLong<any>;
+  export function asInstanceOf(obj: any, className: 'Sink$ChainedReference'): Java.java.util.stream.Sink$ChainedReference<any ,any>;
   export function asInstanceOf(obj: any, className: 'Sink$OfDouble'): Java.java.util.stream.Sink$OfDouble;
   export function asInstanceOf(obj: any, className: 'Sink$OfInt'): Java.java.util.stream.Sink$OfInt;
   export function asInstanceOf(obj: any, className: 'Sink$OfLong'): Java.java.util.stream.Sink$OfLong;
-  export function asInstanceOf(obj: any, className: 'Stream'): Java.java.util.stream.Stream;
-  export function asInstanceOf(obj: any, className: 'Stream$Builder'): Java.java.util.stream.Stream$Builder;
+  export function asInstanceOf(obj: any, className: 'Stream'): Java.java.util.stream.Stream<any>;
+  export function asInstanceOf(obj: any, className: 'Stream$Builder'): Java.java.util.stream.Stream$Builder<any>;
   export function asInstanceOf(obj: any, className: 'StreamSupport'): Java.java.util.stream.StreamSupport;
   export function asInstanceOf(obj: any, className: 'java.lang.Boolean'): Java.java.lang.Boolean;
-  export function asInstanceOf(obj: any, className: 'java.lang.Class'): Java.java.lang.Class;
+  export function asInstanceOf(obj: any, className: 'java.lang.Class'): Java.java.lang.Class<any>;
   export function asInstanceOf(obj: any, className: 'java.lang.Double'): Java.java.lang.Double;
-  export function asInstanceOf(obj: any, className: 'java.lang.Enum'): Java.java.lang.Enum;
+  export function asInstanceOf(obj: any, className: 'java.lang.Enum'): Java.java.lang.Enum<any>;
   export function asInstanceOf(obj: any, className: 'java.lang.Float'): Java.java.lang.Float;
   export function asInstanceOf(obj: any, className: 'java.lang.Integer'): Java.java.lang.Integer;
-  export function asInstanceOf(obj: any, className: 'java.lang.Iterable'): Java.java.lang.Iterable;
+  export function asInstanceOf(obj: any, className: 'java.lang.Iterable'): Java.java.lang.Iterable<any>;
   export function asInstanceOf(obj: any, className: 'java.lang.Long'): Java.java.lang.Long;
   export function asInstanceOf(obj: any, className: 'java.lang.Number'): Java.java.lang.Number;
   export function asInstanceOf(obj: any, className: 'java.lang.Object'): Java.java.lang.Object;
   export function asInstanceOf(obj: any, className: 'java.lang.Short'): Java.java.lang.Short;
   export function asInstanceOf(obj: any, className: 'java.lang.String'): Java.java.lang.String;
-  export function asInstanceOf(obj: any, className: 'java.util.Collection'): Java.java.util.Collection;
-  export function asInstanceOf(obj: any, className: 'java.util.function.Consumer'): Java.java.util.function_.Consumer;
+  export function asInstanceOf(obj: any, className: 'java.util.Collection'): Java.java.util.Collection<any>;
+  export function asInstanceOf(obj: any, className: 'java.util.function.Consumer'): Java.java.util.function_.Consumer<any>;
   export function asInstanceOf(obj: any, className: 'java.util.function.DoubleConsumer'): Java.java.util.function_.DoubleConsumer;
-  export function asInstanceOf(obj: any, className: 'java.util.function.Function'): Java.java.util.function_.Function;
+  export function asInstanceOf(obj: any, className: 'java.util.function.Function'): Java.java.util.function_.Function<any ,any>;
   export function asInstanceOf(obj: any, className: 'java.util.function.IntConsumer'): Java.java.util.function_.IntConsumer;
   export function asInstanceOf(obj: any, className: 'java.util.function.LongConsumer'): Java.java.util.function_.LongConsumer;
-  export function asInstanceOf(obj: any, className: 'java.util.Iterator'): Java.java.util.Iterator;
-  export function asInstanceOf(obj: any, className: 'java.util.List'): Java.java.util.List;
-  export function asInstanceOf(obj: any, className: 'java.util.stream.BaseStream'): Java.java.util.stream.BaseStream;
-  export function asInstanceOf(obj: any, className: 'java.util.stream.Collector'): Java.java.util.stream.Collector;
+  export function asInstanceOf(obj: any, className: 'java.util.Iterator'): Java.java.util.Iterator<any>;
+  export function asInstanceOf(obj: any, className: 'java.util.List'): Java.java.util.List<any>;
+  export function asInstanceOf(obj: any, className: 'java.util.stream.BaseStream'): Java.java.util.stream.BaseStream<any ,any>;
+  export function asInstanceOf(obj: any, className: 'java.util.stream.Collector'): Java.java.util.stream.Collector<any ,any ,any>;
   export function asInstanceOf(obj: any, className: 'java.util.stream.Collector$Characteristics'): Java.java.util.stream.Collector$Characteristics;
   export function asInstanceOf(obj: any, className: 'java.util.stream.Collectors'): Java.java.util.stream.Collectors;
   export function asInstanceOf(obj: any, className: 'java.util.stream.DoubleStream'): Java.java.util.stream.DoubleStream;
@@ -317,23 +317,23 @@ export module Java {
   export function asInstanceOf(obj: any, className: 'java.util.stream.IntStream$Builder'): Java.java.util.stream.IntStream$Builder;
   export function asInstanceOf(obj: any, className: 'java.util.stream.LongStream'): Java.java.util.stream.LongStream;
   export function asInstanceOf(obj: any, className: 'java.util.stream.LongStream$Builder'): Java.java.util.stream.LongStream$Builder;
-  export function asInstanceOf(obj: any, className: 'java.util.stream.Node$Builder'): Java.java.util.stream.Node$Builder;
+  export function asInstanceOf(obj: any, className: 'java.util.stream.Node$Builder'): Java.java.util.stream.Node$Builder<any>;
   export function asInstanceOf(obj: any, className: 'java.util.stream.Node$Builder$OfDouble'): Java.java.util.stream.Node$Builder$OfDouble;
   export function asInstanceOf(obj: any, className: 'java.util.stream.Node$Builder$OfInt'): Java.java.util.stream.Node$Builder$OfInt;
   export function asInstanceOf(obj: any, className: 'java.util.stream.Node$Builder$OfLong'): Java.java.util.stream.Node$Builder$OfLong;
   export function asInstanceOf(obj: any, className: 'java.util.stream.Node$OfDouble'): Java.java.util.stream.Node$OfDouble;
   export function asInstanceOf(obj: any, className: 'java.util.stream.Node$OfInt'): Java.java.util.stream.Node$OfInt;
   export function asInstanceOf(obj: any, className: 'java.util.stream.Node$OfLong'): Java.java.util.stream.Node$OfLong;
-  export function asInstanceOf(obj: any, className: 'java.util.stream.Node$OfPrimitive'): Java.java.util.stream.Node$OfPrimitive;
-  export function asInstanceOf(obj: any, className: 'java.util.stream.Sink$ChainedDouble'): Java.java.util.stream.Sink$ChainedDouble;
-  export function asInstanceOf(obj: any, className: 'java.util.stream.Sink$ChainedInt'): Java.java.util.stream.Sink$ChainedInt;
-  export function asInstanceOf(obj: any, className: 'java.util.stream.Sink$ChainedLong'): Java.java.util.stream.Sink$ChainedLong;
-  export function asInstanceOf(obj: any, className: 'java.util.stream.Sink$ChainedReference'): Java.java.util.stream.Sink$ChainedReference;
+  export function asInstanceOf(obj: any, className: 'java.util.stream.Node$OfPrimitive'): Java.java.util.stream.Node$OfPrimitive<any ,any ,any ,any ,any>;
+  export function asInstanceOf(obj: any, className: 'java.util.stream.Sink$ChainedDouble'): Java.java.util.stream.Sink$ChainedDouble<any>;
+  export function asInstanceOf(obj: any, className: 'java.util.stream.Sink$ChainedInt'): Java.java.util.stream.Sink$ChainedInt<any>;
+  export function asInstanceOf(obj: any, className: 'java.util.stream.Sink$ChainedLong'): Java.java.util.stream.Sink$ChainedLong<any>;
+  export function asInstanceOf(obj: any, className: 'java.util.stream.Sink$ChainedReference'): Java.java.util.stream.Sink$ChainedReference<any ,any>;
   export function asInstanceOf(obj: any, className: 'java.util.stream.Sink$OfDouble'): Java.java.util.stream.Sink$OfDouble;
   export function asInstanceOf(obj: any, className: 'java.util.stream.Sink$OfInt'): Java.java.util.stream.Sink$OfInt;
   export function asInstanceOf(obj: any, className: 'java.util.stream.Sink$OfLong'): Java.java.util.stream.Sink$OfLong;
-  export function asInstanceOf(obj: any, className: 'java.util.stream.Stream'): Java.java.util.stream.Stream;
-  export function asInstanceOf(obj: any, className: 'java.util.stream.Stream$Builder'): Java.java.util.stream.Stream$Builder;
+  export function asInstanceOf(obj: any, className: 'java.util.stream.Stream'): Java.java.util.stream.Stream<any>;
+  export function asInstanceOf(obj: any, className: 'java.util.stream.Stream$Builder'): Java.java.util.stream.Stream$Builder<any>;
   export function asInstanceOf(obj: any, className: 'java.util.stream.StreamSupport'): Java.java.util.stream.StreamSupport;
   export function asInstanceOf(obj: any, className: string): any;
   export function asInstanceOf(obj: any, className: string): any {
@@ -875,7 +875,7 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Class extends Java.java.lang.Object {
+    export interface Class<T> extends Java.java.lang.Object {
       // public <U> java.lang.Class<? extends U> java.lang.Class.asSubclass(java.lang.Class<U>)
       asSubclassA(arg0: Java.Class, cb: Callback<Java.Class>): void;
       asSubclass(arg0: Java.Class): Java.Class;
@@ -1344,7 +1344,7 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Enum extends Java.java.lang.Object {
+    export interface Enum<E> extends Java.java.lang.Object {
       // public int java.lang.Enum.compareTo(java.lang.Object)
       compareToA(arg0: object_t, cb: Callback<number>): void;
       compareTo(arg0: object_t): number;
@@ -1811,7 +1811,7 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Iterable extends Java.java.lang.Object {
+    export interface Iterable<T> extends Java.java.lang.Object {
       // public default void java.lang.Iterable.forEach(java.util.function.Consumer<? super T>)
       forEachA(arg0: Java.Consumer, cb: Callback<void>): void;
       forEach(arg0: Java.Consumer): void;
@@ -2649,7 +2649,7 @@ export module Java {
   }
 
   export module java.util {
-    export interface Collection extends Java.java.lang.Iterable {
+    export interface Collection<E> extends Java.java.lang.Iterable {
       // public abstract boolean java.util.Collection.add(E)
       addA(arg0: object_t, cb: Callback<boolean>): void;
       add(arg0: object_t): boolean;
@@ -2739,7 +2739,7 @@ export module Java {
   }
 
   export module java.util.function_ {
-    export interface Consumer extends Java.java.lang.Object {
+    export interface Consumer<T> extends Java.java.lang.Object {
       // public abstract void java.util.function.Consumer.accept(T)
       acceptA(arg0: object_t, cb: Callback<void>): void;
       accept(arg0: object_t): void;
@@ -2775,7 +2775,7 @@ export module Java {
   }
 
   export module java.util.function_ {
-    export interface Function extends Java.java.lang.Object {
+    export interface Function<T ,R> extends Java.java.lang.Object {
       // public default <V> java.util.function.Function<T, V> java.util.function.Function.andThen(java.util.function.Function<? super R, ? extends V>)
       andThenA(arg0: Java.Function, cb: Callback<Java.Function>): void;
       andThen(arg0: Java.Function): Java.Function;
@@ -2837,7 +2837,7 @@ export module Java {
   }
 
   export module java.util {
-    export interface Iterator extends Java.java.lang.Object {
+    export interface Iterator<E> extends Java.java.lang.Object {
       // public default void java.util.Iterator.forEachRemaining(java.util.function.Consumer<? super E>)
       forEachRemainingA(arg0: Java.Consumer, cb: Callback<void>): void;
       forEachRemaining(arg0: Java.Consumer): void;
@@ -2863,7 +2863,7 @@ export module Java {
   }
 
   export module java.util {
-    export interface List extends Java.java.util.Collection {
+    export interface List<E> extends Java.java.util.Collection {
       // public abstract void java.util.List.add(int,E)
       addA(arg0: integer_t, arg1: object_t, cb: Callback<void>): void;
       add(arg0: integer_t, arg1: object_t): void;
@@ -3001,7 +3001,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface BaseStream extends Java.java.lang.Object {
+    export interface BaseStream<T ,S> extends Java.java.lang.Object {
       // public abstract void java.util.stream.BaseStream.close()
       closeA( cb: Callback<void>): void;
       close(): void;
@@ -3043,7 +3043,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface Collector extends Java.java.lang.Object {
+    export interface Collector<T ,A ,R> extends Java.java.lang.Object {
       // public abstract java.util.function.BiConsumer<A, T> java.util.stream.Collector.accumulator()
       accumulatorA( cb: Callback<object_t>): void;
       accumulator(): object_t;
@@ -4078,7 +4078,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface Node$Builder extends Java.java.util.function_.Consumer {
+    export interface Node$Builder<T> extends Java.java.util.function_.Consumer {
       // public abstract void java.util.function.Consumer.accept(T)
       acceptA(arg0: object_t, cb: Callback<void>): void;
       accept(arg0: object_t): void;
@@ -4556,7 +4556,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface Node$OfPrimitive extends Java.java.lang.Object {
+    export interface Node$OfPrimitive<T ,T_CONS ,T_ARR ,T_SPLITR ,T_NODE> extends Java.java.lang.Object {
       // public default T[] java.util.stream.Node$OfPrimitive.asArray(java.util.function.IntFunction<T[]>)
       asArrayA(arg0: object_t, cb: Callback<object_t[]>): void;
       asArray(arg0: object_t): object_t[];
@@ -4630,7 +4630,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface Sink$ChainedDouble extends Java.java.lang.Object, Java.java.util.stream.Sink$OfDouble {
+    export interface Sink$ChainedDouble<E_OUT> extends Java.java.lang.Object, Java.java.util.stream.Sink$OfDouble {
       // public abstract void java.util.function.Consumer.accept(T)
       acceptA(arg0: object_t, cb: Callback<void>): void;
       accept(arg0: object_t): void;
@@ -4717,7 +4717,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface Sink$ChainedInt extends Java.java.lang.Object, Java.java.util.stream.Sink$OfInt {
+    export interface Sink$ChainedInt<E_OUT> extends Java.java.lang.Object, Java.java.util.stream.Sink$OfInt {
       // public default void java.util.stream.Sink$OfInt.accept(java.lang.Integer)
       acceptA(arg0: integer_t, cb: Callback<void>): void;
       accept(arg0: integer_t): void;
@@ -4804,7 +4804,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface Sink$ChainedLong extends Java.java.lang.Object, Java.java.util.stream.Sink$OfLong {
+    export interface Sink$ChainedLong<E_OUT> extends Java.java.lang.Object, Java.java.util.stream.Sink$OfLong {
       // public abstract void java.util.function.Consumer.accept(T)
       acceptA(arg0: object_t, cb: Callback<void>): void;
       accept(arg0: object_t): void;
@@ -4891,7 +4891,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface Sink$ChainedReference extends Java.java.lang.Object, Java.java.util.function_.Consumer {
+    export interface Sink$ChainedReference<T ,E_OUT> extends Java.java.lang.Object, Java.java.util.function_.Consumer {
       // public abstract void java.util.function.Consumer.accept(T)
       acceptA(arg0: object_t, cb: Callback<void>): void;
       accept(arg0: object_t): void;
@@ -5120,7 +5120,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface Stream extends Java.java.util.stream.BaseStream {
+    export interface Stream<T> extends Java.java.util.stream.BaseStream {
       // public abstract boolean java.util.stream.Stream.allMatch(java.util.function.Predicate<? super T>)
       allMatchA(arg0: object_t, cb: Callback<boolean>): void;
       allMatch(arg0: object_t): boolean;
@@ -5320,7 +5320,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface Stream$Builder extends Java.java.util.function_.Consumer {
+    export interface Stream$Builder<T> extends Java.java.util.function_.Consumer {
       // public abstract void java.util.function.Consumer.accept(T)
       acceptA(arg0: object_t, cb: Callback<void>): void;
       accept(arg0: object_t): void;

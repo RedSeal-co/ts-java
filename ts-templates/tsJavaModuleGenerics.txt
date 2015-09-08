@@ -119,11 +119,11 @@ export module Java {
 
   {{#each this}}
   {{#if useAlias}}
-  export function asInstanceOf(obj: any, className: '{{alias}}'): Java.{{quotedPkgName}}.{{shortName}};
+  export function asInstanceOf(obj: any, className: '{{alias}}'): Java.{{quotedPkgName}}.{{shortName}}{{usetypes typeParms}};
   {{/if}}
   {{/each}}
   {{#each this}}
-  export function asInstanceOf(obj: any, className: '{{packageName}}.{{shortName}}'): Java.{{quotedPkgName}}.{{shortName}};
+  export function asInstanceOf(obj: any, className: '{{packageName}}.{{shortName}}'): Java.{{quotedPkgName}}.{{shortName}}{{usetypes typeParms}};
   {{/each}}
   export function asInstanceOf(obj: any, className: string): any;
   export function asInstanceOf(obj: any, className: string): any {
@@ -269,7 +269,7 @@ export module Java {
 
   {{#each this}}
   export module {{quotedPkgName}} {
-    export interface {{shortName}} {{#if tsInterfaces}}extends {{#join tsInterfaces ', '}}{{this}}{{/join}}{{/if}} {
+    export interface {{shortName}}{{gentypes typeParms}} {{#if tsInterfaces}}extends {{#join tsInterfaces ', '}}{{this}}{{/join}}{{/if}} {
       {{#each fields}}
       {{~#if isStatic~}}
       {{~else}}
