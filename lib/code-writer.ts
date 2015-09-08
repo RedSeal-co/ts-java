@@ -64,7 +64,7 @@ class CodeWriter {
       assert(lastSlash !== -1);
       var name = path.slice(lastSlash + 1, -extension.length);
       var contents = fs.readFileSync(path, { encoding: 'utf8' });
-      var compiled = handlebars.compile(contents);
+      var compiled = handlebars.compile(contents, { noEscape: true });
       templates = templates.set(name, compiled);
     });
     return templates;

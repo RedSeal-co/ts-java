@@ -153,13 +153,13 @@ export module Java {
   {{#each this}}
   {{#if useAlias}}
   {{#each constructors}}
-  export function newInstanceA(className: '{{../alias}}'{{#if tsParamTypes}}, {{{margs this norest=true}}}{{/if}}, cb: Callback<{{{tsReturns}}}>): void;
+  export function newInstanceA(className: '{{../alias}}'{{#if tsParamTypes}}, {{margs this norest=true}}{{/if}}, cb: Callback<{{tsReturns}}>): void;
   {{/each}}
   {{/if}}
   {{/each}}
   {{#each this}}
   {{#each constructors}}
-  export function newInstanceA(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this norest=true}}}{{/if}}, cb: Callback<{{{tsReturns}}}>): void;
+  export function newInstanceA(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{margs this norest=true}}{{/if}}, cb: Callback<{{tsReturns}}>): void;
   {{/each}}
   {{/each}}
   export function newInstanceA(className: string, ...args: any[]): void;
@@ -172,13 +172,13 @@ export module Java {
   {{#each this}}
   {{#if useAlias}}
   {{#each constructors}}
-  export function newInstance(className: '{{../alias}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{{tsReturns}}};
+  export function newInstance(className: '{{../alias}}'{{#if tsParamTypes}}, {{margs this}}{{/if}}): {{tsReturns}};
   {{/each}}
   {{/if}}
   {{/each}}
   {{#each this}}
   {{#each constructors}}
-  export function newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): {{{tsReturns}}};
+  export function newInstance(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{margs this}}{{/if}}): {{tsReturns}};
   {{/each}}
   {{/each}}
   export function newInstance(className: string, ...args: any[]): any;
@@ -191,13 +191,13 @@ export module Java {
   {{#each this}}
   {{#if useAlias}}
   {{#each constructors}}
-  export function newInstanceP(className: '{{../alias}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{{tsReturns}}}>;
+  export function newInstanceP(className: '{{../alias}}'{{#if tsParamTypes}}, {{margs this}}{{/if}}): Promise<{{tsReturns}}>;
   {{/each}}
   {{/if}}
   {{/each}}
   {{#each this}}
   {{#each constructors}}
-  export function newInstanceP(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{{margs this}}}{{/if}}): Promise<{{{tsReturns}}}>;
+  export function newInstanceP(className: '{{../packageName}}.{{../shortName}}'{{#if tsParamTypes}}, {{margs this}}{{/if}}): Promise<{{tsReturns}}>;
   {{/each}}
   {{/each}}
   export function newInstanceP(className: string, ...args: any[]): Promise<any>;
@@ -271,26 +271,26 @@ export module Java {
       {{#each fields}}
       {{~#if isStatic~}}
       {{~else}}
-      {{name}}: {{{tsType}}};
+      {{name}}: {{tsType}};
       {{/if~}}
       {{/each}}
       {{#each variants}}
       {{#each this}}
       {{#unless isStatic}}
-      // {{{generic_proto}}}
+      // {{generic_proto}}
       {{#ifdef @root.opts.asyncSuffix}}
-      {{name}}{{@root.opts.asyncSuffix}}({{#if tsParamTypes}}{{{margs this norest=true}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
+      {{name}}{{@root.opts.asyncSuffix}}({{#if tsParamTypes}}{{margs this norest=true}},{{/if}} cb: Callback<{{tsReturns}}>): void;
       {{/ifdef~}}
       {{#ifdef @root.opts.syncSuffix}}
-      {{name}}{{@root.opts.syncSuffix}}({{{margs this}}}): {{{tsReturns}}};
+      {{name}}{{@root.opts.syncSuffix}}({{margs this}}): {{tsReturns}};
       {{#if isVarArgs}}
-      {{name}}{{@root.opts.syncSuffix}}({{{margs this norest=true}}}): {{{tsReturns}}};
+      {{name}}{{@root.opts.syncSuffix}}({{margs this norest=true}}): {{tsReturns}};
       {{/if}}
       {{/ifdef~}}
       {{#ifdef @root.opts.promiseSuffix}}
-      {{name}}{{@root.opts.promiseSuffix}}({{{margs this}}}): Promise<{{{tsReturns}}}>;
+      {{name}}{{@root.opts.promiseSuffix}}({{margs this}}): Promise<{{tsReturns}}>;
       {{#if isVarArgs}}
-      {{name}}{{@root.opts.promiseSuffix}}({{{margs this norest=true}}}): Promise<{{{tsReturns}}}>;
+      {{name}}{{@root.opts.promiseSuffix}}({{margs this norest=true}}): Promise<{{tsReturns}}>;
       {{/if}}
       {{/ifdef~}}
       {{/unless}}
@@ -301,30 +301,30 @@ export module Java {
       export interface Static {
         {{#each fields}}
         {{~#if isStatic}}
-        {{name}}: {{{tsType}}};
+        {{name}}: {{tsType}};
         {{/if~}}
         {{/each}}
         class: Java.{{#hasClass 'java.lang.Class'}}Class{{else}}Object{{/hasClass}};
         {{#each constructors}}
-        new ({{{margs this}}}): {{../quotedPkgName}}.{{../shortName}};
+        new ({{margs this}}): {{../quotedPkgName}}.{{../shortName}};
         {{/each}}
         {{#each variants}}
         {{#each this}}
         {{#if isStatic}}
-        // {{{generic_proto}}}
+        // {{generic_proto}}
         {{#ifdef @root.opts.asyncSuffix}}
-        {{name}}{{@root.opts.asyncSuffix}}({{#if tsParamTypes}}{{{margs this norest=true}}},{{/if}} cb: Callback<{{{tsReturns}}}>): void;
+        {{name}}{{@root.opts.asyncSuffix}}({{#if tsParamTypes}}{{margs this norest=true}},{{/if}} cb: Callback<{{tsReturns}}>): void;
         {{/ifdef~}}
         {{#ifdef @root.opts.syncSuffix}}
-        {{name}}{{@root.opts.syncSuffix}}({{{margs this}}}): {{{tsReturns}}};
+        {{name}}{{@root.opts.syncSuffix}}({{margs this}}): {{tsReturns}};
         {{#if isVarArgs}}
-        {{name}}{{@root.opts.syncSuffix}}({{{margs this norest=true}}}): {{{tsReturns}}};
+        {{name}}{{@root.opts.syncSuffix}}({{margs this norest=true}}): {{tsReturns}};
         {{/if}}
         {{/ifdef~}}
         {{#ifdef @root.opts.promiseSuffix}}
-        {{name}}{{@root.opts.promiseSuffix}}({{{margs this}}}): Promise<{{{tsReturns}}}>;
+        {{name}}{{@root.opts.promiseSuffix}}({{margs this}}): Promise<{{tsReturns}}>;
         {{#if isVarArgs}}
-        {{name}}{{@root.opts.promiseSuffix}}({{{margs this norest=true}}}): Promise<{{{tsReturns}}}>;
+        {{name}}{{@root.opts.promiseSuffix}}({{margs this norest=true}}): Promise<{{tsReturns}}>;
         {{/if}}
         {{/ifdef~}}
         {{/if}}
