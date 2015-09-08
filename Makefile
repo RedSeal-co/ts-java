@@ -173,3 +173,5 @@ test/classes-map-test.js test/code-writer-test.js : $(LIBS_SRC)
 o/integration/features/composability.lastran : featureset/o/maven.lastran featureset/tsJavaModule.ts \
 						reflection/o/maven.lastran reflection/tsJavaModule.ts \
 						hellojava/o/maven.lastran hellojava/tsJavaModule.ts
+
+generics/tsJavaModule.ts o/generics/features/generics.lastran: ts-templates/tsJavaModuleGenerics.txt
