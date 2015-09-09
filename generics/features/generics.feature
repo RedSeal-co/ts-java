@@ -20,6 +20,7 @@ I want to understand how to use Java generic types in Typescript.
 
     """
 
+  @wip @todo
   Scenario: nominal
     Given the above boilerplate with following scenario snippet:
     """

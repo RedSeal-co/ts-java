@@ -1,7 +1,7 @@
 .PHONY: install install-npm install-tsd documentation test testdata unittest
 .PHONY: clean clean-obj clean-tsd clean-npm clean-js-map clean-unittest
 .PHONY: install-java-pkgs clean-java-pkgs
-.PHONY: cucumber clean-cucumber
+.PHONY: cucumber clean-cucumber wip
 
 default: test
 
@@ -88,15 +88,32 @@ $(ALL_CUCUMBER_FEATURES_RAN): o/%.lastran : %.feature $(STEPS_OBJS) $(LIBS_OBJS)
 	./node_modules/.bin/cucumber-js --format summary --tags '~@todo' --require features/step_definitions $<
 	mkdir -p $(dir $@) && touch  $@
 
-# A convenience target
-cucumber : o/cucumber.lastran
-
 # Run all out of date cucumber feature tests
 o/cucumber.lastran: $(ALL_CUCUMBER_FEATURES_RAN)
 	mkdir -p $(dir $@) && touch  $@
 
+# A convenience target
+cucumber : o/cucumber.lastran
+
+##### java packages: cucumber rules for 'work in progress' #####
+
+# The corresponding list of feature .wip marker files
+ALL_CUCUMBER_FEATURES_WIP=$(patsubst %.feature,o/%.wip,$(ALL_CUCUMBER_FEATURES))
+
+# A rule to make sure that every feature file is run
+$(ALL_CUCUMBER_FEATURES_WIP): o/%.wip : %.feature $(STEPS_OBJS) $(LIBS_OBJS) $(JAVAPKGS_MODULE_TS) $(UNIT_TEST_RAN)
+	./node_modules/.bin/cucumber-js --format summary --tags '@wip' --require features/step_definitions $<
+	mkdir -p $(dir $@) && touch  $@
+
+# Run all out of date cucumber feature tests
+o/cucumber.wip: $(ALL_CUCUMBER_FEATURES_WIP)
+	mkdir -p $(dir $@) && touch  $@
+
+# A convenience target
+wip : o/cucumber.wip
+
 clean-cucumber:
-	rm -rf $(ALL_CUCUMBER_FEATURES_RAN) o/cucumber.lastran
+	rm -rf $(ALL_CUCUMBER_FEATURES_RAN) o/cucumber.lastran $(ALL_CUCUMBER_FEATURES_WIP) o/cucumber.wip
 
 ###
 UNIT_TESTS=$(filter-out %.d.ts, $(wildcard test/*.ts))
