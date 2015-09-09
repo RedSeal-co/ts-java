@@ -53,7 +53,6 @@ import VariantsArray = ClassesMap.VariantsArray;
 
 export enum ParamContext {eInput, eReturn};
 
-
 // ## ClassesMap
 // ClassesMap is a map of a set of java classes/interfaces, containing information extracted via Java Reflection.
 // For each such class/interface, we extract the set of interfaces inherited/implemented by the class,
@@ -88,6 +87,8 @@ export class ClassesMap {
 
   private interfaceDepthCache: Immutable.Map<string, number>;
 
+  private Modifier: Java.Modifier.Static = Java.importClass('java.lang.reflect.Modifier');
+
   constructor(options: TsJavaOptions) {
     this.options = options;
 
@@ -97,6 +98,8 @@ export class ClassesMap {
     this.unhandledInterfaces = Immutable.Set<string>();
     this.unhandledSuperClasses = Immutable.Set<string>();
     this.allClasses = Immutable.Set<string>();
+
+    this.Modifier = Java.importClass('java.lang.reflect.Modifier');
 
     // We create this after the first pass.
     this.shortToLongNameMap = null;
@@ -304,8 +307,7 @@ export class ClassesMap {
 
     var signature = this.methodSignature(method);
 
-    var Modifier: Java.Modifier.Static = Java.importClass('java.lang.reflect.Modifier');
-    var isStatic: boolean = Modifier.isStatic(method.getModifiers());
+    var isStatic: boolean = this.Modifier.isStatic(method.getModifiers());
 
     var returnType: string = 'void';
     if ('getReturnType' in method) {
@@ -597,8 +599,7 @@ export class ClassesMap {
     var tsType: string = this.tsTypeName(fieldTypeName, ParamContext.eReturn);
     var tsGenericType: string = genericFieldType.getTypeName();
 
-    var Modifier: Java.Modifier.Static = Java.importClass('java.lang.reflect.Modifier');
-    var isStatic: boolean = Modifier.isStatic(field.getModifiers());
+    var isStatic: boolean = this.Modifier.isStatic(field.getModifiers());
     var isSynthetic: boolean = field.isSynthetic();
 
     var fieldDefinition: FieldDefinition = {
@@ -835,15 +836,14 @@ export class ClassesMap {
 
   // *loadClassCache()*: Load all classes seen in prescan, pruning any non-public classes.
   private loadClassCache(): BluePromise<void> {
-    var Modifier: Java.Modifier.Static = Java.importClass('java.lang.reflect.Modifier');
     var nonPublic = Immutable.Set<string>();
     var classLoader = Java.getClassLoader();
     this.allClasses.forEach((className: string): void => {
       var clazz: Java.Class = classLoader.loadClass(className);
       var modifiers: number = clazz.getModifiers();
-      var isPublic: boolean = Modifier.isPublic(modifiers);
-      var isPrivate: boolean = Modifier.isPrivate(modifiers);
-      var isProtected: boolean = Modifier.isProtected(modifiers);
+      var isPublic: boolean = this.Modifier.isPublic(modifiers);
+      var isPrivate: boolean = this.Modifier.isPrivate(modifiers);
+      var isProtected: boolean = this.Modifier.isProtected(modifiers);
       if (isPublic) {
         this.classCache = this.classCache.set(className, clazz);
       } else {
