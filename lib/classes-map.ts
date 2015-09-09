@@ -834,6 +834,22 @@ export class ClassesMap {
     return;
   }
 
+  // *isPublicClass()*: Return true if clazz has public visibility.
+  private isPublicClass(clazz: Java.Class): boolean {
+    var modifiers: number = clazz.getModifiers();
+    var isPublic: boolean = this.Modifier.isPublic(modifiers);
+    if (isPublic) {
+      var enclosingClass: Java.Class = clazz.getEnclosingClass();
+      if (enclosingClass) {
+        isPublic = this.isPublicClass(enclosingClass);
+        if (!isPublic) {
+          dlog('******Pruning class because it is enclosed in nonpublic class:', enclosingClass.getName());
+        }
+      }
+    }
+    return isPublic;
+  }
+
   // *loadClassCache()*: Load all classes seen in prescan, pruning any non-public classes.
   private loadClassCache(): BluePromise<void> {
     var nonPublic = Immutable.Set<string>();
@@ -841,13 +857,13 @@ export class ClassesMap {
     this.allClasses.forEach((className: string): void => {
       var clazz: Java.Class = classLoader.loadClass(className);
       var modifiers: number = clazz.getModifiers();
-      var isPublic: boolean = this.Modifier.isPublic(modifiers);
-      var isPrivate: boolean = this.Modifier.isPrivate(modifiers);
-      var isProtected: boolean = this.Modifier.isProtected(modifiers);
+      var isPublic: boolean = this.isPublicClass(clazz);
       if (isPublic) {
         this.classCache = this.classCache.set(className, clazz);
       } else {
         nonPublic = nonPublic.add(className);
+        var isPrivate: boolean = this.Modifier.isPrivate(modifiers);
+        var isProtected: boolean = this.Modifier.isProtected(modifiers);
         if (isPrivate) {
           dlog('Pruning private class:', className);
         } else if (isProtected) {
