@@ -9,6 +9,7 @@
 // classpath:
 //   target/reflection-1.0.0.jar
 // classes:
+//   java.lang.annotation.Annotation
 //   java.lang.Boolean
 //   java.lang.Class
 //   java.lang.ClassLoader
@@ -79,6 +80,7 @@ export module Java {
   // Returns undefined if the className is ambiguous or not present in the configured classes.
   export function fullyQualifiedName(className: string): string {
     var shortToLongMap: StringDict = {
+      'Annotation': 'java.lang.annotation.Annotation',
       'Boolean': 'java.lang.Boolean',
       'Class': 'java.lang.Class',
       'ClassLoader': 'java.lang.ClassLoader',
@@ -98,6 +100,7 @@ export module Java {
     return shortToLongMap[className];
   }
 
+  export function importClass(className: 'Annotation'): Java.java.lang.annotation.Annotation.Static;
   export function importClass(className: 'Boolean'): Java.java.lang.Boolean.Static;
   export function importClass(className: 'Class'): Java.java.lang.Class.Static;
   export function importClass(className: 'ClassLoader'): Java.java.lang.ClassLoader.Static;
@@ -113,6 +116,7 @@ export module Java {
   export function importClass(className: 'Type'): Java.java.lang.reflect.Type.Static;
   export function importClass(className: 'TypeVariable'): Java.java.lang.reflect.TypeVariable.Static;
   export function importClass(className: 'String'): Java.java.lang.String.Static;
+  export function importClass(className: 'java.lang.annotation.Annotation'): Java.java.lang.annotation.Annotation.Static;
   export function importClass(className: 'java.lang.Boolean'): Java.java.lang.Boolean.Static;
   export function importClass(className: 'java.lang.Class'): Java.java.lang.Class.Static;
   export function importClass(className: 'java.lang.ClassLoader'): Java.java.lang.ClassLoader.Static;
@@ -134,6 +138,7 @@ export module Java {
     return _java.import(fullName);
   }
 
+  export function asInstanceOf(obj: any, className: 'Annotation'): Java.java.lang.annotation.Annotation;
   export function asInstanceOf(obj: any, className: 'Boolean'): Java.java.lang.Boolean;
   export function asInstanceOf(obj: any, className: 'Class'): Java.java.lang.Class;
   export function asInstanceOf(obj: any, className: 'ClassLoader'): Java.java.lang.ClassLoader;
@@ -149,6 +154,7 @@ export module Java {
   export function asInstanceOf(obj: any, className: 'Type'): Java.java.lang.reflect.Type;
   export function asInstanceOf(obj: any, className: 'TypeVariable'): Java.java.lang.reflect.TypeVariable;
   export function asInstanceOf(obj: any, className: 'String'): Java.java.lang.String;
+  export function asInstanceOf(obj: any, className: 'java.lang.annotation.Annotation'): Java.java.lang.annotation.Annotation;
   export function asInstanceOf(obj: any, className: 'java.lang.Boolean'): Java.java.lang.Boolean;
   export function asInstanceOf(obj: any, className: 'java.lang.Class'): Java.java.lang.Class;
   export function asInstanceOf(obj: any, className: 'java.lang.ClassLoader'): Java.java.lang.ClassLoader;
@@ -338,6 +344,7 @@ export module Java {
     return _java.newInstanceP.apply(_java, args);
   }
 
+  export function newArray(className: 'Annotation', arg: Java.Annotation[]): array_t<java.lang.annotation.Annotation>;
   export function newArray(className: 'Boolean', arg: boolean_t[]): array_t<java.lang.Boolean>;
   export function newArray(className: 'Class', arg: Java.Class[]): array_t<java.lang.Class>;
   export function newArray(className: 'ClassLoader', arg: Java.ClassLoader[]): array_t<java.lang.ClassLoader>;
@@ -353,6 +360,7 @@ export module Java {
   export function newArray(className: 'Type', arg: Java.Type[]): array_t<java.lang.reflect.Type>;
   export function newArray(className: 'TypeVariable', arg: Java.TypeVariable[]): array_t<java.lang.reflect.TypeVariable>;
   export function newArray(className: 'String', arg: string_t[]): array_t<java.lang.String>;
+  export function newArray(className: 'java.lang.annotation.Annotation', arg: Java.Annotation[]): array_t<java.lang.annotation.Annotation>;
   export function newArray(className: 'java.lang.Boolean', arg: boolean_t[]): array_t<java.lang.Boolean>;
   export function newArray(className: 'java.lang.Class', arg: Java.Class[]): array_t<java.lang.Class>;
   export function newArray(className: 'java.lang.ClassLoader', arg: Java.ClassLoader[]): array_t<java.lang.ClassLoader>;
@@ -412,6 +420,7 @@ export module Java {
 
   export type object_array_t = array_t<Java.java.lang.Object> | object_t[];
 
+  export import Annotation = java.lang.annotation.Annotation;
   export import Boolean = java.lang.Boolean;
   export import Class = java.lang.Class;
   export import ClassLoader = java.lang.ClassLoader;
@@ -427,6 +436,32 @@ export module Java {
   export import Type = java.lang.reflect.Type;
   export import TypeVariable = java.lang.reflect.TypeVariable;
   export import String = java.lang.String;
+
+  export module java.lang.annotation {
+    export interface Annotation extends Java.java.lang.Object {
+      // public abstract java.lang.Class<? extends java.lang.annotation.Annotation> java.lang.annotation.Annotation.annotationType()
+      annotationTypeA( cb: Callback<Java.Class>): void;
+      annotationType(): Java.Class;
+      annotationTypeP(): Promise<Java.Class>;
+      // public boolean java.lang.Object.equals(java.lang.Object)
+      equalsA(arg0: object_t, cb: Callback<boolean>): void;
+      equals(arg0: object_t): boolean;
+      equalsP(arg0: object_t): Promise<boolean>;
+      // public native int java.lang.Object.hashCode()
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
+      // public java.lang.String java.lang.Object.toString()
+      toStringA( cb: Callback<string>): void;
+      toString(): string;
+      toStringP(): Promise<string>;
+    }
+    export module Annotation {
+      export interface Static {
+        class: Java.Class;
+      }
+    }
+  }
 
   export module java.lang {
     export interface Boolean extends Java.java.lang.Object {
@@ -558,17 +593,17 @@ export module Java {
       getAnnotatedSuperclass(): object_t;
       getAnnotatedSuperclassP(): Promise<object_t>;
       // public <A> A java.lang.Class.getAnnotation(java.lang.Class<A>)
-      getAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
-      getAnnotation(arg0: Java.Class): object_t;
-      getAnnotationP(arg0: Java.Class): Promise<object_t>;
+      getAnnotationA(arg0: Java.Class, cb: Callback<Java.Annotation>): void;
+      getAnnotation(arg0: Java.Class): Java.Annotation;
+      getAnnotationP(arg0: Java.Class): Promise<Java.Annotation>;
       // public java.lang.annotation.Annotation[] java.lang.Class.getAnnotations()
-      getAnnotationsA( cb: Callback<object_t[]>): void;
-      getAnnotations(): object_t[];
-      getAnnotationsP(): Promise<object_t[]>;
+      getAnnotationsA( cb: Callback<Java.Annotation[]>): void;
+      getAnnotations(): Java.Annotation[];
+      getAnnotationsP(): Promise<Java.Annotation[]>;
       // public <A> A[] java.lang.Class.getAnnotationsByType(java.lang.Class<A>)
-      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
-      getAnnotationsByType(arg0: Java.Class): object_t[];
-      getAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<Java.Annotation[]>): void;
+      getAnnotationsByType(arg0: Java.Class): Java.Annotation[];
+      getAnnotationsByTypeP(arg0: Java.Class): Promise<Java.Annotation[]>;
       // public java.lang.String java.lang.Class.getCanonicalName()
       getCanonicalNameA( cb: Callback<string>): void;
       getCanonicalName(): string;
@@ -600,17 +635,17 @@ export module Java {
       getConstructors(): Java.Constructor[];
       getConstructorsP(): Promise<Java.Constructor[]>;
       // public <A> A java.lang.Class.getDeclaredAnnotation(java.lang.Class<A>)
-      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
-      getDeclaredAnnotation(arg0: Java.Class): object_t;
-      getDeclaredAnnotationP(arg0: Java.Class): Promise<object_t>;
+      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<Java.Annotation>): void;
+      getDeclaredAnnotation(arg0: Java.Class): Java.Annotation;
+      getDeclaredAnnotationP(arg0: Java.Class): Promise<Java.Annotation>;
       // public java.lang.annotation.Annotation[] java.lang.Class.getDeclaredAnnotations()
-      getDeclaredAnnotationsA( cb: Callback<object_t[]>): void;
-      getDeclaredAnnotations(): object_t[];
-      getDeclaredAnnotationsP(): Promise<object_t[]>;
+      getDeclaredAnnotationsA( cb: Callback<Java.Annotation[]>): void;
+      getDeclaredAnnotations(): Java.Annotation[];
+      getDeclaredAnnotationsP(): Promise<Java.Annotation[]>;
       // public <A> A[] java.lang.Class.getDeclaredAnnotationsByType(java.lang.Class<A>)
-      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
-      getDeclaredAnnotationsByType(arg0: Java.Class): object_t[];
-      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<Java.Annotation[]>): void;
+      getDeclaredAnnotationsByType(arg0: Java.Class): Java.Annotation[];
+      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<Java.Annotation[]>;
       // public java.lang.Class<?>[] java.lang.Class.getDeclaredClasses() throws java.lang.SecurityException
       getDeclaredClassesA( cb: Callback<Java.Class[]>): void;
       getDeclaredClasses(): Java.Class[];
@@ -1222,33 +1257,33 @@ export module Java {
       equals(arg0: object_t): boolean;
       equalsP(arg0: object_t): Promise<boolean>;
       // public <T> T java.lang.reflect.AccessibleObject.getAnnotation(java.lang.Class<T>)
-      getAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
-      getAnnotation(arg0: Java.Class): object_t;
-      getAnnotationP(arg0: Java.Class): Promise<object_t>;
+      getAnnotationA(arg0: Java.Class, cb: Callback<Java.Annotation>): void;
+      getAnnotation(arg0: Java.Class): Java.Annotation;
+      getAnnotationP(arg0: Java.Class): Promise<Java.Annotation>;
       // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
-      getAnnotationsA( cb: Callback<object_t[]>): void;
-      getAnnotations(): object_t[];
-      getAnnotationsP(): Promise<object_t[]>;
+      getAnnotationsA( cb: Callback<Java.Annotation[]>): void;
+      getAnnotations(): Java.Annotation[];
+      getAnnotationsP(): Promise<Java.Annotation[]>;
       // public <T> T[] java.lang.reflect.AccessibleObject.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
-      getAnnotationsByType(arg0: Java.Class): object_t[];
-      getAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<Java.Annotation[]>): void;
+      getAnnotationsByType(arg0: Java.Class): Java.Annotation[];
+      getAnnotationsByTypeP(arg0: Java.Class): Promise<Java.Annotation[]>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClassA( cb: Callback<Java.Class>): void;
       getClass(): Java.Class;
       getClassP(): Promise<Java.Class>;
       // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
-      getDeclaredAnnotation(arg0: Java.Class): object_t;
-      getDeclaredAnnotationP(arg0: Java.Class): Promise<object_t>;
+      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<Java.Annotation>): void;
+      getDeclaredAnnotation(arg0: Java.Class): Java.Annotation;
+      getDeclaredAnnotationP(arg0: Java.Class): Promise<Java.Annotation>;
       // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getDeclaredAnnotations()
-      getDeclaredAnnotationsA( cb: Callback<object_t[]>): void;
-      getDeclaredAnnotations(): object_t[];
-      getDeclaredAnnotationsP(): Promise<object_t[]>;
+      getDeclaredAnnotationsA( cb: Callback<Java.Annotation[]>): void;
+      getDeclaredAnnotations(): Java.Annotation[];
+      getDeclaredAnnotationsP(): Promise<Java.Annotation[]>;
       // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
-      getDeclaredAnnotationsByType(arg0: Java.Class): object_t[];
-      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<Java.Annotation[]>): void;
+      getDeclaredAnnotationsByType(arg0: Java.Class): Java.Annotation[];
+      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<Java.Annotation[]>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<number>): void;
       hashCode(): number;
@@ -1324,33 +1359,33 @@ export module Java {
       getAnnotatedReturnType(): object_t;
       getAnnotatedReturnTypeP(): Promise<object_t>;
       // public <T> T java.lang.reflect.AccessibleObject.getAnnotation(java.lang.Class<T>)
-      getAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
-      getAnnotation(arg0: Java.Class): object_t;
-      getAnnotationP(arg0: Java.Class): Promise<object_t>;
+      getAnnotationA(arg0: Java.Class, cb: Callback<Java.Annotation>): void;
+      getAnnotation(arg0: Java.Class): Java.Annotation;
+      getAnnotationP(arg0: Java.Class): Promise<Java.Annotation>;
       // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
-      getAnnotationsA( cb: Callback<object_t[]>): void;
-      getAnnotations(): object_t[];
-      getAnnotationsP(): Promise<object_t[]>;
+      getAnnotationsA( cb: Callback<Java.Annotation[]>): void;
+      getAnnotations(): Java.Annotation[];
+      getAnnotationsP(): Promise<Java.Annotation[]>;
       // public <T> T[] java.lang.reflect.AccessibleObject.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
-      getAnnotationsByType(arg0: Java.Class): object_t[];
-      getAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<Java.Annotation[]>): void;
+      getAnnotationsByType(arg0: Java.Class): Java.Annotation[];
+      getAnnotationsByTypeP(arg0: Java.Class): Promise<Java.Annotation[]>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClassA( cb: Callback<Java.Class>): void;
       getClass(): Java.Class;
       getClassP(): Promise<Java.Class>;
       // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
-      getDeclaredAnnotation(arg0: Java.Class): object_t;
-      getDeclaredAnnotationP(arg0: Java.Class): Promise<object_t>;
+      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<Java.Annotation>): void;
+      getDeclaredAnnotation(arg0: Java.Class): Java.Annotation;
+      getDeclaredAnnotationP(arg0: Java.Class): Promise<Java.Annotation>;
       // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getDeclaredAnnotations()
-      getDeclaredAnnotationsA( cb: Callback<object_t[]>): void;
-      getDeclaredAnnotations(): object_t[];
-      getDeclaredAnnotationsP(): Promise<object_t[]>;
+      getDeclaredAnnotationsA( cb: Callback<Java.Annotation[]>): void;
+      getDeclaredAnnotations(): Java.Annotation[];
+      getDeclaredAnnotationsP(): Promise<Java.Annotation[]>;
       // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
-      getDeclaredAnnotationsByType(arg0: Java.Class): object_t[];
-      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<Java.Annotation[]>): void;
+      getDeclaredAnnotationsByType(arg0: Java.Class): Java.Annotation[];
+      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<Java.Annotation[]>;
       // public abstract java.lang.Class<?> java.lang.reflect.Executable.getDeclaringClass()
       getDeclaringClassA( cb: Callback<Java.Class>): void;
       getDeclaringClass(): Java.Class;
@@ -1376,9 +1411,9 @@ export module Java {
       getName(): string;
       getNameP(): Promise<string>;
       // public abstract java.lang.annotation.Annotation[][] java.lang.reflect.Executable.getParameterAnnotations()
-      getParameterAnnotationsA( cb: Callback<object_t[][]>): void;
-      getParameterAnnotations(): object_t[][];
-      getParameterAnnotationsP(): Promise<object_t[][]>;
+      getParameterAnnotationsA( cb: Callback<Java.Annotation[][]>): void;
+      getParameterAnnotations(): Java.Annotation[][];
+      getParameterAnnotationsP(): Promise<Java.Annotation[][]>;
       // public int java.lang.reflect.Executable.getParameterCount()
       getParameterCountA( cb: Callback<number>): void;
       getParameterCount(): number;
@@ -1490,33 +1525,33 @@ export module Java {
       getAnnotatedReturnType(): object_t;
       getAnnotatedReturnTypeP(): Promise<object_t>;
       // public <T> T java.lang.reflect.AccessibleObject.getAnnotation(java.lang.Class<T>)
-      getAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
-      getAnnotation(arg0: Java.Class): object_t;
-      getAnnotationP(arg0: Java.Class): Promise<object_t>;
+      getAnnotationA(arg0: Java.Class, cb: Callback<Java.Annotation>): void;
+      getAnnotation(arg0: Java.Class): Java.Annotation;
+      getAnnotationP(arg0: Java.Class): Promise<Java.Annotation>;
       // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
-      getAnnotationsA( cb: Callback<object_t[]>): void;
-      getAnnotations(): object_t[];
-      getAnnotationsP(): Promise<object_t[]>;
+      getAnnotationsA( cb: Callback<Java.Annotation[]>): void;
+      getAnnotations(): Java.Annotation[];
+      getAnnotationsP(): Promise<Java.Annotation[]>;
       // public <T> T[] java.lang.reflect.AccessibleObject.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
-      getAnnotationsByType(arg0: Java.Class): object_t[];
-      getAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<Java.Annotation[]>): void;
+      getAnnotationsByType(arg0: Java.Class): Java.Annotation[];
+      getAnnotationsByTypeP(arg0: Java.Class): Promise<Java.Annotation[]>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClassA( cb: Callback<Java.Class>): void;
       getClass(): Java.Class;
       getClassP(): Promise<Java.Class>;
       // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
-      getDeclaredAnnotation(arg0: Java.Class): object_t;
-      getDeclaredAnnotationP(arg0: Java.Class): Promise<object_t>;
+      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<Java.Annotation>): void;
+      getDeclaredAnnotation(arg0: Java.Class): Java.Annotation;
+      getDeclaredAnnotationP(arg0: Java.Class): Promise<Java.Annotation>;
       // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getDeclaredAnnotations()
-      getDeclaredAnnotationsA( cb: Callback<object_t[]>): void;
-      getDeclaredAnnotations(): object_t[];
-      getDeclaredAnnotationsP(): Promise<object_t[]>;
+      getDeclaredAnnotationsA( cb: Callback<Java.Annotation[]>): void;
+      getDeclaredAnnotations(): Java.Annotation[];
+      getDeclaredAnnotationsP(): Promise<Java.Annotation[]>;
       // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
-      getDeclaredAnnotationsByType(arg0: Java.Class): object_t[];
-      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<Java.Annotation[]>): void;
+      getDeclaredAnnotationsByType(arg0: Java.Class): Java.Annotation[];
+      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<Java.Annotation[]>;
       // public abstract java.lang.Class<?> java.lang.reflect.Executable.getDeclaringClass()
       getDeclaringClassA( cb: Callback<Java.Class>): void;
       getDeclaringClass(): Java.Class;
@@ -1542,9 +1577,9 @@ export module Java {
       getName(): string;
       getNameP(): Promise<string>;
       // public abstract java.lang.annotation.Annotation[][] java.lang.reflect.Executable.getParameterAnnotations()
-      getParameterAnnotationsA( cb: Callback<object_t[][]>): void;
-      getParameterAnnotations(): object_t[][];
-      getParameterAnnotationsP(): Promise<object_t[][]>;
+      getParameterAnnotationsA( cb: Callback<Java.Annotation[][]>): void;
+      getParameterAnnotations(): Java.Annotation[][];
+      getParameterAnnotationsP(): Promise<Java.Annotation[][]>;
       // public int java.lang.reflect.Executable.getParameterCount()
       getParameterCountA( cb: Callback<number>): void;
       getParameterCount(): number;
@@ -1642,17 +1677,17 @@ export module Java {
       getAnnotatedType(): object_t;
       getAnnotatedTypeP(): Promise<object_t>;
       // public <T> T java.lang.reflect.AccessibleObject.getAnnotation(java.lang.Class<T>)
-      getAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
-      getAnnotation(arg0: Java.Class): object_t;
-      getAnnotationP(arg0: Java.Class): Promise<object_t>;
+      getAnnotationA(arg0: Java.Class, cb: Callback<Java.Annotation>): void;
+      getAnnotation(arg0: Java.Class): Java.Annotation;
+      getAnnotationP(arg0: Java.Class): Promise<Java.Annotation>;
       // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
-      getAnnotationsA( cb: Callback<object_t[]>): void;
-      getAnnotations(): object_t[];
-      getAnnotationsP(): Promise<object_t[]>;
+      getAnnotationsA( cb: Callback<Java.Annotation[]>): void;
+      getAnnotations(): Java.Annotation[];
+      getAnnotationsP(): Promise<Java.Annotation[]>;
       // public <T> T[] java.lang.reflect.AccessibleObject.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
-      getAnnotationsByType(arg0: Java.Class): object_t[];
-      getAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<Java.Annotation[]>): void;
+      getAnnotationsByType(arg0: Java.Class): Java.Annotation[];
+      getAnnotationsByTypeP(arg0: Java.Class): Promise<Java.Annotation[]>;
       // public boolean java.lang.reflect.Field.getBoolean(java.lang.Object) throws java.lang.IllegalArgumentException,java.lang.IllegalAccessException
       getBooleanA(arg0: object_t, cb: Callback<boolean>): void;
       getBoolean(arg0: object_t): boolean;
@@ -1670,17 +1705,17 @@ export module Java {
       getClass(): Java.Class;
       getClassP(): Promise<Java.Class>;
       // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
-      getDeclaredAnnotation(arg0: Java.Class): object_t;
-      getDeclaredAnnotationP(arg0: Java.Class): Promise<object_t>;
+      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<Java.Annotation>): void;
+      getDeclaredAnnotation(arg0: Java.Class): Java.Annotation;
+      getDeclaredAnnotationP(arg0: Java.Class): Promise<Java.Annotation>;
       // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getDeclaredAnnotations()
-      getDeclaredAnnotationsA( cb: Callback<object_t[]>): void;
-      getDeclaredAnnotations(): object_t[];
-      getDeclaredAnnotationsP(): Promise<object_t[]>;
+      getDeclaredAnnotationsA( cb: Callback<Java.Annotation[]>): void;
+      getDeclaredAnnotations(): Java.Annotation[];
+      getDeclaredAnnotationsP(): Promise<Java.Annotation[]>;
       // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
-      getDeclaredAnnotationsByType(arg0: Java.Class): object_t[];
-      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<Java.Annotation[]>): void;
+      getDeclaredAnnotationsByType(arg0: Java.Class): Java.Annotation[];
+      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<Java.Annotation[]>;
       // public java.lang.Class<?> java.lang.reflect.Field.getDeclaringClass()
       getDeclaringClassA( cb: Callback<Java.Class>): void;
       getDeclaringClass(): Java.Class;
@@ -1846,33 +1881,33 @@ export module Java {
       getAnnotatedReturnType(): object_t;
       getAnnotatedReturnTypeP(): Promise<object_t>;
       // public <T> T java.lang.reflect.AccessibleObject.getAnnotation(java.lang.Class<T>)
-      getAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
-      getAnnotation(arg0: Java.Class): object_t;
-      getAnnotationP(arg0: Java.Class): Promise<object_t>;
+      getAnnotationA(arg0: Java.Class, cb: Callback<Java.Annotation>): void;
+      getAnnotation(arg0: Java.Class): Java.Annotation;
+      getAnnotationP(arg0: Java.Class): Promise<Java.Annotation>;
       // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getAnnotations()
-      getAnnotationsA( cb: Callback<object_t[]>): void;
-      getAnnotations(): object_t[];
-      getAnnotationsP(): Promise<object_t[]>;
+      getAnnotationsA( cb: Callback<Java.Annotation[]>): void;
+      getAnnotations(): Java.Annotation[];
+      getAnnotationsP(): Promise<Java.Annotation[]>;
       // public <T> T[] java.lang.reflect.AccessibleObject.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
-      getAnnotationsByType(arg0: Java.Class): object_t[];
-      getAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<Java.Annotation[]>): void;
+      getAnnotationsByType(arg0: Java.Class): Java.Annotation[];
+      getAnnotationsByTypeP(arg0: Java.Class): Promise<Java.Annotation[]>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClassA( cb: Callback<Java.Class>): void;
       getClass(): Java.Class;
       getClassP(): Promise<Java.Class>;
       // public <T> T java.lang.reflect.AccessibleObject.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
-      getDeclaredAnnotation(arg0: Java.Class): object_t;
-      getDeclaredAnnotationP(arg0: Java.Class): Promise<object_t>;
+      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<Java.Annotation>): void;
+      getDeclaredAnnotation(arg0: Java.Class): Java.Annotation;
+      getDeclaredAnnotationP(arg0: Java.Class): Promise<Java.Annotation>;
       // public java.lang.annotation.Annotation[] java.lang.reflect.AccessibleObject.getDeclaredAnnotations()
-      getDeclaredAnnotationsA( cb: Callback<object_t[]>): void;
-      getDeclaredAnnotations(): object_t[];
-      getDeclaredAnnotationsP(): Promise<object_t[]>;
+      getDeclaredAnnotationsA( cb: Callback<Java.Annotation[]>): void;
+      getDeclaredAnnotations(): Java.Annotation[];
+      getDeclaredAnnotationsP(): Promise<Java.Annotation[]>;
       // public <T> T[] java.lang.reflect.AccessibleObject.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
-      getDeclaredAnnotationsByType(arg0: Java.Class): object_t[];
-      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<Java.Annotation[]>): void;
+      getDeclaredAnnotationsByType(arg0: Java.Class): Java.Annotation[];
+      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<Java.Annotation[]>;
       // public abstract java.lang.Class<?> java.lang.reflect.Executable.getDeclaringClass()
       getDeclaringClassA( cb: Callback<Java.Class>): void;
       getDeclaringClass(): Java.Class;
@@ -1906,9 +1941,9 @@ export module Java {
       getName(): string;
       getNameP(): Promise<string>;
       // public abstract java.lang.annotation.Annotation[][] java.lang.reflect.Executable.getParameterAnnotations()
-      getParameterAnnotationsA( cb: Callback<object_t[][]>): void;
-      getParameterAnnotations(): object_t[][];
-      getParameterAnnotationsP(): Promise<object_t[][]>;
+      getParameterAnnotationsA( cb: Callback<Java.Annotation[][]>): void;
+      getParameterAnnotations(): Java.Annotation[][];
+      getParameterAnnotationsP(): Promise<Java.Annotation[][]>;
       // public int java.lang.reflect.Executable.getParameterCount()
       getParameterCountA( cb: Callback<number>): void;
       getParameterCount(): number;
@@ -2155,33 +2190,33 @@ export module Java {
       getAnnotatedType(): object_t;
       getAnnotatedTypeP(): Promise<object_t>;
       // public <T> T java.lang.reflect.Parameter.getAnnotation(java.lang.Class<T>)
-      getAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
-      getAnnotation(arg0: Java.Class): object_t;
-      getAnnotationP(arg0: Java.Class): Promise<object_t>;
+      getAnnotationA(arg0: Java.Class, cb: Callback<Java.Annotation>): void;
+      getAnnotation(arg0: Java.Class): Java.Annotation;
+      getAnnotationP(arg0: Java.Class): Promise<Java.Annotation>;
       // public java.lang.annotation.Annotation[] java.lang.reflect.Parameter.getAnnotations()
-      getAnnotationsA( cb: Callback<object_t[]>): void;
-      getAnnotations(): object_t[];
-      getAnnotationsP(): Promise<object_t[]>;
+      getAnnotationsA( cb: Callback<Java.Annotation[]>): void;
+      getAnnotations(): Java.Annotation[];
+      getAnnotationsP(): Promise<Java.Annotation[]>;
       // public <T> T[] java.lang.reflect.Parameter.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
-      getAnnotationsByType(arg0: Java.Class): object_t[];
-      getAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<Java.Annotation[]>): void;
+      getAnnotationsByType(arg0: Java.Class): Java.Annotation[];
+      getAnnotationsByTypeP(arg0: Java.Class): Promise<Java.Annotation[]>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClassA( cb: Callback<Java.Class>): void;
       getClass(): Java.Class;
       getClassP(): Promise<Java.Class>;
       // public <T> T java.lang.reflect.Parameter.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
-      getDeclaredAnnotation(arg0: Java.Class): object_t;
-      getDeclaredAnnotationP(arg0: Java.Class): Promise<object_t>;
+      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<Java.Annotation>): void;
+      getDeclaredAnnotation(arg0: Java.Class): Java.Annotation;
+      getDeclaredAnnotationP(arg0: Java.Class): Promise<Java.Annotation>;
       // public java.lang.annotation.Annotation[] java.lang.reflect.Parameter.getDeclaredAnnotations()
-      getDeclaredAnnotationsA( cb: Callback<object_t[]>): void;
-      getDeclaredAnnotations(): object_t[];
-      getDeclaredAnnotationsP(): Promise<object_t[]>;
+      getDeclaredAnnotationsA( cb: Callback<Java.Annotation[]>): void;
+      getDeclaredAnnotations(): Java.Annotation[];
+      getDeclaredAnnotationsP(): Promise<Java.Annotation[]>;
       // public <T> T[] java.lang.reflect.Parameter.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
-      getDeclaredAnnotationsByType(arg0: Java.Class): object_t[];
-      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<Java.Annotation[]>): void;
+      getDeclaredAnnotationsByType(arg0: Java.Class): Java.Annotation[];
+      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<Java.Annotation[]>;
       // public java.lang.reflect.Executable java.lang.reflect.Parameter.getDeclaringExecutable()
       getDeclaringExecutableA( cb: Callback<Java.Executable>): void;
       getDeclaringExecutable(): Java.Executable;
@@ -2279,33 +2314,33 @@ export module Java {
       getAnnotatedBounds(): object_t[];
       getAnnotatedBoundsP(): Promise<object_t[]>;
       // public abstract <T> T java.lang.reflect.AnnotatedElement.getAnnotation(java.lang.Class<T>)
-      getAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
-      getAnnotation(arg0: Java.Class): object_t;
-      getAnnotationP(arg0: Java.Class): Promise<object_t>;
+      getAnnotationA(arg0: Java.Class, cb: Callback<Java.Annotation>): void;
+      getAnnotation(arg0: Java.Class): Java.Annotation;
+      getAnnotationP(arg0: Java.Class): Promise<Java.Annotation>;
       // public abstract java.lang.annotation.Annotation[] java.lang.reflect.AnnotatedElement.getAnnotations()
-      getAnnotationsA( cb: Callback<object_t[]>): void;
-      getAnnotations(): object_t[];
-      getAnnotationsP(): Promise<object_t[]>;
+      getAnnotationsA( cb: Callback<Java.Annotation[]>): void;
+      getAnnotations(): Java.Annotation[];
+      getAnnotationsP(): Promise<Java.Annotation[]>;
       // public default <T> T[] java.lang.reflect.AnnotatedElement.getAnnotationsByType(java.lang.Class<T>)
-      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
-      getAnnotationsByType(arg0: Java.Class): object_t[];
-      getAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      getAnnotationsByTypeA(arg0: Java.Class, cb: Callback<Java.Annotation[]>): void;
+      getAnnotationsByType(arg0: Java.Class): Java.Annotation[];
+      getAnnotationsByTypeP(arg0: Java.Class): Promise<Java.Annotation[]>;
       // public abstract java.lang.reflect.Type[] java.lang.reflect.TypeVariable.getBounds()
       getBoundsA( cb: Callback<Java.Type[]>): void;
       getBounds(): Java.Type[];
       getBoundsP(): Promise<Java.Type[]>;
       // public default <T> T java.lang.reflect.AnnotatedElement.getDeclaredAnnotation(java.lang.Class<T>)
-      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<object_t>): void;
-      getDeclaredAnnotation(arg0: Java.Class): object_t;
-      getDeclaredAnnotationP(arg0: Java.Class): Promise<object_t>;
+      getDeclaredAnnotationA(arg0: Java.Class, cb: Callback<Java.Annotation>): void;
+      getDeclaredAnnotation(arg0: Java.Class): Java.Annotation;
+      getDeclaredAnnotationP(arg0: Java.Class): Promise<Java.Annotation>;
       // public abstract java.lang.annotation.Annotation[] java.lang.reflect.AnnotatedElement.getDeclaredAnnotations()
-      getDeclaredAnnotationsA( cb: Callback<object_t[]>): void;
-      getDeclaredAnnotations(): object_t[];
-      getDeclaredAnnotationsP(): Promise<object_t[]>;
+      getDeclaredAnnotationsA( cb: Callback<Java.Annotation[]>): void;
+      getDeclaredAnnotations(): Java.Annotation[];
+      getDeclaredAnnotationsP(): Promise<Java.Annotation[]>;
       // public default <T> T[] java.lang.reflect.AnnotatedElement.getDeclaredAnnotationsByType(java.lang.Class<T>)
-      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<object_t[]>): void;
-      getDeclaredAnnotationsByType(arg0: Java.Class): object_t[];
-      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<object_t[]>;
+      getDeclaredAnnotationsByTypeA(arg0: Java.Class, cb: Callback<Java.Annotation[]>): void;
+      getDeclaredAnnotationsByType(arg0: Java.Class): Java.Annotation[];
+      getDeclaredAnnotationsByTypeP(arg0: Java.Class): Promise<Java.Annotation[]>;
       // public abstract D java.lang.reflect.TypeVariable.getGenericDeclaration()
       getGenericDeclarationA( cb: Callback<object_t>): void;
       getGenericDeclaration(): object_t;

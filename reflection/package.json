@@ -7,6 +7,7 @@
       "target/**/*.jar"
     ],
     "classes": [
+      "java.lang.annotation.Annotation",
       "java.lang.Boolean",
       "java.lang.Class",
       "java.lang.ClassLoader",
