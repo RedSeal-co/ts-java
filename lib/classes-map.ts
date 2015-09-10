@@ -352,6 +352,9 @@ export class ClassesMap {
     assert.strictEqual(className, clazz.getName());
 
     var genericName: string = clazz.toGenericString();
+    var classTypeName: string = clazz.getTypeName();
+
+    var annotations: string[] = _.map(clazz.getAnnotations(), (anno: Java.Annotation) => anno.toString());
 
     var typeParms: Array<string> = _.map(clazz.getTypeParameters(), (t: Java.TypeVariable) => t.getName());
 
@@ -428,6 +431,8 @@ export class ClassesMap {
       quotedPkgName: this.packageName(this.fixClassPath(className)),
       packageName: this.packageName(className),
       genericName: genericName,
+      annotations: annotations,
+      classTypeName: classTypeName,
       fullName: className,
       shortName: shortName,
       typeParms: typeParms,
@@ -935,6 +940,9 @@ export module ClassesMap {
   export interface ClassDefinition {
     quotedPkgName: string;             // 'java.util.function_'
     packageName: string;               // 'java.util.function'
+    genericName: string;
+    annotations: string[];
+    classTypeName: string;
     fullName: string;                  // 'java.util.Iterator'
     shortName: string;                 // 'Iterator'
     typeParms: Array<string>;
