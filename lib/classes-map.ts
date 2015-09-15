@@ -329,6 +329,7 @@ export class ClassesMap {
       paramTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return p.getName(); }),
       tsParamTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return this.tsTypeName(p.getName()); }),
       tsGenericParamTypes: _.map(method.getGenericParameterTypes(), (p: Java.Type) => { return p.getTypeName(); }),
+      tsTypeParameters: _.map(method.getTypeParameters(), (p: Java.TypeVariable) => { return p.getName(); }),
       isStatic: isStatic,
       isVarArgs: method.isVarArgs(),
       generic_proto: method.toGenericString(),
@@ -914,6 +915,7 @@ export module ClassesMap {
     paramNames: Array<string>;  // [ 'arg0' ],
     paramTypes: Array<string>;  // [ 'java.util.function.Consumer', '[S' ],
     tsParamTypes: Array<string>;  // [ 'java.util.function_.Consumer',  'number' ],
+    tsTypeParameters: Array<string>;
     isStatic: boolean;      // true if this is a static method
     isVarArgs: boolean;     // true if this method's last parameter is varargs ...type
     generic_proto: string;  // The method prototype including generic type information
