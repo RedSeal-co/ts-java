@@ -269,30 +269,14 @@ export module Java {
   export module {{quotedPkgName}} {
     export interface {{shortName}} {{#if tsInterfaces}}extends {{#join tsInterfaces ', '}}{{this}}{{/join}}{{/if}} {
       {{#each fields}}
-      {{~#if isStatic~}}
-      {{~else}}
+      {{~#unless isStatic}}
       {{name}}: {{tsType}};
-      {{/if~}}
+      {{/unless~}}
       {{/each}}
       {{#each variants}}
       {{#each this}}
       {{#unless isStatic}}
-      // {{generic_proto}}
-      {{#ifdef @root.opts.asyncSuffix}}
-      {{name}}{{@root.opts.asyncSuffix}}({{#if tsParamTypes}}{{margs this norest=true}},{{/if}} cb: Callback<{{tsReturns}}>): void;
-      {{/ifdef~}}
-      {{#ifdef @root.opts.syncSuffix}}
-      {{name}}{{@root.opts.syncSuffix}}({{margs this}}): {{tsReturns}};
-      {{#if isVarArgs}}
-      {{name}}{{@root.opts.syncSuffix}}({{margs this norest=true}}): {{tsReturns}};
-      {{/if}}
-      {{/ifdef~}}
-      {{#ifdef @root.opts.promiseSuffix}}
-      {{name}}{{@root.opts.promiseSuffix}}({{margs this}}): Promise<{{tsReturns}}>;
-      {{#if isVarArgs}}
-      {{name}}{{@root.opts.promiseSuffix}}({{margs this norest=true}}): Promise<{{tsReturns}}>;
-      {{/if}}
-      {{/ifdef~}}
+      {{> method this }}
       {{/unless}}
       {{/each}}
       {{/each}}
@@ -311,22 +295,7 @@ export module Java {
         {{#each variants}}
         {{#each this}}
         {{#if isStatic}}
-        // {{generic_proto}}
-        {{#ifdef @root.opts.asyncSuffix}}
-        {{name}}{{@root.opts.asyncSuffix}}({{#if tsParamTypes}}{{margs this norest=true}},{{/if}} cb: Callback<{{tsReturns}}>): void;
-        {{/ifdef~}}
-        {{#ifdef @root.opts.syncSuffix}}
-        {{name}}{{@root.opts.syncSuffix}}({{margs this}}): {{tsReturns}};
-        {{#if isVarArgs}}
-        {{name}}{{@root.opts.syncSuffix}}({{margs this norest=true}}): {{tsReturns}};
-        {{/if}}
-        {{/ifdef~}}
-        {{#ifdef @root.opts.promiseSuffix}}
-        {{name}}{{@root.opts.promiseSuffix}}({{margs this}}): Promise<{{tsReturns}}>;
-        {{#if isVarArgs}}
-        {{name}}{{@root.opts.promiseSuffix}}({{margs this norest=true}}): Promise<{{tsReturns}}>;
-        {{/if}}
-        {{/ifdef~}}
+        {{> method this }}
         {{/if}}
         {{/each}}
         {{/each}}

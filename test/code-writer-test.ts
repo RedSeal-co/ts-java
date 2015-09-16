@@ -49,7 +49,8 @@ describe('CodeWriter', () => {
       classesMap = _classesMap;
       process.chdir('..');
       var templatesDirPath = path.resolve(__dirname, 'templates');
-      theWriter = new CodeWriter(classesMap, templatesDirPath);
+      var partialsDirPath = path.resolve(__dirname, 'partials');
+      theWriter = new CodeWriter(classesMap, templatesDirPath, partialsDirPath);
       return BluePromise.resolve();
     });
   });

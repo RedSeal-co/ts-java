@@ -170,7 +170,8 @@ class Main {
       return BluePromise.resolve();
     } else {
       var templatesDirPath = path.resolve(__dirname, '..', 'ts-templates');
-      var tsWriter = new CodeWriter(this.classesMap, templatesDirPath);
+      var partialsDirPath = path.resolve(__dirname, '..', 'ts-partials');
+      var tsWriter = new CodeWriter(this.classesMap, templatesDirPath, partialsDirPath);
       return mkdirpPromise(path.dirname(this.options.tsJavaModulePath))
         .then(() => tsWriter.writeTsJavaModule(this.options))
         .then(() => dlog('writeTsJavaModule() completed'));

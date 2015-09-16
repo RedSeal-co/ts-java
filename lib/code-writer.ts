@@ -43,11 +43,12 @@ class CodeWriter {
   private sortedClasses: Array<ClassesMap.ClassDefinition>;
   private templates: Immutable.Map<string, HandlebarsTemplateDelegate>;
 
-  constructor(classesMap: ClassesMap, templatesDirPath: string) {
+  constructor(classesMap: ClassesMap, templatesDirPath: string, partialsDirPath: string) {
     this.classesMap = classesMap;
     this.classes = classesMap.getClasses();
     this.sortedClasses = classesMap.getSortedClasses();
     this.templates = this.loadTemplates(templatesDirPath);
+    this.registerPartials(partialsDirPath);
     this.registerHandlebarHelpers();
   }
 
@@ -68,6 +69,19 @@ class CodeWriter {
       templates = templates.set(name, compiled);
     });
     return templates;
+  }
+
+  registerPartials(partialsDirPath: string): void {
+    var extension = '.txt';
+    var globExpr = path.join(partialsDirPath, '*' + extension);
+    var filenames = glob.sync(globExpr);
+    _.forEach(filenames, (path: string) => {
+      var lastSlash = path.lastIndexOf('/');
+      assert(lastSlash !== -1);
+      var name = path.slice(lastSlash + 1, -extension.length);
+      var contents = fs.readFileSync(path, { encoding: 'utf8' });
+      handlebars.registerPartial(name, contents);
+    });
   }
 
   fill(name: string, ctx: Object): string {
