@@ -915,6 +915,7 @@ export module ClassesMap {
     paramNames: Array<string>;  // [ 'arg0' ],
     paramTypes: Array<string>;  // [ 'java.util.function.Consumer', '[S' ],
     tsParamTypes: Array<string>;  // [ 'java.util.function_.Consumer',  'number' ],
+    tsGenericParamTypes: Array<string>;
     tsTypeParameters: Array<string>;
     isStatic: boolean;      // true if this is a static method
     isVarArgs: boolean;     // true if this method's last parameter is varargs ...type
@@ -932,6 +933,7 @@ export module ClassesMap {
   export interface FieldDefinition {
     name: string;
     tsType: string;
+    tsGenericType: string;
     isStatic: boolean;
     isSynthetic: boolean;
     declaredIn: string;
@@ -942,7 +944,7 @@ export module ClassesMap {
   export interface ClassDefinition {
     quotedPkgName: string;             // 'java.util.function_'
     packageName: string;               // 'java.util.function'
-    genericName: string;
+    genericName: string;               // 'public final class java.lang.Class<T>'
     annotations: string[];
     classTypeName: string;
     fullName: string;                  // 'java.util.Iterator'
