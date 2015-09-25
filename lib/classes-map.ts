@@ -439,7 +439,7 @@ export class ClassesMap {
       typeParms: typeParms,
       alias: alias,
       useAlias: useAlias,
-      tsType: this.tsTypeName(className),
+      tsType: this.tsTypeName(className) + this.unconstrainedTypeList(typeParms),
       isInterface: isInterface,
       isPrimitive: isPrimitive,
       superclass: superclass === null ? null : superclass.getName(),
@@ -899,6 +899,15 @@ export class ClassesMap {
         dlog('preScanAllClasses completed');
       });
   }
+
+  private unconstrainedTypeList(types: Array<string>): string {
+    if (!this.options.generics || types.length === 0) {
+      return '';
+    } else {
+      return '<' + _.map(types, () => 'any').join(', ') + '>';
+    }
+  }
+
 }
 
 export module ClassesMap {
