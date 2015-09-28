@@ -23,6 +23,7 @@ import Java = reflection.Java;
 var openAsync = BluePromise.promisify(fs.open);
 
 var dlog = debug('ts-java:classes-map');
+var ddbg = debug('ts-java:classes-map-dbg');
 
 var requiredCoreClasses: string[] = [
   'java.lang.Object',
@@ -49,6 +50,7 @@ import ClassDefinition = ClassesMap.ClassDefinition;
 import ClassDefinitionMap = ClassesMap.ClassDefinitionMap;
 import FieldDefinition = ClassesMap.FieldDefinition;
 import MethodDefinition = ClassesMap.MethodDefinition;
+import ParsedPrototype = ClassesMap.ParsedPrototype;
 import VariantsArray = ClassesMap.VariantsArray;
 
 export enum ParamContext {eInput, eReturn};
@@ -320,6 +322,9 @@ export class ClassesMap {
       returnType = method.getDeclaringClass().getName();
     }
 
+    var generic_proto: string = method.toGenericString();
+    var ts_generic_proto: ParsedPrototype = this.translateGenericProto(generic_proto);
+
     var methodMap: MethodDefinition = {
       name: method.getName(),
       declared: method.getDeclaringClass().getName(),
@@ -332,7 +337,8 @@ export class ClassesMap {
       tsTypeParameters: _.map(method.getTypeParameters(), (p: Java.TypeVariable) => { return p.getName(); }),
       isStatic: isStatic,
       isVarArgs: method.isVarArgs(),
-      generic_proto: method.toGenericString(),
+      generic_proto: generic_proto,
+      ts_generic_proto: ts_generic_proto,
       plain_proto: method.toString(),
       signature: signature
     };
@@ -521,6 +527,70 @@ export class ClassesMap {
       }
     });
     return parts.join('.');
+  }
+
+  // *translateGenericProto()*: given a string that is a Java generic method prototype
+  // (as returned by Method.toGenericString()), return a complete Typescript generic method prototype.
+  // declared public only for unit tests
+  public translateGenericProto(generic_proto: string): ParsedPrototype {
+    var tmp: string = generic_proto;
+
+    tmp = tmp.replace('abstract ', '');
+    tmp = tmp.replace('default ', '');
+    tmp = tmp.replace('final ', '');
+    tmp = tmp.replace('native ', '');
+    tmp = tmp.replace('public ', '');
+    tmp = tmp.replace('static ', ''); // we'll recognize static methods a different way
+    tmp = tmp.replace('synchronized ', '');
+    tmp = tmp.replace(/ throws .*$/, '');
+
+    // The last character should now be a ')', the close parenthesis of the function's parameter list.
+    assert.strictEqual(tmp[tmp.length - 1], ')');
+
+    // The regex below is gnarly. It's designed to capture four fields
+    // gentypes: (<[, \w]+>)?          -- optional expression '<...> '
+    // returns: (?:(.*) )?             -- Optional function return result (optional because of constructors)
+    // methodName: ([\.\$\w]+)         -- requires word string, but may include $ characters
+    // params: \((.*)\)                -- The parameter list, identified only by the parentheses
+
+    var parse: string[] = tmp.match(/^(<[, \w]+>)?(?:(.*) )?([\.\$\w]+)\((.*)\)$/);
+    assert.ok(parse);
+    assert.strictEqual(parse.length, 5);
+    ddbg(parse);
+
+    var gentypes: string = parse[1] === undefined ? '' : parse[1];
+    var returns: string = parse[2] || 'void';
+    var methodName: string = parse[3].split('.').slice(-1)[0];
+    var params: string = parse[4];
+
+    // Split at commas, but ignoring commas between < > for generics
+    function splitParams(s: string): Array<string> {
+      // This function is a hack that takes advantage of the fact that Java Reflection
+      // returns a prototype string that has no space after the commas we want to split at,
+      // but does have a space after commas we want to ignore.
+      var result: Array<string> = [];
+      while (s.length > 0) {
+        var i: number = s.search(/,[^\s]/);
+        if (i === -1) {
+          result.push(s);
+          s = '';
+        } else {
+          result.push(s.slice(0, i));
+          s = s.slice(i + 1);
+        }
+      }
+      return result;
+    }
+
+    var result: ParsedPrototype = {
+      methodName: methodName.trim(),
+      gentypes: gentypes.trim(),
+      returns: returns.trim(),
+      params: splitParams(params)
+    };
+
+    ddbg('CHECK:', result);
+    return result;
   }
 
   // *isIncludedClass()*: Return true if the class will appear in the output java.d.ts file.
@@ -929,6 +999,7 @@ export module ClassesMap {
     isStatic: boolean;      // true if this is a static method
     isVarArgs: boolean;     // true if this method's last parameter is varargs ...type
     generic_proto: string;  // The method prototype including generic type information
+    ts_generic_proto: ParsedPrototype;  // The method prototype including generic type information, translated to typescript
     plain_proto: string;    // The java method prototype without generic type information
     signature: string;     // A method signature related to the plain_proto prototype above
                             // This signature does not include return type info, as java does not
@@ -946,6 +1017,13 @@ export module ClassesMap {
     isStatic: boolean;
     isSynthetic: boolean;
     declaredIn: string;
+  }
+
+  export interface ParsedPrototype {
+    methodName: string;
+    gentypes: string;
+    returns: string;
+    params: Array<string>;
   }
 
   // ### ClassDefinition
