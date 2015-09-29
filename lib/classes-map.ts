@@ -248,16 +248,9 @@ export class ClassesMap {
     return typeName;
   }
 
-  // #### **tsTypeName()**: given a java type name, return a typescript type name
-  // declared public only for unit tests
-  // The `encodedTypes` parameter is a hack put in place to assist with a refactoring.
-  // tsTypeName() needs to be split up into functions that handle different aspects of the typename transformation.
-  public tsTypeName(javaTypeName: string, context: ParamContext = ParamContext.eInput, encodedTypes: boolean = false): string {
-    var {typeName, ext} = this.jniDecodeType(javaTypeName, encodedTypes);
-
-    typeName = this.boxIfJavaPrimitive(typeName);
-    typeName = this.mapUnhandledTypesToJavaLangObject(typeName);
-
+  // #### **mapJavaPrimitivesToTypescript()**: For primitive (boxed) types, return the corresponding Typescript type.
+  // The typescript type depends on the context, whether the type is in input parameter or function return type.
+  public mapJavaPrimitivesToTypescript(typeName: string, context: ParamContext): string {
     // Finally, convert Java primitive types to Typescript primitive types.
 
     // node-java does type translation for a set of common/primitive types.
@@ -295,6 +288,25 @@ export class ClassesMap {
 
     if (typeName in javaTypeToTypescriptType) {
       typeName = javaTypeToTypescriptType[typeName];
+    }
+
+    return typeName;
+  }
+
+  // #### **tsTypeName()**: given a java type name, return a typescript type name
+  // declared public only for unit tests
+  // The `encodedTypes` parameter is a hack put in place to assist with a refactoring.
+  // tsTypeName() needs to be split up into functions that handle different aspects of the typename transformation.
+  public tsTypeName(javaTypeName: string, context: ParamContext = ParamContext.eInput, encodedTypes: boolean = false): string {
+    var {typeName, ext} = this.jniDecodeType(javaTypeName, encodedTypes);
+
+    typeName = this.boxIfJavaPrimitive(typeName);
+    typeName = this.mapUnhandledTypesToJavaLangObject(typeName);
+
+    var mappedType: string = this.mapJavaPrimitivesToTypescript(typeName, context);
+
+    if (mappedType !== typeName || typeName === 'void') {
+      typeName = mappedType;
     } else if (this.isIncludedClass(typeName)) {
       // Use the short class name if it doesn't cause name conflicts.
       // This can only be done correctly after running prescanAllClasses,
