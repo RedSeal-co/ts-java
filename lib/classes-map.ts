@@ -217,14 +217,8 @@ export class ClassesMap {
     return {typeName, ext};
   }
 
-  // #### **tsTypeName()**: given a java type name, return a typescript type name
-  // declared public only for unit tests
-  // The `encodedTypes` parameter is a hack put in place to assist with a refactoring.
-  // tsTypeName() needs to be split up into functions that handle different aspects of the typename transformation.
-  public tsTypeName(javaTypeName: string, context: ParamContext = ParamContext.eInput, encodedTypes: boolean = false): string {
-    var {typeName, ext} = this.jniDecodeType(javaTypeName, encodedTypes);
-
-    // Next, promote primitive types to their corresponding Object types, to avoid redundancy below.
+  // #### **boxIfJavaPrimitive()**: if typeName is a primitive type, return the boxed Object type.
+  public boxIfJavaPrimitive(typeName: string): string {
     var primitiveToObjectMap: StringDictionary = {
       'byte': 'java.lang.Object',
       'char': 'java.lang.Object',
@@ -238,6 +232,17 @@ export class ClassesMap {
     if (typeName in primitiveToObjectMap) {
       typeName = primitiveToObjectMap[typeName];
     }
+    return typeName;
+  }
+
+  // #### **tsTypeName()**: given a java type name, return a typescript type name
+  // declared public only for unit tests
+  // The `encodedTypes` parameter is a hack put in place to assist with a refactoring.
+  // tsTypeName() needs to be split up into functions that handle different aspects of the typename transformation.
+  public tsTypeName(javaTypeName: string, context: ParamContext = ParamContext.eInput, encodedTypes: boolean = false): string {
+    var {typeName, ext} = this.jniDecodeType(javaTypeName, encodedTypes);
+
+    typeName = this.boxIfJavaPrimitive(typeName);
 
     if (!this.isIncludedClass(typeName) && typeName !== 'void') {
       // Since the type is not in our included classes, we might want to use the Typescript 'any' type.
