@@ -166,19 +166,34 @@ export class ClassesMap {
     return new RegExp(expr);
   }
 
-  // #### **tsTypeName()**: given a java type name, return a typescript type name
-  // declared public only for unit tests
-  public tsTypeName(javaTypeName: string, context: ParamContext = ParamContext.eInput): string {
-    var typeName = javaTypeName;
+  public stackTrace(msg: string): void {
+    var c: any = <any> console;
+    c.trace(msg);
+    process.abort();
+  }
+
+  // This function is temporary while conducting a refactoring.
+  public tsTypeNameInputEncoded(javaTypeName: string): string {
+    return this.tsTypeName(javaTypeName, ParamContext.eInput, true);
+  }
+
+
+  // #### **jniDecodeType()**: given a java type name, if it is a JNI encoded type string, decode it.
+  // The `encodedTypes` parameter indicates that JNI type strings such as `Ljava.lang.Object;` are expected.
+  // It is temporary instrumentation until this refactoring is complete.
+  public jniDecodeType(javaTypeName: string, encodedTypes: boolean = false): { typeName: string, ext: string } {
+    var typeName: string = javaTypeName;
 
     var ext = '';
     while (typeName[0] === '[') {
+      if (!encodedTypes) { this.stackTrace(javaTypeName); }
       typeName = typeName.slice(1);
       ext += '[]';
     }
 
     var m = typeName.match(/^L(.*);$/);
     if (m) {
+      if (!encodedTypes) { this.stackTrace(javaTypeName); }
       typeName = m[1];
     }
 
@@ -195,8 +210,19 @@ export class ClassesMap {
       Z: 'boolean'
     };
     if (typeName in jniAbbreviations) {
+      if (!encodedTypes) { this.stackTrace(javaTypeName); }
       typeName = jniAbbreviations[typeName];
     }
+
+    return {typeName, ext};
+  }
+
+  // #### **tsTypeName()**: given a java type name, return a typescript type name
+  // declared public only for unit tests
+  // The `encodedTypes` parameter is a hack put in place to assist with a refactoring.
+  // tsTypeName() needs to be split up into functions that handle different aspects of the typename transformation.
+  public tsTypeName(javaTypeName: string, context: ParamContext = ParamContext.eInput, encodedTypes: boolean = false): string {
+    var {typeName, ext} = this.jniDecodeType(javaTypeName, encodedTypes);
 
     // Next, promote primitive types to their corresponding Object types, to avoid redundancy below.
     var primitiveToObjectMap: StringDictionary = {
@@ -329,10 +355,10 @@ export class ClassesMap {
       name: method.getName(),
       declared: method.getDeclaringClass().getName(),
       returns: returnType,
-      tsReturns: this.tsTypeName(returnType, ParamContext.eReturn),
+      tsReturns: this.tsTypeName(returnType, ParamContext.eReturn, true),
       paramNames: _.map(method.getParameters(), (p: Java.Parameter) => { return p.getName(); }),
       paramTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return p.getName(); }),
-      tsParamTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return this.tsTypeName(p.getName()); }),
+      tsParamTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return this.tsTypeNameInputEncoded(p.getName()); }),
       tsGenericParamTypes: _.map(method.getGenericParameterTypes(), (p: Java.Type) => { return p.getTypeName(); }),
       tsTypeParameters: _.map(method.getTypeParameters(), (p: Java.TypeVariable) => { return p.getName(); }),
       isStatic: isStatic,
@@ -672,7 +698,7 @@ export class ClassesMap {
     var genericFieldType: Java.Type = field.getGenericType();
     var fieldTypeName: string = fieldType.getName();
     var declaredIn: string = field.getDeclaringClass().getName();
-    var tsType: string = this.tsTypeName(fieldTypeName, ParamContext.eReturn);
+    var tsType: string = this.tsTypeName(fieldTypeName, ParamContext.eReturn, true);
     var tsGenericType: string = genericFieldType.getTypeName();
 
     var isStatic: boolean = this.Modifier.isStatic(field.getModifiers());

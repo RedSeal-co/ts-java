@@ -143,8 +143,8 @@ describe('ClassesMap', () => {
       expect(classesMap.tsTypeName('java.lang.Number')).to.equal('number_t');
       expect(classesMap.tsTypeName('java.lang.Short')).to.equal('short_t');
       expect(classesMap.tsTypeName('java.lang.String')).to.equal('string_t');
-      expect(classesMap.tsTypeName('Ljava.lang.Object;')).to.equal('object_t');
-      expect(classesMap.tsTypeName('Ljava.util.function.Function;')).to.equal('Java.Function');
+      expect(classesMap.tsTypeNameInputEncoded('Ljava.lang.Object;')).to.equal('object_t');
+      expect(classesMap.tsTypeNameInputEncoded('Ljava.util.function.Function;')).to.equal('Java.Function');
     });
     it('it should translate Java primitive classes to TypeScript types for function return results', () => {
       expect(classesMap.tsTypeName('java.lang.Boolean', ParamContext.eReturn)).to.equal('boolean');
@@ -158,23 +158,23 @@ describe('ClassesMap', () => {
     });
     it('it should translate Java array types to TypeScript array types for function input parameters', () => {
       expect(classesMap.tsTypeName('java.lang.Object')).to.equal('object_t');
-      expect(classesMap.tsTypeName('Ljava.lang.Object;')).to.equal('object_t');
-      expect(classesMap.tsTypeName('[Ljava.lang.Object;')).to.equal('array_t<object_t>');
-      expect(classesMap.tsTypeName('[[Ljava.lang.Object;')).to.equal('void');
-      expect(classesMap.tsTypeName('[[[Ljava.lang.Object;')).to.equal('void');
-      expect(classesMap.tsTypeName('[I')).to.equal('array_t<integer_t>');
-      expect(classesMap.tsTypeName('[[I')).to.equal('void');
-      expect(classesMap.tsTypeName('[[[I')).to.equal('void');
+      expect(classesMap.tsTypeNameInputEncoded('Ljava.lang.Object;')).to.equal('object_t');
+      expect(classesMap.tsTypeNameInputEncoded('[Ljava.lang.Object;')).to.equal('array_t<object_t>');
+      expect(classesMap.tsTypeNameInputEncoded('[[Ljava.lang.Object;')).to.equal('void');
+      expect(classesMap.tsTypeNameInputEncoded('[[[Ljava.lang.Object;')).to.equal('void');
+      expect(classesMap.tsTypeNameInputEncoded('[I')).to.equal('array_t<integer_t>');
+      expect(classesMap.tsTypeNameInputEncoded('[[I')).to.equal('void');
+      expect(classesMap.tsTypeNameInputEncoded('[[[I')).to.equal('void');
     });
     it('it should translate Java array types to TypeScript array types for function return results', () => {
       expect(classesMap.tsTypeName('java.lang.Object', ParamContext.eReturn)).to.equal('object_t');
-      expect(classesMap.tsTypeName('Ljava.lang.Object;', ParamContext.eReturn)).to.equal('object_t');
-      expect(classesMap.tsTypeName('[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('object_t[]');
-      expect(classesMap.tsTypeName('[[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('object_t[][]');
-      expect(classesMap.tsTypeName('[[[Ljava.lang.Object;', ParamContext.eReturn)).to.equal('object_t[][][]');
-      expect(classesMap.tsTypeName('[I', ParamContext.eReturn)).to.equal('number[]');
-      expect(classesMap.tsTypeName('[[I', ParamContext.eReturn)).to.equal('number[][]');
-      expect(classesMap.tsTypeName('[[[I', ParamContext.eReturn)).to.equal('number[][][]');
+      expect(classesMap.tsTypeName('Ljava.lang.Object;', ParamContext.eReturn, true)).to.equal('object_t');
+      expect(classesMap.tsTypeName('[Ljava.lang.Object;', ParamContext.eReturn, true)).to.equal('object_t[]');
+      expect(classesMap.tsTypeName('[[Ljava.lang.Object;', ParamContext.eReturn, true)).to.equal('object_t[][]');
+      expect(classesMap.tsTypeName('[[[Ljava.lang.Object;', ParamContext.eReturn, true)).to.equal('object_t[][][]');
+      expect(classesMap.tsTypeName('[I', ParamContext.eReturn, true)).to.equal('number[]');
+      expect(classesMap.tsTypeName('[[I', ParamContext.eReturn, true)).to.equal('number[][]');
+      expect(classesMap.tsTypeName('[[[I', ParamContext.eReturn, true)).to.equal('number[][][]');
     });
   });
 
