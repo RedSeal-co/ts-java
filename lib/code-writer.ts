@@ -43,8 +43,11 @@ class CodeWriter {
   private sortedClasses: Array<ClassesMap.ClassDefinition>;
   private templates: Immutable.Map<string, HandlebarsTemplateDelegate>;
 
+  private tsJavaOptions: TsJavaOptions;
+
   constructor(classesMap: ClassesMap, templatesDirPath: string, partialsDirPath: string) {
     this.classesMap = classesMap;
+    this.tsJavaOptions = classesMap.getOptions();
     this.classes = classesMap.getClasses();
     this.sortedClasses = classesMap.getSortedClasses();
     this.templates = this.loadTemplates(templatesDirPath);
@@ -91,8 +94,10 @@ class CodeWriter {
 
   // *registerHandlebarHelpers()*
   registerHandlebarHelpers() : void {
+    var generics = this.tsJavaOptions.generics;
+
     handlebars.registerHelper('margs', (method: ClassesMap.MethodDefinition, options: HandlebarHelperOptions) => {
-      var tsParamTypes = method.tsParamTypes;
+      var tsParamTypes = generics ? method.tsGenericParamTypes : method.tsParamTypes;
       var names = method.paramNames;
       // Map each parameter to the correct typescript type declaration.
       // We need special processing to take into account various ways that array arguments must be treated.
