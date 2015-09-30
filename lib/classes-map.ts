@@ -103,7 +103,8 @@ export class ClassesMap {
 
     this.Modifier = Java.importClass('java.lang.reflect.Modifier');
 
-    // We create this after the first pass.
+    // shortToLongNameMap is initialized by createShortNameMap(), in the initialize() sequence,
+    // before analyzeIncludedClasses() is called.
     this.shortToLongNameMap = null;
 
     this.interfaceDepthCache = Immutable.Map<string, number>();
@@ -297,7 +298,7 @@ export class ClassesMap {
     var typeName = className;
     assert.ok(this.isIncludedClass(typeName));
     var shortName = this.shortClassName(typeName);
-    if (!this.shortToLongNameMap || this.shortToLongNameMap[shortName] === typeName) {
+    if (this.shortToLongNameMap[shortName] === typeName) {
       typeName = shortName;
     }
     // Add the 'Java.' namespace
@@ -453,9 +454,7 @@ export class ClassesMap {
     var alias: string = shortName;
     var useAlias: boolean = true;
 
-    if (this.shortToLongNameMap === null) {
-      // First pass, don't do this work yet
-    } else if (this.shortToLongNameMap[shortName] !== className) {
+    if (this.shortToLongNameMap[shortName] !== className) {
       alias = className;
       useAlias = false;
     }
