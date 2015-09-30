@@ -364,24 +364,33 @@ export class ClassesMap {
     var isStatic: boolean = this.Modifier.isStatic(method.getModifiers());
 
     var returnType: string = 'void';
+    var genericReturnType: string = returnType;
     if ('getReturnType' in method) {
       returnType = (<Java.Method>method).getReturnType().getName();
+      genericReturnType = (<Java.Method>method).getGenericReturnType().getTypeName();
     } else {
       // It is convenient to declare the return type for a constructor to be the type of the class,
       // possibly transformed by tsTypeName. This is because node-java will always convert boxed primitive
       // types to the corresponding javascript primitives, e.g. java.lang.String -> string, and
       // java.lang.Integer -> number.
       returnType = method.getDeclaringClass().getName();
+      genericReturnType = method.getDeclaringClass().getTypeName();
     }
 
     var generic_proto: string = method.toGenericString();
     var ts_generic_proto: ParsedPrototype = this.translateGenericProto(generic_proto);
 
+    var tsReturnsRegular = this.tsTypeName(returnType, ParamContext.eReturn, true);
+    var tsReturns = this.options.generics ? genericReturnType : tsReturnsRegular;
+
     var methodMap: MethodDefinition = {
       name: method.getName(),
       declared: method.getDeclaringClass().getName(),
       returns: returnType,
-      tsReturns: this.tsTypeName(returnType, ParamContext.eReturn, true),
+      genericReturns: genericReturnType,
+      tsReturnsRegular: tsReturnsRegular,
+      tsGenericReturns: genericReturnType,  // TODO: translate
+      tsReturns: tsReturns,
       paramNames: _.map(method.getParameters(), (p: Java.Parameter) => { return p.getName(); }),
       paramTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return p.getName(); }),
       tsParamTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return this.tsTypeNameInputEncoded(p.getName()); }),
@@ -1039,8 +1048,11 @@ export module ClassesMap {
   export interface MethodDefinition {
     name: string;           // name of method, e.g. 'forEachRemaining'
     declared: string;       // interface where first declared: 'java.util.Iterator'
-    returns: string;        // return type, e.g. 'void', 'int', of class name
-    tsReturns: string;        // return type, e.g. 'void', 'number', of class name
+    returns: string;           // return type, e.g. 'void', 'int', of class name
+    genericReturns: string;    // generic return (java) type
+    tsReturnsRegular: string;         // return type as a typescript type
+    tsGenericReturns: string;  // return type as a typescript generic type
+    tsReturns: string;         // return type as a typescript type
     paramNames: Array<string>;  // [ 'arg0' ],
     paramTypes: Array<string>;  // [ 'java.util.function.Consumer', '[S' ],
     tsParamTypes: Array<string>;  // [ 'java.util.function_.Consumer',  'number' ],
