@@ -235,6 +235,19 @@ export class ClassesMap {
     return typeName;
   }
 
+  // #### **mapUnhandledTypesToJavaLangObject()**: if typeName is a java class not included by configuration,
+  // record that the class is 'unhandled', and instead use java.lang.Object.
+  public mapUnhandledTypesToJavaLangObject(typeName: string): string {
+    if (!this.isIncludedClass(typeName) && typeName !== 'void') {
+      // Since the type is not in our included classes, we might want to use the Typescript 'any' type.
+      // However, array_t<any> doesn't really make sense. Rather, we want array_t<Object>,
+      // or possibly instead of Object a superclass that is in our whitelist.
+      this.unhandledTypes = this.unhandledTypes.add(typeName);
+      typeName = 'java.lang.Object';
+    }
+    return typeName;
+  }
+
   // #### **tsTypeName()**: given a java type name, return a typescript type name
   // declared public only for unit tests
   // The `encodedTypes` parameter is a hack put in place to assist with a refactoring.
@@ -243,14 +256,7 @@ export class ClassesMap {
     var {typeName, ext} = this.jniDecodeType(javaTypeName, encodedTypes);
 
     typeName = this.boxIfJavaPrimitive(typeName);
-
-    if (!this.isIncludedClass(typeName) && typeName !== 'void') {
-      // Since the type is not in our included classes, we might want to use the Typescript 'any' type.
-      // However, array_t<any> doesn't really make sense. Rather, we want array_t<Object>,
-      // or possibly instead of Object a superclass that is in our whitelist.
-      this.unhandledTypes = this.unhandledTypes.add(typeName);
-      typeName = 'java.lang.Object';
-    }
+    typeName = this.mapUnhandledTypesToJavaLangObject(typeName);
 
     // Finally, convert Java primitive types to Typescript primitive types.
 
