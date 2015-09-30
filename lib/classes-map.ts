@@ -293,6 +293,18 @@ export class ClassesMap {
     return typeName;
   }
 
+  public getJavaAliasName(className: string): string {
+    var typeName = className;
+    assert.ok(this.isIncludedClass(typeName));
+    var shortName = this.shortClassName(typeName);
+    if (!this.shortToLongNameMap || this.shortToLongNameMap[shortName] === typeName) {
+      typeName = shortName;
+    }
+    // Add the 'Java.' namespace
+    typeName = 'Java.' + typeName;
+    return typeName;
+  }
+
   // #### **tsTypeName()**: given a java type name, return a typescript type name
   // declared public only for unit tests
   // The `encodedTypes` parameter is a hack put in place to assist with a refactoring.
@@ -308,17 +320,7 @@ export class ClassesMap {
     if (mappedType !== typeName || typeName === 'void') {
       typeName = mappedType;
     } else if (this.isIncludedClass(typeName)) {
-      // Use the short class name if it doesn't cause name conflicts.
-      // This can only be done correctly after running prescanAllClasses,
-      // when this.shortToLongNameMap has been populated.
-      // However, conflicts are very rare, and unit tests currently don't run prescanAllClasses,
-      // so it is convenient to always map to the short name if shortToLongNameMap doesn't exist.
-      var shortName = this.shortClassName(typeName);
-      if (!this.shortToLongNameMap || this.shortToLongNameMap[shortName] === typeName) {
-        typeName = shortName;
-      }
-      // Add the 'Java.' namespace
-      typeName = 'Java.' + typeName;
+      typeName = this.getJavaAliasName(typeName);
     } else {
       dlog('Unhandled type:', typeName);
       this.unhandledTypes = this.unhandledTypes.add(typeName);
