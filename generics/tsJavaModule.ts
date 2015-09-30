@@ -646,9 +646,9 @@ export module Java {
       equals(arg0: java.lang.Object): boolean;
       equalsP(arg0: java.lang.Object): Promise<boolean>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassA( cb: Callback<java.lang.Class<?>>): void;
-      getClass(): java.lang.Class<?>;
-      getClassP(): Promise<java.lang.Class<?>>;
+      getClassA( cb: Callback<java.lang.Class<any>>): void;
+      getClass(): java.lang.Class<any>;
+      getClassP(): Promise<java.lang.Class<any>>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<int>): void;
       hashCode(): int;
@@ -733,9 +733,9 @@ export module Java {
   export module java.lang {
     export interface Class<T> extends Java.java.lang.Object {
       // public <U> java.lang.Class<? extends U> java.lang.Class.asSubclass(java.lang.Class<U>)
-      asSubclassA(arg0: java.lang.Class<U>, cb: Callback<java.lang.Class<? extends U>>): void;
-      asSubclass(arg0: java.lang.Class<U>): java.lang.Class<? extends U>;
-      asSubclassP(arg0: java.lang.Class<U>): Promise<java.lang.Class<? extends U>>;
+      asSubclassA(arg0: java.lang.Class<U>, cb: Callback<java.lang.Class<U>>): void;
+      asSubclass(arg0: java.lang.Class<U>): java.lang.Class<U>;
+      asSubclassP(arg0: java.lang.Class<U>): Promise<java.lang.Class<U>>;
       // public T java.lang.Class.cast(java.lang.Object)
       castA(arg0: java.lang.Object, cb: Callback<T>): void;
       cast(arg0: java.lang.Object): T;
@@ -773,31 +773,31 @@ export module Java {
       getCanonicalName(): java.lang.String;
       getCanonicalNameP(): Promise<java.lang.String>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassA( cb: Callback<java.lang.Class<?>>): void;
-      getClass(): java.lang.Class<?>;
-      getClassP(): Promise<java.lang.Class<?>>;
+      getClassA( cb: Callback<java.lang.Class<any>>): void;
+      getClass(): java.lang.Class<any>;
+      getClassP(): Promise<java.lang.Class<any>>;
       // public java.lang.Class<?>[] java.lang.Class.getClasses()
-      getClassesA( cb: Callback<java.lang.Class<?>[]>): void;
-      getClasses(): java.lang.Class<?>[];
-      getClassesP(): Promise<java.lang.Class<?>[]>;
+      getClassesA( cb: Callback<java.lang.Class<any>[]>): void;
+      getClasses(): java.lang.Class<any>[];
+      getClassesP(): Promise<java.lang.Class<any>[]>;
       // public java.lang.ClassLoader java.lang.Class.getClassLoader()
       getClassLoaderA( cb: Callback<java.lang.ClassLoader>): void;
       getClassLoader(): java.lang.ClassLoader;
       getClassLoaderP(): Promise<java.lang.ClassLoader>;
       // public native java.lang.Class<?> java.lang.Class.getComponentType()
-      getComponentTypeA( cb: Callback<java.lang.Class<?>>): void;
-      getComponentType(): java.lang.Class<?>;
-      getComponentTypeP(): Promise<java.lang.Class<?>>;
+      getComponentTypeA( cb: Callback<java.lang.Class<any>>): void;
+      getComponentType(): java.lang.Class<any>;
+      getComponentTypeP(): Promise<java.lang.Class<any>>;
       // public java.lang.reflect.Constructor<T> java.lang.Class.getConstructor(java.lang.Class<?>...) throws java.lang.NoSuchMethodException,java.lang.SecurityException
-      getConstructorA(arg0: java.lang.Class<?>[], cb: Callback<java.lang.reflect.Constructor<T>>): void;
-      getConstructor(...arg0: java.lang.Class<?>[]): java.lang.reflect.Constructor<T>;
-      getConstructor(arg0: java.lang.Class<?>[]): java.lang.reflect.Constructor<T>;
-      getConstructorP(...arg0: java.lang.Class<?>[]): Promise<java.lang.reflect.Constructor<T>>;
-      getConstructorP(arg0: java.lang.Class<?>[]): Promise<java.lang.reflect.Constructor<T>>;
+      getConstructorA(arg0: java.lang.Class<any>[], cb: Callback<java.lang.reflect.Constructor<T>>): void;
+      getConstructor(...arg0: java.lang.Class<any>[]): java.lang.reflect.Constructor<T>;
+      getConstructor(arg0: java.lang.Class<any>[]): java.lang.reflect.Constructor<T>;
+      getConstructorP(...arg0: java.lang.Class<any>[]): Promise<java.lang.reflect.Constructor<T>>;
+      getConstructorP(arg0: java.lang.Class<any>[]): Promise<java.lang.reflect.Constructor<T>>;
       // public java.lang.reflect.Constructor<?>[] java.lang.Class.getConstructors() throws java.lang.SecurityException
-      getConstructorsA( cb: Callback<java.lang.reflect.Constructor<?>[]>): void;
-      getConstructors(): java.lang.reflect.Constructor<?>[];
-      getConstructorsP(): Promise<java.lang.reflect.Constructor<?>[]>;
+      getConstructorsA( cb: Callback<java.lang.reflect.Constructor<any>[]>): void;
+      getConstructors(): java.lang.reflect.Constructor<any>[];
+      getConstructorsP(): Promise<java.lang.reflect.Constructor<any>[]>;
       // public <A> A java.lang.Class.getDeclaredAnnotation(java.lang.Class<A>)
       getDeclaredAnnotationA(arg0: java.lang.Class<A>, cb: Callback<A>): void;
       getDeclaredAnnotation(arg0: java.lang.Class<A>): A;
@@ -811,19 +811,19 @@ export module Java {
       getDeclaredAnnotationsByType(arg0: java.lang.Class<A>): A[];
       getDeclaredAnnotationsByTypeP(arg0: java.lang.Class<A>): Promise<A[]>;
       // public java.lang.Class<?>[] java.lang.Class.getDeclaredClasses() throws java.lang.SecurityException
-      getDeclaredClassesA( cb: Callback<java.lang.Class<?>[]>): void;
-      getDeclaredClasses(): java.lang.Class<?>[];
-      getDeclaredClassesP(): Promise<java.lang.Class<?>[]>;
+      getDeclaredClassesA( cb: Callback<java.lang.Class<any>[]>): void;
+      getDeclaredClasses(): java.lang.Class<any>[];
+      getDeclaredClassesP(): Promise<java.lang.Class<any>[]>;
       // public java.lang.reflect.Constructor<T> java.lang.Class.getDeclaredConstructor(java.lang.Class<?>...) throws java.lang.NoSuchMethodException,java.lang.SecurityException
-      getDeclaredConstructorA(arg0: java.lang.Class<?>[], cb: Callback<java.lang.reflect.Constructor<T>>): void;
-      getDeclaredConstructor(...arg0: java.lang.Class<?>[]): java.lang.reflect.Constructor<T>;
-      getDeclaredConstructor(arg0: java.lang.Class<?>[]): java.lang.reflect.Constructor<T>;
-      getDeclaredConstructorP(...arg0: java.lang.Class<?>[]): Promise<java.lang.reflect.Constructor<T>>;
-      getDeclaredConstructorP(arg0: java.lang.Class<?>[]): Promise<java.lang.reflect.Constructor<T>>;
+      getDeclaredConstructorA(arg0: java.lang.Class<any>[], cb: Callback<java.lang.reflect.Constructor<T>>): void;
+      getDeclaredConstructor(...arg0: java.lang.Class<any>[]): java.lang.reflect.Constructor<T>;
+      getDeclaredConstructor(arg0: java.lang.Class<any>[]): java.lang.reflect.Constructor<T>;
+      getDeclaredConstructorP(...arg0: java.lang.Class<any>[]): Promise<java.lang.reflect.Constructor<T>>;
+      getDeclaredConstructorP(arg0: java.lang.Class<any>[]): Promise<java.lang.reflect.Constructor<T>>;
       // public java.lang.reflect.Constructor<?>[] java.lang.Class.getDeclaredConstructors() throws java.lang.SecurityException
-      getDeclaredConstructorsA( cb: Callback<java.lang.reflect.Constructor<?>[]>): void;
-      getDeclaredConstructors(): java.lang.reflect.Constructor<?>[];
-      getDeclaredConstructorsP(): Promise<java.lang.reflect.Constructor<?>[]>;
+      getDeclaredConstructorsA( cb: Callback<java.lang.reflect.Constructor<any>[]>): void;
+      getDeclaredConstructors(): java.lang.reflect.Constructor<any>[];
+      getDeclaredConstructorsP(): Promise<java.lang.reflect.Constructor<any>[]>;
       // public java.lang.reflect.Field java.lang.Class.getDeclaredField(java.lang.String) throws java.lang.NoSuchFieldException,java.lang.SecurityException
       getDeclaredFieldA(arg0: java.lang.String, cb: Callback<java.lang.reflect.Field>): void;
       getDeclaredField(arg0: java.lang.String): java.lang.reflect.Field;
@@ -833,27 +833,27 @@ export module Java {
       getDeclaredFields(): java.lang.reflect.Field[];
       getDeclaredFieldsP(): Promise<java.lang.reflect.Field[]>;
       // public java.lang.reflect.Method java.lang.Class.getDeclaredMethod(java.lang.String,java.lang.Class<?>...) throws java.lang.NoSuchMethodException,java.lang.SecurityException
-      getDeclaredMethodA(arg0: java.lang.String, arg1: java.lang.Class<?>[], cb: Callback<java.lang.reflect.Method>): void;
-      getDeclaredMethod(arg0: java.lang.String, ...arg1: java.lang.Class<?>[]): java.lang.reflect.Method;
-      getDeclaredMethod(arg0: java.lang.String, arg1: java.lang.Class<?>[]): java.lang.reflect.Method;
-      getDeclaredMethodP(arg0: java.lang.String, ...arg1: java.lang.Class<?>[]): Promise<java.lang.reflect.Method>;
-      getDeclaredMethodP(arg0: java.lang.String, arg1: java.lang.Class<?>[]): Promise<java.lang.reflect.Method>;
+      getDeclaredMethodA(arg0: java.lang.String, arg1: java.lang.Class<any>[], cb: Callback<java.lang.reflect.Method>): void;
+      getDeclaredMethod(arg0: java.lang.String, ...arg1: java.lang.Class<any>[]): java.lang.reflect.Method;
+      getDeclaredMethod(arg0: java.lang.String, arg1: java.lang.Class<any>[]): java.lang.reflect.Method;
+      getDeclaredMethodP(arg0: java.lang.String, ...arg1: java.lang.Class<any>[]): Promise<java.lang.reflect.Method>;
+      getDeclaredMethodP(arg0: java.lang.String, arg1: java.lang.Class<any>[]): Promise<java.lang.reflect.Method>;
       // public java.lang.reflect.Method[] java.lang.Class.getDeclaredMethods() throws java.lang.SecurityException
       getDeclaredMethodsA( cb: Callback<java.lang.reflect.Method[]>): void;
       getDeclaredMethods(): java.lang.reflect.Method[];
       getDeclaredMethodsP(): Promise<java.lang.reflect.Method[]>;
       // public java.lang.Class<?> java.lang.Class.getDeclaringClass() throws java.lang.SecurityException
-      getDeclaringClassA( cb: Callback<java.lang.Class<?>>): void;
-      getDeclaringClass(): java.lang.Class<?>;
-      getDeclaringClassP(): Promise<java.lang.Class<?>>;
+      getDeclaringClassA( cb: Callback<java.lang.Class<any>>): void;
+      getDeclaringClass(): java.lang.Class<any>;
+      getDeclaringClassP(): Promise<java.lang.Class<any>>;
       // public java.lang.Class<?> java.lang.Class.getEnclosingClass() throws java.lang.SecurityException
-      getEnclosingClassA( cb: Callback<java.lang.Class<?>>): void;
-      getEnclosingClass(): java.lang.Class<?>;
-      getEnclosingClassP(): Promise<java.lang.Class<?>>;
+      getEnclosingClassA( cb: Callback<java.lang.Class<any>>): void;
+      getEnclosingClass(): java.lang.Class<any>;
+      getEnclosingClassP(): Promise<java.lang.Class<any>>;
       // public java.lang.reflect.Constructor<?> java.lang.Class.getEnclosingConstructor() throws java.lang.SecurityException
-      getEnclosingConstructorA( cb: Callback<java.lang.reflect.Constructor<?>>): void;
-      getEnclosingConstructor(): java.lang.reflect.Constructor<?>;
-      getEnclosingConstructorP(): Promise<java.lang.reflect.Constructor<?>>;
+      getEnclosingConstructorA( cb: Callback<java.lang.reflect.Constructor<any>>): void;
+      getEnclosingConstructor(): java.lang.reflect.Constructor<any>;
+      getEnclosingConstructorP(): Promise<java.lang.reflect.Constructor<any>>;
       // public java.lang.reflect.Method java.lang.Class.getEnclosingMethod() throws java.lang.SecurityException
       getEnclosingMethodA( cb: Callback<java.lang.reflect.Method>): void;
       getEnclosingMethod(): java.lang.reflect.Method;
@@ -879,15 +879,15 @@ export module Java {
       getGenericSuperclass(): java.lang.reflect.Type;
       getGenericSuperclassP(): Promise<java.lang.reflect.Type>;
       // public java.lang.Class<?>[] java.lang.Class.getInterfaces()
-      getInterfacesA( cb: Callback<java.lang.Class<?>[]>): void;
-      getInterfaces(): java.lang.Class<?>[];
-      getInterfacesP(): Promise<java.lang.Class<?>[]>;
+      getInterfacesA( cb: Callback<java.lang.Class<any>[]>): void;
+      getInterfaces(): java.lang.Class<any>[];
+      getInterfacesP(): Promise<java.lang.Class<any>[]>;
       // public java.lang.reflect.Method java.lang.Class.getMethod(java.lang.String,java.lang.Class<?>...) throws java.lang.NoSuchMethodException,java.lang.SecurityException
-      getMethodA(arg0: java.lang.String, arg1: java.lang.Class<?>[], cb: Callback<java.lang.reflect.Method>): void;
-      getMethod(arg0: java.lang.String, ...arg1: java.lang.Class<?>[]): java.lang.reflect.Method;
-      getMethod(arg0: java.lang.String, arg1: java.lang.Class<?>[]): java.lang.reflect.Method;
-      getMethodP(arg0: java.lang.String, ...arg1: java.lang.Class<?>[]): Promise<java.lang.reflect.Method>;
-      getMethodP(arg0: java.lang.String, arg1: java.lang.Class<?>[]): Promise<java.lang.reflect.Method>;
+      getMethodA(arg0: java.lang.String, arg1: java.lang.Class<any>[], cb: Callback<java.lang.reflect.Method>): void;
+      getMethod(arg0: java.lang.String, ...arg1: java.lang.Class<any>[]): java.lang.reflect.Method;
+      getMethod(arg0: java.lang.String, arg1: java.lang.Class<any>[]): java.lang.reflect.Method;
+      getMethodP(arg0: java.lang.String, ...arg1: java.lang.Class<any>[]): Promise<java.lang.reflect.Method>;
+      getMethodP(arg0: java.lang.String, arg1: java.lang.Class<any>[]): Promise<java.lang.reflect.Method>;
       // public java.lang.reflect.Method[] java.lang.Class.getMethods() throws java.lang.SecurityException
       getMethodsA( cb: Callback<java.lang.reflect.Method[]>): void;
       getMethods(): java.lang.reflect.Method[];
@@ -925,9 +925,9 @@ export module Java {
       getSimpleName(): java.lang.String;
       getSimpleNameP(): Promise<java.lang.String>;
       // public native java.lang.Class<? super T> java.lang.Class.getSuperclass()
-      getSuperclassA( cb: Callback<java.lang.Class<? super T>>): void;
-      getSuperclass(): java.lang.Class<? super T>;
-      getSuperclassP(): Promise<java.lang.Class<? super T>>;
+      getSuperclassA( cb: Callback<java.lang.Class<T>>): void;
+      getSuperclass(): java.lang.Class<T>;
+      getSuperclassP(): Promise<java.lang.Class<T>>;
       // public java.lang.String java.lang.Class.getTypeName()
       getTypeNameA( cb: Callback<java.lang.String>): void;
       getTypeName(): java.lang.String;
@@ -945,9 +945,9 @@ export module Java {
       isAnnotation(): boolean;
       isAnnotationP(): Promise<boolean>;
       // public boolean java.lang.Class.isAnnotationPresent(java.lang.Class<? extends java.lang.annotation.Annotation>)
-      isAnnotationPresentA(arg0: java.lang.Class<? extends java.lang.annotation.Annotation>, cb: Callback<boolean>): void;
-      isAnnotationPresent(arg0: java.lang.Class<? extends java.lang.annotation.Annotation>): boolean;
-      isAnnotationPresentP(arg0: java.lang.Class<? extends java.lang.annotation.Annotation>): Promise<boolean>;
+      isAnnotationPresentA(arg0: java.lang.Class<java.lang.annotation.Annotation>, cb: Callback<boolean>): void;
+      isAnnotationPresent(arg0: java.lang.Class<java.lang.annotation.Annotation>): boolean;
+      isAnnotationPresentP(arg0: java.lang.Class<java.lang.annotation.Annotation>): Promise<boolean>;
       // public boolean java.lang.Class.isAnonymousClass()
       isAnonymousClassA( cb: Callback<boolean>): void;
       isAnonymousClass(): boolean;
@@ -957,9 +957,9 @@ export module Java {
       isArray(): boolean;
       isArrayP(): Promise<boolean>;
       // public native boolean java.lang.Class.isAssignableFrom(java.lang.Class<?>)
-      isAssignableFromA(arg0: java.lang.Class<?>, cb: Callback<boolean>): void;
-      isAssignableFrom(arg0: java.lang.Class<?>): boolean;
-      isAssignableFromP(arg0: java.lang.Class<?>): Promise<boolean>;
+      isAssignableFromA(arg0: java.lang.Class<any>, cb: Callback<boolean>): void;
+      isAssignableFrom(arg0: java.lang.Class<any>): boolean;
+      isAssignableFromP(arg0: java.lang.Class<any>): Promise<boolean>;
       // public boolean java.lang.Class.isEnum()
       isEnumA( cb: Callback<boolean>): void;
       isEnum(): boolean;
@@ -1025,13 +1025,13 @@ export module Java {
       export interface Static {
         class: Java.Class;
         // public static java.lang.Class<?> java.lang.Class.forName(java.lang.String,boolean,java.lang.ClassLoader) throws java.lang.ClassNotFoundException
-        forNameA(arg0: java.lang.String, arg1: boolean, arg2: java.lang.ClassLoader, cb: Callback<java.lang.Class<?>>): void;
-        forName(arg0: java.lang.String, arg1: boolean, arg2: java.lang.ClassLoader): java.lang.Class<?>;
-        forNameP(arg0: java.lang.String, arg1: boolean, arg2: java.lang.ClassLoader): Promise<java.lang.Class<?>>;
+        forNameA(arg0: java.lang.String, arg1: boolean, arg2: java.lang.ClassLoader, cb: Callback<java.lang.Class<any>>): void;
+        forName(arg0: java.lang.String, arg1: boolean, arg2: java.lang.ClassLoader): java.lang.Class<any>;
+        forNameP(arg0: java.lang.String, arg1: boolean, arg2: java.lang.ClassLoader): Promise<java.lang.Class<any>>;
         // public static java.lang.Class<?> java.lang.Class.forName(java.lang.String) throws java.lang.ClassNotFoundException
-        forNameA(arg0: java.lang.String, cb: Callback<java.lang.Class<?>>): void;
-        forName(arg0: java.lang.String): java.lang.Class<?>;
-        forNameP(arg0: java.lang.String): Promise<java.lang.Class<?>>;
+        forNameA(arg0: java.lang.String, cb: Callback<java.lang.Class<any>>): void;
+        forName(arg0: java.lang.String): java.lang.Class<any>;
+        forNameP(arg0: java.lang.String): Promise<java.lang.Class<any>>;
       }
     }
   }
@@ -1063,9 +1063,9 @@ export module Java {
       floatValue(): float;
       floatValueP(): Promise<float>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassA( cb: Callback<java.lang.Class<?>>): void;
-      getClass(): java.lang.Class<?>;
-      getClassP(): Promise<java.lang.Class<?>>;
+      getClassA( cb: Callback<java.lang.Class<any>>): void;
+      getClass(): java.lang.Class<any>;
+      getClassP(): Promise<java.lang.Class<any>>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<int>): void;
       hashCode(): int;
@@ -1214,9 +1214,9 @@ export module Java {
       equals(arg0: java.lang.Object): boolean;
       equalsP(arg0: java.lang.Object): Promise<boolean>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassA( cb: Callback<java.lang.Class<?>>): void;
-      getClass(): java.lang.Class<?>;
-      getClassP(): Promise<java.lang.Class<?>>;
+      getClassA( cb: Callback<java.lang.Class<any>>): void;
+      getClass(): java.lang.Class<any>;
+      getClassP(): Promise<java.lang.Class<any>>;
       // public final java.lang.Class<E> java.lang.Enum.getDeclaringClass()
       getDeclaringClassA( cb: Callback<java.lang.Class<E>>): void;
       getDeclaringClass(): java.lang.Class<E>;
@@ -1296,9 +1296,9 @@ export module Java {
       floatValue(): float;
       floatValueP(): Promise<float>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassA( cb: Callback<java.lang.Class<?>>): void;
-      getClass(): java.lang.Class<?>;
-      getClassP(): Promise<java.lang.Class<?>>;
+      getClassA( cb: Callback<java.lang.Class<any>>): void;
+      getClass(): java.lang.Class<any>;
+      getClassP(): Promise<java.lang.Class<any>>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<int>): void;
       hashCode(): int;
@@ -1460,9 +1460,9 @@ export module Java {
       floatValue(): float;
       floatValueP(): Promise<float>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassA( cb: Callback<java.lang.Class<?>>): void;
-      getClass(): java.lang.Class<?>;
-      getClassP(): Promise<java.lang.Class<?>>;
+      getClassA( cb: Callback<java.lang.Class<any>>): void;
+      getClass(): java.lang.Class<any>;
+      getClassP(): Promise<java.lang.Class<any>>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<int>): void;
       hashCode(): int;
@@ -1669,9 +1669,9 @@ export module Java {
   export module java.lang {
     export interface Iterable<T> extends Java.java.lang.Object {
       // public default void java.lang.Iterable.forEach(java.util.function.Consumer<? super T>)
-      forEachA(arg0: java.util.function.Consumer<? super T>, cb: Callback<void>): void;
-      forEach(arg0: java.util.function.Consumer<? super T>): void;
-      forEachP(arg0: java.util.function.Consumer<? super T>): Promise<void>;
+      forEachA(arg0: java.util.function.Consumer<T>, cb: Callback<void>): void;
+      forEach(arg0: java.util.function.Consumer<T>): void;
+      forEachP(arg0: java.util.function.Consumer<T>): Promise<void>;
       // public abstract java.util.Iterator<T> java.lang.Iterable.iterator()
       iteratorA( cb: Callback<java.util.Iterator<T>>): void;
       iterator(): java.util.Iterator<T>;
@@ -1715,9 +1715,9 @@ export module Java {
       floatValue(): float;
       floatValueP(): Promise<float>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassA( cb: Callback<java.lang.Class<?>>): void;
-      getClass(): java.lang.Class<?>;
-      getClassP(): Promise<java.lang.Class<?>>;
+      getClassA( cb: Callback<java.lang.Class<any>>): void;
+      getClass(): java.lang.Class<any>;
+      getClassP(): Promise<java.lang.Class<any>>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<int>): void;
       hashCode(): int;
@@ -1936,9 +1936,9 @@ export module Java {
       floatValue(): float;
       floatValueP(): Promise<float>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassA( cb: Callback<java.lang.Class<?>>): void;
-      getClass(): java.lang.Class<?>;
-      getClassP(): Promise<java.lang.Class<?>>;
+      getClassA( cb: Callback<java.lang.Class<any>>): void;
+      getClass(): java.lang.Class<any>;
+      getClassP(): Promise<java.lang.Class<any>>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<int>): void;
       hashCode(): int;
@@ -1995,9 +1995,9 @@ export module Java {
       equals(arg0: java.lang.Object): boolean;
       equalsP(arg0: java.lang.Object): Promise<boolean>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassA( cb: Callback<java.lang.Class<?>>): void;
-      getClass(): java.lang.Class<?>;
-      getClassP(): Promise<java.lang.Class<?>>;
+      getClassA( cb: Callback<java.lang.Class<any>>): void;
+      getClass(): java.lang.Class<any>;
+      getClassP(): Promise<java.lang.Class<any>>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<int>): void;
       hashCode(): int;
@@ -2062,9 +2062,9 @@ export module Java {
       floatValue(): float;
       floatValueP(): Promise<float>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassA( cb: Callback<java.lang.Class<?>>): void;
-      getClass(): java.lang.Class<?>;
-      getClassP(): Promise<java.lang.Class<?>>;
+      getClassA( cb: Callback<java.lang.Class<any>>): void;
+      getClass(): java.lang.Class<any>;
+      getClassP(): Promise<java.lang.Class<any>>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<int>): void;
       hashCode(): int;
@@ -2255,9 +2255,9 @@ export module Java {
       getChars(arg0: int, arg1: int, arg2: char[], arg3: int): void;
       getCharsP(arg0: int, arg1: int, arg2: char[], arg3: int): Promise<void>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassA( cb: Callback<java.lang.Class<?>>): void;
-      getClass(): java.lang.Class<?>;
-      getClassP(): Promise<java.lang.Class<?>>;
+      getClassA( cb: Callback<java.lang.Class<any>>): void;
+      getClass(): java.lang.Class<any>;
+      getClassP(): Promise<java.lang.Class<any>>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<int>): void;
       hashCode(): int;
@@ -2461,9 +2461,9 @@ export module Java {
         joinP(arg0: java.lang.CharSequence, ...arg1: java.lang.CharSequence[]): Promise<java.lang.String>;
         joinP(arg0: java.lang.CharSequence, arg1: java.lang.CharSequence[]): Promise<java.lang.String>;
         // public static java.lang.String java.lang.String.join(java.lang.CharSequence,java.lang.Iterable<? extends java.lang.CharSequence>)
-        joinA(arg0: java.lang.CharSequence, arg1: java.lang.Iterable<? extends java.lang.CharSequence>, cb: Callback<java.lang.String>): void;
-        join(arg0: java.lang.CharSequence, arg1: java.lang.Iterable<? extends java.lang.CharSequence>): java.lang.String;
-        joinP(arg0: java.lang.CharSequence, arg1: java.lang.Iterable<? extends java.lang.CharSequence>): Promise<java.lang.String>;
+        joinA(arg0: java.lang.CharSequence, arg1: java.lang.Iterable<java.lang.CharSequence>, cb: Callback<java.lang.String>): void;
+        join(arg0: java.lang.CharSequence, arg1: java.lang.Iterable<java.lang.CharSequence>): java.lang.String;
+        joinP(arg0: java.lang.CharSequence, arg1: java.lang.Iterable<java.lang.CharSequence>): Promise<java.lang.String>;
         // public static java.lang.String java.lang.String.valueOf(char[],int,int)
         valueOfA(arg0: char[], arg1: int, arg2: int, cb: Callback<java.lang.String>): void;
         valueOf(arg0: char[], arg1: int, arg2: int): java.lang.String;
@@ -2511,9 +2511,9 @@ export module Java {
       add(arg0: E): boolean;
       addP(arg0: E): Promise<boolean>;
       // public abstract boolean java.util.Collection.addAll(java.util.Collection<? extends E>)
-      addAllA(arg0: java.util.Collection<? extends E>, cb: Callback<boolean>): void;
-      addAll(arg0: java.util.Collection<? extends E>): boolean;
-      addAllP(arg0: java.util.Collection<? extends E>): Promise<boolean>;
+      addAllA(arg0: java.util.Collection<E>, cb: Callback<boolean>): void;
+      addAll(arg0: java.util.Collection<E>): boolean;
+      addAllP(arg0: java.util.Collection<E>): Promise<boolean>;
       // public abstract void java.util.Collection.clear()
       clearA( cb: Callback<void>): void;
       clear(): void;
@@ -2523,17 +2523,17 @@ export module Java {
       contains(arg0: java.lang.Object): boolean;
       containsP(arg0: java.lang.Object): Promise<boolean>;
       // public abstract boolean java.util.Collection.containsAll(java.util.Collection<?>)
-      containsAllA(arg0: java.util.Collection<?>, cb: Callback<boolean>): void;
-      containsAll(arg0: java.util.Collection<?>): boolean;
-      containsAllP(arg0: java.util.Collection<?>): Promise<boolean>;
+      containsAllA(arg0: java.util.Collection<any>, cb: Callback<boolean>): void;
+      containsAll(arg0: java.util.Collection<any>): boolean;
+      containsAllP(arg0: java.util.Collection<any>): Promise<boolean>;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: java.lang.Object, cb: Callback<boolean>): void;
       equals(arg0: java.lang.Object): boolean;
       equalsP(arg0: java.lang.Object): Promise<boolean>;
       // public default void java.lang.Iterable.forEach(java.util.function.Consumer<? super T>)
-      forEachA(arg0: java.util.function.Consumer<? super T>, cb: Callback<void>): void;
-      forEach(arg0: java.util.function.Consumer<? super T>): void;
-      forEachP(arg0: java.util.function.Consumer<? super T>): Promise<void>;
+      forEachA(arg0: java.util.function.Consumer<T>, cb: Callback<void>): void;
+      forEach(arg0: java.util.function.Consumer<T>): void;
+      forEachP(arg0: java.util.function.Consumer<T>): Promise<void>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<int>): void;
       hashCode(): int;
@@ -2555,17 +2555,17 @@ export module Java {
       remove(arg0: java.lang.Object): boolean;
       removeP(arg0: java.lang.Object): Promise<boolean>;
       // public abstract boolean java.util.Collection.removeAll(java.util.Collection<?>)
-      removeAllA(arg0: java.util.Collection<?>, cb: Callback<boolean>): void;
-      removeAll(arg0: java.util.Collection<?>): boolean;
-      removeAllP(arg0: java.util.Collection<?>): Promise<boolean>;
+      removeAllA(arg0: java.util.Collection<any>, cb: Callback<boolean>): void;
+      removeAll(arg0: java.util.Collection<any>): boolean;
+      removeAllP(arg0: java.util.Collection<any>): Promise<boolean>;
       // public default boolean java.util.Collection.removeIf(java.util.function.Predicate<? super E>)
-      removeIfA(arg0: java.util.function.Predicate<? super E>, cb: Callback<boolean>): void;
-      removeIf(arg0: java.util.function.Predicate<? super E>): boolean;
-      removeIfP(arg0: java.util.function.Predicate<? super E>): Promise<boolean>;
+      removeIfA(arg0: java.util.function.Predicate<E>, cb: Callback<boolean>): void;
+      removeIf(arg0: java.util.function.Predicate<E>): boolean;
+      removeIfP(arg0: java.util.function.Predicate<E>): Promise<boolean>;
       // public abstract boolean java.util.Collection.retainAll(java.util.Collection<?>)
-      retainAllA(arg0: java.util.Collection<?>, cb: Callback<boolean>): void;
-      retainAll(arg0: java.util.Collection<?>): boolean;
-      retainAllP(arg0: java.util.Collection<?>): Promise<boolean>;
+      retainAllA(arg0: java.util.Collection<any>, cb: Callback<boolean>): void;
+      retainAll(arg0: java.util.Collection<any>): boolean;
+      retainAllP(arg0: java.util.Collection<any>): Promise<boolean>;
       // public abstract int java.util.Collection.size()
       sizeA( cb: Callback<int>): void;
       size(): int;
@@ -2601,9 +2601,9 @@ export module Java {
       accept(arg0: T): void;
       acceptP(arg0: T): Promise<void>;
       // public default java.util.function.Consumer<T> java.util.function.Consumer.andThen(java.util.function.Consumer<? super T>)
-      andThenA(arg0: java.util.function.Consumer<? super T>, cb: Callback<java.util.function.Consumer<T>>): void;
-      andThen(arg0: java.util.function.Consumer<? super T>): java.util.function.Consumer<T>;
-      andThenP(arg0: java.util.function.Consumer<? super T>): Promise<java.util.function.Consumer<T>>;
+      andThenA(arg0: java.util.function.Consumer<T>, cb: Callback<java.util.function.Consumer<T>>): void;
+      andThen(arg0: java.util.function.Consumer<T>): java.util.function.Consumer<T>;
+      andThenP(arg0: java.util.function.Consumer<T>): Promise<java.util.function.Consumer<T>>;
     }
     export module Consumer {
       export interface Static {
@@ -2633,17 +2633,17 @@ export module Java {
   export module java.util.function_ {
     export interface Function<T ,R> extends Java.java.lang.Object {
       // public default <V> java.util.function.Function<T, V> java.util.function.Function.andThen(java.util.function.Function<? super R, ? extends V>)
-      andThenA(arg0: java.util.function.Function<? super R, ? extends V>, cb: Callback<java.util.function.Function<T, V>>): void;
-      andThen(arg0: java.util.function.Function<? super R, ? extends V>): java.util.function.Function<T, V>;
-      andThenP(arg0: java.util.function.Function<? super R, ? extends V>): Promise<java.util.function.Function<T, V>>;
+      andThenA(arg0: java.util.function.Function<R, V>, cb: Callback<java.util.function.Function<T, V>>): void;
+      andThen(arg0: java.util.function.Function<R, V>): java.util.function.Function<T, V>;
+      andThenP(arg0: java.util.function.Function<R, V>): Promise<java.util.function.Function<T, V>>;
       // public abstract R java.util.function.Function.apply(T)
       applyA(arg0: T, cb: Callback<R>): void;
       apply(arg0: T): R;
       applyP(arg0: T): Promise<R>;
       // public default <V> java.util.function.Function<V, R> java.util.function.Function.compose(java.util.function.Function<? super V, ? extends T>)
-      composeA(arg0: java.util.function.Function<? super V, ? extends T>, cb: Callback<java.util.function.Function<V, R>>): void;
-      compose(arg0: java.util.function.Function<? super V, ? extends T>): java.util.function.Function<V, R>;
-      composeP(arg0: java.util.function.Function<? super V, ? extends T>): Promise<java.util.function.Function<V, R>>;
+      composeA(arg0: java.util.function.Function<V, T>, cb: Callback<java.util.function.Function<V, R>>): void;
+      compose(arg0: java.util.function.Function<V, T>): java.util.function.Function<V, R>;
+      composeP(arg0: java.util.function.Function<V, T>): Promise<java.util.function.Function<V, R>>;
     }
     export module Function {
       export interface Static {
@@ -2695,9 +2695,9 @@ export module Java {
   export module java.util {
     export interface Iterator<E> extends Java.java.lang.Object {
       // public default void java.util.Iterator.forEachRemaining(java.util.function.Consumer<? super E>)
-      forEachRemainingA(arg0: java.util.function.Consumer<? super E>, cb: Callback<void>): void;
-      forEachRemaining(arg0: java.util.function.Consumer<? super E>): void;
-      forEachRemainingP(arg0: java.util.function.Consumer<? super E>): Promise<void>;
+      forEachRemainingA(arg0: java.util.function.Consumer<E>, cb: Callback<void>): void;
+      forEachRemaining(arg0: java.util.function.Consumer<E>): void;
+      forEachRemainingP(arg0: java.util.function.Consumer<E>): Promise<void>;
       // public abstract boolean java.util.Iterator.hasNext()
       hasNextA( cb: Callback<boolean>): void;
       hasNext(): boolean;
@@ -2729,13 +2729,13 @@ export module Java {
       add(arg0: E): boolean;
       addP(arg0: E): Promise<boolean>;
       // public abstract boolean java.util.List.addAll(int,java.util.Collection<? extends E>)
-      addAllA(arg0: int, arg1: java.util.Collection<? extends E>, cb: Callback<boolean>): void;
-      addAll(arg0: int, arg1: java.util.Collection<? extends E>): boolean;
-      addAllP(arg0: int, arg1: java.util.Collection<? extends E>): Promise<boolean>;
+      addAllA(arg0: int, arg1: java.util.Collection<E>, cb: Callback<boolean>): void;
+      addAll(arg0: int, arg1: java.util.Collection<E>): boolean;
+      addAllP(arg0: int, arg1: java.util.Collection<E>): Promise<boolean>;
       // public abstract boolean java.util.Collection.addAll(java.util.Collection<? extends E>)
-      addAllA(arg0: java.util.Collection<? extends E>, cb: Callback<boolean>): void;
-      addAll(arg0: java.util.Collection<? extends E>): boolean;
-      addAllP(arg0: java.util.Collection<? extends E>): Promise<boolean>;
+      addAllA(arg0: java.util.Collection<E>, cb: Callback<boolean>): void;
+      addAll(arg0: java.util.Collection<E>): boolean;
+      addAllP(arg0: java.util.Collection<E>): Promise<boolean>;
       // public abstract void java.util.Collection.clear()
       clearA( cb: Callback<void>): void;
       clear(): void;
@@ -2745,17 +2745,17 @@ export module Java {
       contains(arg0: java.lang.Object): boolean;
       containsP(arg0: java.lang.Object): Promise<boolean>;
       // public abstract boolean java.util.Collection.containsAll(java.util.Collection<?>)
-      containsAllA(arg0: java.util.Collection<?>, cb: Callback<boolean>): void;
-      containsAll(arg0: java.util.Collection<?>): boolean;
-      containsAllP(arg0: java.util.Collection<?>): Promise<boolean>;
+      containsAllA(arg0: java.util.Collection<any>, cb: Callback<boolean>): void;
+      containsAll(arg0: java.util.Collection<any>): boolean;
+      containsAllP(arg0: java.util.Collection<any>): Promise<boolean>;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: java.lang.Object, cb: Callback<boolean>): void;
       equals(arg0: java.lang.Object): boolean;
       equalsP(arg0: java.lang.Object): Promise<boolean>;
       // public default void java.lang.Iterable.forEach(java.util.function.Consumer<? super T>)
-      forEachA(arg0: java.util.function.Consumer<? super T>, cb: Callback<void>): void;
-      forEach(arg0: java.util.function.Consumer<? super T>): void;
-      forEachP(arg0: java.util.function.Consumer<? super T>): Promise<void>;
+      forEachA(arg0: java.util.function.Consumer<T>, cb: Callback<void>): void;
+      forEach(arg0: java.util.function.Consumer<T>): void;
+      forEachP(arg0: java.util.function.Consumer<T>): Promise<void>;
       // public abstract E java.util.List.get(int)
       getA(arg0: int, cb: Callback<E>): void;
       get(arg0: int): E;
@@ -2801,21 +2801,21 @@ export module Java {
       remove(arg0: int): E;
       removeP(arg0: int): Promise<E>;
       // public abstract boolean java.util.Collection.removeAll(java.util.Collection<?>)
-      removeAllA(arg0: java.util.Collection<?>, cb: Callback<boolean>): void;
-      removeAll(arg0: java.util.Collection<?>): boolean;
-      removeAllP(arg0: java.util.Collection<?>): Promise<boolean>;
+      removeAllA(arg0: java.util.Collection<any>, cb: Callback<boolean>): void;
+      removeAll(arg0: java.util.Collection<any>): boolean;
+      removeAllP(arg0: java.util.Collection<any>): Promise<boolean>;
       // public default boolean java.util.Collection.removeIf(java.util.function.Predicate<? super E>)
-      removeIfA(arg0: java.util.function.Predicate<? super E>, cb: Callback<boolean>): void;
-      removeIf(arg0: java.util.function.Predicate<? super E>): boolean;
-      removeIfP(arg0: java.util.function.Predicate<? super E>): Promise<boolean>;
+      removeIfA(arg0: java.util.function.Predicate<E>, cb: Callback<boolean>): void;
+      removeIf(arg0: java.util.function.Predicate<E>): boolean;
+      removeIfP(arg0: java.util.function.Predicate<E>): Promise<boolean>;
       // public default void java.util.List.replaceAll(java.util.function.UnaryOperator<E>)
       replaceAllA(arg0: java.util.function.UnaryOperator<E>, cb: Callback<void>): void;
       replaceAll(arg0: java.util.function.UnaryOperator<E>): void;
       replaceAllP(arg0: java.util.function.UnaryOperator<E>): Promise<void>;
       // public abstract boolean java.util.Collection.retainAll(java.util.Collection<?>)
-      retainAllA(arg0: java.util.Collection<?>, cb: Callback<boolean>): void;
-      retainAll(arg0: java.util.Collection<?>): boolean;
-      retainAllP(arg0: java.util.Collection<?>): Promise<boolean>;
+      retainAllA(arg0: java.util.Collection<any>, cb: Callback<boolean>): void;
+      retainAll(arg0: java.util.Collection<any>): boolean;
+      retainAllP(arg0: java.util.Collection<any>): Promise<boolean>;
       // public abstract E java.util.List.set(int,E)
       setA(arg0: int, arg1: E, cb: Callback<E>): void;
       set(arg0: int, arg1: E): E;
@@ -2825,9 +2825,9 @@ export module Java {
       size(): int;
       sizeP(): Promise<int>;
       // public default void java.util.List.sort(java.util.Comparator<? super E>)
-      sortA(arg0: java.util.Comparator<? super E>, cb: Callback<void>): void;
-      sort(arg0: java.util.Comparator<? super E>): void;
-      sortP(arg0: java.util.Comparator<? super E>): Promise<void>;
+      sortA(arg0: java.util.Comparator<E>, cb: Callback<void>): void;
+      sort(arg0: java.util.Comparator<E>): void;
+      sortP(arg0: java.util.Comparator<E>): Promise<void>;
       // public default java.util.Spliterator<T> java.lang.Iterable.spliterator()
       spliteratorA( cb: Callback<java.util.Spliterator<T>>): void;
       spliterator(): java.util.Spliterator<T>;
@@ -2955,9 +2955,9 @@ export module Java {
       equals(arg0: java.lang.Object): boolean;
       equalsP(arg0: java.lang.Object): Promise<boolean>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassA( cb: Callback<java.lang.Class<?>>): void;
-      getClass(): java.lang.Class<?>;
-      getClassP(): Promise<java.lang.Class<?>>;
+      getClassA( cb: Callback<java.lang.Class<any>>): void;
+      getClass(): java.lang.Class<any>;
+      getClassP(): Promise<java.lang.Class<any>>;
       // public final java.lang.Class<E> java.lang.Enum.getDeclaringClass()
       getDeclaringClassA( cb: Callback<java.lang.Class<E>>): void;
       getDeclaringClass(): java.lang.Class<E>;
@@ -3028,9 +3028,9 @@ export module Java {
       equals(arg0: java.lang.Object): boolean;
       equalsP(arg0: java.lang.Object): Promise<boolean>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassA( cb: Callback<java.lang.Class<?>>): void;
-      getClass(): java.lang.Class<?>;
-      getClassP(): Promise<java.lang.Class<?>>;
+      getClassA( cb: Callback<java.lang.Class<any>>): void;
+      getClass(): java.lang.Class<any>;
+      getClassP(): Promise<java.lang.Class<any>>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<int>): void;
       hashCode(): int;
@@ -3064,17 +3064,17 @@ export module Java {
       export interface Static {
         class: Java.Class;
         // public static <T> java.util.stream.Collector<T, ?, java.lang.Double> java.util.stream.Collectors.averagingDouble(java.util.function.ToDoubleFunction<? super T>)
-        averagingDoubleA(arg0: java.util.function.ToDoubleFunction<? super T>, cb: Callback<java.util.stream.Collector<T, ?, java.lang.Double>>): void;
-        averagingDouble(arg0: java.util.function.ToDoubleFunction<? super T>): java.util.stream.Collector<T, ?, java.lang.Double>;
-        averagingDoubleP(arg0: java.util.function.ToDoubleFunction<? super T>): Promise<java.util.stream.Collector<T, ?, java.lang.Double>>;
+        averagingDoubleA(arg0: java.util.function.ToDoubleFunction<T>, cb: Callback<java.util.stream.Collector<T, ?, java.lang.Double>>): void;
+        averagingDouble(arg0: java.util.function.ToDoubleFunction<T>): java.util.stream.Collector<T, ?, java.lang.Double>;
+        averagingDoubleP(arg0: java.util.function.ToDoubleFunction<T>): Promise<java.util.stream.Collector<T, ?, java.lang.Double>>;
         // public static <T> java.util.stream.Collector<T, ?, java.lang.Double> java.util.stream.Collectors.averagingInt(java.util.function.ToIntFunction<? super T>)
-        averagingIntA(arg0: java.util.function.ToIntFunction<? super T>, cb: Callback<java.util.stream.Collector<T, ?, java.lang.Double>>): void;
-        averagingInt(arg0: java.util.function.ToIntFunction<? super T>): java.util.stream.Collector<T, ?, java.lang.Double>;
-        averagingIntP(arg0: java.util.function.ToIntFunction<? super T>): Promise<java.util.stream.Collector<T, ?, java.lang.Double>>;
+        averagingIntA(arg0: java.util.function.ToIntFunction<T>, cb: Callback<java.util.stream.Collector<T, ?, java.lang.Double>>): void;
+        averagingInt(arg0: java.util.function.ToIntFunction<T>): java.util.stream.Collector<T, ?, java.lang.Double>;
+        averagingIntP(arg0: java.util.function.ToIntFunction<T>): Promise<java.util.stream.Collector<T, ?, java.lang.Double>>;
         // public static <T> java.util.stream.Collector<T, ?, java.lang.Double> java.util.stream.Collectors.averagingLong(java.util.function.ToLongFunction<? super T>)
-        averagingLongA(arg0: java.util.function.ToLongFunction<? super T>, cb: Callback<java.util.stream.Collector<T, ?, java.lang.Double>>): void;
-        averagingLong(arg0: java.util.function.ToLongFunction<? super T>): java.util.stream.Collector<T, ?, java.lang.Double>;
-        averagingLongP(arg0: java.util.function.ToLongFunction<? super T>): Promise<java.util.stream.Collector<T, ?, java.lang.Double>>;
+        averagingLongA(arg0: java.util.function.ToLongFunction<T>, cb: Callback<java.util.stream.Collector<T, ?, java.lang.Double>>): void;
+        averagingLong(arg0: java.util.function.ToLongFunction<T>): java.util.stream.Collector<T, ?, java.lang.Double>;
+        averagingLongP(arg0: java.util.function.ToLongFunction<T>): Promise<java.util.stream.Collector<T, ?, java.lang.Double>>;
         // public static <T,A,R,RR> java.util.stream.Collector<T, A, RR> java.util.stream.Collectors.collectingAndThen(java.util.stream.Collector<T, A, R>,java.util.function.Function<R, RR>)
         collectingAndThenA(arg0: java.util.stream.Collector<T, A, R>, arg1: java.util.function.Function<R, RR>, cb: Callback<java.util.stream.Collector<T, A, RR>>): void;
         collectingAndThen(arg0: java.util.stream.Collector<T, A, R>, arg1: java.util.function.Function<R, RR>): java.util.stream.Collector<T, A, RR>;
@@ -3084,29 +3084,29 @@ export module Java {
         counting(): java.util.stream.Collector<T, ?, java.lang.Long>;
         countingP(): Promise<java.util.stream.Collector<T, ?, java.lang.Long>>;
         // public static <T,K,D,A,M> java.util.stream.Collector<T, ?, M> java.util.stream.Collectors.groupingBy(java.util.function.Function<? super T, ? extends K>,java.util.function.Supplier<M>,java.util.stream.Collector<? super T, A, D>)
-        groupingByA(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Supplier<M>, arg2: java.util.stream.Collector<? super T, A, D>, cb: Callback<java.util.stream.Collector<T, ?, M>>): void;
-        groupingBy(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Supplier<M>, arg2: java.util.stream.Collector<? super T, A, D>): java.util.stream.Collector<T, ?, M>;
-        groupingByP(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Supplier<M>, arg2: java.util.stream.Collector<? super T, A, D>): Promise<java.util.stream.Collector<T, ?, M>>;
+        groupingByA(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Supplier<M>, arg2: java.util.stream.Collector<T, A, D>, cb: Callback<java.util.stream.Collector<T, ?, M>>): void;
+        groupingBy(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Supplier<M>, arg2: java.util.stream.Collector<T, A, D>): java.util.stream.Collector<T, ?, M>;
+        groupingByP(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Supplier<M>, arg2: java.util.stream.Collector<T, A, D>): Promise<java.util.stream.Collector<T, ?, M>>;
         // public static <T,K,A,D> java.util.stream.Collector<T, ?, java.util.Map<K, D>> java.util.stream.Collectors.groupingBy(java.util.function.Function<? super T, ? extends K>,java.util.stream.Collector<? super T, A, D>)
-        groupingByA(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.stream.Collector<? super T, A, D>, cb: Callback<java.util.stream.Collector<T, ?, java.util.Map<K, D>>>): void;
-        groupingBy(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.stream.Collector<? super T, A, D>): java.util.stream.Collector<T, ?, java.util.Map<K, D>>;
-        groupingByP(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.stream.Collector<? super T, A, D>): Promise<java.util.stream.Collector<T, ?, java.util.Map<K, D>>>;
+        groupingByA(arg0: java.util.function.Function<T, K>, arg1: java.util.stream.Collector<T, A, D>, cb: Callback<java.util.stream.Collector<T, ?, java.util.Map<K, D>>>): void;
+        groupingBy(arg0: java.util.function.Function<T, K>, arg1: java.util.stream.Collector<T, A, D>): java.util.stream.Collector<T, ?, java.util.Map<K, D>>;
+        groupingByP(arg0: java.util.function.Function<T, K>, arg1: java.util.stream.Collector<T, A, D>): Promise<java.util.stream.Collector<T, ?, java.util.Map<K, D>>>;
         // public static <T,K> java.util.stream.Collector<T, ?, java.util.Map<K, java.util.List<T>>> java.util.stream.Collectors.groupingBy(java.util.function.Function<? super T, ? extends K>)
-        groupingByA(arg0: java.util.function.Function<? super T, ? extends K>, cb: Callback<java.util.stream.Collector<T, ?, java.util.Map<K, java.util.List<T>>>>): void;
-        groupingBy(arg0: java.util.function.Function<? super T, ? extends K>): java.util.stream.Collector<T, ?, java.util.Map<K, java.util.List<T>>>;
-        groupingByP(arg0: java.util.function.Function<? super T, ? extends K>): Promise<java.util.stream.Collector<T, ?, java.util.Map<K, java.util.List<T>>>>;
+        groupingByA(arg0: java.util.function.Function<T, K>, cb: Callback<java.util.stream.Collector<T, ?, java.util.Map<K, java.util.List<T>>>>): void;
+        groupingBy(arg0: java.util.function.Function<T, K>): java.util.stream.Collector<T, ?, java.util.Map<K, java.util.List<T>>>;
+        groupingByP(arg0: java.util.function.Function<T, K>): Promise<java.util.stream.Collector<T, ?, java.util.Map<K, java.util.List<T>>>>;
         // public static <T,K,A,D,M> java.util.stream.Collector<T, ?, M> java.util.stream.Collectors.groupingByConcurrent(java.util.function.Function<? super T, ? extends K>,java.util.function.Supplier<M>,java.util.stream.Collector<? super T, A, D>)
-        groupingByConcurrentA(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Supplier<M>, arg2: java.util.stream.Collector<? super T, A, D>, cb: Callback<java.util.stream.Collector<T, ?, M>>): void;
-        groupingByConcurrent(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Supplier<M>, arg2: java.util.stream.Collector<? super T, A, D>): java.util.stream.Collector<T, ?, M>;
-        groupingByConcurrentP(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Supplier<M>, arg2: java.util.stream.Collector<? super T, A, D>): Promise<java.util.stream.Collector<T, ?, M>>;
+        groupingByConcurrentA(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Supplier<M>, arg2: java.util.stream.Collector<T, A, D>, cb: Callback<java.util.stream.Collector<T, ?, M>>): void;
+        groupingByConcurrent(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Supplier<M>, arg2: java.util.stream.Collector<T, A, D>): java.util.stream.Collector<T, ?, M>;
+        groupingByConcurrentP(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Supplier<M>, arg2: java.util.stream.Collector<T, A, D>): Promise<java.util.stream.Collector<T, ?, M>>;
         // public static <T,K,A,D> java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, D>> java.util.stream.Collectors.groupingByConcurrent(java.util.function.Function<? super T, ? extends K>,java.util.stream.Collector<? super T, A, D>)
-        groupingByConcurrentA(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.stream.Collector<? super T, A, D>, cb: Callback<java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, D>>>): void;
-        groupingByConcurrent(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.stream.Collector<? super T, A, D>): java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, D>>;
-        groupingByConcurrentP(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.stream.Collector<? super T, A, D>): Promise<java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, D>>>;
+        groupingByConcurrentA(arg0: java.util.function.Function<T, K>, arg1: java.util.stream.Collector<T, A, D>, cb: Callback<java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, D>>>): void;
+        groupingByConcurrent(arg0: java.util.function.Function<T, K>, arg1: java.util.stream.Collector<T, A, D>): java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, D>>;
+        groupingByConcurrentP(arg0: java.util.function.Function<T, K>, arg1: java.util.stream.Collector<T, A, D>): Promise<java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, D>>>;
         // public static <T,K> java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, java.util.List<T>>> java.util.stream.Collectors.groupingByConcurrent(java.util.function.Function<? super T, ? extends K>)
-        groupingByConcurrentA(arg0: java.util.function.Function<? super T, ? extends K>, cb: Callback<java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, java.util.List<T>>>>): void;
-        groupingByConcurrent(arg0: java.util.function.Function<? super T, ? extends K>): java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, java.util.List<T>>>;
-        groupingByConcurrentP(arg0: java.util.function.Function<? super T, ? extends K>): Promise<java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, java.util.List<T>>>>;
+        groupingByConcurrentA(arg0: java.util.function.Function<T, K>, cb: Callback<java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, java.util.List<T>>>>): void;
+        groupingByConcurrent(arg0: java.util.function.Function<T, K>): java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, java.util.List<T>>>;
+        groupingByConcurrentP(arg0: java.util.function.Function<T, K>): Promise<java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, java.util.List<T>>>>;
         // public static java.util.stream.Collector<java.lang.CharSequence, ?, java.lang.String> java.util.stream.Collectors.joining(java.lang.CharSequence,java.lang.CharSequence,java.lang.CharSequence)
         joiningA(arg0: java.lang.CharSequence, arg1: java.lang.CharSequence, arg2: java.lang.CharSequence, cb: Callback<java.util.stream.Collector<java.lang.CharSequence, ?, java.lang.String>>): void;
         joining(arg0: java.lang.CharSequence, arg1: java.lang.CharSequence, arg2: java.lang.CharSequence): java.util.stream.Collector<java.lang.CharSequence, ?, java.lang.String>;
@@ -3120,29 +3120,29 @@ export module Java {
         joining(): java.util.stream.Collector<java.lang.CharSequence, ?, java.lang.String>;
         joiningP(): Promise<java.util.stream.Collector<java.lang.CharSequence, ?, java.lang.String>>;
         // public static <T,U,A,R> java.util.stream.Collector<T, ?, R> java.util.stream.Collectors.mapping(java.util.function.Function<? super T, ? extends U>,java.util.stream.Collector<? super U, A, R>)
-        mappingA(arg0: java.util.function.Function<? super T, ? extends U>, arg1: java.util.stream.Collector<? super U, A, R>, cb: Callback<java.util.stream.Collector<T, ?, R>>): void;
-        mapping(arg0: java.util.function.Function<? super T, ? extends U>, arg1: java.util.stream.Collector<? super U, A, R>): java.util.stream.Collector<T, ?, R>;
-        mappingP(arg0: java.util.function.Function<? super T, ? extends U>, arg1: java.util.stream.Collector<? super U, A, R>): Promise<java.util.stream.Collector<T, ?, R>>;
+        mappingA(arg0: java.util.function.Function<T, U>, arg1: java.util.stream.Collector<U, A, R>, cb: Callback<java.util.stream.Collector<T, ?, R>>): void;
+        mapping(arg0: java.util.function.Function<T, U>, arg1: java.util.stream.Collector<U, A, R>): java.util.stream.Collector<T, ?, R>;
+        mappingP(arg0: java.util.function.Function<T, U>, arg1: java.util.stream.Collector<U, A, R>): Promise<java.util.stream.Collector<T, ?, R>>;
         // public static <T> java.util.stream.Collector<T, ?, java.util.Optional<T>> java.util.stream.Collectors.maxBy(java.util.Comparator<? super T>)
-        maxByA(arg0: java.util.Comparator<? super T>, cb: Callback<java.util.stream.Collector<T, ?, java.util.Optional<T>>>): void;
-        maxBy(arg0: java.util.Comparator<? super T>): java.util.stream.Collector<T, ?, java.util.Optional<T>>;
-        maxByP(arg0: java.util.Comparator<? super T>): Promise<java.util.stream.Collector<T, ?, java.util.Optional<T>>>;
+        maxByA(arg0: java.util.Comparator<T>, cb: Callback<java.util.stream.Collector<T, ?, java.util.Optional<T>>>): void;
+        maxBy(arg0: java.util.Comparator<T>): java.util.stream.Collector<T, ?, java.util.Optional<T>>;
+        maxByP(arg0: java.util.Comparator<T>): Promise<java.util.stream.Collector<T, ?, java.util.Optional<T>>>;
         // public static <T> java.util.stream.Collector<T, ?, java.util.Optional<T>> java.util.stream.Collectors.minBy(java.util.Comparator<? super T>)
-        minByA(arg0: java.util.Comparator<? super T>, cb: Callback<java.util.stream.Collector<T, ?, java.util.Optional<T>>>): void;
-        minBy(arg0: java.util.Comparator<? super T>): java.util.stream.Collector<T, ?, java.util.Optional<T>>;
-        minByP(arg0: java.util.Comparator<? super T>): Promise<java.util.stream.Collector<T, ?, java.util.Optional<T>>>;
+        minByA(arg0: java.util.Comparator<T>, cb: Callback<java.util.stream.Collector<T, ?, java.util.Optional<T>>>): void;
+        minBy(arg0: java.util.Comparator<T>): java.util.stream.Collector<T, ?, java.util.Optional<T>>;
+        minByP(arg0: java.util.Comparator<T>): Promise<java.util.stream.Collector<T, ?, java.util.Optional<T>>>;
         // public static <T,D,A> java.util.stream.Collector<T, ?, java.util.Map<java.lang.Boolean, D>> java.util.stream.Collectors.partitioningBy(java.util.function.Predicate<? super T>,java.util.stream.Collector<? super T, A, D>)
-        partitioningByA(arg0: java.util.function.Predicate<? super T>, arg1: java.util.stream.Collector<? super T, A, D>, cb: Callback<java.util.stream.Collector<T, ?, java.util.Map<java.lang.Boolean, D>>>): void;
-        partitioningBy(arg0: java.util.function.Predicate<? super T>, arg1: java.util.stream.Collector<? super T, A, D>): java.util.stream.Collector<T, ?, java.util.Map<java.lang.Boolean, D>>;
-        partitioningByP(arg0: java.util.function.Predicate<? super T>, arg1: java.util.stream.Collector<? super T, A, D>): Promise<java.util.stream.Collector<T, ?, java.util.Map<java.lang.Boolean, D>>>;
+        partitioningByA(arg0: java.util.function.Predicate<T>, arg1: java.util.stream.Collector<T, A, D>, cb: Callback<java.util.stream.Collector<T, ?, java.util.Map<java.lang.Boolean, D>>>): void;
+        partitioningBy(arg0: java.util.function.Predicate<T>, arg1: java.util.stream.Collector<T, A, D>): java.util.stream.Collector<T, ?, java.util.Map<java.lang.Boolean, D>>;
+        partitioningByP(arg0: java.util.function.Predicate<T>, arg1: java.util.stream.Collector<T, A, D>): Promise<java.util.stream.Collector<T, ?, java.util.Map<java.lang.Boolean, D>>>;
         // public static <T> java.util.stream.Collector<T, ?, java.util.Map<java.lang.Boolean, java.util.List<T>>> java.util.stream.Collectors.partitioningBy(java.util.function.Predicate<? super T>)
-        partitioningByA(arg0: java.util.function.Predicate<? super T>, cb: Callback<java.util.stream.Collector<T, ?, java.util.Map<java.lang.Boolean, java.util.List<T>>>>): void;
-        partitioningBy(arg0: java.util.function.Predicate<? super T>): java.util.stream.Collector<T, ?, java.util.Map<java.lang.Boolean, java.util.List<T>>>;
-        partitioningByP(arg0: java.util.function.Predicate<? super T>): Promise<java.util.stream.Collector<T, ?, java.util.Map<java.lang.Boolean, java.util.List<T>>>>;
+        partitioningByA(arg0: java.util.function.Predicate<T>, cb: Callback<java.util.stream.Collector<T, ?, java.util.Map<java.lang.Boolean, java.util.List<T>>>>): void;
+        partitioningBy(arg0: java.util.function.Predicate<T>): java.util.stream.Collector<T, ?, java.util.Map<java.lang.Boolean, java.util.List<T>>>;
+        partitioningByP(arg0: java.util.function.Predicate<T>): Promise<java.util.stream.Collector<T, ?, java.util.Map<java.lang.Boolean, java.util.List<T>>>>;
         // public static <T,U> java.util.stream.Collector<T, ?, U> java.util.stream.Collectors.reducing(U,java.util.function.Function<? super T, ? extends U>,java.util.function.BinaryOperator<U>)
-        reducingA(arg0: U, arg1: java.util.function.Function<? super T, ? extends U>, arg2: java.util.function.BinaryOperator<U>, cb: Callback<java.util.stream.Collector<T, ?, U>>): void;
-        reducing(arg0: U, arg1: java.util.function.Function<? super T, ? extends U>, arg2: java.util.function.BinaryOperator<U>): java.util.stream.Collector<T, ?, U>;
-        reducingP(arg0: U, arg1: java.util.function.Function<? super T, ? extends U>, arg2: java.util.function.BinaryOperator<U>): Promise<java.util.stream.Collector<T, ?, U>>;
+        reducingA(arg0: U, arg1: java.util.function.Function<T, U>, arg2: java.util.function.BinaryOperator<U>, cb: Callback<java.util.stream.Collector<T, ?, U>>): void;
+        reducing(arg0: U, arg1: java.util.function.Function<T, U>, arg2: java.util.function.BinaryOperator<U>): java.util.stream.Collector<T, ?, U>;
+        reducingP(arg0: U, arg1: java.util.function.Function<T, U>, arg2: java.util.function.BinaryOperator<U>): Promise<java.util.stream.Collector<T, ?, U>>;
         // public static <T> java.util.stream.Collector<T, ?, T> java.util.stream.Collectors.reducing(T,java.util.function.BinaryOperator<T>)
         reducingA(arg0: T, arg1: java.util.function.BinaryOperator<T>, cb: Callback<java.util.stream.Collector<T, ?, T>>): void;
         reducing(arg0: T, arg1: java.util.function.BinaryOperator<T>): java.util.stream.Collector<T, ?, T>;
@@ -3152,61 +3152,61 @@ export module Java {
         reducing(arg0: java.util.function.BinaryOperator<T>): java.util.stream.Collector<T, ?, java.util.Optional<T>>;
         reducingP(arg0: java.util.function.BinaryOperator<T>): Promise<java.util.stream.Collector<T, ?, java.util.Optional<T>>>;
         // public static <T> java.util.stream.Collector<T, ?, java.util.DoubleSummaryStatistics> java.util.stream.Collectors.summarizingDouble(java.util.function.ToDoubleFunction<? super T>)
-        summarizingDoubleA(arg0: java.util.function.ToDoubleFunction<? super T>, cb: Callback<java.util.stream.Collector<T, ?, java.util.DoubleSummaryStatistics>>): void;
-        summarizingDouble(arg0: java.util.function.ToDoubleFunction<? super T>): java.util.stream.Collector<T, ?, java.util.DoubleSummaryStatistics>;
-        summarizingDoubleP(arg0: java.util.function.ToDoubleFunction<? super T>): Promise<java.util.stream.Collector<T, ?, java.util.DoubleSummaryStatistics>>;
+        summarizingDoubleA(arg0: java.util.function.ToDoubleFunction<T>, cb: Callback<java.util.stream.Collector<T, ?, java.util.DoubleSummaryStatistics>>): void;
+        summarizingDouble(arg0: java.util.function.ToDoubleFunction<T>): java.util.stream.Collector<T, ?, java.util.DoubleSummaryStatistics>;
+        summarizingDoubleP(arg0: java.util.function.ToDoubleFunction<T>): Promise<java.util.stream.Collector<T, ?, java.util.DoubleSummaryStatistics>>;
         // public static <T> java.util.stream.Collector<T, ?, java.util.IntSummaryStatistics> java.util.stream.Collectors.summarizingInt(java.util.function.ToIntFunction<? super T>)
-        summarizingIntA(arg0: java.util.function.ToIntFunction<? super T>, cb: Callback<java.util.stream.Collector<T, ?, java.util.IntSummaryStatistics>>): void;
-        summarizingInt(arg0: java.util.function.ToIntFunction<? super T>): java.util.stream.Collector<T, ?, java.util.IntSummaryStatistics>;
-        summarizingIntP(arg0: java.util.function.ToIntFunction<? super T>): Promise<java.util.stream.Collector<T, ?, java.util.IntSummaryStatistics>>;
+        summarizingIntA(arg0: java.util.function.ToIntFunction<T>, cb: Callback<java.util.stream.Collector<T, ?, java.util.IntSummaryStatistics>>): void;
+        summarizingInt(arg0: java.util.function.ToIntFunction<T>): java.util.stream.Collector<T, ?, java.util.IntSummaryStatistics>;
+        summarizingIntP(arg0: java.util.function.ToIntFunction<T>): Promise<java.util.stream.Collector<T, ?, java.util.IntSummaryStatistics>>;
         // public static <T> java.util.stream.Collector<T, ?, java.util.LongSummaryStatistics> java.util.stream.Collectors.summarizingLong(java.util.function.ToLongFunction<? super T>)
-        summarizingLongA(arg0: java.util.function.ToLongFunction<? super T>, cb: Callback<java.util.stream.Collector<T, ?, java.util.LongSummaryStatistics>>): void;
-        summarizingLong(arg0: java.util.function.ToLongFunction<? super T>): java.util.stream.Collector<T, ?, java.util.LongSummaryStatistics>;
-        summarizingLongP(arg0: java.util.function.ToLongFunction<? super T>): Promise<java.util.stream.Collector<T, ?, java.util.LongSummaryStatistics>>;
+        summarizingLongA(arg0: java.util.function.ToLongFunction<T>, cb: Callback<java.util.stream.Collector<T, ?, java.util.LongSummaryStatistics>>): void;
+        summarizingLong(arg0: java.util.function.ToLongFunction<T>): java.util.stream.Collector<T, ?, java.util.LongSummaryStatistics>;
+        summarizingLongP(arg0: java.util.function.ToLongFunction<T>): Promise<java.util.stream.Collector<T, ?, java.util.LongSummaryStatistics>>;
         // public static <T> java.util.stream.Collector<T, ?, java.lang.Double> java.util.stream.Collectors.summingDouble(java.util.function.ToDoubleFunction<? super T>)
-        summingDoubleA(arg0: java.util.function.ToDoubleFunction<? super T>, cb: Callback<java.util.stream.Collector<T, ?, java.lang.Double>>): void;
-        summingDouble(arg0: java.util.function.ToDoubleFunction<? super T>): java.util.stream.Collector<T, ?, java.lang.Double>;
-        summingDoubleP(arg0: java.util.function.ToDoubleFunction<? super T>): Promise<java.util.stream.Collector<T, ?, java.lang.Double>>;
+        summingDoubleA(arg0: java.util.function.ToDoubleFunction<T>, cb: Callback<java.util.stream.Collector<T, ?, java.lang.Double>>): void;
+        summingDouble(arg0: java.util.function.ToDoubleFunction<T>): java.util.stream.Collector<T, ?, java.lang.Double>;
+        summingDoubleP(arg0: java.util.function.ToDoubleFunction<T>): Promise<java.util.stream.Collector<T, ?, java.lang.Double>>;
         // public static <T> java.util.stream.Collector<T, ?, java.lang.Integer> java.util.stream.Collectors.summingInt(java.util.function.ToIntFunction<? super T>)
-        summingIntA(arg0: java.util.function.ToIntFunction<? super T>, cb: Callback<java.util.stream.Collector<T, ?, java.lang.Integer>>): void;
-        summingInt(arg0: java.util.function.ToIntFunction<? super T>): java.util.stream.Collector<T, ?, java.lang.Integer>;
-        summingIntP(arg0: java.util.function.ToIntFunction<? super T>): Promise<java.util.stream.Collector<T, ?, java.lang.Integer>>;
+        summingIntA(arg0: java.util.function.ToIntFunction<T>, cb: Callback<java.util.stream.Collector<T, ?, java.lang.Integer>>): void;
+        summingInt(arg0: java.util.function.ToIntFunction<T>): java.util.stream.Collector<T, ?, java.lang.Integer>;
+        summingIntP(arg0: java.util.function.ToIntFunction<T>): Promise<java.util.stream.Collector<T, ?, java.lang.Integer>>;
         // public static <T> java.util.stream.Collector<T, ?, java.lang.Long> java.util.stream.Collectors.summingLong(java.util.function.ToLongFunction<? super T>)
-        summingLongA(arg0: java.util.function.ToLongFunction<? super T>, cb: Callback<java.util.stream.Collector<T, ?, java.lang.Long>>): void;
-        summingLong(arg0: java.util.function.ToLongFunction<? super T>): java.util.stream.Collector<T, ?, java.lang.Long>;
-        summingLongP(arg0: java.util.function.ToLongFunction<? super T>): Promise<java.util.stream.Collector<T, ?, java.lang.Long>>;
+        summingLongA(arg0: java.util.function.ToLongFunction<T>, cb: Callback<java.util.stream.Collector<T, ?, java.lang.Long>>): void;
+        summingLong(arg0: java.util.function.ToLongFunction<T>): java.util.stream.Collector<T, ?, java.lang.Long>;
+        summingLongP(arg0: java.util.function.ToLongFunction<T>): Promise<java.util.stream.Collector<T, ?, java.lang.Long>>;
         // public static <T,C> java.util.stream.Collector<T, ?, C> java.util.stream.Collectors.toCollection(java.util.function.Supplier<C>)
         toCollectionA(arg0: java.util.function.Supplier<C>, cb: Callback<java.util.stream.Collector<T, ?, C>>): void;
         toCollection(arg0: java.util.function.Supplier<C>): java.util.stream.Collector<T, ?, C>;
         toCollectionP(arg0: java.util.function.Supplier<C>): Promise<java.util.stream.Collector<T, ?, C>>;
         // public static <T,K,U,M> java.util.stream.Collector<T, ?, M> java.util.stream.Collectors.toConcurrentMap(java.util.function.Function<? super T, ? extends K>,java.util.function.Function<? super T, ? extends U>,java.util.function.BinaryOperator<U>,java.util.function.Supplier<M>)
-        toConcurrentMapA(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>, arg2: java.util.function.BinaryOperator<U>, arg3: java.util.function.Supplier<M>, cb: Callback<java.util.stream.Collector<T, ?, M>>): void;
-        toConcurrentMap(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>, arg2: java.util.function.BinaryOperator<U>, arg3: java.util.function.Supplier<M>): java.util.stream.Collector<T, ?, M>;
-        toConcurrentMapP(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>, arg2: java.util.function.BinaryOperator<U>, arg3: java.util.function.Supplier<M>): Promise<java.util.stream.Collector<T, ?, M>>;
+        toConcurrentMapA(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>, arg2: java.util.function.BinaryOperator<U>, arg3: java.util.function.Supplier<M>, cb: Callback<java.util.stream.Collector<T, ?, M>>): void;
+        toConcurrentMap(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>, arg2: java.util.function.BinaryOperator<U>, arg3: java.util.function.Supplier<M>): java.util.stream.Collector<T, ?, M>;
+        toConcurrentMapP(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>, arg2: java.util.function.BinaryOperator<U>, arg3: java.util.function.Supplier<M>): Promise<java.util.stream.Collector<T, ?, M>>;
         // public static <T,K,U> java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, U>> java.util.stream.Collectors.toConcurrentMap(java.util.function.Function<? super T, ? extends K>,java.util.function.Function<? super T, ? extends U>,java.util.function.BinaryOperator<U>)
-        toConcurrentMapA(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>, arg2: java.util.function.BinaryOperator<U>, cb: Callback<java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, U>>>): void;
-        toConcurrentMap(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>, arg2: java.util.function.BinaryOperator<U>): java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, U>>;
-        toConcurrentMapP(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>, arg2: java.util.function.BinaryOperator<U>): Promise<java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, U>>>;
+        toConcurrentMapA(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>, arg2: java.util.function.BinaryOperator<U>, cb: Callback<java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, U>>>): void;
+        toConcurrentMap(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>, arg2: java.util.function.BinaryOperator<U>): java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, U>>;
+        toConcurrentMapP(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>, arg2: java.util.function.BinaryOperator<U>): Promise<java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, U>>>;
         // public static <T,K,U> java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, U>> java.util.stream.Collectors.toConcurrentMap(java.util.function.Function<? super T, ? extends K>,java.util.function.Function<? super T, ? extends U>)
-        toConcurrentMapA(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>, cb: Callback<java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, U>>>): void;
-        toConcurrentMap(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>): java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, U>>;
-        toConcurrentMapP(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>): Promise<java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, U>>>;
+        toConcurrentMapA(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>, cb: Callback<java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, U>>>): void;
+        toConcurrentMap(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>): java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, U>>;
+        toConcurrentMapP(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>): Promise<java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, U>>>;
         // public static <T> java.util.stream.Collector<T, ?, java.util.List<T>> java.util.stream.Collectors.toList()
         toListA( cb: Callback<java.util.stream.Collector<T, ?, java.util.List<T>>>): void;
         toList(): java.util.stream.Collector<T, ?, java.util.List<T>>;
         toListP(): Promise<java.util.stream.Collector<T, ?, java.util.List<T>>>;
         // public static <T,K,U,M> java.util.stream.Collector<T, ?, M> java.util.stream.Collectors.toMap(java.util.function.Function<? super T, ? extends K>,java.util.function.Function<? super T, ? extends U>,java.util.function.BinaryOperator<U>,java.util.function.Supplier<M>)
-        toMapA(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>, arg2: java.util.function.BinaryOperator<U>, arg3: java.util.function.Supplier<M>, cb: Callback<java.util.stream.Collector<T, ?, M>>): void;
-        toMap(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>, arg2: java.util.function.BinaryOperator<U>, arg3: java.util.function.Supplier<M>): java.util.stream.Collector<T, ?, M>;
-        toMapP(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>, arg2: java.util.function.BinaryOperator<U>, arg3: java.util.function.Supplier<M>): Promise<java.util.stream.Collector<T, ?, M>>;
+        toMapA(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>, arg2: java.util.function.BinaryOperator<U>, arg3: java.util.function.Supplier<M>, cb: Callback<java.util.stream.Collector<T, ?, M>>): void;
+        toMap(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>, arg2: java.util.function.BinaryOperator<U>, arg3: java.util.function.Supplier<M>): java.util.stream.Collector<T, ?, M>;
+        toMapP(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>, arg2: java.util.function.BinaryOperator<U>, arg3: java.util.function.Supplier<M>): Promise<java.util.stream.Collector<T, ?, M>>;
         // public static <T,K,U> java.util.stream.Collector<T, ?, java.util.Map<K, U>> java.util.stream.Collectors.toMap(java.util.function.Function<? super T, ? extends K>,java.util.function.Function<? super T, ? extends U>,java.util.function.BinaryOperator<U>)
-        toMapA(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>, arg2: java.util.function.BinaryOperator<U>, cb: Callback<java.util.stream.Collector<T, ?, java.util.Map<K, U>>>): void;
-        toMap(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>, arg2: java.util.function.BinaryOperator<U>): java.util.stream.Collector<T, ?, java.util.Map<K, U>>;
-        toMapP(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>, arg2: java.util.function.BinaryOperator<U>): Promise<java.util.stream.Collector<T, ?, java.util.Map<K, U>>>;
+        toMapA(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>, arg2: java.util.function.BinaryOperator<U>, cb: Callback<java.util.stream.Collector<T, ?, java.util.Map<K, U>>>): void;
+        toMap(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>, arg2: java.util.function.BinaryOperator<U>): java.util.stream.Collector<T, ?, java.util.Map<K, U>>;
+        toMapP(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>, arg2: java.util.function.BinaryOperator<U>): Promise<java.util.stream.Collector<T, ?, java.util.Map<K, U>>>;
         // public static <T,K,U> java.util.stream.Collector<T, ?, java.util.Map<K, U>> java.util.stream.Collectors.toMap(java.util.function.Function<? super T, ? extends K>,java.util.function.Function<? super T, ? extends U>)
-        toMapA(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>, cb: Callback<java.util.stream.Collector<T, ?, java.util.Map<K, U>>>): void;
-        toMap(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>): java.util.stream.Collector<T, ?, java.util.Map<K, U>>;
-        toMapP(arg0: java.util.function.Function<? super T, ? extends K>, arg1: java.util.function.Function<? super T, ? extends U>): Promise<java.util.stream.Collector<T, ?, java.util.Map<K, U>>>;
+        toMapA(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>, cb: Callback<java.util.stream.Collector<T, ?, java.util.Map<K, U>>>): void;
+        toMap(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>): java.util.stream.Collector<T, ?, java.util.Map<K, U>>;
+        toMapP(arg0: java.util.function.Function<T, K>, arg1: java.util.function.Function<T, U>): Promise<java.util.stream.Collector<T, ?, java.util.Map<K, U>>>;
         // public static <T> java.util.stream.Collector<T, ?, java.util.Set<T>> java.util.stream.Collectors.toSet()
         toSetA( cb: Callback<java.util.stream.Collector<T, ?, java.util.Set<T>>>): void;
         toSet(): java.util.stream.Collector<T, ?, java.util.Set<T>>;
@@ -3262,9 +3262,9 @@ export module Java {
       findFirst(): java.util.OptionalDouble;
       findFirstP(): Promise<java.util.OptionalDouble>;
       // public abstract java.util.stream.DoubleStream java.util.stream.DoubleStream.flatMap(java.util.function.DoubleFunction<? extends java.util.stream.DoubleStream>)
-      flatMapA(arg0: java.util.function.DoubleFunction<? extends java.util.stream.DoubleStream>, cb: Callback<java.util.stream.DoubleStream>): void;
-      flatMap(arg0: java.util.function.DoubleFunction<? extends java.util.stream.DoubleStream>): java.util.stream.DoubleStream;
-      flatMapP(arg0: java.util.function.DoubleFunction<? extends java.util.stream.DoubleStream>): Promise<java.util.stream.DoubleStream>;
+      flatMapA(arg0: java.util.function.DoubleFunction<java.util.stream.DoubleStream>, cb: Callback<java.util.stream.DoubleStream>): void;
+      flatMap(arg0: java.util.function.DoubleFunction<java.util.stream.DoubleStream>): java.util.stream.DoubleStream;
+      flatMapP(arg0: java.util.function.DoubleFunction<java.util.stream.DoubleStream>): Promise<java.util.stream.DoubleStream>;
       // public abstract void java.util.stream.DoubleStream.forEach(java.util.function.DoubleConsumer)
       forEachA(arg0: java.util.function.DoubleConsumer, cb: Callback<void>): void;
       forEach(arg0: java.util.function.DoubleConsumer): void;
@@ -3302,9 +3302,9 @@ export module Java {
       mapToLong(arg0: java.util.function.DoubleToLongFunction): java.util.stream.LongStream;
       mapToLongP(arg0: java.util.function.DoubleToLongFunction): Promise<java.util.stream.LongStream>;
       // public abstract <U> java.util.stream.Stream<U> java.util.stream.DoubleStream.mapToObj(java.util.function.DoubleFunction<? extends U>)
-      mapToObjA(arg0: java.util.function.DoubleFunction<? extends U>, cb: Callback<java.util.stream.Stream<U>>): void;
-      mapToObj(arg0: java.util.function.DoubleFunction<? extends U>): java.util.stream.Stream<U>;
-      mapToObjP(arg0: java.util.function.DoubleFunction<? extends U>): Promise<java.util.stream.Stream<U>>;
+      mapToObjA(arg0: java.util.function.DoubleFunction<U>, cb: Callback<java.util.stream.Stream<U>>): void;
+      mapToObj(arg0: java.util.function.DoubleFunction<U>): java.util.stream.Stream<U>;
+      mapToObjP(arg0: java.util.function.DoubleFunction<U>): Promise<java.util.stream.Stream<U>>;
       // public abstract java.util.OptionalDouble java.util.stream.DoubleStream.max()
       maxA( cb: Callback<java.util.OptionalDouble>): void;
       max(): java.util.OptionalDouble;
@@ -3500,9 +3500,9 @@ export module Java {
       findFirst(): java.util.OptionalInt;
       findFirstP(): Promise<java.util.OptionalInt>;
       // public abstract java.util.stream.IntStream java.util.stream.IntStream.flatMap(java.util.function.IntFunction<? extends java.util.stream.IntStream>)
-      flatMapA(arg0: java.util.function.IntFunction<? extends java.util.stream.IntStream>, cb: Callback<java.util.stream.IntStream>): void;
-      flatMap(arg0: java.util.function.IntFunction<? extends java.util.stream.IntStream>): java.util.stream.IntStream;
-      flatMapP(arg0: java.util.function.IntFunction<? extends java.util.stream.IntStream>): Promise<java.util.stream.IntStream>;
+      flatMapA(arg0: java.util.function.IntFunction<java.util.stream.IntStream>, cb: Callback<java.util.stream.IntStream>): void;
+      flatMap(arg0: java.util.function.IntFunction<java.util.stream.IntStream>): java.util.stream.IntStream;
+      flatMapP(arg0: java.util.function.IntFunction<java.util.stream.IntStream>): Promise<java.util.stream.IntStream>;
       // public abstract void java.util.stream.IntStream.forEach(java.util.function.IntConsumer)
       forEachA(arg0: java.util.function.IntConsumer, cb: Callback<void>): void;
       forEach(arg0: java.util.function.IntConsumer): void;
@@ -3540,9 +3540,9 @@ export module Java {
       mapToLong(arg0: java.util.function.IntToLongFunction): java.util.stream.LongStream;
       mapToLongP(arg0: java.util.function.IntToLongFunction): Promise<java.util.stream.LongStream>;
       // public abstract <U> java.util.stream.Stream<U> java.util.stream.IntStream.mapToObj(java.util.function.IntFunction<? extends U>)
-      mapToObjA(arg0: java.util.function.IntFunction<? extends U>, cb: Callback<java.util.stream.Stream<U>>): void;
-      mapToObj(arg0: java.util.function.IntFunction<? extends U>): java.util.stream.Stream<U>;
-      mapToObjP(arg0: java.util.function.IntFunction<? extends U>): Promise<java.util.stream.Stream<U>>;
+      mapToObjA(arg0: java.util.function.IntFunction<U>, cb: Callback<java.util.stream.Stream<U>>): void;
+      mapToObj(arg0: java.util.function.IntFunction<U>): java.util.stream.Stream<U>;
+      mapToObjP(arg0: java.util.function.IntFunction<U>): Promise<java.util.stream.Stream<U>>;
       // public abstract java.util.OptionalInt java.util.stream.IntStream.max()
       maxA( cb: Callback<java.util.OptionalInt>): void;
       max(): java.util.OptionalInt;
@@ -3742,9 +3742,9 @@ export module Java {
       findFirst(): java.util.OptionalLong;
       findFirstP(): Promise<java.util.OptionalLong>;
       // public abstract java.util.stream.LongStream java.util.stream.LongStream.flatMap(java.util.function.LongFunction<? extends java.util.stream.LongStream>)
-      flatMapA(arg0: java.util.function.LongFunction<? extends java.util.stream.LongStream>, cb: Callback<java.util.stream.LongStream>): void;
-      flatMap(arg0: java.util.function.LongFunction<? extends java.util.stream.LongStream>): java.util.stream.LongStream;
-      flatMapP(arg0: java.util.function.LongFunction<? extends java.util.stream.LongStream>): Promise<java.util.stream.LongStream>;
+      flatMapA(arg0: java.util.function.LongFunction<java.util.stream.LongStream>, cb: Callback<java.util.stream.LongStream>): void;
+      flatMap(arg0: java.util.function.LongFunction<java.util.stream.LongStream>): java.util.stream.LongStream;
+      flatMapP(arg0: java.util.function.LongFunction<java.util.stream.LongStream>): Promise<java.util.stream.LongStream>;
       // public abstract void java.util.stream.LongStream.forEach(java.util.function.LongConsumer)
       forEachA(arg0: java.util.function.LongConsumer, cb: Callback<void>): void;
       forEach(arg0: java.util.function.LongConsumer): void;
@@ -3782,9 +3782,9 @@ export module Java {
       mapToInt(arg0: java.util.function.LongToIntFunction): java.util.stream.IntStream;
       mapToIntP(arg0: java.util.function.LongToIntFunction): Promise<java.util.stream.IntStream>;
       // public abstract <U> java.util.stream.Stream<U> java.util.stream.LongStream.mapToObj(java.util.function.LongFunction<? extends U>)
-      mapToObjA(arg0: java.util.function.LongFunction<? extends U>, cb: Callback<java.util.stream.Stream<U>>): void;
-      mapToObj(arg0: java.util.function.LongFunction<? extends U>): java.util.stream.Stream<U>;
-      mapToObjP(arg0: java.util.function.LongFunction<? extends U>): Promise<java.util.stream.Stream<U>>;
+      mapToObjA(arg0: java.util.function.LongFunction<U>, cb: Callback<java.util.stream.Stream<U>>): void;
+      mapToObj(arg0: java.util.function.LongFunction<U>): java.util.stream.Stream<U>;
+      mapToObjP(arg0: java.util.function.LongFunction<U>): Promise<java.util.stream.Stream<U>>;
       // public abstract java.util.OptionalLong java.util.stream.LongStream.max()
       maxA( cb: Callback<java.util.OptionalLong>): void;
       max(): java.util.OptionalLong;
@@ -3936,25 +3936,25 @@ export module Java {
   export module java.util.stream {
     export interface Stream<T> extends Java.java.util.stream.BaseStream {
       // public abstract boolean java.util.stream.Stream.allMatch(java.util.function.Predicate<? super T>)
-      allMatchA(arg0: java.util.function.Predicate<? super T>, cb: Callback<boolean>): void;
-      allMatch(arg0: java.util.function.Predicate<? super T>): boolean;
-      allMatchP(arg0: java.util.function.Predicate<? super T>): Promise<boolean>;
+      allMatchA(arg0: java.util.function.Predicate<T>, cb: Callback<boolean>): void;
+      allMatch(arg0: java.util.function.Predicate<T>): boolean;
+      allMatchP(arg0: java.util.function.Predicate<T>): Promise<boolean>;
       // public abstract boolean java.util.stream.Stream.anyMatch(java.util.function.Predicate<? super T>)
-      anyMatchA(arg0: java.util.function.Predicate<? super T>, cb: Callback<boolean>): void;
-      anyMatch(arg0: java.util.function.Predicate<? super T>): boolean;
-      anyMatchP(arg0: java.util.function.Predicate<? super T>): Promise<boolean>;
+      anyMatchA(arg0: java.util.function.Predicate<T>, cb: Callback<boolean>): void;
+      anyMatch(arg0: java.util.function.Predicate<T>): boolean;
+      anyMatchP(arg0: java.util.function.Predicate<T>): Promise<boolean>;
       // public abstract void java.util.stream.BaseStream.close()
       closeA( cb: Callback<void>): void;
       close(): void;
       closeP(): Promise<void>;
       // public abstract <R> R java.util.stream.Stream.collect(java.util.function.Supplier<R>,java.util.function.BiConsumer<R, ? super T>,java.util.function.BiConsumer<R, R>)
-      collectA(arg0: java.util.function.Supplier<R>, arg1: java.util.function.BiConsumer<R, ? super T>, arg2: java.util.function.BiConsumer<R, R>, cb: Callback<R>): void;
-      collect(arg0: java.util.function.Supplier<R>, arg1: java.util.function.BiConsumer<R, ? super T>, arg2: java.util.function.BiConsumer<R, R>): R;
-      collectP(arg0: java.util.function.Supplier<R>, arg1: java.util.function.BiConsumer<R, ? super T>, arg2: java.util.function.BiConsumer<R, R>): Promise<R>;
+      collectA(arg0: java.util.function.Supplier<R>, arg1: java.util.function.BiConsumer<R, T>, arg2: java.util.function.BiConsumer<R, R>, cb: Callback<R>): void;
+      collect(arg0: java.util.function.Supplier<R>, arg1: java.util.function.BiConsumer<R, T>, arg2: java.util.function.BiConsumer<R, R>): R;
+      collectP(arg0: java.util.function.Supplier<R>, arg1: java.util.function.BiConsumer<R, T>, arg2: java.util.function.BiConsumer<R, R>): Promise<R>;
       // public abstract <R,A> R java.util.stream.Stream.collect(java.util.stream.Collector<? super T, A, R>)
-      collectA(arg0: java.util.stream.Collector<? super T, A, R>, cb: Callback<R>): void;
-      collect(arg0: java.util.stream.Collector<? super T, A, R>): R;
-      collectP(arg0: java.util.stream.Collector<? super T, A, R>): Promise<R>;
+      collectA(arg0: java.util.stream.Collector<T, A, R>, cb: Callback<R>): void;
+      collect(arg0: java.util.stream.Collector<T, A, R>): R;
+      collectP(arg0: java.util.stream.Collector<T, A, R>): Promise<R>;
       // public abstract long java.util.stream.Stream.count()
       countA( cb: Callback<long>): void;
       count(): long;
@@ -3964,9 +3964,9 @@ export module Java {
       distinct(): java.util.stream.Stream<T>;
       distinctP(): Promise<java.util.stream.Stream<T>>;
       // public abstract java.util.stream.Stream<T> java.util.stream.Stream.filter(java.util.function.Predicate<? super T>)
-      filterA(arg0: java.util.function.Predicate<? super T>, cb: Callback<java.util.stream.Stream<T>>): void;
-      filter(arg0: java.util.function.Predicate<? super T>): java.util.stream.Stream<T>;
-      filterP(arg0: java.util.function.Predicate<? super T>): Promise<java.util.stream.Stream<T>>;
+      filterA(arg0: java.util.function.Predicate<T>, cb: Callback<java.util.stream.Stream<T>>): void;
+      filter(arg0: java.util.function.Predicate<T>): java.util.stream.Stream<T>;
+      filterP(arg0: java.util.function.Predicate<T>): Promise<java.util.stream.Stream<T>>;
       // public abstract java.util.Optional<T> java.util.stream.Stream.findAny()
       findAnyA( cb: Callback<java.util.Optional<T>>): void;
       findAny(): java.util.Optional<T>;
@@ -3976,29 +3976,29 @@ export module Java {
       findFirst(): java.util.Optional<T>;
       findFirstP(): Promise<java.util.Optional<T>>;
       // public abstract <R> java.util.stream.Stream<R> java.util.stream.Stream.flatMap(java.util.function.Function<? super T, ? extends java.util.stream.Stream<? extends R>>)
-      flatMapA(arg0: java.util.function.Function<? super T, ? extends java.util.stream.Stream<? extends R>>, cb: Callback<java.util.stream.Stream<R>>): void;
-      flatMap(arg0: java.util.function.Function<? super T, ? extends java.util.stream.Stream<? extends R>>): java.util.stream.Stream<R>;
-      flatMapP(arg0: java.util.function.Function<? super T, ? extends java.util.stream.Stream<? extends R>>): Promise<java.util.stream.Stream<R>>;
+      flatMapA(arg0: java.util.function.Function<T, java.util.stream.Stream<R>>, cb: Callback<java.util.stream.Stream<R>>): void;
+      flatMap(arg0: java.util.function.Function<T, java.util.stream.Stream<R>>): java.util.stream.Stream<R>;
+      flatMapP(arg0: java.util.function.Function<T, java.util.stream.Stream<R>>): Promise<java.util.stream.Stream<R>>;
       // public abstract java.util.stream.DoubleStream java.util.stream.Stream.flatMapToDouble(java.util.function.Function<? super T, ? extends java.util.stream.DoubleStream>)
-      flatMapToDoubleA(arg0: java.util.function.Function<? super T, ? extends java.util.stream.DoubleStream>, cb: Callback<java.util.stream.DoubleStream>): void;
-      flatMapToDouble(arg0: java.util.function.Function<? super T, ? extends java.util.stream.DoubleStream>): java.util.stream.DoubleStream;
-      flatMapToDoubleP(arg0: java.util.function.Function<? super T, ? extends java.util.stream.DoubleStream>): Promise<java.util.stream.DoubleStream>;
+      flatMapToDoubleA(arg0: java.util.function.Function<T, java.util.stream.DoubleStream>, cb: Callback<java.util.stream.DoubleStream>): void;
+      flatMapToDouble(arg0: java.util.function.Function<T, java.util.stream.DoubleStream>): java.util.stream.DoubleStream;
+      flatMapToDoubleP(arg0: java.util.function.Function<T, java.util.stream.DoubleStream>): Promise<java.util.stream.DoubleStream>;
       // public abstract java.util.stream.IntStream java.util.stream.Stream.flatMapToInt(java.util.function.Function<? super T, ? extends java.util.stream.IntStream>)
-      flatMapToIntA(arg0: java.util.function.Function<? super T, ? extends java.util.stream.IntStream>, cb: Callback<java.util.stream.IntStream>): void;
-      flatMapToInt(arg0: java.util.function.Function<? super T, ? extends java.util.stream.IntStream>): java.util.stream.IntStream;
-      flatMapToIntP(arg0: java.util.function.Function<? super T, ? extends java.util.stream.IntStream>): Promise<java.util.stream.IntStream>;
+      flatMapToIntA(arg0: java.util.function.Function<T, java.util.stream.IntStream>, cb: Callback<java.util.stream.IntStream>): void;
+      flatMapToInt(arg0: java.util.function.Function<T, java.util.stream.IntStream>): java.util.stream.IntStream;
+      flatMapToIntP(arg0: java.util.function.Function<T, java.util.stream.IntStream>): Promise<java.util.stream.IntStream>;
       // public abstract java.util.stream.LongStream java.util.stream.Stream.flatMapToLong(java.util.function.Function<? super T, ? extends java.util.stream.LongStream>)
-      flatMapToLongA(arg0: java.util.function.Function<? super T, ? extends java.util.stream.LongStream>, cb: Callback<java.util.stream.LongStream>): void;
-      flatMapToLong(arg0: java.util.function.Function<? super T, ? extends java.util.stream.LongStream>): java.util.stream.LongStream;
-      flatMapToLongP(arg0: java.util.function.Function<? super T, ? extends java.util.stream.LongStream>): Promise<java.util.stream.LongStream>;
+      flatMapToLongA(arg0: java.util.function.Function<T, java.util.stream.LongStream>, cb: Callback<java.util.stream.LongStream>): void;
+      flatMapToLong(arg0: java.util.function.Function<T, java.util.stream.LongStream>): java.util.stream.LongStream;
+      flatMapToLongP(arg0: java.util.function.Function<T, java.util.stream.LongStream>): Promise<java.util.stream.LongStream>;
       // public abstract void java.util.stream.Stream.forEach(java.util.function.Consumer<? super T>)
-      forEachA(arg0: java.util.function.Consumer<? super T>, cb: Callback<void>): void;
-      forEach(arg0: java.util.function.Consumer<? super T>): void;
-      forEachP(arg0: java.util.function.Consumer<? super T>): Promise<void>;
+      forEachA(arg0: java.util.function.Consumer<T>, cb: Callback<void>): void;
+      forEach(arg0: java.util.function.Consumer<T>): void;
+      forEachP(arg0: java.util.function.Consumer<T>): Promise<void>;
       // public abstract void java.util.stream.Stream.forEachOrdered(java.util.function.Consumer<? super T>)
-      forEachOrderedA(arg0: java.util.function.Consumer<? super T>, cb: Callback<void>): void;
-      forEachOrdered(arg0: java.util.function.Consumer<? super T>): void;
-      forEachOrderedP(arg0: java.util.function.Consumer<? super T>): Promise<void>;
+      forEachOrderedA(arg0: java.util.function.Consumer<T>, cb: Callback<void>): void;
+      forEachOrdered(arg0: java.util.function.Consumer<T>): void;
+      forEachOrderedP(arg0: java.util.function.Consumer<T>): Promise<void>;
       // public abstract boolean java.util.stream.BaseStream.isParallel()
       isParallelA( cb: Callback<boolean>): void;
       isParallel(): boolean;
@@ -4012,33 +4012,33 @@ export module Java {
       limit(arg0: long): java.util.stream.Stream<T>;
       limitP(arg0: long): Promise<java.util.stream.Stream<T>>;
       // public abstract <R> java.util.stream.Stream<R> java.util.stream.Stream.map(java.util.function.Function<? super T, ? extends R>)
-      mapA(arg0: java.util.function.Function<? super T, ? extends R>, cb: Callback<java.util.stream.Stream<R>>): void;
-      map(arg0: java.util.function.Function<? super T, ? extends R>): java.util.stream.Stream<R>;
-      mapP(arg0: java.util.function.Function<? super T, ? extends R>): Promise<java.util.stream.Stream<R>>;
+      mapA(arg0: java.util.function.Function<T, R>, cb: Callback<java.util.stream.Stream<R>>): void;
+      map(arg0: java.util.function.Function<T, R>): java.util.stream.Stream<R>;
+      mapP(arg0: java.util.function.Function<T, R>): Promise<java.util.stream.Stream<R>>;
       // public abstract java.util.stream.DoubleStream java.util.stream.Stream.mapToDouble(java.util.function.ToDoubleFunction<? super T>)
-      mapToDoubleA(arg0: java.util.function.ToDoubleFunction<? super T>, cb: Callback<java.util.stream.DoubleStream>): void;
-      mapToDouble(arg0: java.util.function.ToDoubleFunction<? super T>): java.util.stream.DoubleStream;
-      mapToDoubleP(arg0: java.util.function.ToDoubleFunction<? super T>): Promise<java.util.stream.DoubleStream>;
+      mapToDoubleA(arg0: java.util.function.ToDoubleFunction<T>, cb: Callback<java.util.stream.DoubleStream>): void;
+      mapToDouble(arg0: java.util.function.ToDoubleFunction<T>): java.util.stream.DoubleStream;
+      mapToDoubleP(arg0: java.util.function.ToDoubleFunction<T>): Promise<java.util.stream.DoubleStream>;
       // public abstract java.util.stream.IntStream java.util.stream.Stream.mapToInt(java.util.function.ToIntFunction<? super T>)
-      mapToIntA(arg0: java.util.function.ToIntFunction<? super T>, cb: Callback<java.util.stream.IntStream>): void;
-      mapToInt(arg0: java.util.function.ToIntFunction<? super T>): java.util.stream.IntStream;
-      mapToIntP(arg0: java.util.function.ToIntFunction<? super T>): Promise<java.util.stream.IntStream>;
+      mapToIntA(arg0: java.util.function.ToIntFunction<T>, cb: Callback<java.util.stream.IntStream>): void;
+      mapToInt(arg0: java.util.function.ToIntFunction<T>): java.util.stream.IntStream;
+      mapToIntP(arg0: java.util.function.ToIntFunction<T>): Promise<java.util.stream.IntStream>;
       // public abstract java.util.stream.LongStream java.util.stream.Stream.mapToLong(java.util.function.ToLongFunction<? super T>)
-      mapToLongA(arg0: java.util.function.ToLongFunction<? super T>, cb: Callback<java.util.stream.LongStream>): void;
-      mapToLong(arg0: java.util.function.ToLongFunction<? super T>): java.util.stream.LongStream;
-      mapToLongP(arg0: java.util.function.ToLongFunction<? super T>): Promise<java.util.stream.LongStream>;
+      mapToLongA(arg0: java.util.function.ToLongFunction<T>, cb: Callback<java.util.stream.LongStream>): void;
+      mapToLong(arg0: java.util.function.ToLongFunction<T>): java.util.stream.LongStream;
+      mapToLongP(arg0: java.util.function.ToLongFunction<T>): Promise<java.util.stream.LongStream>;
       // public abstract java.util.Optional<T> java.util.stream.Stream.max(java.util.Comparator<? super T>)
-      maxA(arg0: java.util.Comparator<? super T>, cb: Callback<java.util.Optional<T>>): void;
-      max(arg0: java.util.Comparator<? super T>): java.util.Optional<T>;
-      maxP(arg0: java.util.Comparator<? super T>): Promise<java.util.Optional<T>>;
+      maxA(arg0: java.util.Comparator<T>, cb: Callback<java.util.Optional<T>>): void;
+      max(arg0: java.util.Comparator<T>): java.util.Optional<T>;
+      maxP(arg0: java.util.Comparator<T>): Promise<java.util.Optional<T>>;
       // public abstract java.util.Optional<T> java.util.stream.Stream.min(java.util.Comparator<? super T>)
-      minA(arg0: java.util.Comparator<? super T>, cb: Callback<java.util.Optional<T>>): void;
-      min(arg0: java.util.Comparator<? super T>): java.util.Optional<T>;
-      minP(arg0: java.util.Comparator<? super T>): Promise<java.util.Optional<T>>;
+      minA(arg0: java.util.Comparator<T>, cb: Callback<java.util.Optional<T>>): void;
+      min(arg0: java.util.Comparator<T>): java.util.Optional<T>;
+      minP(arg0: java.util.Comparator<T>): Promise<java.util.Optional<T>>;
       // public abstract boolean java.util.stream.Stream.noneMatch(java.util.function.Predicate<? super T>)
-      noneMatchA(arg0: java.util.function.Predicate<? super T>, cb: Callback<boolean>): void;
-      noneMatch(arg0: java.util.function.Predicate<? super T>): boolean;
-      noneMatchP(arg0: java.util.function.Predicate<? super T>): Promise<boolean>;
+      noneMatchA(arg0: java.util.function.Predicate<T>, cb: Callback<boolean>): void;
+      noneMatch(arg0: java.util.function.Predicate<T>): boolean;
+      noneMatchP(arg0: java.util.function.Predicate<T>): Promise<boolean>;
       // public abstract S java.util.stream.BaseStream.onClose(java.lang.Runnable)
       onCloseA(arg0: java.lang.Runnable, cb: Callback<S>): void;
       onClose(arg0: java.lang.Runnable): S;
@@ -4048,13 +4048,13 @@ export module Java {
       parallel(): S;
       parallelP(): Promise<S>;
       // public abstract java.util.stream.Stream<T> java.util.stream.Stream.peek(java.util.function.Consumer<? super T>)
-      peekA(arg0: java.util.function.Consumer<? super T>, cb: Callback<java.util.stream.Stream<T>>): void;
-      peek(arg0: java.util.function.Consumer<? super T>): java.util.stream.Stream<T>;
-      peekP(arg0: java.util.function.Consumer<? super T>): Promise<java.util.stream.Stream<T>>;
+      peekA(arg0: java.util.function.Consumer<T>, cb: Callback<java.util.stream.Stream<T>>): void;
+      peek(arg0: java.util.function.Consumer<T>): java.util.stream.Stream<T>;
+      peekP(arg0: java.util.function.Consumer<T>): Promise<java.util.stream.Stream<T>>;
       // public abstract <U> U java.util.stream.Stream.reduce(U,java.util.function.BiFunction<U, ? super T, U>,java.util.function.BinaryOperator<U>)
-      reduceA(arg0: U, arg1: java.util.function.BiFunction<U, ? super T, U>, arg2: java.util.function.BinaryOperator<U>, cb: Callback<U>): void;
-      reduce(arg0: U, arg1: java.util.function.BiFunction<U, ? super T, U>, arg2: java.util.function.BinaryOperator<U>): U;
-      reduceP(arg0: U, arg1: java.util.function.BiFunction<U, ? super T, U>, arg2: java.util.function.BinaryOperator<U>): Promise<U>;
+      reduceA(arg0: U, arg1: java.util.function.BiFunction<U, T, U>, arg2: java.util.function.BinaryOperator<U>, cb: Callback<U>): void;
+      reduce(arg0: U, arg1: java.util.function.BiFunction<U, T, U>, arg2: java.util.function.BinaryOperator<U>): U;
+      reduceP(arg0: U, arg1: java.util.function.BiFunction<U, T, U>, arg2: java.util.function.BinaryOperator<U>): Promise<U>;
       // public abstract T java.util.stream.Stream.reduce(T,java.util.function.BinaryOperator<T>)
       reduceA(arg0: T, arg1: java.util.function.BinaryOperator<T>, cb: Callback<T>): void;
       reduce(arg0: T, arg1: java.util.function.BinaryOperator<T>): T;
@@ -4072,9 +4072,9 @@ export module Java {
       skip(arg0: long): java.util.stream.Stream<T>;
       skipP(arg0: long): Promise<java.util.stream.Stream<T>>;
       // public abstract java.util.stream.Stream<T> java.util.stream.Stream.sorted(java.util.Comparator<? super T>)
-      sortedA(arg0: java.util.Comparator<? super T>, cb: Callback<java.util.stream.Stream<T>>): void;
-      sorted(arg0: java.util.Comparator<? super T>): java.util.stream.Stream<T>;
-      sortedP(arg0: java.util.Comparator<? super T>): Promise<java.util.stream.Stream<T>>;
+      sortedA(arg0: java.util.Comparator<T>, cb: Callback<java.util.stream.Stream<T>>): void;
+      sorted(arg0: java.util.Comparator<T>): java.util.stream.Stream<T>;
+      sortedP(arg0: java.util.Comparator<T>): Promise<java.util.stream.Stream<T>>;
       // public abstract java.util.stream.Stream<T> java.util.stream.Stream.sorted()
       sortedA( cb: Callback<java.util.stream.Stream<T>>): void;
       sorted(): java.util.stream.Stream<T>;
@@ -4104,9 +4104,9 @@ export module Java {
         builder(): java.util.stream.Stream.java.util.stream.Stream$Builder<T>;
         builderP(): Promise<java.util.stream.Stream.java.util.stream.Stream$Builder<T>>;
         // public static <T> java.util.stream.Stream<T> java.util.stream.Stream.concat(java.util.stream.Stream<? extends T>,java.util.stream.Stream<? extends T>)
-        concatA(arg0: java.util.stream.Stream<? extends T>, arg1: java.util.stream.Stream<? extends T>, cb: Callback<java.util.stream.Stream<T>>): void;
-        concat(arg0: java.util.stream.Stream<? extends T>, arg1: java.util.stream.Stream<? extends T>): java.util.stream.Stream<T>;
-        concatP(arg0: java.util.stream.Stream<? extends T>, arg1: java.util.stream.Stream<? extends T>): Promise<java.util.stream.Stream<T>>;
+        concatA(arg0: java.util.stream.Stream<T>, arg1: java.util.stream.Stream<T>, cb: Callback<java.util.stream.Stream<T>>): void;
+        concat(arg0: java.util.stream.Stream<T>, arg1: java.util.stream.Stream<T>): java.util.stream.Stream<T>;
+        concatP(arg0: java.util.stream.Stream<T>, arg1: java.util.stream.Stream<T>): Promise<java.util.stream.Stream<T>>;
         // public static <T> java.util.stream.Stream<T> java.util.stream.Stream.empty()
         emptyA( cb: Callback<java.util.stream.Stream<T>>): void;
         empty(): java.util.stream.Stream<T>;
@@ -4144,9 +4144,9 @@ export module Java {
       add(arg0: T): java.util.stream.Stream.java.util.stream.Stream$Builder<T>;
       addP(arg0: T): Promise<java.util.stream.Stream.java.util.stream.Stream$Builder<T>>;
       // public default java.util.function.Consumer<T> java.util.function.Consumer.andThen(java.util.function.Consumer<? super T>)
-      andThenA(arg0: java.util.function.Consumer<? super T>, cb: Callback<java.util.function.Consumer<T>>): void;
-      andThen(arg0: java.util.function.Consumer<? super T>): java.util.function.Consumer<T>;
-      andThenP(arg0: java.util.function.Consumer<? super T>): Promise<java.util.function.Consumer<T>>;
+      andThenA(arg0: java.util.function.Consumer<T>, cb: Callback<java.util.function.Consumer<T>>): void;
+      andThen(arg0: java.util.function.Consumer<T>): java.util.function.Consumer<T>;
+      andThenP(arg0: java.util.function.Consumer<T>): Promise<java.util.function.Consumer<T>>;
       // public abstract java.util.stream.Stream<T> java.util.stream.Stream$Builder.build()
       buildA( cb: Callback<java.util.stream.Stream<T>>): void;
       build(): java.util.stream.Stream<T>;
@@ -4166,9 +4166,9 @@ export module Java {
       equals(arg0: java.lang.Object): boolean;
       equalsP(arg0: java.lang.Object): Promise<boolean>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
-      getClassA( cb: Callback<java.lang.Class<?>>): void;
-      getClass(): java.lang.Class<?>;
-      getClassP(): Promise<java.lang.Class<?>>;
+      getClassA( cb: Callback<java.lang.Class<any>>): void;
+      getClass(): java.lang.Class<any>;
+      getClassP(): Promise<java.lang.Class<any>>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<int>): void;
       hashCode(): int;
@@ -4202,33 +4202,33 @@ export module Java {
       export interface Static {
         class: Java.Class;
         // public static java.util.stream.DoubleStream java.util.stream.StreamSupport.doubleStream(java.util.function.Supplier<? extends java.util.Spliterator$OfDouble>,int,boolean)
-        doubleStreamA(arg0: java.util.function.Supplier<? extends java.util.Spliterator$OfDouble>, arg1: int, arg2: boolean, cb: Callback<java.util.stream.DoubleStream>): void;
-        doubleStream(arg0: java.util.function.Supplier<? extends java.util.Spliterator$OfDouble>, arg1: int, arg2: boolean): java.util.stream.DoubleStream;
-        doubleStreamP(arg0: java.util.function.Supplier<? extends java.util.Spliterator$OfDouble>, arg1: int, arg2: boolean): Promise<java.util.stream.DoubleStream>;
+        doubleStreamA(arg0: java.util.function.Supplier<java.util.Spliterator$OfDouble>, arg1: int, arg2: boolean, cb: Callback<java.util.stream.DoubleStream>): void;
+        doubleStream(arg0: java.util.function.Supplier<java.util.Spliterator$OfDouble>, arg1: int, arg2: boolean): java.util.stream.DoubleStream;
+        doubleStreamP(arg0: java.util.function.Supplier<java.util.Spliterator$OfDouble>, arg1: int, arg2: boolean): Promise<java.util.stream.DoubleStream>;
         // public static java.util.stream.DoubleStream java.util.stream.StreamSupport.doubleStream(java.util.Spliterator$OfDouble,boolean)
         doubleStreamA(arg0: java.util.Spliterator$OfDouble, arg1: boolean, cb: Callback<java.util.stream.DoubleStream>): void;
         doubleStream(arg0: java.util.Spliterator$OfDouble, arg1: boolean): java.util.stream.DoubleStream;
         doubleStreamP(arg0: java.util.Spliterator$OfDouble, arg1: boolean): Promise<java.util.stream.DoubleStream>;
         // public static java.util.stream.IntStream java.util.stream.StreamSupport.intStream(java.util.function.Supplier<? extends java.util.Spliterator$OfInt>,int,boolean)
-        intStreamA(arg0: java.util.function.Supplier<? extends java.util.Spliterator$OfInt>, arg1: int, arg2: boolean, cb: Callback<java.util.stream.IntStream>): void;
-        intStream(arg0: java.util.function.Supplier<? extends java.util.Spliterator$OfInt>, arg1: int, arg2: boolean): java.util.stream.IntStream;
-        intStreamP(arg0: java.util.function.Supplier<? extends java.util.Spliterator$OfInt>, arg1: int, arg2: boolean): Promise<java.util.stream.IntStream>;
+        intStreamA(arg0: java.util.function.Supplier<java.util.Spliterator$OfInt>, arg1: int, arg2: boolean, cb: Callback<java.util.stream.IntStream>): void;
+        intStream(arg0: java.util.function.Supplier<java.util.Spliterator$OfInt>, arg1: int, arg2: boolean): java.util.stream.IntStream;
+        intStreamP(arg0: java.util.function.Supplier<java.util.Spliterator$OfInt>, arg1: int, arg2: boolean): Promise<java.util.stream.IntStream>;
         // public static java.util.stream.IntStream java.util.stream.StreamSupport.intStream(java.util.Spliterator$OfInt,boolean)
         intStreamA(arg0: java.util.Spliterator$OfInt, arg1: boolean, cb: Callback<java.util.stream.IntStream>): void;
         intStream(arg0: java.util.Spliterator$OfInt, arg1: boolean): java.util.stream.IntStream;
         intStreamP(arg0: java.util.Spliterator$OfInt, arg1: boolean): Promise<java.util.stream.IntStream>;
         // public static java.util.stream.LongStream java.util.stream.StreamSupport.longStream(java.util.function.Supplier<? extends java.util.Spliterator$OfLong>,int,boolean)
-        longStreamA(arg0: java.util.function.Supplier<? extends java.util.Spliterator$OfLong>, arg1: int, arg2: boolean, cb: Callback<java.util.stream.LongStream>): void;
-        longStream(arg0: java.util.function.Supplier<? extends java.util.Spliterator$OfLong>, arg1: int, arg2: boolean): java.util.stream.LongStream;
-        longStreamP(arg0: java.util.function.Supplier<? extends java.util.Spliterator$OfLong>, arg1: int, arg2: boolean): Promise<java.util.stream.LongStream>;
+        longStreamA(arg0: java.util.function.Supplier<java.util.Spliterator$OfLong>, arg1: int, arg2: boolean, cb: Callback<java.util.stream.LongStream>): void;
+        longStream(arg0: java.util.function.Supplier<java.util.Spliterator$OfLong>, arg1: int, arg2: boolean): java.util.stream.LongStream;
+        longStreamP(arg0: java.util.function.Supplier<java.util.Spliterator$OfLong>, arg1: int, arg2: boolean): Promise<java.util.stream.LongStream>;
         // public static java.util.stream.LongStream java.util.stream.StreamSupport.longStream(java.util.Spliterator$OfLong,boolean)
         longStreamA(arg0: java.util.Spliterator$OfLong, arg1: boolean, cb: Callback<java.util.stream.LongStream>): void;
         longStream(arg0: java.util.Spliterator$OfLong, arg1: boolean): java.util.stream.LongStream;
         longStreamP(arg0: java.util.Spliterator$OfLong, arg1: boolean): Promise<java.util.stream.LongStream>;
         // public static <T> java.util.stream.Stream<T> java.util.stream.StreamSupport.stream(java.util.function.Supplier<? extends java.util.Spliterator<T>>,int,boolean)
-        streamA(arg0: java.util.function.Supplier<? extends java.util.Spliterator<T>>, arg1: int, arg2: boolean, cb: Callback<java.util.stream.Stream<T>>): void;
-        stream(arg0: java.util.function.Supplier<? extends java.util.Spliterator<T>>, arg1: int, arg2: boolean): java.util.stream.Stream<T>;
-        streamP(arg0: java.util.function.Supplier<? extends java.util.Spliterator<T>>, arg1: int, arg2: boolean): Promise<java.util.stream.Stream<T>>;
+        streamA(arg0: java.util.function.Supplier<java.util.Spliterator<T>>, arg1: int, arg2: boolean, cb: Callback<java.util.stream.Stream<T>>): void;
+        stream(arg0: java.util.function.Supplier<java.util.Spliterator<T>>, arg1: int, arg2: boolean): java.util.stream.Stream<T>;
+        streamP(arg0: java.util.function.Supplier<java.util.Spliterator<T>>, arg1: int, arg2: boolean): Promise<java.util.stream.Stream<T>>;
         // public static <T> java.util.stream.Stream<T> java.util.stream.StreamSupport.stream(java.util.Spliterator<T>,boolean)
         streamA(arg0: java.util.Spliterator<T>, arg1: boolean, cb: Callback<java.util.stream.Stream<T>>): void;
         stream(arg0: java.util.Spliterator<T>, arg1: boolean): java.util.stream.Stream<T>;

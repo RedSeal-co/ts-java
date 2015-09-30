@@ -354,6 +354,29 @@ export class ClassesMap {
     return typeName;
   }
 
+  public translateGenericType(javaGenericType: string): string {
+    // TODO: handle other cases
+
+    var tsGenericType = javaGenericType;
+
+    while (true) {
+      var tmp = tsGenericType.replace(/\? extends /g, '');
+      if (tmp === tsGenericType) { break; }
+      tsGenericType = tmp;
+    }
+
+    while (true) {
+      // TODO: we probably should just use translate to <any>
+      var tmp = tsGenericType.replace(/\? super /g, '');
+      if (tmp === tsGenericType) { break; }
+      tsGenericType = tmp;
+    }
+
+    tsGenericType = tsGenericType.replace(/<\?>/g, '<any>');
+
+    return tsGenericType;
+  }
+
   // *mapMethod()*: return a map of useful properties of a method or constructor.
   // For our purposes, we can treat constructors as methods except for the handling of return type.
   // declared public only for unit tests
@@ -381,7 +404,8 @@ export class ClassesMap {
     var ts_generic_proto: ParsedPrototype = this.translateGenericProto(generic_proto);
 
     var tsReturnsRegular = this.tsTypeName(returnType, ParamContext.eReturn, true);
-    var tsReturns = this.options.generics ? genericReturnType : tsReturnsRegular;
+    var tsGenericReturns = this.translateGenericType(genericReturnType);
+    var tsReturns = this.options.generics ? tsGenericReturns : tsReturnsRegular;
 
     var methodMap: MethodDefinition = {
       name: method.getName(),
@@ -389,12 +413,12 @@ export class ClassesMap {
       returns: returnType,
       genericReturns: genericReturnType,
       tsReturnsRegular: tsReturnsRegular,
-      tsGenericReturns: genericReturnType,  // TODO: translate
+      tsGenericReturns: tsGenericReturns,
       tsReturns: tsReturns,
       paramNames: _.map(method.getParameters(), (p: Java.Parameter) => { return p.getName(); }),
       paramTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return p.getName(); }),
       tsParamTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return this.tsTypeNameInputEncoded(p.getName()); }),
-      tsGenericParamTypes: _.map(method.getGenericParameterTypes(), (p: Java.Type) => { return p.getTypeName(); }),
+      tsGenericParamTypes: _.map(method.getGenericParameterTypes(), (p: Java.Type) => this.translateGenericType(p.getTypeName())),
       tsTypeParameters: _.map(method.getTypeParameters(), (p: Java.TypeVariable) => { return p.getName(); }),
       isStatic: isStatic,
       isVarArgs: method.isVarArgs(),
