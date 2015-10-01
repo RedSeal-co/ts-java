@@ -354,10 +354,30 @@ export class ClassesMap {
     return typeName;
   }
 
-  public translateGenericType(javaGenericType: string): string {
-    // TODO: handle other cases
+  public translateFullClassPathsToShortAlias(javaGenericType: string): string {
+    // javaGenericType might be a complex type, say java.util.List<java.lang.Class<?>>
 
-    var tsGenericType = javaGenericType;
+    var translated: string = javaGenericType;
+    var re: RegExp = /[\w\$\.]+/g;
+    var m: Array<string>;
+    while ((m = re.exec(translated)) != null) {
+      if (this.isIncludedClass(m[0])) {
+        var aliasName: string = this.getJavaAliasName(m[0]);
+        translated = translated.replace(m[0], aliasName);
+        re.lastIndex -= m[0].length - aliasName.length;
+      } else {
+        translated = 'any';
+        break;
+      }
+    }
+
+    return translated;
+  }
+
+  public translateGenericType(javaGenericType: string): string {
+    // TODO: this is still a work in progress
+
+    var tsGenericType = this.translateFullClassPathsToShortAlias(javaGenericType);
 
     while (true) {
       var tmp = tsGenericType.replace(/\? extends /g, '');
@@ -373,7 +393,6 @@ export class ClassesMap {
     }
 
     tsGenericType = tsGenericType.replace(/<\?>/g, '<any>');
-
     return tsGenericType;
   }
 
