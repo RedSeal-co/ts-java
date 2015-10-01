@@ -301,20 +301,20 @@ export module Java {
   export function newInstanceA(className: 'Object', cb: Callback<Java.Object>): void;
   export function newInstanceA(className: 'Short', arg0: Java.String, cb: Callback<Java.Short>): void;
   export function newInstanceA(className: 'Short', arg0: any, cb: Callback<Java.Short>): void;
-  export function newInstanceA(className: 'String', arg0: any, arg1: any, arg2: any, arg3: any, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'String', arg0: any, arg1: any, arg2: any, arg3: Java.String, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'String', arg0: any, arg1: any, arg2: any, arg3: any, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'String', arg0: any, arg1: any, arg2: any, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'String', arg0: any, arg1: any, arg2: any, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'String', arg0: any, arg1: any, arg2: any, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'String', arg0: any, arg1: any, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'String', arg0: any, arg1: Java.String, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'String', arg0: any, arg1: any, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'String', arg0: any[], arg1: any, arg2: any, arg3: any, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'String', arg0: any[], arg1: any, arg2: any, arg3: Java.String, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'String', arg0: any[], arg1: any, arg2: any, arg3: any, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'String', arg0: any[], arg1: any, arg2: any, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'String', arg0: any[], arg1: any, arg2: any, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'String', arg0: any[], arg1: any, arg2: any, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'String', arg0: any[], arg1: any, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'String', arg0: any[], arg1: Java.String, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'String', arg0: any[], arg1: any, cb: Callback<Java.String>): void;
   export function newInstanceA(className: 'String', arg0: any, cb: Callback<Java.String>): void;
   export function newInstanceA(className: 'String', arg0: any, cb: Callback<Java.String>): void;
   export function newInstanceA(className: 'String', arg0: Java.String, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'String', arg0: any, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'String', arg0: any, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'String', arg0: any[], cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'String', arg0: any[], cb: Callback<Java.String>): void;
   export function newInstanceA(className: 'String', cb: Callback<Java.String>): void;
   export function newInstanceA(className: 'java.lang.Boolean', arg0: Java.String, cb: Callback<Java.Boolean>): void;
   export function newInstanceA(className: 'java.lang.Boolean', arg0: any, cb: Callback<Java.Boolean>): void;
@@ -331,20 +331,20 @@ export module Java {
   export function newInstanceA(className: 'java.lang.Object', cb: Callback<Java.Object>): void;
   export function newInstanceA(className: 'java.lang.Short', arg0: Java.String, cb: Callback<Java.Short>): void;
   export function newInstanceA(className: 'java.lang.Short', arg0: any, cb: Callback<Java.Short>): void;
-  export function newInstanceA(className: 'java.lang.String', arg0: any, arg1: any, arg2: any, arg3: any, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'java.lang.String', arg0: any, arg1: any, arg2: any, arg3: Java.String, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'java.lang.String', arg0: any, arg1: any, arg2: any, arg3: any, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'java.lang.String', arg0: any, arg1: any, arg2: any, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'java.lang.String', arg0: any, arg1: any, arg2: any, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'java.lang.String', arg0: any, arg1: any, arg2: any, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'java.lang.String', arg0: any, arg1: any, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'java.lang.String', arg0: any, arg1: Java.String, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'java.lang.String', arg0: any, arg1: any, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any, arg3: any, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any, arg3: Java.String, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any, arg3: any, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: any[], arg1: any, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: any[], arg1: Java.String, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: any[], arg1: any, cb: Callback<Java.String>): void;
   export function newInstanceA(className: 'java.lang.String', arg0: any, cb: Callback<Java.String>): void;
   export function newInstanceA(className: 'java.lang.String', arg0: any, cb: Callback<Java.String>): void;
   export function newInstanceA(className: 'java.lang.String', arg0: Java.String, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'java.lang.String', arg0: any, cb: Callback<Java.String>): void;
-  export function newInstanceA(className: 'java.lang.String', arg0: any, cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: any[], cb: Callback<Java.String>): void;
+  export function newInstanceA(className: 'java.lang.String', arg0: any[], cb: Callback<Java.String>): void;
   export function newInstanceA(className: 'java.lang.String', cb: Callback<Java.String>): void;
   export function newInstanceA(className: string, ...args: any[]): void;
   export function newInstanceA(className: string, ...args: any[]): any {
@@ -367,20 +367,20 @@ export module Java {
   export function newInstance(className: 'Object'): Java.Object;
   export function newInstance(className: 'Short', arg0: Java.String): Java.Short;
   export function newInstance(className: 'Short', arg0: any): Java.Short;
-  export function newInstance(className: 'String', arg0: any, arg1: any, arg2: any, arg3: any): Java.String;
-  export function newInstance(className: 'String', arg0: any, arg1: any, arg2: any, arg3: Java.String): Java.String;
-  export function newInstance(className: 'String', arg0: any, arg1: any, arg2: any, arg3: any): Java.String;
-  export function newInstance(className: 'String', arg0: any, arg1: any, arg2: any): Java.String;
-  export function newInstance(className: 'String', arg0: any, arg1: any, arg2: any): Java.String;
-  export function newInstance(className: 'String', arg0: any, arg1: any, arg2: any): Java.String;
-  export function newInstance(className: 'String', arg0: any, arg1: any): Java.String;
-  export function newInstance(className: 'String', arg0: any, arg1: Java.String): Java.String;
-  export function newInstance(className: 'String', arg0: any, arg1: any): Java.String;
+  export function newInstance(className: 'String', arg0: any[], arg1: any, arg2: any, arg3: any): Java.String;
+  export function newInstance(className: 'String', arg0: any[], arg1: any, arg2: any, arg3: Java.String): Java.String;
+  export function newInstance(className: 'String', arg0: any[], arg1: any, arg2: any, arg3: any): Java.String;
+  export function newInstance(className: 'String', arg0: any[], arg1: any, arg2: any): Java.String;
+  export function newInstance(className: 'String', arg0: any[], arg1: any, arg2: any): Java.String;
+  export function newInstance(className: 'String', arg0: any[], arg1: any, arg2: any): Java.String;
+  export function newInstance(className: 'String', arg0: any[], arg1: any): Java.String;
+  export function newInstance(className: 'String', arg0: any[], arg1: Java.String): Java.String;
+  export function newInstance(className: 'String', arg0: any[], arg1: any): Java.String;
   export function newInstance(className: 'String', arg0: any): Java.String;
   export function newInstance(className: 'String', arg0: any): Java.String;
   export function newInstance(className: 'String', arg0: Java.String): Java.String;
-  export function newInstance(className: 'String', arg0: any): Java.String;
-  export function newInstance(className: 'String', arg0: any): Java.String;
+  export function newInstance(className: 'String', arg0: any[]): Java.String;
+  export function newInstance(className: 'String', arg0: any[]): Java.String;
   export function newInstance(className: 'String'): Java.String;
   export function newInstance(className: 'java.lang.Boolean', arg0: Java.String): Java.Boolean;
   export function newInstance(className: 'java.lang.Boolean', arg0: any): Java.Boolean;
@@ -397,20 +397,20 @@ export module Java {
   export function newInstance(className: 'java.lang.Object'): Java.Object;
   export function newInstance(className: 'java.lang.Short', arg0: Java.String): Java.Short;
   export function newInstance(className: 'java.lang.Short', arg0: any): Java.Short;
-  export function newInstance(className: 'java.lang.String', arg0: any, arg1: any, arg2: any, arg3: any): Java.String;
-  export function newInstance(className: 'java.lang.String', arg0: any, arg1: any, arg2: any, arg3: Java.String): Java.String;
-  export function newInstance(className: 'java.lang.String', arg0: any, arg1: any, arg2: any, arg3: any): Java.String;
-  export function newInstance(className: 'java.lang.String', arg0: any, arg1: any, arg2: any): Java.String;
-  export function newInstance(className: 'java.lang.String', arg0: any, arg1: any, arg2: any): Java.String;
-  export function newInstance(className: 'java.lang.String', arg0: any, arg1: any, arg2: any): Java.String;
-  export function newInstance(className: 'java.lang.String', arg0: any, arg1: any): Java.String;
-  export function newInstance(className: 'java.lang.String', arg0: any, arg1: Java.String): Java.String;
-  export function newInstance(className: 'java.lang.String', arg0: any, arg1: any): Java.String;
+  export function newInstance(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any, arg3: any): Java.String;
+  export function newInstance(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any, arg3: Java.String): Java.String;
+  export function newInstance(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any, arg3: any): Java.String;
+  export function newInstance(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any): Java.String;
+  export function newInstance(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any): Java.String;
+  export function newInstance(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any): Java.String;
+  export function newInstance(className: 'java.lang.String', arg0: any[], arg1: any): Java.String;
+  export function newInstance(className: 'java.lang.String', arg0: any[], arg1: Java.String): Java.String;
+  export function newInstance(className: 'java.lang.String', arg0: any[], arg1: any): Java.String;
   export function newInstance(className: 'java.lang.String', arg0: any): Java.String;
   export function newInstance(className: 'java.lang.String', arg0: any): Java.String;
   export function newInstance(className: 'java.lang.String', arg0: Java.String): Java.String;
-  export function newInstance(className: 'java.lang.String', arg0: any): Java.String;
-  export function newInstance(className: 'java.lang.String', arg0: any): Java.String;
+  export function newInstance(className: 'java.lang.String', arg0: any[]): Java.String;
+  export function newInstance(className: 'java.lang.String', arg0: any[]): Java.String;
   export function newInstance(className: 'java.lang.String'): Java.String;
   export function newInstance(className: string, ...args: any[]): any;
   export function newInstance(className: string, ...args: any[]): any {
@@ -433,20 +433,20 @@ export module Java {
   export function newInstanceP(className: 'Object'): Promise<Java.Object>;
   export function newInstanceP(className: 'Short', arg0: Java.String): Promise<Java.Short>;
   export function newInstanceP(className: 'Short', arg0: any): Promise<Java.Short>;
-  export function newInstanceP(className: 'String', arg0: any, arg1: any, arg2: any, arg3: any): Promise<Java.String>;
-  export function newInstanceP(className: 'String', arg0: any, arg1: any, arg2: any, arg3: Java.String): Promise<Java.String>;
-  export function newInstanceP(className: 'String', arg0: any, arg1: any, arg2: any, arg3: any): Promise<Java.String>;
-  export function newInstanceP(className: 'String', arg0: any, arg1: any, arg2: any): Promise<Java.String>;
-  export function newInstanceP(className: 'String', arg0: any, arg1: any, arg2: any): Promise<Java.String>;
-  export function newInstanceP(className: 'String', arg0: any, arg1: any, arg2: any): Promise<Java.String>;
-  export function newInstanceP(className: 'String', arg0: any, arg1: any): Promise<Java.String>;
-  export function newInstanceP(className: 'String', arg0: any, arg1: Java.String): Promise<Java.String>;
-  export function newInstanceP(className: 'String', arg0: any, arg1: any): Promise<Java.String>;
+  export function newInstanceP(className: 'String', arg0: any[], arg1: any, arg2: any, arg3: any): Promise<Java.String>;
+  export function newInstanceP(className: 'String', arg0: any[], arg1: any, arg2: any, arg3: Java.String): Promise<Java.String>;
+  export function newInstanceP(className: 'String', arg0: any[], arg1: any, arg2: any, arg3: any): Promise<Java.String>;
+  export function newInstanceP(className: 'String', arg0: any[], arg1: any, arg2: any): Promise<Java.String>;
+  export function newInstanceP(className: 'String', arg0: any[], arg1: any, arg2: any): Promise<Java.String>;
+  export function newInstanceP(className: 'String', arg0: any[], arg1: any, arg2: any): Promise<Java.String>;
+  export function newInstanceP(className: 'String', arg0: any[], arg1: any): Promise<Java.String>;
+  export function newInstanceP(className: 'String', arg0: any[], arg1: Java.String): Promise<Java.String>;
+  export function newInstanceP(className: 'String', arg0: any[], arg1: any): Promise<Java.String>;
   export function newInstanceP(className: 'String', arg0: any): Promise<Java.String>;
   export function newInstanceP(className: 'String', arg0: any): Promise<Java.String>;
   export function newInstanceP(className: 'String', arg0: Java.String): Promise<Java.String>;
-  export function newInstanceP(className: 'String', arg0: any): Promise<Java.String>;
-  export function newInstanceP(className: 'String', arg0: any): Promise<Java.String>;
+  export function newInstanceP(className: 'String', arg0: any[]): Promise<Java.String>;
+  export function newInstanceP(className: 'String', arg0: any[]): Promise<Java.String>;
   export function newInstanceP(className: 'String'): Promise<Java.String>;
   export function newInstanceP(className: 'java.lang.Boolean', arg0: Java.String): Promise<Java.Boolean>;
   export function newInstanceP(className: 'java.lang.Boolean', arg0: any): Promise<Java.Boolean>;
@@ -463,20 +463,20 @@ export module Java {
   export function newInstanceP(className: 'java.lang.Object'): Promise<Java.Object>;
   export function newInstanceP(className: 'java.lang.Short', arg0: Java.String): Promise<Java.Short>;
   export function newInstanceP(className: 'java.lang.Short', arg0: any): Promise<Java.Short>;
-  export function newInstanceP(className: 'java.lang.String', arg0: any, arg1: any, arg2: any, arg3: any): Promise<Java.String>;
-  export function newInstanceP(className: 'java.lang.String', arg0: any, arg1: any, arg2: any, arg3: Java.String): Promise<Java.String>;
-  export function newInstanceP(className: 'java.lang.String', arg0: any, arg1: any, arg2: any, arg3: any): Promise<Java.String>;
-  export function newInstanceP(className: 'java.lang.String', arg0: any, arg1: any, arg2: any): Promise<Java.String>;
-  export function newInstanceP(className: 'java.lang.String', arg0: any, arg1: any, arg2: any): Promise<Java.String>;
-  export function newInstanceP(className: 'java.lang.String', arg0: any, arg1: any, arg2: any): Promise<Java.String>;
-  export function newInstanceP(className: 'java.lang.String', arg0: any, arg1: any): Promise<Java.String>;
-  export function newInstanceP(className: 'java.lang.String', arg0: any, arg1: Java.String): Promise<Java.String>;
-  export function newInstanceP(className: 'java.lang.String', arg0: any, arg1: any): Promise<Java.String>;
+  export function newInstanceP(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any, arg3: any): Promise<Java.String>;
+  export function newInstanceP(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any, arg3: Java.String): Promise<Java.String>;
+  export function newInstanceP(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any, arg3: any): Promise<Java.String>;
+  export function newInstanceP(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any): Promise<Java.String>;
+  export function newInstanceP(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any): Promise<Java.String>;
+  export function newInstanceP(className: 'java.lang.String', arg0: any[], arg1: any, arg2: any): Promise<Java.String>;
+  export function newInstanceP(className: 'java.lang.String', arg0: any[], arg1: any): Promise<Java.String>;
+  export function newInstanceP(className: 'java.lang.String', arg0: any[], arg1: Java.String): Promise<Java.String>;
+  export function newInstanceP(className: 'java.lang.String', arg0: any[], arg1: any): Promise<Java.String>;
   export function newInstanceP(className: 'java.lang.String', arg0: any): Promise<Java.String>;
   export function newInstanceP(className: 'java.lang.String', arg0: any): Promise<Java.String>;
   export function newInstanceP(className: 'java.lang.String', arg0: Java.String): Promise<Java.String>;
-  export function newInstanceP(className: 'java.lang.String', arg0: any): Promise<Java.String>;
-  export function newInstanceP(className: 'java.lang.String', arg0: any): Promise<Java.String>;
+  export function newInstanceP(className: 'java.lang.String', arg0: any[]): Promise<Java.String>;
+  export function newInstanceP(className: 'java.lang.String', arg0: any[]): Promise<Java.String>;
   export function newInstanceP(className: 'java.lang.String'): Promise<Java.String>;
   export function newInstanceP(className: string, ...args: any[]): Promise<any>;
   export function newInstanceP(className: string, ...args: any[]): Promise<any> {
@@ -749,9 +749,9 @@ export module Java {
       equals(arg0: Java.Object): any;
       equalsP(arg0: Java.Object): Promise<any>;
       // public java.lang.reflect.AnnotatedType[] java.lang.Class.getAnnotatedInterfaces()
-      getAnnotatedInterfacesA( cb: Callback<any>): void;
-      getAnnotatedInterfaces(): any;
-      getAnnotatedInterfacesP(): Promise<any>;
+      getAnnotatedInterfacesA( cb: Callback<any[]>): void;
+      getAnnotatedInterfaces(): any[];
+      getAnnotatedInterfacesP(): Promise<any[]>;
       // public java.lang.reflect.AnnotatedType java.lang.Class.getAnnotatedSuperclass()
       getAnnotatedSuperclassA( cb: Callback<any>): void;
       getAnnotatedSuperclass(): any;
@@ -761,13 +761,13 @@ export module Java {
       getAnnotation(arg0: any): any;
       getAnnotationP(arg0: any): Promise<any>;
       // public java.lang.annotation.Annotation[] java.lang.Class.getAnnotations()
-      getAnnotationsA( cb: Callback<any>): void;
-      getAnnotations(): any;
-      getAnnotationsP(): Promise<any>;
+      getAnnotationsA( cb: Callback<any[]>): void;
+      getAnnotations(): any[];
+      getAnnotationsP(): Promise<any[]>;
       // public <A> A[] java.lang.Class.getAnnotationsByType(java.lang.Class<A>)
-      getAnnotationsByTypeA(arg0: any, cb: Callback<any>): void;
-      getAnnotationsByType(arg0: any): any;
-      getAnnotationsByTypeP(arg0: any): Promise<any>;
+      getAnnotationsByTypeA(arg0: any, cb: Callback<any[]>): void;
+      getAnnotationsByType(arg0: any): any[];
+      getAnnotationsByTypeP(arg0: any): Promise<any[]>;
       // public java.lang.String java.lang.Class.getCanonicalName()
       getCanonicalNameA( cb: Callback<Java.String>): void;
       getCanonicalName(): Java.String;
@@ -795,21 +795,21 @@ export module Java {
       getConstructorP(...arg0: Java.Class<any>[]): Promise<any>;
       getConstructorP(arg0: Java.Class<any>[]): Promise<any>;
       // public java.lang.reflect.Constructor<?>[] java.lang.Class.getConstructors() throws java.lang.SecurityException
-      getConstructorsA( cb: Callback<any>): void;
-      getConstructors(): any;
-      getConstructorsP(): Promise<any>;
+      getConstructorsA( cb: Callback<any[]>): void;
+      getConstructors(): any[];
+      getConstructorsP(): Promise<any[]>;
       // public <A> A java.lang.Class.getDeclaredAnnotation(java.lang.Class<A>)
       getDeclaredAnnotationA(arg0: any, cb: Callback<any>): void;
       getDeclaredAnnotation(arg0: any): any;
       getDeclaredAnnotationP(arg0: any): Promise<any>;
       // public java.lang.annotation.Annotation[] java.lang.Class.getDeclaredAnnotations()
-      getDeclaredAnnotationsA( cb: Callback<any>): void;
-      getDeclaredAnnotations(): any;
-      getDeclaredAnnotationsP(): Promise<any>;
+      getDeclaredAnnotationsA( cb: Callback<any[]>): void;
+      getDeclaredAnnotations(): any[];
+      getDeclaredAnnotationsP(): Promise<any[]>;
       // public <A> A[] java.lang.Class.getDeclaredAnnotationsByType(java.lang.Class<A>)
-      getDeclaredAnnotationsByTypeA(arg0: any, cb: Callback<any>): void;
-      getDeclaredAnnotationsByType(arg0: any): any;
-      getDeclaredAnnotationsByTypeP(arg0: any): Promise<any>;
+      getDeclaredAnnotationsByTypeA(arg0: any, cb: Callback<any[]>): void;
+      getDeclaredAnnotationsByType(arg0: any): any[];
+      getDeclaredAnnotationsByTypeP(arg0: any): Promise<any[]>;
       // public java.lang.Class<?>[] java.lang.Class.getDeclaredClasses() throws java.lang.SecurityException
       getDeclaredClassesA( cb: Callback<Java.Class<any>[]>): void;
       getDeclaredClasses(): Java.Class<any>[];
@@ -821,17 +821,17 @@ export module Java {
       getDeclaredConstructorP(...arg0: Java.Class<any>[]): Promise<any>;
       getDeclaredConstructorP(arg0: Java.Class<any>[]): Promise<any>;
       // public java.lang.reflect.Constructor<?>[] java.lang.Class.getDeclaredConstructors() throws java.lang.SecurityException
-      getDeclaredConstructorsA( cb: Callback<any>): void;
-      getDeclaredConstructors(): any;
-      getDeclaredConstructorsP(): Promise<any>;
+      getDeclaredConstructorsA( cb: Callback<any[]>): void;
+      getDeclaredConstructors(): any[];
+      getDeclaredConstructorsP(): Promise<any[]>;
       // public java.lang.reflect.Field java.lang.Class.getDeclaredField(java.lang.String) throws java.lang.NoSuchFieldException,java.lang.SecurityException
       getDeclaredFieldA(arg0: Java.String, cb: Callback<any>): void;
       getDeclaredField(arg0: Java.String): any;
       getDeclaredFieldP(arg0: Java.String): Promise<any>;
       // public java.lang.reflect.Field[] java.lang.Class.getDeclaredFields() throws java.lang.SecurityException
-      getDeclaredFieldsA( cb: Callback<any>): void;
-      getDeclaredFields(): any;
-      getDeclaredFieldsP(): Promise<any>;
+      getDeclaredFieldsA( cb: Callback<any[]>): void;
+      getDeclaredFields(): any[];
+      getDeclaredFieldsP(): Promise<any[]>;
       // public java.lang.reflect.Method java.lang.Class.getDeclaredMethod(java.lang.String,java.lang.Class<?>...) throws java.lang.NoSuchMethodException,java.lang.SecurityException
       getDeclaredMethodA(arg0: Java.String, arg1: Java.Class<any>[], cb: Callback<any>): void;
       getDeclaredMethod(arg0: Java.String, ...arg1: Java.Class<any>[]): any;
@@ -839,9 +839,9 @@ export module Java {
       getDeclaredMethodP(arg0: Java.String, ...arg1: Java.Class<any>[]): Promise<any>;
       getDeclaredMethodP(arg0: Java.String, arg1: Java.Class<any>[]): Promise<any>;
       // public java.lang.reflect.Method[] java.lang.Class.getDeclaredMethods() throws java.lang.SecurityException
-      getDeclaredMethodsA( cb: Callback<any>): void;
-      getDeclaredMethods(): any;
-      getDeclaredMethodsP(): Promise<any>;
+      getDeclaredMethodsA( cb: Callback<any[]>): void;
+      getDeclaredMethods(): any[];
+      getDeclaredMethodsP(): Promise<any[]>;
       // public java.lang.Class<?> java.lang.Class.getDeclaringClass() throws java.lang.SecurityException
       getDeclaringClassA( cb: Callback<Java.Class<any>>): void;
       getDeclaringClass(): Java.Class<any>;
@@ -859,21 +859,21 @@ export module Java {
       getEnclosingMethod(): any;
       getEnclosingMethodP(): Promise<any>;
       // public T[] java.lang.Class.getEnumConstants()
-      getEnumConstantsA( cb: Callback<any>): void;
-      getEnumConstants(): any;
-      getEnumConstantsP(): Promise<any>;
+      getEnumConstantsA( cb: Callback<any[]>): void;
+      getEnumConstants(): any[];
+      getEnumConstantsP(): Promise<any[]>;
       // public java.lang.reflect.Field java.lang.Class.getField(java.lang.String) throws java.lang.NoSuchFieldException,java.lang.SecurityException
       getFieldA(arg0: Java.String, cb: Callback<any>): void;
       getField(arg0: Java.String): any;
       getFieldP(arg0: Java.String): Promise<any>;
       // public java.lang.reflect.Field[] java.lang.Class.getFields() throws java.lang.SecurityException
-      getFieldsA( cb: Callback<any>): void;
-      getFields(): any;
-      getFieldsP(): Promise<any>;
+      getFieldsA( cb: Callback<any[]>): void;
+      getFields(): any[];
+      getFieldsP(): Promise<any[]>;
       // public java.lang.reflect.Type[] java.lang.Class.getGenericInterfaces()
-      getGenericInterfacesA( cb: Callback<any>): void;
-      getGenericInterfaces(): any;
-      getGenericInterfacesP(): Promise<any>;
+      getGenericInterfacesA( cb: Callback<any[]>): void;
+      getGenericInterfaces(): any[];
+      getGenericInterfacesP(): Promise<any[]>;
       // public java.lang.reflect.Type java.lang.Class.getGenericSuperclass()
       getGenericSuperclassA( cb: Callback<any>): void;
       getGenericSuperclass(): any;
@@ -889,9 +889,9 @@ export module Java {
       getMethodP(arg0: Java.String, ...arg1: Java.Class<any>[]): Promise<any>;
       getMethodP(arg0: Java.String, arg1: Java.Class<any>[]): Promise<any>;
       // public java.lang.reflect.Method[] java.lang.Class.getMethods() throws java.lang.SecurityException
-      getMethodsA( cb: Callback<any>): void;
-      getMethods(): any;
-      getMethodsP(): Promise<any>;
+      getMethodsA( cb: Callback<any[]>): void;
+      getMethods(): any[];
+      getMethodsP(): Promise<any[]>;
       // public native int java.lang.Class.getModifiers()
       getModifiersA( cb: Callback<any>): void;
       getModifiers(): any;
@@ -933,9 +933,9 @@ export module Java {
       getTypeName(): Java.String;
       getTypeNameP(): Promise<Java.String>;
       // public java.lang.reflect.TypeVariable<java.lang.Class<T>>[] java.lang.Class.getTypeParameters()
-      getTypeParametersA( cb: Callback<any>): void;
-      getTypeParameters(): any;
-      getTypeParametersP(): Promise<any>;
+      getTypeParametersA( cb: Callback<any[]>): void;
+      getTypeParameters(): any[];
+      getTypeParametersP(): Promise<any[]>;
       // public native int java.lang.Object.hashCode()
       hashCodeA( cb: Callback<any>): void;
       hashCode(): any;
@@ -2235,25 +2235,25 @@ export module Java {
       equalsIgnoreCase(arg0: Java.String): any;
       equalsIgnoreCaseP(arg0: Java.String): Promise<any>;
       // public void java.lang.String.getBytes(int,int,byte[],int)
-      getBytesA(arg0: any, arg1: any, arg2: any, arg3: any, cb: Callback<any>): void;
-      getBytes(arg0: any, arg1: any, arg2: any, arg3: any): any;
-      getBytesP(arg0: any, arg1: any, arg2: any, arg3: any): Promise<any>;
+      getBytesA(arg0: any, arg1: any, arg2: any[], arg3: any, cb: Callback<any>): void;
+      getBytes(arg0: any, arg1: any, arg2: any[], arg3: any): any;
+      getBytesP(arg0: any, arg1: any, arg2: any[], arg3: any): Promise<any>;
       // public byte[] java.lang.String.getBytes(java.nio.charset.Charset)
-      getBytesA(arg0: any, cb: Callback<any>): void;
-      getBytes(arg0: any): any;
-      getBytesP(arg0: any): Promise<any>;
+      getBytesA(arg0: any, cb: Callback<any[]>): void;
+      getBytes(arg0: any): any[];
+      getBytesP(arg0: any): Promise<any[]>;
       // public byte[] java.lang.String.getBytes(java.lang.String) throws java.io.UnsupportedEncodingException
-      getBytesA(arg0: Java.String, cb: Callback<any>): void;
-      getBytes(arg0: Java.String): any;
-      getBytesP(arg0: Java.String): Promise<any>;
+      getBytesA(arg0: Java.String, cb: Callback<any[]>): void;
+      getBytes(arg0: Java.String): any[];
+      getBytesP(arg0: Java.String): Promise<any[]>;
       // public byte[] java.lang.String.getBytes()
-      getBytesA( cb: Callback<any>): void;
-      getBytes(): any;
-      getBytesP(): Promise<any>;
+      getBytesA( cb: Callback<any[]>): void;
+      getBytes(): any[];
+      getBytesP(): Promise<any[]>;
       // public void java.lang.String.getChars(int,int,char[],int)
-      getCharsA(arg0: any, arg1: any, arg2: any, arg3: any, cb: Callback<any>): void;
-      getChars(arg0: any, arg1: any, arg2: any, arg3: any): any;
-      getCharsP(arg0: any, arg1: any, arg2: any, arg3: any): Promise<any>;
+      getCharsA(arg0: any, arg1: any, arg2: any[], arg3: any, cb: Callback<any>): void;
+      getChars(arg0: any, arg1: any, arg2: any[], arg3: any): any;
+      getCharsP(arg0: any, arg1: any, arg2: any[], arg3: any): Promise<any>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClassA( cb: Callback<Java.Class<any>>): void;
       getClass(): Java.Class<any>;
@@ -2375,9 +2375,9 @@ export module Java {
       substring(arg0: any): Java.String;
       substringP(arg0: any): Promise<Java.String>;
       // public char[] java.lang.String.toCharArray()
-      toCharArrayA( cb: Callback<any>): void;
-      toCharArray(): any;
-      toCharArrayP(): Promise<any>;
+      toCharArrayA( cb: Callback<any[]>): void;
+      toCharArray(): any[];
+      toCharArrayP(): Promise<any[]>;
       // public java.lang.String java.lang.String.toLowerCase(java.util.Locale)
       toLowerCaseA(arg0: any, cb: Callback<Java.String>): void;
       toLowerCase(arg0: any): Java.String;
@@ -2419,29 +2419,29 @@ export module Java {
       export interface Static {
         CASE_INSENSITIVE_ORDER: any;
         class: Java.Class<any>;
-        new (arg0: any, arg1: any, arg2: any, arg3: any): java.lang.String;
-        new (arg0: any, arg1: any, arg2: any, arg3: Java.String): java.lang.String;
-        new (arg0: any, arg1: any, arg2: any, arg3: any): java.lang.String;
-        new (arg0: any, arg1: any, arg2: any): java.lang.String;
-        new (arg0: any, arg1: any, arg2: any): java.lang.String;
-        new (arg0: any, arg1: any, arg2: any): java.lang.String;
-        new (arg0: any, arg1: any): java.lang.String;
-        new (arg0: any, arg1: Java.String): java.lang.String;
-        new (arg0: any, arg1: any): java.lang.String;
+        new (arg0: any[], arg1: any, arg2: any, arg3: any): java.lang.String;
+        new (arg0: any[], arg1: any, arg2: any, arg3: Java.String): java.lang.String;
+        new (arg0: any[], arg1: any, arg2: any, arg3: any): java.lang.String;
+        new (arg0: any[], arg1: any, arg2: any): java.lang.String;
+        new (arg0: any[], arg1: any, arg2: any): java.lang.String;
+        new (arg0: any[], arg1: any, arg2: any): java.lang.String;
+        new (arg0: any[], arg1: any): java.lang.String;
+        new (arg0: any[], arg1: Java.String): java.lang.String;
+        new (arg0: any[], arg1: any): java.lang.String;
         new (arg0: any): java.lang.String;
         new (arg0: any): java.lang.String;
         new (arg0: Java.String): java.lang.String;
-        new (arg0: any): java.lang.String;
-        new (arg0: any): java.lang.String;
+        new (arg0: any[]): java.lang.String;
+        new (arg0: any[]): java.lang.String;
         new (): java.lang.String;
         // public static java.lang.String java.lang.String.copyValueOf(char[],int,int)
-        copyValueOfA(arg0: any, arg1: any, arg2: any, cb: Callback<Java.String>): void;
-        copyValueOf(arg0: any, arg1: any, arg2: any): Java.String;
-        copyValueOfP(arg0: any, arg1: any, arg2: any): Promise<Java.String>;
+        copyValueOfA(arg0: any[], arg1: any, arg2: any, cb: Callback<Java.String>): void;
+        copyValueOf(arg0: any[], arg1: any, arg2: any): Java.String;
+        copyValueOfP(arg0: any[], arg1: any, arg2: any): Promise<Java.String>;
         // public static java.lang.String java.lang.String.copyValueOf(char[])
-        copyValueOfA(arg0: any, cb: Callback<Java.String>): void;
-        copyValueOf(arg0: any): Java.String;
-        copyValueOfP(arg0: any): Promise<Java.String>;
+        copyValueOfA(arg0: any[], cb: Callback<Java.String>): void;
+        copyValueOf(arg0: any[]): Java.String;
+        copyValueOfP(arg0: any[]): Promise<Java.String>;
         // public static java.lang.String java.lang.String.format(java.util.Locale,java.lang.String,java.lang.Object...)
         formatA(arg0: any, arg1: Java.String, arg2: Java.Object[], cb: Callback<Java.String>): void;
         format(arg0: any, arg1: Java.String, ...arg2: Java.Object[]): Java.String;
@@ -2455,27 +2455,27 @@ export module Java {
         formatP(arg0: Java.String, ...arg1: Java.Object[]): Promise<Java.String>;
         formatP(arg0: Java.String, arg1: Java.Object[]): Promise<Java.String>;
         // public static java.lang.String java.lang.String.join(java.lang.CharSequence,java.lang.CharSequence...)
-        joinA(arg0: any, arg1: any, cb: Callback<Java.String>): void;
-        join(arg0: any, ...arg1: any): Java.String;
-        join(arg0: any, arg1: any): Java.String;
-        joinP(arg0: any, ...arg1: any): Promise<Java.String>;
-        joinP(arg0: any, arg1: any): Promise<Java.String>;
+        joinA(arg0: any, arg1: any[], cb: Callback<Java.String>): void;
+        join(arg0: any, ...arg1: any[]): Java.String;
+        join(arg0: any, arg1: any[]): Java.String;
+        joinP(arg0: any, ...arg1: any[]): Promise<Java.String>;
+        joinP(arg0: any, arg1: any[]): Promise<Java.String>;
         // public static java.lang.String java.lang.String.join(java.lang.CharSequence,java.lang.Iterable<? extends java.lang.CharSequence>)
         joinA(arg0: any, arg1: any, cb: Callback<Java.String>): void;
         join(arg0: any, arg1: any): Java.String;
         joinP(arg0: any, arg1: any): Promise<Java.String>;
         // public static java.lang.String java.lang.String.valueOf(char[],int,int)
-        valueOfA(arg0: any, arg1: any, arg2: any, cb: Callback<Java.String>): void;
-        valueOf(arg0: any, arg1: any, arg2: any): Java.String;
-        valueOfP(arg0: any, arg1: any, arg2: any): Promise<Java.String>;
+        valueOfA(arg0: any[], arg1: any, arg2: any, cb: Callback<Java.String>): void;
+        valueOf(arg0: any[], arg1: any, arg2: any): Java.String;
+        valueOfP(arg0: any[], arg1: any, arg2: any): Promise<Java.String>;
         // public static java.lang.String java.lang.String.valueOf(java.lang.Object)
         valueOfA(arg0: Java.Object, cb: Callback<Java.String>): void;
         valueOf(arg0: Java.Object): Java.String;
         valueOfP(arg0: Java.Object): Promise<Java.String>;
         // public static java.lang.String java.lang.String.valueOf(char[])
-        valueOfA(arg0: any, cb: Callback<Java.String>): void;
-        valueOf(arg0: any): Java.String;
-        valueOfP(arg0: any): Promise<Java.String>;
+        valueOfA(arg0: any[], cb: Callback<Java.String>): void;
+        valueOf(arg0: any[]): Java.String;
+        valueOfP(arg0: any[]): Promise<Java.String>;
         // public static java.lang.String java.lang.String.valueOf(boolean)
         valueOfA(arg0: any, cb: Callback<Java.String>): void;
         valueOf(arg0: any): Java.String;
@@ -2579,9 +2579,9 @@ export module Java {
       stream(): any;
       streamP(): Promise<any>;
       // public abstract <T> T[] java.util.Collection.toArray(T[])
-      toArrayA(arg0: any, cb: Callback<any>): void;
-      toArray(arg0: any): any;
-      toArrayP(arg0: any): Promise<any>;
+      toArrayA(arg0: any[], cb: Callback<any[]>): void;
+      toArray(arg0: any[]): any[];
+      toArrayP(arg0: any[]): Promise<any[]>;
       // public abstract java.lang.Object[] java.util.Collection.toArray()
       toArrayA( cb: Callback<Java.Object[]>): void;
       toArray(): Java.Object[];
@@ -2841,9 +2841,9 @@ export module Java {
       subList(arg0: any, arg1: any): any;
       subListP(arg0: any, arg1: any): Promise<any>;
       // public abstract <T> T[] java.util.Collection.toArray(T[])
-      toArrayA(arg0: any, cb: Callback<any>): void;
-      toArray(arg0: any): any;
-      toArrayP(arg0: any): Promise<any>;
+      toArrayA(arg0: any[], cb: Callback<any[]>): void;
+      toArray(arg0: any[]): any[];
+      toArrayP(arg0: any[]): Promise<any[]>;
       // public abstract java.lang.Object[] java.util.Collection.toArray()
       toArrayA( cb: Callback<Java.Object[]>): void;
       toArray(): Java.Object[];
@@ -3374,9 +3374,9 @@ export module Java {
       summaryStatistics(): any;
       summaryStatisticsP(): Promise<any>;
       // public abstract double[] java.util.stream.DoubleStream.toArray()
-      toArrayA( cb: Callback<any>): void;
-      toArray(): any;
-      toArrayP(): Promise<any>;
+      toArrayA( cb: Callback<any[]>): void;
+      toArray(): any[];
+      toArrayP(): Promise<any[]>;
       // public abstract S java.util.stream.BaseStream.unordered()
       unorderedA( cb: Callback<any>): void;
       unordered(): any;
@@ -3406,11 +3406,11 @@ export module Java {
         iterate(arg0: any, arg1: any): Java.DoubleStream;
         iterateP(arg0: any, arg1: any): Promise<Java.DoubleStream>;
         // public static java.util.stream.DoubleStream java.util.stream.DoubleStream.of(double...)
-        ofA(arg0: any, cb: Callback<Java.DoubleStream>): void;
-        of(...arg0: any): Java.DoubleStream;
-        of(arg0: any): Java.DoubleStream;
-        ofP(...arg0: any): Promise<Java.DoubleStream>;
-        ofP(arg0: any): Promise<Java.DoubleStream>;
+        ofA(arg0: any[], cb: Callback<Java.DoubleStream>): void;
+        of(...arg0: any[]): Java.DoubleStream;
+        of(arg0: any[]): Java.DoubleStream;
+        ofP(...arg0: any[]): Promise<Java.DoubleStream>;
+        ofP(arg0: any[]): Promise<Java.DoubleStream>;
         // public static java.util.stream.DoubleStream java.util.stream.DoubleStream.of(double)
         ofA(arg0: any, cb: Callback<Java.DoubleStream>): void;
         of(arg0: any): Java.DoubleStream;
@@ -3612,9 +3612,9 @@ export module Java {
       summaryStatistics(): any;
       summaryStatisticsP(): Promise<any>;
       // public abstract int[] java.util.stream.IntStream.toArray()
-      toArrayA( cb: Callback<any>): void;
-      toArray(): any;
-      toArrayP(): Promise<any>;
+      toArrayA( cb: Callback<any[]>): void;
+      toArray(): any[];
+      toArrayP(): Promise<any[]>;
       // public abstract S java.util.stream.BaseStream.unordered()
       unorderedA( cb: Callback<any>): void;
       unordered(): any;
@@ -3644,11 +3644,11 @@ export module Java {
         iterate(arg0: any, arg1: any): Java.IntStream;
         iterateP(arg0: any, arg1: any): Promise<Java.IntStream>;
         // public static java.util.stream.IntStream java.util.stream.IntStream.of(int...)
-        ofA(arg0: any, cb: Callback<Java.IntStream>): void;
-        of(...arg0: any): Java.IntStream;
-        of(arg0: any): Java.IntStream;
-        ofP(...arg0: any): Promise<Java.IntStream>;
-        ofP(arg0: any): Promise<Java.IntStream>;
+        ofA(arg0: any[], cb: Callback<Java.IntStream>): void;
+        of(...arg0: any[]): Java.IntStream;
+        of(arg0: any[]): Java.IntStream;
+        ofP(...arg0: any[]): Promise<Java.IntStream>;
+        ofP(arg0: any[]): Promise<Java.IntStream>;
         // public static java.util.stream.IntStream java.util.stream.IntStream.of(int)
         ofA(arg0: any, cb: Callback<Java.IntStream>): void;
         of(arg0: any): Java.IntStream;
@@ -3854,9 +3854,9 @@ export module Java {
       summaryStatistics(): any;
       summaryStatisticsP(): Promise<any>;
       // public abstract long[] java.util.stream.LongStream.toArray()
-      toArrayA( cb: Callback<any>): void;
-      toArray(): any;
-      toArrayP(): Promise<any>;
+      toArrayA( cb: Callback<any[]>): void;
+      toArray(): any[];
+      toArrayP(): Promise<any[]>;
       // public abstract S java.util.stream.BaseStream.unordered()
       unorderedA( cb: Callback<any>): void;
       unordered(): any;
@@ -3886,11 +3886,11 @@ export module Java {
         iterate(arg0: any, arg1: any): Java.LongStream;
         iterateP(arg0: any, arg1: any): Promise<Java.LongStream>;
         // public static java.util.stream.LongStream java.util.stream.LongStream.of(long...)
-        ofA(arg0: any, cb: Callback<Java.LongStream>): void;
-        of(...arg0: any): Java.LongStream;
-        of(arg0: any): Java.LongStream;
-        ofP(...arg0: any): Promise<Java.LongStream>;
-        ofP(arg0: any): Promise<Java.LongStream>;
+        ofA(arg0: any[], cb: Callback<Java.LongStream>): void;
+        of(...arg0: any[]): Java.LongStream;
+        of(arg0: any[]): Java.LongStream;
+        ofP(...arg0: any[]): Promise<Java.LongStream>;
+        ofP(arg0: any[]): Promise<Java.LongStream>;
         // public static java.util.stream.LongStream java.util.stream.LongStream.of(long)
         ofA(arg0: any, cb: Callback<Java.LongStream>): void;
         of(arg0: any): Java.LongStream;
@@ -4084,9 +4084,9 @@ export module Java {
       spliterator(): any;
       spliteratorP(): Promise<any>;
       // public abstract <A> A[] java.util.stream.Stream.toArray(java.util.function.IntFunction<A[]>)
-      toArrayA(arg0: any, cb: Callback<any>): void;
-      toArray(arg0: any): any;
-      toArrayP(arg0: any): Promise<any>;
+      toArrayA(arg0: any, cb: Callback<any[]>): void;
+      toArray(arg0: any): any[];
+      toArrayP(arg0: any): Promise<any[]>;
       // public abstract java.lang.Object[] java.util.stream.Stream.toArray()
       toArrayA( cb: Callback<Java.Object[]>): void;
       toArray(): Java.Object[];
@@ -4120,11 +4120,11 @@ export module Java {
         iterate(arg0: any, arg1: any): any;
         iterateP(arg0: any, arg1: any): Promise<any>;
         // public static <T> java.util.stream.Stream<T> java.util.stream.Stream.of(T...)
-        ofA(arg0: any, cb: Callback<any>): void;
-        of(...arg0: any): any;
-        of(arg0: any): any;
-        ofP(...arg0: any): Promise<any>;
-        ofP(arg0: any): Promise<any>;
+        ofA(arg0: any[], cb: Callback<any>): void;
+        of(...arg0: any[]): any;
+        of(arg0: any[]): any;
+        ofP(...arg0: any[]): Promise<any>;
+        ofP(arg0: any[]): Promise<any>;
         // public static <T> java.util.stream.Stream<T> java.util.stream.Stream.of(T)
         ofA(arg0: any, cb: Callback<any>): void;
         of(arg0: any): any;

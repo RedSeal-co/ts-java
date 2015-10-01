@@ -429,8 +429,21 @@ export class ClassesMap {
   // *translateGenericType()*: Given a string that may be a java generic type, return the best translation
   // to a typescript type.
   public translateGenericType(javaGenericType: string): string {
-    var tsGenericType = this.translateFullClassPathsToShortAlias(javaGenericType);
+    var tsGenericType = javaGenericType;
+
+    // Detect if the type is an array type. If it is strip the string of [] from the type, to be restored later.
+    var m: Array<string> = tsGenericType.match(/^([^\[]+)(\[\])+$/);
+    if (m) {
+      tsGenericType = m[1];
+    }
+
+    tsGenericType = this.translateFullClassPathsToShortAlias(tsGenericType);
     tsGenericType = this.translateGenericTypeLists(tsGenericType);
+
+    if (m) {
+      tsGenericType = tsGenericType + m[2];
+    }
+
     return tsGenericType;
   }
 
@@ -475,6 +488,7 @@ export class ClassesMap {
       paramNames: _.map(method.getParameters(), (p: Java.Parameter) => { return p.getName(); }),
       paramTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return p.getName(); }),
       tsParamTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return this.tsTypeNameInputEncoded(p.getName()); }),
+      genericParamTypes: _.map(method.getGenericParameterTypes(), (p: Java.Type) => p.getTypeName()),
       tsGenericParamTypes: _.map(method.getGenericParameterTypes(), (p: Java.Type) => this.translateGenericType(p.getTypeName())),
       tsTypeParameters: _.map(method.getTypeParameters(), (p: Java.TypeVariable) => { return p.getName(); }),
       isStatic: isStatic,
@@ -1139,6 +1153,7 @@ export module ClassesMap {
     paramNames: Array<string>;  // [ 'arg0' ],
     paramTypes: Array<string>;  // [ 'java.util.function.Consumer', '[S' ],
     tsParamTypes: Array<string>;  // [ 'java.util.function_.Consumer',  'number' ],
+    genericParamTypes: Array<string>;
     tsGenericParamTypes: Array<string>;
     tsTypeParameters: Array<string>;
     isStatic: boolean;      // true if this is a static method
