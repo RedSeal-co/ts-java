@@ -294,6 +294,9 @@ export class ClassesMap {
     return typeName;
   }
 
+  // #### **getJavaAliasName()**: given a java full classname string, return the aliased short name.
+  // In cases where the the short class name is ambiguous, return the full name.
+  // In all cases, add the 'Java.' namespace qualifier.
   public getJavaAliasName(className: string): string {
     var typeName = className;
     assert.ok(this.isIncludedClass(typeName));
@@ -354,9 +357,11 @@ export class ClassesMap {
     return typeName;
   }
 
+  // *translateFullClassPathsToShortAlias()*: Given a string which may be a java generic type string,
+  // find all full java class paths and translate them to their short alias names.
   public translateFullClassPathsToShortAlias(javaGenericType: string): string {
     // javaGenericType might be a complex type, say java.util.List<java.lang.Class<?>>
-
+    // The translated result would be: Java.List<Java.Class<?>>
     var translated: string = javaGenericType;
     var re: RegExp = /[\w\$\.]+/g;
     var m: Array<string>;
@@ -374,25 +379,58 @@ export class ClassesMap {
     return translated;
   }
 
+  // *translateGenericTypeLists()*: Given a string that may be a java generic type, find all generic
+  // constraint expressions <...> and translate them to the best corresponding typescript constraint.
+  public translateGenericTypeLists(javaGenericType: string): string {
+    // javaGenericType might be a complex type, for example java.util.List<java.lang.Class<?>>
+    // As in the example, there may be nested expressions. The algorithm that follows processes
+    // the innermost expressions first, replacing the angle brackets < and > with utf8 characters « and ».
+    // When all angle brackets have been translated, we make one last pass to restore them.
+
+    if (javaGenericType.indexOf('<') === -1) {
+      return javaGenericType;
+    }
+
+    var translated: string = javaGenericType;
+    var done: boolean = false;
+
+    while (!done) {
+      done = true;
+      var re: RegExp = /<([^<]+)>/g;
+      var m: Array<string>;
+      while ((m = re.exec(translated)) != null) {
+        done = false;
+        var parts: string[] = m[1].split(',');
+        parts = _.map(parts, (s: string) => {
+          s = s.trim();
+
+          // Typescript doesn't have wildcards in generics.
+          // But I believe an upper bound wildcard expression '? extends T' can be safely translated to 'T'.
+          s = s.replace(/\? extends /, '');
+
+          // Typescript doesn't have lower bound expressions at all.
+          // Replacing '? super T' with 'T' will be wrong in nearly all cases, so we just replace the whole
+          // constraint with 'any'.
+          // But we also need to translate '?' to 'any', so we combine these two cases by just translating
+          // any constraint that starts with ? to 'any'
+          if (s[0] === '?') { s = 'any'; }
+          return s;
+        });
+        var reconstructed: string = '«' + parts.join(', ') + '»';
+        translated = translated.replace(m[0], reconstructed);
+        re.lastIndex -= m[0].length - reconstructed.length;
+      }
+    }
+
+    translated = translated.replace(/«/g, '<').replace(/»/g, '>');
+    return translated;
+  }
+
+  // *translateGenericType()*: Given a string that may be a java generic type, return the best translation
+  // to a typescript type.
   public translateGenericType(javaGenericType: string): string {
-    // TODO: this is still a work in progress
-
     var tsGenericType = this.translateFullClassPathsToShortAlias(javaGenericType);
-
-    while (true) {
-      var tmp = tsGenericType.replace(/\? extends /g, '');
-      if (tmp === tsGenericType) { break; }
-      tsGenericType = tmp;
-    }
-
-    while (true) {
-      // TODO: we probably should just use translate to <any>
-      var tmp = tsGenericType.replace(/\? super /g, '');
-      if (tmp === tsGenericType) { break; }
-      tsGenericType = tmp;
-    }
-
-    tsGenericType = tsGenericType.replace(/<\?>/g, '<any>');
+    tsGenericType = this.translateGenericTypeLists(tsGenericType);
     return tsGenericType;
   }
 
