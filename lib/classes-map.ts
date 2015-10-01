@@ -812,16 +812,18 @@ export class ClassesMap {
     var genericFieldType: Java.Type = field.getGenericType();
     var fieldTypeName: string = fieldType.getName();
     var declaredIn: string = field.getDeclaringClass().getName();
-    var tsType: string = this.tsTypeName(fieldTypeName, ParamContext.eReturn, true);
-    var tsGenericType: string = genericFieldType.getTypeName();
+    var tsRegularType: string = this.tsTypeName(fieldTypeName, ParamContext.eReturn, true);
+    var tsGenericType: string = this.translateGenericType(genericFieldType.getTypeName());
+    var tsType: string = this.options.generics ? tsGenericType : tsRegularType;
 
     var isStatic: boolean = this.Modifier.isStatic(field.getModifiers());
     var isSynthetic: boolean = field.isSynthetic();
 
     var fieldDefinition: FieldDefinition = {
       name: name,
-      tsType: tsType,
+      tsRegularType: tsRegularType,
       tsGenericType: tsGenericType,
+      tsType: tsType,
       isStatic: isStatic,
       isSynthetic: isSynthetic,
       declaredIn: declaredIn
@@ -1156,6 +1158,7 @@ export module ClassesMap {
   export interface FieldDefinition {
     name: string;
     tsType: string;
+    tsRegularType: string;
     tsGenericType: string;
     isStatic: boolean;
     isSynthetic: boolean;

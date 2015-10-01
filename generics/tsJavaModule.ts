@@ -680,10 +680,10 @@ export module Java {
     }
     export module Boolean {
       export interface Static {
-        TRUE: boolean;
-        FALSE: boolean;
-        TYPE: Java.Class;
-        class: Java.Class;
+        TRUE: Java.Boolean;
+        FALSE: Java.Boolean;
+        TYPE: Java.Class<Java.Boolean>;
+        class: Java.Class<any>;
         new (arg0: Java.String): java.lang.Boolean;
         new (arg0: any): java.lang.Boolean;
         // public static int java.lang.Boolean.compare(boolean,boolean)
@@ -1023,7 +1023,7 @@ export module Java {
     }
     export module Class {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
         // public static java.lang.Class<?> java.lang.Class.forName(java.lang.String,boolean,java.lang.ClassLoader) throws java.lang.ClassNotFoundException
         forNameA(arg0: Java.String, arg1: any, arg2: any, cb: Callback<Java.Class<any>>): void;
         forName(arg0: Java.String, arg1: any, arg2: any): Java.Class<any>;
@@ -1117,18 +1117,18 @@ export module Java {
     }
     export module Double {
       export interface Static {
-        POSITIVE_INFINITY: number;
-        NEGATIVE_INFINITY: number;
-        NaN: number;
-        MAX_VALUE: number;
-        MIN_NORMAL: number;
-        MIN_VALUE: number;
-        MAX_EXPONENT: number;
-        MIN_EXPONENT: number;
-        SIZE: number;
-        BYTES: number;
-        TYPE: Java.Class;
-        class: Java.Class;
+        POSITIVE_INFINITY: any;
+        NEGATIVE_INFINITY: any;
+        NaN: any;
+        MAX_VALUE: any;
+        MIN_NORMAL: any;
+        MIN_VALUE: any;
+        MAX_EXPONENT: any;
+        MIN_EXPONENT: any;
+        SIZE: any;
+        BYTES: any;
+        TYPE: Java.Class<Java.Double>;
+        class: Java.Class<any>;
         new (arg0: Java.String): java.lang.Double;
         new (arg0: any): java.lang.Double;
         // public static int java.lang.Double.compare(double,double)
@@ -1260,7 +1260,7 @@ export module Java {
     }
     export module Enum {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOfA(arg0: any, arg1: Java.String, cb: Callback<any>): void;
         valueOf(arg0: any, arg1: Java.String): any;
@@ -1350,18 +1350,18 @@ export module Java {
     }
     export module Float {
       export interface Static {
-        POSITIVE_INFINITY: number;
-        NEGATIVE_INFINITY: number;
-        NaN: number;
-        MAX_VALUE: number;
-        MIN_NORMAL: number;
-        MIN_VALUE: number;
-        MAX_EXPONENT: number;
-        MIN_EXPONENT: number;
-        SIZE: number;
-        BYTES: number;
-        TYPE: Java.Class;
-        class: Java.Class;
+        POSITIVE_INFINITY: any;
+        NEGATIVE_INFINITY: any;
+        NaN: any;
+        MAX_VALUE: any;
+        MIN_NORMAL: any;
+        MIN_VALUE: any;
+        MAX_EXPONENT: any;
+        MIN_EXPONENT: any;
+        SIZE: any;
+        BYTES: any;
+        TYPE: Java.Class<Java.Float>;
+        class: Java.Class<any>;
         new (arg0: Java.String): java.lang.Float;
         new (arg0: any): java.lang.Float;
         new (arg0: any): java.lang.Float;
@@ -1506,12 +1506,12 @@ export module Java {
     }
     export module Integer {
       export interface Static {
-        MIN_VALUE: number;
-        MAX_VALUE: number;
-        TYPE: Java.Class;
-        SIZE: number;
-        BYTES: number;
-        class: Java.Class;
+        MIN_VALUE: any;
+        MAX_VALUE: any;
+        TYPE: Java.Class<Java.Integer>;
+        SIZE: any;
+        BYTES: any;
+        class: Java.Class<any>;
         new (arg0: Java.String): java.lang.Integer;
         new (arg0: any): java.lang.Integer;
         // public static int java.lang.Integer.bitCount(int)
@@ -1683,7 +1683,7 @@ export module Java {
     }
     export module Iterable {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
       }
     }
   }
@@ -1761,12 +1761,12 @@ export module Java {
     }
     export module Long {
       export interface Static {
-        MIN_VALUE: longValue_t;
-        MAX_VALUE: longValue_t;
-        TYPE: Java.Class;
-        SIZE: number;
-        BYTES: number;
-        class: Java.Class;
+        MIN_VALUE: any;
+        MAX_VALUE: any;
+        TYPE: Java.Class<Java.Long>;
+        SIZE: any;
+        BYTES: any;
+        class: Java.Class<any>;
         new (arg0: Java.String): java.lang.Long;
         new (arg0: any): java.lang.Long;
         // public static int java.lang.Long.bitCount(long)
@@ -1982,7 +1982,7 @@ export module Java {
     }
     export module Number {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
         new (): java.lang.Number;
       }
     }
@@ -2029,7 +2029,7 @@ export module Java {
     }
     export module Object {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
         new (): java.lang.Object;
       }
     }
@@ -2108,12 +2108,12 @@ export module Java {
     }
     export module Short {
       export interface Static {
-        MIN_VALUE: number;
-        MAX_VALUE: number;
-        TYPE: Java.Class;
-        SIZE: number;
-        BYTES: number;
-        class: Java.Class;
+        MIN_VALUE: any;
+        MAX_VALUE: any;
+        TYPE: Java.Class<Java.Short>;
+        SIZE: any;
+        BYTES: any;
+        class: Java.Class<any>;
         new (arg0: Java.String): java.lang.Short;
         new (arg0: any): java.lang.Short;
         // public static int java.lang.Short.compare(short,short)
@@ -2417,8 +2417,8 @@ export module Java {
     }
     export module String {
       export interface Static {
-        CASE_INSENSITIVE_ORDER: object_t;
-        class: Java.Class;
+        CASE_INSENSITIVE_ORDER: any;
+        class: Java.Class<any>;
         new (arg0: any, arg1: any, arg2: any, arg3: any): java.lang.String;
         new (arg0: any, arg1: any, arg2: any, arg3: Java.String): java.lang.String;
         new (arg0: any, arg1: any, arg2: any, arg3: any): java.lang.String;
@@ -2589,7 +2589,7 @@ export module Java {
     }
     export module Collection {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
       }
     }
   }
@@ -2607,7 +2607,7 @@ export module Java {
     }
     export module Consumer {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
       }
     }
   }
@@ -2625,7 +2625,7 @@ export module Java {
     }
     export module DoubleConsumer {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
       }
     }
   }
@@ -2647,7 +2647,7 @@ export module Java {
     }
     export module Function {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
         // public static <T> java.util.function.Function<T, T> java.util.function.Function.identity()
         identityA( cb: Callback<any>): void;
         identity(): any;
@@ -2669,7 +2669,7 @@ export module Java {
     }
     export module IntConsumer {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
       }
     }
   }
@@ -2687,7 +2687,7 @@ export module Java {
     }
     export module LongConsumer {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
       }
     }
   }
@@ -2713,7 +2713,7 @@ export module Java {
     }
     export module Iterator {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
       }
     }
   }
@@ -2851,7 +2851,7 @@ export module Java {
     }
     export module List {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
       }
     }
   }
@@ -2893,7 +2893,7 @@ export module Java {
     }
     export module BaseStream {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
       }
     }
   }
@@ -2923,7 +2923,7 @@ export module Java {
     }
     export module Collector {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
         // public static <T,A,R> java.util.stream.Collector<T, A, R> java.util.stream.Collector.of(java.util.function.Supplier<A>,java.util.function.BiConsumer<A, T>,java.util.function.BinaryOperator<A>,java.util.function.Function<A, R>,java.util.stream.Collector$Characteristics...)
         ofA(arg0: any, arg1: any, arg2: any, arg3: any, arg4: Java.Collector$Characteristics[], cb: Callback<any>): void;
         of(arg0: any, arg1: any, arg2: any, arg3: any, ...arg4: Java.Collector$Characteristics[]): any;
@@ -3004,7 +3004,7 @@ export module Java {
         CONCURRENT: Java.Collector$Characteristics;
         UNORDERED: Java.Collector$Characteristics;
         IDENTITY_FINISH: Java.Collector$Characteristics;
-        class: Java.Class;
+        class: Java.Class<any>;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
         valueOfA(arg0: any, arg1: Java.String, cb: Callback<any>): void;
         valueOf(arg0: any, arg1: Java.String): any;
@@ -3062,7 +3062,7 @@ export module Java {
     }
     export module Collectors {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
         // public static <T> java.util.stream.Collector<T, ?, java.lang.Double> java.util.stream.Collectors.averagingDouble(java.util.function.ToDoubleFunction<? super T>)
         averagingDoubleA(arg0: any, cb: Callback<any>): void;
         averagingDouble(arg0: any): any;
@@ -3384,7 +3384,7 @@ export module Java {
     }
     export module DoubleStream {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
         // public static java.util.stream.DoubleStream$Builder java.util.stream.DoubleStream.builder()
         builderA( cb: Callback<Java.DoubleStream$Builder>): void;
         builder(): Java.DoubleStream$Builder;
@@ -3440,7 +3440,7 @@ export module Java {
     }
     export module DoubleStream$Builder {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
       }
     }
   }
@@ -3622,7 +3622,7 @@ export module Java {
     }
     export module IntStream {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
         // public static java.util.stream.IntStream$Builder java.util.stream.IntStream.builder()
         builderA( cb: Callback<Java.IntStream$Builder>): void;
         builder(): Java.IntStream$Builder;
@@ -3686,7 +3686,7 @@ export module Java {
     }
     export module IntStream$Builder {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
       }
     }
   }
@@ -3864,7 +3864,7 @@ export module Java {
     }
     export module LongStream {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
         // public static java.util.stream.LongStream$Builder java.util.stream.LongStream.builder()
         builderA( cb: Callback<Java.LongStream$Builder>): void;
         builder(): Java.LongStream$Builder;
@@ -3928,7 +3928,7 @@ export module Java {
     }
     export module LongStream$Builder {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
       }
     }
   }
@@ -4098,7 +4098,7 @@ export module Java {
     }
     export module Stream {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
         // public static <T> java.util.stream.Stream.java.util.stream.Stream$Builder<T> java.util.stream.Stream.builder()
         builderA( cb: Callback<any>): void;
         builder(): any;
@@ -4154,7 +4154,7 @@ export module Java {
     }
     export module Stream$Builder {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
       }
     }
   }
@@ -4200,7 +4200,7 @@ export module Java {
     }
     export module StreamSupport {
       export interface Static {
-        class: Java.Class;
+        class: Java.Class<any>;
         // public static java.util.stream.DoubleStream java.util.stream.StreamSupport.doubleStream(java.util.function.Supplier<? extends java.util.Spliterator$OfDouble>,int,boolean)
         doubleStreamA(arg0: any, arg1: any, arg2: any, cb: Callback<Java.DoubleStream>): void;
         doubleStream(arg0: any, arg1: any, arg2: any): Java.DoubleStream;
