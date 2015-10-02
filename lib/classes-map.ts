@@ -87,6 +87,10 @@ export class ClassesMap {
   // 2) Remove any non-public classes from the list.
   private allClasses: Immutable.Set<string>;
 
+  // allExcludedClasses is the list of all classes seen in the classpath that were excluded
+  // by the configuration.
+  private allExcludedClasses: Immutable.Set<string>;
+
   private interfaceDepthCache: Immutable.Map<string, number>;
 
   private Modifier: Java.Modifier.Static = Java.importClass('java.lang.reflect.Modifier');
@@ -100,6 +104,7 @@ export class ClassesMap {
     this.unhandledInterfaces = Immutable.Set<string>();
     this.unhandledSuperClasses = Immutable.Set<string>();
     this.allClasses = Immutable.Set<string>();
+    this.allExcludedClasses = Immutable.Set<string>();
 
     this.Modifier = Java.importClass('java.lang.reflect.Modifier');
 
@@ -131,6 +136,28 @@ export class ClassesMap {
       .then(() => this.loadClassCache())
       .then(() => this.createShortNameMap())
       .then(() => this.analyzeIncludedClasses());
+  }
+
+  // *isExcludedClass()*: return true if className was seen in classpath, but excluded by configuration.
+  // Return false if the className was seen in classpath and allowed by configuration.
+  // Throws exception for unrecognized class name.
+  // If className appears to be a generic type, perform the test on just the classname.
+  public isExcludedClass(className: string) {
+    var genericTypeExp: RegExp = /^(.*)<(.*)>$/;
+    var m: Array<string> = genericTypeExp.exec(className);
+    if (m) {
+      className = m[1];
+    }
+    var isExcluded: boolean = this.allExcludedClasses.has(className);
+    if (!isExcluded) {
+      // For defensive programming purposes, let's confirm that className is a legitimate className,
+      // by confirming that it exists in the allClasses list:
+      var isKnown: boolean = this.allClasses.has(className);
+      if (!isKnown) {
+        throw new Error(className + ' is not a known className');
+      }
+    }
+    return isExcluded;
   }
 
   // *getSortedClasses()*: return a sorted array of classes.
@@ -1019,6 +1046,8 @@ export class ClassesMap {
               var className: string = entryPath.slice(0, -'.class'.length).replace(/\//g, '.');
               if (this.inWhiteList(className)) {
                 result.push(className);
+              } else {
+                this.allExcludedClasses = this.allExcludedClasses.add(className);
               }
             }
           }
@@ -1106,6 +1135,7 @@ export class ClassesMap {
       }
     });
     this.allClasses = this.allClasses.subtract(nonPublic);
+    this.allExcludedClasses = this.allExcludedClasses.union(nonPublic);
     return;
   }
 

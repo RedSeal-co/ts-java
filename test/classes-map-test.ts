@@ -67,6 +67,44 @@ describe('ClassesMap', () => {
     });
   });
 
+  describe('isExcludedClass', () => {
+    it('should return true for classes seen in classpath but excluded by configuration', () => {
+      var testList: string[] = [
+        'java.io.Closeable',
+        'java.lang.AutoCloseable',
+        'java.lang.reflect.AccessibleObject',
+        'java.util.function.BiConsumer',
+        'java.util.function.BiConsumer<R, T>'
+      ];
+      _.forEach(testList, (className: string) => {
+        expect(classesMap.isExcludedClass(className), className).to.equal(true);
+      });
+    });
+    it('should return false for classes seen in classpath and included by configuration', () => {
+      var testList: string[] = [
+        'java.lang.Object',
+        'java.lang.Class',
+        'java.util.Iterator',
+        'java.util.List',
+        'java.lang.Class<?>',
+        'java.util.List<?>',
+      ];
+      _.forEach(testList, (className: string) => {
+        expect(classesMap.isExcludedClass(className), className).to.equal(false);
+      });
+    });
+    it('should throw assert exception for class names not seen in classpath', () => {
+      var testList: string[] = [
+        'java.lang.BogusClass',
+        'lava.util.Iterator',
+        'java.lang.BogusClass<T>',
+      ];
+      _.forEach(testList, (className: string) => {
+        expect(() => classesMap.isExcludedClass(className), className).to.throw(Error);
+      });
+    });
+  });
+
   describe('shortClassName', () => {
     it('should give expected results for valid class names', () => {
       expect(classesMap.shortClassName('java.lang.Object')).to.equal('Object');
