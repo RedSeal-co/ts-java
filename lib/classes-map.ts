@@ -149,6 +149,32 @@ export class ClassesMap {
     return className;
   }
 
+  // *classNameOnly()*: Given a string that is either a classname, or a generic type, return just the classname.
+  // This method should only be called in contexts where the name is a known classname or generic type name,
+  // but for defensive programming purposes we thrown an exception if the name is not known.
+  public classNameOnly(possiblyGenericClassName: string) {
+    var genericTypeExp: RegExp = /^(.*)<(.*)>$/;
+    var m: Array<string> = genericTypeExp.exec(possiblyGenericClassName);
+    var className: string = m ? m[1] : possiblyGenericClassName;
+    className = this.fixGenericNestedTypeName(className);
+
+    // For defensive programming purposes, let's confirm that className is a legitimate className,
+    // (seen while scanning all classes in the classpath):
+    var isKnown: boolean = this.allClasses.has(className) || this.allExcludedClasses.has(className);
+    if (!isKnown) {
+      throw new Error(possiblyGenericClassName + ' is not a known className');
+    }
+
+    return className;
+  }
+
+  // *isIncludedClass()*: Return true if the class will appear in the output java.d.ts file.
+  // All such classes 1) match the classes or package expressions in the tsjava section of the package.json,
+  // and 2) are public.
+  public isIncludedClass(className: string): boolean {
+    return this.allClasses.has(this.classNameOnly(className));
+  }
+
   // *isExcludedClass()*: return true if className was seen in classpath, but excluded by configuration.
   // Return false if the className was seen in classpath and allowed by configuration.
   // Throws exception for unrecognized class name.
@@ -277,7 +303,7 @@ export class ClassesMap {
   // #### **mapUnhandledTypesToJavaLangObject()**: if typeName is a java class not included by configuration,
   // record that the class is 'unhandled', and instead use java.lang.Object.
   public mapUnhandledTypesToJavaLangObject(typeName: string): string {
-    if (!this.isIncludedClass(typeName) && typeName !== 'void') {
+    if (typeName !== 'void' && !this.isIncludedClass(typeName)) {
       // Since the type is not in our included classes, we might want to use the Typescript 'any' type.
       // However, array_t<any> doesn't really make sense. Rather, we want array_t<Object>,
       // or possibly instead of Object a superclass that is in our whitelist.
@@ -783,13 +809,6 @@ export class ClassesMap {
 
     ddbg('CHECK:', result);
     return result;
-  }
-
-  // *isIncludedClass()*: Return true if the class will appear in the output java.d.ts file.
-  // All such classes 1) match the classes or package expressions in the tsjava section of the package.json,
-  // and 2) are public.
-  private isIncludedClass(className: string): boolean {
-    return this.allClasses.has(className);
   }
 
   // *resolveInterfaces()*: Find the set of non-excluded interfaces for the given class `clazz`.
