@@ -421,6 +421,10 @@ export class ClassesMap {
     return typeName;
   }
 
+  public isSimpleName(s: string): boolean {
+    return s.match(/^\w+$/) !== null;
+  }
+
   // *translateFullClassPathsToShortAlias()*: Given a string which may be a java generic type string,
   // find all full java class paths and translate them to their short alias names.
   public translateFullClassPathsToShortAlias(javaGenericType: string): string {
@@ -430,11 +434,17 @@ export class ClassesMap {
     var re: RegExp = /[\w\$\.]+/g;
     var m: Array<string>;
     while ((m = re.exec(translated)) != null) {
-      if (this.isIncludedClass(m[0])) {
-        var aliasName: string = this.getJavaAliasName(m[0]);
-        translated = translated.replace(m[0], aliasName);
-        re.lastIndex -= m[0].length - aliasName.length;
+      var name: string = m[0];
+      name = this.fixGenericNestedTypeName(name);
+      if (this.isSimpleName(name)) {
+        // This should catch generic free variables (T, E) as well as primitive types (int, long, ...)
+        translated = name;
+      } else if (this.isIncludedClass(name)) {
+        var aliasName: string = this.getJavaAliasName(name);
+        translated = translated.replace(name, aliasName);
+        re.lastIndex -= name.length - aliasName.length;
       } else {
+        assert(this.isExcludedClass(name));
         translated = 'any';
         break;
       }
@@ -460,7 +470,7 @@ export class ClassesMap {
 
     while (!done) {
       done = true;
-      var re: RegExp = /<([^<]+)>/g;
+      var re: RegExp = /<([^<>]+)>/g;
       var m: Array<string>;
       while ((m = re.exec(translated)) != null) {
         done = false;
@@ -480,13 +490,13 @@ export class ClassesMap {
           if (s[0] === '?') { s = 'any'; }
           return s;
         });
-        var reconstructed: string = '«' + parts.join(', ') + '»';
+        var reconstructed: string = '«' + parts.join('‡') + '»';
         translated = translated.replace(m[0], reconstructed);
         re.lastIndex -= m[0].length - reconstructed.length;
       }
     }
 
-    translated = translated.replace(/«/g, '<').replace(/»/g, '>');
+    translated = translated.replace(/«/g, '<').replace(/»/g, '>').replace(/‡/g, ', ');
     return translated;
   }
 
@@ -501,8 +511,8 @@ export class ClassesMap {
       tsGenericType = m[1];
     }
 
-    tsGenericType = this.translateFullClassPathsToShortAlias(tsGenericType);
     tsGenericType = this.translateGenericTypeLists(tsGenericType);
+    tsGenericType = this.translateFullClassPathsToShortAlias(tsGenericType);
 
     if (m) {
       tsGenericType = tsGenericType + m[2];
