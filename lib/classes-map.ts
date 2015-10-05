@@ -138,6 +138,17 @@ export class ClassesMap {
       .then(() => this.analyzeIncludedClasses());
   }
 
+  // *fixGenericNestedTypeName()*: given a className returned by java reflection for generics,
+  // check to see if the className appears to be a nested class name with the outer class redundantly specified.
+  // If so, remove the redundant outer class name.
+  public fixGenericNestedTypeName(className: string) {
+    var m: Array<string> = /^([\w\.]+)\.\1\$(.+)$/.exec(className);
+    if (m) {
+      className = m[1] + '$' + m[2];
+    }
+    return className;
+  }
+
   // *isExcludedClass()*: return true if className was seen in classpath, but excluded by configuration.
   // Return false if the className was seen in classpath and allowed by configuration.
   // Throws exception for unrecognized class name.

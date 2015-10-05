@@ -57,6 +57,14 @@ describe('ClassesMap - Generics', () => {
     });
   });
 
+  describe('fixGenericNestedTypeName', () => {
+    it('nominal', () => {
+      expect(classesMap.fixGenericNestedTypeName('a.b.c.a.b.c$d')).to.be.equal('a.b.c$d');
+      expect(classesMap.fixGenericNestedTypeName('java.util.Map.java.util.Map$Entry<K, V>')).to.be.equal('java.util.Map$Entry<K, V>');
+      expect(classesMap.fixGenericNestedTypeName('java.util.stream.Stream.java.util.stream.Stream$Builder<T>')).to.be.equal('java.util.stream.Stream$Builder<T>');
+    });
+  });
+
   describe('translateGenericProto', () => {
     it('simple case', () => {
       var p = 'public T java.lang.Class.cast(java.lang.Object)';
