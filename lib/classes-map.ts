@@ -523,8 +523,11 @@ export class ClassesMap {
 
   // *translateGenericType()*: Given a string that may be a java generic type, return the best translation
   // to a typescript type.
-  public translateGenericType(javaGenericType: string): string {
-    var tsGenericType = javaGenericType;
+  public translateGenericType(javaGenericType: string, context: ParamContext = ParamContext.eInput): string {
+    var tsGenericType = this.translateIfPrimitiveType(javaGenericType, context);
+    if (tsGenericType !== javaGenericType) {
+      return tsGenericType;
+    }
 
     // Detect if the type is an array type. If it is strip the string of [] from the type, to be restored later.
     var m: Array<string> = tsGenericType.match(/^([^\[]+)(\[\])+$/);
@@ -569,7 +572,7 @@ export class ClassesMap {
     var ts_generic_proto: ParsedPrototype = this.translateGenericProto(generic_proto);
 
     var tsReturnsRegular = this.tsTypeName(returnType, ParamContext.eReturn, true);
-    var tsGenericReturns = this.translateGenericType(genericReturnType);
+    var tsGenericReturns = this.translateGenericType(genericReturnType, ParamContext.eReturn);
     var tsReturns = this.options.generics ? tsGenericReturns : tsReturnsRegular;
 
     var tsGenericParamTypes: Array<string> = _.map(method.getGenericParameterTypes(), (p: Java.Type) => {
@@ -925,7 +928,7 @@ export class ClassesMap {
     var fieldTypeName: string = fieldType.getName();
     var declaredIn: string = field.getDeclaringClass().getName();
     var tsRegularType: string = this.tsTypeName(fieldTypeName, ParamContext.eReturn, true);
-    var tsGenericType: string = this.translateGenericType(genericFieldType.getTypeName());
+    var tsGenericType: string = this.translateGenericType(genericFieldType.getTypeName(), ParamContext.eReturn);
     var tsType: string = this.options.generics ? tsGenericType : tsRegularType;
 
     var isStatic: boolean = this.Modifier.isStatic(field.getModifiers());

@@ -634,13 +634,13 @@ export module Java {
       booleanValue(): boolean_t;
       booleanValueP(): Promise<boolean_t>;
       // public int java.lang.Boolean.compareTo(java.lang.Boolean)
-      compareToA(arg0: Java.Boolean, cb: Callback<integer_t>): void;
-      compareTo(arg0: Java.Boolean): integer_t;
-      compareToP(arg0: Java.Boolean): Promise<integer_t>;
+      compareToA(arg0: Java.Boolean, cb: Callback<number>): void;
+      compareTo(arg0: Java.Boolean): number;
+      compareToP(arg0: Java.Boolean): Promise<number>;
       // public int java.lang.Boolean.compareTo(java.lang.Object)
-      compareToA(arg0: Java.Object, cb: Callback<integer_t>): void;
-      compareTo(arg0: Java.Object): integer_t;
-      compareToP(arg0: Java.Object): Promise<integer_t>;
+      compareToA(arg0: Java.Object, cb: Callback<number>): void;
+      compareTo(arg0: Java.Object): number;
+      compareToP(arg0: Java.Object): Promise<number>;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: Java.Object, cb: Callback<boolean_t>): void;
       equals(arg0: Java.Object): boolean_t;
@@ -650,9 +650,9 @@ export module Java {
       getClass(): Java.Class<any>;
       getClassP(): Promise<Java.Class<any>>;
       // public native int java.lang.Object.hashCode()
-      hashCodeA( cb: Callback<integer_t>): void;
-      hashCode(): integer_t;
-      hashCodeP(): Promise<integer_t>;
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
       // public final native void java.lang.Object.notify()
       notifyA( cb: Callback<void>): void;
       notify(): void;
@@ -687,17 +687,17 @@ export module Java {
         new (arg0: Java.String): java.lang.Boolean;
         new (arg0: boolean_t): java.lang.Boolean;
         // public static int java.lang.Boolean.compare(boolean,boolean)
-        compareA(arg0: boolean_t, arg1: boolean_t, cb: Callback<integer_t>): void;
-        compare(arg0: boolean_t, arg1: boolean_t): integer_t;
-        compareP(arg0: boolean_t, arg1: boolean_t): Promise<integer_t>;
+        compareA(arg0: boolean_t, arg1: boolean_t, cb: Callback<number>): void;
+        compare(arg0: boolean_t, arg1: boolean_t): number;
+        compareP(arg0: boolean_t, arg1: boolean_t): Promise<number>;
         // public static boolean java.lang.Boolean.getBoolean(java.lang.String)
         getBooleanA(arg0: Java.String, cb: Callback<boolean_t>): void;
         getBoolean(arg0: Java.String): boolean_t;
         getBooleanP(arg0: Java.String): Promise<boolean_t>;
         // public static int java.lang.Boolean.hashCode(boolean)
-        hashCodeA(arg0: boolean_t, cb: Callback<integer_t>): void;
-        hashCode(arg0: boolean_t): integer_t;
-        hashCodeP(arg0: boolean_t): Promise<integer_t>;
+        hashCodeA(arg0: boolean_t, cb: Callback<number>): void;
+        hashCode(arg0: boolean_t): number;
+        hashCodeP(arg0: boolean_t): Promise<number>;
         // public static boolean java.lang.Boolean.logicalAnd(boolean,boolean)
         logicalAndA(arg0: boolean_t, arg1: boolean_t, cb: Callback<boolean_t>): void;
         logicalAnd(arg0: boolean_t, arg1: boolean_t): boolean_t;
@@ -893,9 +893,9 @@ export module Java {
       getMethods(): any[];
       getMethodsP(): Promise<any[]>;
       // public native int java.lang.Class.getModifiers()
-      getModifiersA( cb: Callback<integer_t>): void;
-      getModifiers(): integer_t;
-      getModifiersP(): Promise<integer_t>;
+      getModifiersA( cb: Callback<number>): void;
+      getModifiers(): number;
+      getModifiersP(): Promise<number>;
       // public java.lang.String java.lang.Class.getName()
       getNameA( cb: Callback<Java.String>): void;
       getName(): Java.String;
@@ -937,9 +937,9 @@ export module Java {
       getTypeParameters(): any[];
       getTypeParametersP(): Promise<any[]>;
       // public native int java.lang.Object.hashCode()
-      hashCodeA( cb: Callback<integer_t>): void;
-      hashCode(): integer_t;
-      hashCodeP(): Promise<integer_t>;
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
       // public boolean java.lang.Class.isAnnotation()
       isAnnotationA( cb: Callback<boolean_t>): void;
       isAnnotation(): boolean_t;
@@ -1043,37 +1043,37 @@ export module Java {
       byteValue(): object_t;
       byteValueP(): Promise<object_t>;
       // public int java.lang.Double.compareTo(java.lang.Object)
-      compareToA(arg0: Java.Object, cb: Callback<integer_t>): void;
-      compareTo(arg0: Java.Object): integer_t;
-      compareToP(arg0: Java.Object): Promise<integer_t>;
+      compareToA(arg0: Java.Object, cb: Callback<number>): void;
+      compareTo(arg0: Java.Object): number;
+      compareToP(arg0: Java.Object): Promise<number>;
       // public int java.lang.Double.compareTo(java.lang.Double)
-      compareToA(arg0: Java.Double, cb: Callback<integer_t>): void;
-      compareTo(arg0: Java.Double): integer_t;
-      compareToP(arg0: Java.Double): Promise<integer_t>;
+      compareToA(arg0: Java.Double, cb: Callback<number>): void;
+      compareTo(arg0: Java.Double): number;
+      compareToP(arg0: Java.Double): Promise<number>;
       // public abstract double java.lang.Number.doubleValue()
-      doubleValueA( cb: Callback<double_t>): void;
-      doubleValue(): double_t;
-      doubleValueP(): Promise<double_t>;
+      doubleValueA( cb: Callback<number>): void;
+      doubleValue(): number;
+      doubleValueP(): Promise<number>;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: Java.Object, cb: Callback<boolean_t>): void;
       equals(arg0: Java.Object): boolean_t;
       equalsP(arg0: Java.Object): Promise<boolean_t>;
       // public abstract float java.lang.Number.floatValue()
-      floatValueA( cb: Callback<float_t>): void;
-      floatValue(): float_t;
-      floatValueP(): Promise<float_t>;
+      floatValueA( cb: Callback<number>): void;
+      floatValue(): number;
+      floatValueP(): Promise<number>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClassA( cb: Callback<Java.Class<any>>): void;
       getClass(): Java.Class<any>;
       getClassP(): Promise<Java.Class<any>>;
       // public native int java.lang.Object.hashCode()
-      hashCodeA( cb: Callback<integer_t>): void;
-      hashCode(): integer_t;
-      hashCodeP(): Promise<integer_t>;
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
       // public abstract int java.lang.Number.intValue()
-      intValueA( cb: Callback<integer_t>): void;
-      intValue(): integer_t;
-      intValueP(): Promise<integer_t>;
+      intValueA( cb: Callback<number>): void;
+      intValue(): number;
+      intValueP(): Promise<number>;
       // public boolean java.lang.Double.isInfinite()
       isInfiniteA( cb: Callback<boolean_t>): void;
       isInfinite(): boolean_t;
@@ -1083,9 +1083,9 @@ export module Java {
       isNaN(): boolean_t;
       isNaNP(): Promise<boolean_t>;
       // public abstract long java.lang.Number.longValue()
-      longValueA( cb: Callback<long_t>): void;
-      longValue(): long_t;
-      longValueP(): Promise<long_t>;
+      longValueA( cb: Callback<longValue_t>): void;
+      longValue(): longValue_t;
+      longValueP(): Promise<longValue_t>;
       // public final native void java.lang.Object.notify()
       notifyA( cb: Callback<void>): void;
       notify(): void;
@@ -1095,9 +1095,9 @@ export module Java {
       notifyAll(): void;
       notifyAllP(): Promise<void>;
       // public short java.lang.Number.shortValue()
-      shortValueA( cb: Callback<short_t>): void;
-      shortValue(): short_t;
-      shortValueP(): Promise<short_t>;
+      shortValueA( cb: Callback<number>): void;
+      shortValue(): number;
+      shortValueP(): Promise<number>;
       // public java.lang.String java.lang.Object.toString()
       toStringA( cb: Callback<Java.String>): void;
       toString(): Java.String;
@@ -1117,36 +1117,36 @@ export module Java {
     }
     export module Double {
       export interface Static {
-        POSITIVE_INFINITY: double_t;
-        NEGATIVE_INFINITY: double_t;
-        NaN: double_t;
-        MAX_VALUE: double_t;
-        MIN_NORMAL: double_t;
-        MIN_VALUE: double_t;
-        MAX_EXPONENT: integer_t;
-        MIN_EXPONENT: integer_t;
-        SIZE: integer_t;
-        BYTES: integer_t;
+        POSITIVE_INFINITY: number;
+        NEGATIVE_INFINITY: number;
+        NaN: number;
+        MAX_VALUE: number;
+        MIN_NORMAL: number;
+        MIN_VALUE: number;
+        MAX_EXPONENT: number;
+        MIN_EXPONENT: number;
+        SIZE: number;
+        BYTES: number;
         TYPE: Java.Class<Java.Double>;
         class: Java.Class<any>;
         new (arg0: Java.String): java.lang.Double;
         new (arg0: double_t): java.lang.Double;
         // public static int java.lang.Double.compare(double,double)
-        compareA(arg0: double_t, arg1: double_t, cb: Callback<integer_t>): void;
-        compare(arg0: double_t, arg1: double_t): integer_t;
-        compareP(arg0: double_t, arg1: double_t): Promise<integer_t>;
+        compareA(arg0: double_t, arg1: double_t, cb: Callback<number>): void;
+        compare(arg0: double_t, arg1: double_t): number;
+        compareP(arg0: double_t, arg1: double_t): Promise<number>;
         // public static long java.lang.Double.doubleToLongBits(double)
-        doubleToLongBitsA(arg0: double_t, cb: Callback<long_t>): void;
-        doubleToLongBits(arg0: double_t): long_t;
-        doubleToLongBitsP(arg0: double_t): Promise<long_t>;
+        doubleToLongBitsA(arg0: double_t, cb: Callback<longValue_t>): void;
+        doubleToLongBits(arg0: double_t): longValue_t;
+        doubleToLongBitsP(arg0: double_t): Promise<longValue_t>;
         // public static native long java.lang.Double.doubleToRawLongBits(double)
-        doubleToRawLongBitsA(arg0: double_t, cb: Callback<long_t>): void;
-        doubleToRawLongBits(arg0: double_t): long_t;
-        doubleToRawLongBitsP(arg0: double_t): Promise<long_t>;
+        doubleToRawLongBitsA(arg0: double_t, cb: Callback<longValue_t>): void;
+        doubleToRawLongBits(arg0: double_t): longValue_t;
+        doubleToRawLongBitsP(arg0: double_t): Promise<longValue_t>;
         // public static int java.lang.Double.hashCode(double)
-        hashCodeA(arg0: double_t, cb: Callback<integer_t>): void;
-        hashCode(arg0: double_t): integer_t;
-        hashCodeP(arg0: double_t): Promise<integer_t>;
+        hashCodeA(arg0: double_t, cb: Callback<number>): void;
+        hashCode(arg0: double_t): number;
+        hashCodeP(arg0: double_t): Promise<number>;
         // public static boolean java.lang.Double.isFinite(double)
         isFiniteA(arg0: double_t, cb: Callback<boolean_t>): void;
         isFinite(arg0: double_t): boolean_t;
@@ -1160,25 +1160,25 @@ export module Java {
         isNaN(arg0: double_t): boolean_t;
         isNaNP(arg0: double_t): Promise<boolean_t>;
         // public static native double java.lang.Double.longBitsToDouble(long)
-        longBitsToDoubleA(arg0: long_t, cb: Callback<double_t>): void;
-        longBitsToDouble(arg0: long_t): double_t;
-        longBitsToDoubleP(arg0: long_t): Promise<double_t>;
+        longBitsToDoubleA(arg0: long_t, cb: Callback<number>): void;
+        longBitsToDouble(arg0: long_t): number;
+        longBitsToDoubleP(arg0: long_t): Promise<number>;
         // public static double java.lang.Double.max(double,double)
-        maxA(arg0: double_t, arg1: double_t, cb: Callback<double_t>): void;
-        max(arg0: double_t, arg1: double_t): double_t;
-        maxP(arg0: double_t, arg1: double_t): Promise<double_t>;
+        maxA(arg0: double_t, arg1: double_t, cb: Callback<number>): void;
+        max(arg0: double_t, arg1: double_t): number;
+        maxP(arg0: double_t, arg1: double_t): Promise<number>;
         // public static double java.lang.Double.min(double,double)
-        minA(arg0: double_t, arg1: double_t, cb: Callback<double_t>): void;
-        min(arg0: double_t, arg1: double_t): double_t;
-        minP(arg0: double_t, arg1: double_t): Promise<double_t>;
+        minA(arg0: double_t, arg1: double_t, cb: Callback<number>): void;
+        min(arg0: double_t, arg1: double_t): number;
+        minP(arg0: double_t, arg1: double_t): Promise<number>;
         // public static double java.lang.Double.parseDouble(java.lang.String) throws java.lang.NumberFormatException
-        parseDoubleA(arg0: Java.String, cb: Callback<double_t>): void;
-        parseDouble(arg0: Java.String): double_t;
-        parseDoubleP(arg0: Java.String): Promise<double_t>;
+        parseDoubleA(arg0: Java.String, cb: Callback<number>): void;
+        parseDouble(arg0: Java.String): number;
+        parseDoubleP(arg0: Java.String): Promise<number>;
         // public static double java.lang.Double.sum(double,double)
-        sumA(arg0: double_t, arg1: double_t, cb: Callback<double_t>): void;
-        sum(arg0: double_t, arg1: double_t): double_t;
-        sumP(arg0: double_t, arg1: double_t): Promise<double_t>;
+        sumA(arg0: double_t, arg1: double_t, cb: Callback<number>): void;
+        sum(arg0: double_t, arg1: double_t): number;
+        sumP(arg0: double_t, arg1: double_t): Promise<number>;
         // public static java.lang.String java.lang.Double.toHexString(double)
         toHexStringA(arg0: double_t, cb: Callback<Java.String>): void;
         toHexString(arg0: double_t): Java.String;
@@ -1202,13 +1202,13 @@ export module Java {
   export module java.lang {
     export interface Enum<E>  {
       // public int java.lang.Enum.compareTo(java.lang.Object)
-      compareToA(arg0: Java.Object, cb: Callback<integer_t>): void;
-      compareTo(arg0: Java.Object): integer_t;
-      compareToP(arg0: Java.Object): Promise<integer_t>;
+      compareToA(arg0: Java.Object, cb: Callback<number>): void;
+      compareTo(arg0: Java.Object): number;
+      compareToP(arg0: Java.Object): Promise<number>;
       // public final int java.lang.Enum.compareTo(E)
-      compareToA(arg0: E, cb: Callback<integer_t>): void;
-      compareTo(arg0: E): integer_t;
-      compareToP(arg0: E): Promise<integer_t>;
+      compareToA(arg0: E, cb: Callback<number>): void;
+      compareTo(arg0: E): number;
+      compareToP(arg0: E): Promise<number>;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: Java.Object, cb: Callback<boolean_t>): void;
       equals(arg0: Java.Object): boolean_t;
@@ -1222,9 +1222,9 @@ export module Java {
       getDeclaringClass(): Java.Class<E>;
       getDeclaringClassP(): Promise<Java.Class<E>>;
       // public native int java.lang.Object.hashCode()
-      hashCodeA( cb: Callback<integer_t>): void;
-      hashCode(): integer_t;
-      hashCodeP(): Promise<integer_t>;
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
       // public final java.lang.String java.lang.Enum.name()
       nameA( cb: Callback<Java.String>): void;
       name(): Java.String;
@@ -1238,9 +1238,9 @@ export module Java {
       notifyAll(): void;
       notifyAllP(): Promise<void>;
       // public final int java.lang.Enum.ordinal()
-      ordinalA( cb: Callback<integer_t>): void;
-      ordinal(): integer_t;
-      ordinalP(): Promise<integer_t>;
+      ordinalA( cb: Callback<number>): void;
+      ordinal(): number;
+      ordinalP(): Promise<number>;
       // public java.lang.String java.lang.Object.toString()
       toStringA( cb: Callback<Java.String>): void;
       toString(): Java.String;
@@ -1276,37 +1276,37 @@ export module Java {
       byteValue(): object_t;
       byteValueP(): Promise<object_t>;
       // public int java.lang.Float.compareTo(java.lang.Object)
-      compareToA(arg0: Java.Object, cb: Callback<integer_t>): void;
-      compareTo(arg0: Java.Object): integer_t;
-      compareToP(arg0: Java.Object): Promise<integer_t>;
+      compareToA(arg0: Java.Object, cb: Callback<number>): void;
+      compareTo(arg0: Java.Object): number;
+      compareToP(arg0: Java.Object): Promise<number>;
       // public int java.lang.Float.compareTo(java.lang.Float)
-      compareToA(arg0: Java.Float, cb: Callback<integer_t>): void;
-      compareTo(arg0: Java.Float): integer_t;
-      compareToP(arg0: Java.Float): Promise<integer_t>;
+      compareToA(arg0: Java.Float, cb: Callback<number>): void;
+      compareTo(arg0: Java.Float): number;
+      compareToP(arg0: Java.Float): Promise<number>;
       // public abstract double java.lang.Number.doubleValue()
-      doubleValueA( cb: Callback<double_t>): void;
-      doubleValue(): double_t;
-      doubleValueP(): Promise<double_t>;
+      doubleValueA( cb: Callback<number>): void;
+      doubleValue(): number;
+      doubleValueP(): Promise<number>;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: Java.Object, cb: Callback<boolean_t>): void;
       equals(arg0: Java.Object): boolean_t;
       equalsP(arg0: Java.Object): Promise<boolean_t>;
       // public abstract float java.lang.Number.floatValue()
-      floatValueA( cb: Callback<float_t>): void;
-      floatValue(): float_t;
-      floatValueP(): Promise<float_t>;
+      floatValueA( cb: Callback<number>): void;
+      floatValue(): number;
+      floatValueP(): Promise<number>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClassA( cb: Callback<Java.Class<any>>): void;
       getClass(): Java.Class<any>;
       getClassP(): Promise<Java.Class<any>>;
       // public native int java.lang.Object.hashCode()
-      hashCodeA( cb: Callback<integer_t>): void;
-      hashCode(): integer_t;
-      hashCodeP(): Promise<integer_t>;
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
       // public abstract int java.lang.Number.intValue()
-      intValueA( cb: Callback<integer_t>): void;
-      intValue(): integer_t;
-      intValueP(): Promise<integer_t>;
+      intValueA( cb: Callback<number>): void;
+      intValue(): number;
+      intValueP(): Promise<number>;
       // public boolean java.lang.Float.isInfinite()
       isInfiniteA( cb: Callback<boolean_t>): void;
       isInfinite(): boolean_t;
@@ -1316,9 +1316,9 @@ export module Java {
       isNaN(): boolean_t;
       isNaNP(): Promise<boolean_t>;
       // public abstract long java.lang.Number.longValue()
-      longValueA( cb: Callback<long_t>): void;
-      longValue(): long_t;
-      longValueP(): Promise<long_t>;
+      longValueA( cb: Callback<longValue_t>): void;
+      longValue(): longValue_t;
+      longValueP(): Promise<longValue_t>;
       // public final native void java.lang.Object.notify()
       notifyA( cb: Callback<void>): void;
       notify(): void;
@@ -1328,9 +1328,9 @@ export module Java {
       notifyAll(): void;
       notifyAllP(): Promise<void>;
       // public short java.lang.Number.shortValue()
-      shortValueA( cb: Callback<short_t>): void;
-      shortValue(): short_t;
-      shortValueP(): Promise<short_t>;
+      shortValueA( cb: Callback<number>): void;
+      shortValue(): number;
+      shortValueP(): Promise<number>;
       // public java.lang.String java.lang.Object.toString()
       toStringA( cb: Callback<Java.String>): void;
       toString(): Java.String;
@@ -1350,41 +1350,41 @@ export module Java {
     }
     export module Float {
       export interface Static {
-        POSITIVE_INFINITY: float_t;
-        NEGATIVE_INFINITY: float_t;
-        NaN: float_t;
-        MAX_VALUE: float_t;
-        MIN_NORMAL: float_t;
-        MIN_VALUE: float_t;
-        MAX_EXPONENT: integer_t;
-        MIN_EXPONENT: integer_t;
-        SIZE: integer_t;
-        BYTES: integer_t;
+        POSITIVE_INFINITY: number;
+        NEGATIVE_INFINITY: number;
+        NaN: number;
+        MAX_VALUE: number;
+        MIN_NORMAL: number;
+        MIN_VALUE: number;
+        MAX_EXPONENT: number;
+        MIN_EXPONENT: number;
+        SIZE: number;
+        BYTES: number;
         TYPE: Java.Class<Java.Float>;
         class: Java.Class<any>;
         new (arg0: Java.String): java.lang.Float;
         new (arg0: float_t): java.lang.Float;
         new (arg0: double_t): java.lang.Float;
         // public static int java.lang.Float.compare(float,float)
-        compareA(arg0: float_t, arg1: float_t, cb: Callback<integer_t>): void;
-        compare(arg0: float_t, arg1: float_t): integer_t;
-        compareP(arg0: float_t, arg1: float_t): Promise<integer_t>;
+        compareA(arg0: float_t, arg1: float_t, cb: Callback<number>): void;
+        compare(arg0: float_t, arg1: float_t): number;
+        compareP(arg0: float_t, arg1: float_t): Promise<number>;
         // public static int java.lang.Float.floatToIntBits(float)
-        floatToIntBitsA(arg0: float_t, cb: Callback<integer_t>): void;
-        floatToIntBits(arg0: float_t): integer_t;
-        floatToIntBitsP(arg0: float_t): Promise<integer_t>;
+        floatToIntBitsA(arg0: float_t, cb: Callback<number>): void;
+        floatToIntBits(arg0: float_t): number;
+        floatToIntBitsP(arg0: float_t): Promise<number>;
         // public static native int java.lang.Float.floatToRawIntBits(float)
-        floatToRawIntBitsA(arg0: float_t, cb: Callback<integer_t>): void;
-        floatToRawIntBits(arg0: float_t): integer_t;
-        floatToRawIntBitsP(arg0: float_t): Promise<integer_t>;
+        floatToRawIntBitsA(arg0: float_t, cb: Callback<number>): void;
+        floatToRawIntBits(arg0: float_t): number;
+        floatToRawIntBitsP(arg0: float_t): Promise<number>;
         // public static int java.lang.Float.hashCode(float)
-        hashCodeA(arg0: float_t, cb: Callback<integer_t>): void;
-        hashCode(arg0: float_t): integer_t;
-        hashCodeP(arg0: float_t): Promise<integer_t>;
+        hashCodeA(arg0: float_t, cb: Callback<number>): void;
+        hashCode(arg0: float_t): number;
+        hashCodeP(arg0: float_t): Promise<number>;
         // public static native float java.lang.Float.intBitsToFloat(int)
-        intBitsToFloatA(arg0: integer_t, cb: Callback<float_t>): void;
-        intBitsToFloat(arg0: integer_t): float_t;
-        intBitsToFloatP(arg0: integer_t): Promise<float_t>;
+        intBitsToFloatA(arg0: integer_t, cb: Callback<number>): void;
+        intBitsToFloat(arg0: integer_t): number;
+        intBitsToFloatP(arg0: integer_t): Promise<number>;
         // public static boolean java.lang.Float.isFinite(float)
         isFiniteA(arg0: float_t, cb: Callback<boolean_t>): void;
         isFinite(arg0: float_t): boolean_t;
@@ -1398,21 +1398,21 @@ export module Java {
         isNaN(arg0: float_t): boolean_t;
         isNaNP(arg0: float_t): Promise<boolean_t>;
         // public static float java.lang.Float.max(float,float)
-        maxA(arg0: float_t, arg1: float_t, cb: Callback<float_t>): void;
-        max(arg0: float_t, arg1: float_t): float_t;
-        maxP(arg0: float_t, arg1: float_t): Promise<float_t>;
+        maxA(arg0: float_t, arg1: float_t, cb: Callback<number>): void;
+        max(arg0: float_t, arg1: float_t): number;
+        maxP(arg0: float_t, arg1: float_t): Promise<number>;
         // public static float java.lang.Float.min(float,float)
-        minA(arg0: float_t, arg1: float_t, cb: Callback<float_t>): void;
-        min(arg0: float_t, arg1: float_t): float_t;
-        minP(arg0: float_t, arg1: float_t): Promise<float_t>;
+        minA(arg0: float_t, arg1: float_t, cb: Callback<number>): void;
+        min(arg0: float_t, arg1: float_t): number;
+        minP(arg0: float_t, arg1: float_t): Promise<number>;
         // public static float java.lang.Float.parseFloat(java.lang.String) throws java.lang.NumberFormatException
-        parseFloatA(arg0: Java.String, cb: Callback<float_t>): void;
-        parseFloat(arg0: Java.String): float_t;
-        parseFloatP(arg0: Java.String): Promise<float_t>;
+        parseFloatA(arg0: Java.String, cb: Callback<number>): void;
+        parseFloat(arg0: Java.String): number;
+        parseFloatP(arg0: Java.String): Promise<number>;
         // public static float java.lang.Float.sum(float,float)
-        sumA(arg0: float_t, arg1: float_t, cb: Callback<float_t>): void;
-        sum(arg0: float_t, arg1: float_t): float_t;
-        sumP(arg0: float_t, arg1: float_t): Promise<float_t>;
+        sumA(arg0: float_t, arg1: float_t, cb: Callback<number>): void;
+        sum(arg0: float_t, arg1: float_t): number;
+        sumP(arg0: float_t, arg1: float_t): Promise<number>;
         // public static java.lang.String java.lang.Float.toHexString(float)
         toHexStringA(arg0: float_t, cb: Callback<Java.String>): void;
         toHexString(arg0: float_t): Java.String;
@@ -1440,41 +1440,41 @@ export module Java {
       byteValue(): object_t;
       byteValueP(): Promise<object_t>;
       // public int java.lang.Integer.compareTo(java.lang.Integer)
-      compareToA(arg0: Java.Integer, cb: Callback<integer_t>): void;
-      compareTo(arg0: Java.Integer): integer_t;
-      compareToP(arg0: Java.Integer): Promise<integer_t>;
+      compareToA(arg0: Java.Integer, cb: Callback<number>): void;
+      compareTo(arg0: Java.Integer): number;
+      compareToP(arg0: Java.Integer): Promise<number>;
       // public int java.lang.Integer.compareTo(java.lang.Object)
-      compareToA(arg0: Java.Object, cb: Callback<integer_t>): void;
-      compareTo(arg0: Java.Object): integer_t;
-      compareToP(arg0: Java.Object): Promise<integer_t>;
+      compareToA(arg0: Java.Object, cb: Callback<number>): void;
+      compareTo(arg0: Java.Object): number;
+      compareToP(arg0: Java.Object): Promise<number>;
       // public abstract double java.lang.Number.doubleValue()
-      doubleValueA( cb: Callback<double_t>): void;
-      doubleValue(): double_t;
-      doubleValueP(): Promise<double_t>;
+      doubleValueA( cb: Callback<number>): void;
+      doubleValue(): number;
+      doubleValueP(): Promise<number>;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: Java.Object, cb: Callback<boolean_t>): void;
       equals(arg0: Java.Object): boolean_t;
       equalsP(arg0: Java.Object): Promise<boolean_t>;
       // public abstract float java.lang.Number.floatValue()
-      floatValueA( cb: Callback<float_t>): void;
-      floatValue(): float_t;
-      floatValueP(): Promise<float_t>;
+      floatValueA( cb: Callback<number>): void;
+      floatValue(): number;
+      floatValueP(): Promise<number>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClassA( cb: Callback<Java.Class<any>>): void;
       getClass(): Java.Class<any>;
       getClassP(): Promise<Java.Class<any>>;
       // public native int java.lang.Object.hashCode()
-      hashCodeA( cb: Callback<integer_t>): void;
-      hashCode(): integer_t;
-      hashCodeP(): Promise<integer_t>;
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
       // public abstract int java.lang.Number.intValue()
-      intValueA( cb: Callback<integer_t>): void;
-      intValue(): integer_t;
-      intValueP(): Promise<integer_t>;
+      intValueA( cb: Callback<number>): void;
+      intValue(): number;
+      intValueP(): Promise<number>;
       // public abstract long java.lang.Number.longValue()
-      longValueA( cb: Callback<long_t>): void;
-      longValue(): long_t;
-      longValueP(): Promise<long_t>;
+      longValueA( cb: Callback<longValue_t>): void;
+      longValue(): longValue_t;
+      longValueP(): Promise<longValue_t>;
       // public final native void java.lang.Object.notify()
       notifyA( cb: Callback<void>): void;
       notify(): void;
@@ -1484,9 +1484,9 @@ export module Java {
       notifyAll(): void;
       notifyAllP(): Promise<void>;
       // public short java.lang.Number.shortValue()
-      shortValueA( cb: Callback<short_t>): void;
-      shortValue(): short_t;
-      shortValueP(): Promise<short_t>;
+      shortValueA( cb: Callback<number>): void;
+      shortValue(): number;
+      shortValueP(): Promise<number>;
       // public java.lang.String java.lang.Object.toString()
       toStringA( cb: Callback<Java.String>): void;
       toString(): Java.String;
@@ -1506,34 +1506,34 @@ export module Java {
     }
     export module Integer {
       export interface Static {
-        MIN_VALUE: integer_t;
-        MAX_VALUE: integer_t;
+        MIN_VALUE: number;
+        MAX_VALUE: number;
         TYPE: Java.Class<Java.Integer>;
-        SIZE: integer_t;
-        BYTES: integer_t;
+        SIZE: number;
+        BYTES: number;
         class: Java.Class<any>;
         new (arg0: Java.String): java.lang.Integer;
         new (arg0: integer_t): java.lang.Integer;
         // public static int java.lang.Integer.bitCount(int)
-        bitCountA(arg0: integer_t, cb: Callback<integer_t>): void;
-        bitCount(arg0: integer_t): integer_t;
-        bitCountP(arg0: integer_t): Promise<integer_t>;
+        bitCountA(arg0: integer_t, cb: Callback<number>): void;
+        bitCount(arg0: integer_t): number;
+        bitCountP(arg0: integer_t): Promise<number>;
         // public static int java.lang.Integer.compare(int,int)
-        compareA(arg0: integer_t, arg1: integer_t, cb: Callback<integer_t>): void;
-        compare(arg0: integer_t, arg1: integer_t): integer_t;
-        compareP(arg0: integer_t, arg1: integer_t): Promise<integer_t>;
+        compareA(arg0: integer_t, arg1: integer_t, cb: Callback<number>): void;
+        compare(arg0: integer_t, arg1: integer_t): number;
+        compareP(arg0: integer_t, arg1: integer_t): Promise<number>;
         // public static int java.lang.Integer.compareUnsigned(int,int)
-        compareUnsignedA(arg0: integer_t, arg1: integer_t, cb: Callback<integer_t>): void;
-        compareUnsigned(arg0: integer_t, arg1: integer_t): integer_t;
-        compareUnsignedP(arg0: integer_t, arg1: integer_t): Promise<integer_t>;
+        compareUnsignedA(arg0: integer_t, arg1: integer_t, cb: Callback<number>): void;
+        compareUnsigned(arg0: integer_t, arg1: integer_t): number;
+        compareUnsignedP(arg0: integer_t, arg1: integer_t): Promise<number>;
         // public static java.lang.Integer java.lang.Integer.decode(java.lang.String) throws java.lang.NumberFormatException
         decodeA(arg0: Java.String, cb: Callback<Java.Integer>): void;
         decode(arg0: Java.String): Java.Integer;
         decodeP(arg0: Java.String): Promise<Java.Integer>;
         // public static int java.lang.Integer.divideUnsigned(int,int)
-        divideUnsignedA(arg0: integer_t, arg1: integer_t, cb: Callback<integer_t>): void;
-        divideUnsigned(arg0: integer_t, arg1: integer_t): integer_t;
-        divideUnsignedP(arg0: integer_t, arg1: integer_t): Promise<integer_t>;
+        divideUnsignedA(arg0: integer_t, arg1: integer_t, cb: Callback<number>): void;
+        divideUnsigned(arg0: integer_t, arg1: integer_t): number;
+        divideUnsignedP(arg0: integer_t, arg1: integer_t): Promise<number>;
         // public static java.lang.Integer java.lang.Integer.getInteger(java.lang.String,java.lang.Integer)
         getIntegerA(arg0: Java.String, arg1: Java.Integer, cb: Callback<Java.Integer>): void;
         getInteger(arg0: Java.String, arg1: Java.Integer): Java.Integer;
@@ -1547,77 +1547,77 @@ export module Java {
         getInteger(arg0: Java.String): Java.Integer;
         getIntegerP(arg0: Java.String): Promise<Java.Integer>;
         // public static int java.lang.Integer.hashCode(int)
-        hashCodeA(arg0: integer_t, cb: Callback<integer_t>): void;
-        hashCode(arg0: integer_t): integer_t;
-        hashCodeP(arg0: integer_t): Promise<integer_t>;
+        hashCodeA(arg0: integer_t, cb: Callback<number>): void;
+        hashCode(arg0: integer_t): number;
+        hashCodeP(arg0: integer_t): Promise<number>;
         // public static int java.lang.Integer.highestOneBit(int)
-        highestOneBitA(arg0: integer_t, cb: Callback<integer_t>): void;
-        highestOneBit(arg0: integer_t): integer_t;
-        highestOneBitP(arg0: integer_t): Promise<integer_t>;
+        highestOneBitA(arg0: integer_t, cb: Callback<number>): void;
+        highestOneBit(arg0: integer_t): number;
+        highestOneBitP(arg0: integer_t): Promise<number>;
         // public static int java.lang.Integer.lowestOneBit(int)
-        lowestOneBitA(arg0: integer_t, cb: Callback<integer_t>): void;
-        lowestOneBit(arg0: integer_t): integer_t;
-        lowestOneBitP(arg0: integer_t): Promise<integer_t>;
+        lowestOneBitA(arg0: integer_t, cb: Callback<number>): void;
+        lowestOneBit(arg0: integer_t): number;
+        lowestOneBitP(arg0: integer_t): Promise<number>;
         // public static int java.lang.Integer.max(int,int)
-        maxA(arg0: integer_t, arg1: integer_t, cb: Callback<integer_t>): void;
-        max(arg0: integer_t, arg1: integer_t): integer_t;
-        maxP(arg0: integer_t, arg1: integer_t): Promise<integer_t>;
+        maxA(arg0: integer_t, arg1: integer_t, cb: Callback<number>): void;
+        max(arg0: integer_t, arg1: integer_t): number;
+        maxP(arg0: integer_t, arg1: integer_t): Promise<number>;
         // public static int java.lang.Integer.min(int,int)
-        minA(arg0: integer_t, arg1: integer_t, cb: Callback<integer_t>): void;
-        min(arg0: integer_t, arg1: integer_t): integer_t;
-        minP(arg0: integer_t, arg1: integer_t): Promise<integer_t>;
+        minA(arg0: integer_t, arg1: integer_t, cb: Callback<number>): void;
+        min(arg0: integer_t, arg1: integer_t): number;
+        minP(arg0: integer_t, arg1: integer_t): Promise<number>;
         // public static int java.lang.Integer.numberOfLeadingZeros(int)
-        numberOfLeadingZerosA(arg0: integer_t, cb: Callback<integer_t>): void;
-        numberOfLeadingZeros(arg0: integer_t): integer_t;
-        numberOfLeadingZerosP(arg0: integer_t): Promise<integer_t>;
+        numberOfLeadingZerosA(arg0: integer_t, cb: Callback<number>): void;
+        numberOfLeadingZeros(arg0: integer_t): number;
+        numberOfLeadingZerosP(arg0: integer_t): Promise<number>;
         // public static int java.lang.Integer.numberOfTrailingZeros(int)
-        numberOfTrailingZerosA(arg0: integer_t, cb: Callback<integer_t>): void;
-        numberOfTrailingZeros(arg0: integer_t): integer_t;
-        numberOfTrailingZerosP(arg0: integer_t): Promise<integer_t>;
+        numberOfTrailingZerosA(arg0: integer_t, cb: Callback<number>): void;
+        numberOfTrailingZeros(arg0: integer_t): number;
+        numberOfTrailingZerosP(arg0: integer_t): Promise<number>;
         // public static int java.lang.Integer.parseInt(java.lang.String,int) throws java.lang.NumberFormatException
-        parseIntA(arg0: Java.String, arg1: integer_t, cb: Callback<integer_t>): void;
-        parseInt(arg0: Java.String, arg1: integer_t): integer_t;
-        parseIntP(arg0: Java.String, arg1: integer_t): Promise<integer_t>;
+        parseIntA(arg0: Java.String, arg1: integer_t, cb: Callback<number>): void;
+        parseInt(arg0: Java.String, arg1: integer_t): number;
+        parseIntP(arg0: Java.String, arg1: integer_t): Promise<number>;
         // public static int java.lang.Integer.parseInt(java.lang.String) throws java.lang.NumberFormatException
-        parseIntA(arg0: Java.String, cb: Callback<integer_t>): void;
-        parseInt(arg0: Java.String): integer_t;
-        parseIntP(arg0: Java.String): Promise<integer_t>;
+        parseIntA(arg0: Java.String, cb: Callback<number>): void;
+        parseInt(arg0: Java.String): number;
+        parseIntP(arg0: Java.String): Promise<number>;
         // public static int java.lang.Integer.parseUnsignedInt(java.lang.String,int) throws java.lang.NumberFormatException
-        parseUnsignedIntA(arg0: Java.String, arg1: integer_t, cb: Callback<integer_t>): void;
-        parseUnsignedInt(arg0: Java.String, arg1: integer_t): integer_t;
-        parseUnsignedIntP(arg0: Java.String, arg1: integer_t): Promise<integer_t>;
+        parseUnsignedIntA(arg0: Java.String, arg1: integer_t, cb: Callback<number>): void;
+        parseUnsignedInt(arg0: Java.String, arg1: integer_t): number;
+        parseUnsignedIntP(arg0: Java.String, arg1: integer_t): Promise<number>;
         // public static int java.lang.Integer.parseUnsignedInt(java.lang.String) throws java.lang.NumberFormatException
-        parseUnsignedIntA(arg0: Java.String, cb: Callback<integer_t>): void;
-        parseUnsignedInt(arg0: Java.String): integer_t;
-        parseUnsignedIntP(arg0: Java.String): Promise<integer_t>;
+        parseUnsignedIntA(arg0: Java.String, cb: Callback<number>): void;
+        parseUnsignedInt(arg0: Java.String): number;
+        parseUnsignedIntP(arg0: Java.String): Promise<number>;
         // public static int java.lang.Integer.remainderUnsigned(int,int)
-        remainderUnsignedA(arg0: integer_t, arg1: integer_t, cb: Callback<integer_t>): void;
-        remainderUnsigned(arg0: integer_t, arg1: integer_t): integer_t;
-        remainderUnsignedP(arg0: integer_t, arg1: integer_t): Promise<integer_t>;
+        remainderUnsignedA(arg0: integer_t, arg1: integer_t, cb: Callback<number>): void;
+        remainderUnsigned(arg0: integer_t, arg1: integer_t): number;
+        remainderUnsignedP(arg0: integer_t, arg1: integer_t): Promise<number>;
         // public static int java.lang.Integer.reverse(int)
-        reverseA(arg0: integer_t, cb: Callback<integer_t>): void;
-        reverse(arg0: integer_t): integer_t;
-        reverseP(arg0: integer_t): Promise<integer_t>;
+        reverseA(arg0: integer_t, cb: Callback<number>): void;
+        reverse(arg0: integer_t): number;
+        reverseP(arg0: integer_t): Promise<number>;
         // public static int java.lang.Integer.reverseBytes(int)
-        reverseBytesA(arg0: integer_t, cb: Callback<integer_t>): void;
-        reverseBytes(arg0: integer_t): integer_t;
-        reverseBytesP(arg0: integer_t): Promise<integer_t>;
+        reverseBytesA(arg0: integer_t, cb: Callback<number>): void;
+        reverseBytes(arg0: integer_t): number;
+        reverseBytesP(arg0: integer_t): Promise<number>;
         // public static int java.lang.Integer.rotateLeft(int,int)
-        rotateLeftA(arg0: integer_t, arg1: integer_t, cb: Callback<integer_t>): void;
-        rotateLeft(arg0: integer_t, arg1: integer_t): integer_t;
-        rotateLeftP(arg0: integer_t, arg1: integer_t): Promise<integer_t>;
+        rotateLeftA(arg0: integer_t, arg1: integer_t, cb: Callback<number>): void;
+        rotateLeft(arg0: integer_t, arg1: integer_t): number;
+        rotateLeftP(arg0: integer_t, arg1: integer_t): Promise<number>;
         // public static int java.lang.Integer.rotateRight(int,int)
-        rotateRightA(arg0: integer_t, arg1: integer_t, cb: Callback<integer_t>): void;
-        rotateRight(arg0: integer_t, arg1: integer_t): integer_t;
-        rotateRightP(arg0: integer_t, arg1: integer_t): Promise<integer_t>;
+        rotateRightA(arg0: integer_t, arg1: integer_t, cb: Callback<number>): void;
+        rotateRight(arg0: integer_t, arg1: integer_t): number;
+        rotateRightP(arg0: integer_t, arg1: integer_t): Promise<number>;
         // public static int java.lang.Integer.signum(int)
-        signumA(arg0: integer_t, cb: Callback<integer_t>): void;
-        signum(arg0: integer_t): integer_t;
-        signumP(arg0: integer_t): Promise<integer_t>;
+        signumA(arg0: integer_t, cb: Callback<number>): void;
+        signum(arg0: integer_t): number;
+        signumP(arg0: integer_t): Promise<number>;
         // public static int java.lang.Integer.sum(int,int)
-        sumA(arg0: integer_t, arg1: integer_t, cb: Callback<integer_t>): void;
-        sum(arg0: integer_t, arg1: integer_t): integer_t;
-        sumP(arg0: integer_t, arg1: integer_t): Promise<integer_t>;
+        sumA(arg0: integer_t, arg1: integer_t, cb: Callback<number>): void;
+        sum(arg0: integer_t, arg1: integer_t): number;
+        sumP(arg0: integer_t, arg1: integer_t): Promise<number>;
         // public static java.lang.String java.lang.Integer.toBinaryString(int)
         toBinaryStringA(arg0: integer_t, cb: Callback<Java.String>): void;
         toBinaryString(arg0: integer_t): Java.String;
@@ -1639,9 +1639,9 @@ export module Java {
         toString(arg0: integer_t): Java.String;
         toStringP(arg0: integer_t): Promise<Java.String>;
         // public static long java.lang.Integer.toUnsignedLong(int)
-        toUnsignedLongA(arg0: integer_t, cb: Callback<long_t>): void;
-        toUnsignedLong(arg0: integer_t): long_t;
-        toUnsignedLongP(arg0: integer_t): Promise<long_t>;
+        toUnsignedLongA(arg0: integer_t, cb: Callback<longValue_t>): void;
+        toUnsignedLong(arg0: integer_t): longValue_t;
+        toUnsignedLongP(arg0: integer_t): Promise<longValue_t>;
         // public static java.lang.String java.lang.Integer.toUnsignedString(int,int)
         toUnsignedStringA(arg0: integer_t, arg1: integer_t, cb: Callback<Java.String>): void;
         toUnsignedString(arg0: integer_t, arg1: integer_t): Java.String;
@@ -1695,41 +1695,41 @@ export module Java {
       byteValue(): object_t;
       byteValueP(): Promise<object_t>;
       // public int java.lang.Long.compareTo(java.lang.Object)
-      compareToA(arg0: Java.Object, cb: Callback<integer_t>): void;
-      compareTo(arg0: Java.Object): integer_t;
-      compareToP(arg0: Java.Object): Promise<integer_t>;
+      compareToA(arg0: Java.Object, cb: Callback<number>): void;
+      compareTo(arg0: Java.Object): number;
+      compareToP(arg0: Java.Object): Promise<number>;
       // public int java.lang.Long.compareTo(java.lang.Long)
-      compareToA(arg0: Java.Long, cb: Callback<integer_t>): void;
-      compareTo(arg0: Java.Long): integer_t;
-      compareToP(arg0: Java.Long): Promise<integer_t>;
+      compareToA(arg0: Java.Long, cb: Callback<number>): void;
+      compareTo(arg0: Java.Long): number;
+      compareToP(arg0: Java.Long): Promise<number>;
       // public abstract double java.lang.Number.doubleValue()
-      doubleValueA( cb: Callback<double_t>): void;
-      doubleValue(): double_t;
-      doubleValueP(): Promise<double_t>;
+      doubleValueA( cb: Callback<number>): void;
+      doubleValue(): number;
+      doubleValueP(): Promise<number>;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: Java.Object, cb: Callback<boolean_t>): void;
       equals(arg0: Java.Object): boolean_t;
       equalsP(arg0: Java.Object): Promise<boolean_t>;
       // public abstract float java.lang.Number.floatValue()
-      floatValueA( cb: Callback<float_t>): void;
-      floatValue(): float_t;
-      floatValueP(): Promise<float_t>;
+      floatValueA( cb: Callback<number>): void;
+      floatValue(): number;
+      floatValueP(): Promise<number>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClassA( cb: Callback<Java.Class<any>>): void;
       getClass(): Java.Class<any>;
       getClassP(): Promise<Java.Class<any>>;
       // public native int java.lang.Object.hashCode()
-      hashCodeA( cb: Callback<integer_t>): void;
-      hashCode(): integer_t;
-      hashCodeP(): Promise<integer_t>;
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
       // public abstract int java.lang.Number.intValue()
-      intValueA( cb: Callback<integer_t>): void;
-      intValue(): integer_t;
-      intValueP(): Promise<integer_t>;
+      intValueA( cb: Callback<number>): void;
+      intValue(): number;
+      intValueP(): Promise<number>;
       // public abstract long java.lang.Number.longValue()
-      longValueA( cb: Callback<long_t>): void;
-      longValue(): long_t;
-      longValueP(): Promise<long_t>;
+      longValueA( cb: Callback<longValue_t>): void;
+      longValue(): longValue_t;
+      longValueP(): Promise<longValue_t>;
       // public final native void java.lang.Object.notify()
       notifyA( cb: Callback<void>): void;
       notify(): void;
@@ -1739,9 +1739,9 @@ export module Java {
       notifyAll(): void;
       notifyAllP(): Promise<void>;
       // public short java.lang.Number.shortValue()
-      shortValueA( cb: Callback<short_t>): void;
-      shortValue(): short_t;
-      shortValueP(): Promise<short_t>;
+      shortValueA( cb: Callback<number>): void;
+      shortValue(): number;
+      shortValueP(): Promise<number>;
       // public java.lang.String java.lang.Object.toString()
       toStringA( cb: Callback<Java.String>): void;
       toString(): Java.String;
@@ -1761,34 +1761,34 @@ export module Java {
     }
     export module Long {
       export interface Static {
-        MIN_VALUE: long_t;
-        MAX_VALUE: long_t;
+        MIN_VALUE: longValue_t;
+        MAX_VALUE: longValue_t;
         TYPE: Java.Class<Java.Long>;
-        SIZE: integer_t;
-        BYTES: integer_t;
+        SIZE: number;
+        BYTES: number;
         class: Java.Class<any>;
         new (arg0: Java.String): java.lang.Long;
         new (arg0: long_t): java.lang.Long;
         // public static int java.lang.Long.bitCount(long)
-        bitCountA(arg0: long_t, cb: Callback<integer_t>): void;
-        bitCount(arg0: long_t): integer_t;
-        bitCountP(arg0: long_t): Promise<integer_t>;
+        bitCountA(arg0: long_t, cb: Callback<number>): void;
+        bitCount(arg0: long_t): number;
+        bitCountP(arg0: long_t): Promise<number>;
         // public static int java.lang.Long.compare(long,long)
-        compareA(arg0: long_t, arg1: long_t, cb: Callback<integer_t>): void;
-        compare(arg0: long_t, arg1: long_t): integer_t;
-        compareP(arg0: long_t, arg1: long_t): Promise<integer_t>;
+        compareA(arg0: long_t, arg1: long_t, cb: Callback<number>): void;
+        compare(arg0: long_t, arg1: long_t): number;
+        compareP(arg0: long_t, arg1: long_t): Promise<number>;
         // public static int java.lang.Long.compareUnsigned(long,long)
-        compareUnsignedA(arg0: long_t, arg1: long_t, cb: Callback<integer_t>): void;
-        compareUnsigned(arg0: long_t, arg1: long_t): integer_t;
-        compareUnsignedP(arg0: long_t, arg1: long_t): Promise<integer_t>;
+        compareUnsignedA(arg0: long_t, arg1: long_t, cb: Callback<number>): void;
+        compareUnsigned(arg0: long_t, arg1: long_t): number;
+        compareUnsignedP(arg0: long_t, arg1: long_t): Promise<number>;
         // public static java.lang.Long java.lang.Long.decode(java.lang.String) throws java.lang.NumberFormatException
         decodeA(arg0: Java.String, cb: Callback<Java.Long>): void;
         decode(arg0: Java.String): Java.Long;
         decodeP(arg0: Java.String): Promise<Java.Long>;
         // public static long java.lang.Long.divideUnsigned(long,long)
-        divideUnsignedA(arg0: long_t, arg1: long_t, cb: Callback<long_t>): void;
-        divideUnsigned(arg0: long_t, arg1: long_t): long_t;
-        divideUnsignedP(arg0: long_t, arg1: long_t): Promise<long_t>;
+        divideUnsignedA(arg0: long_t, arg1: long_t, cb: Callback<longValue_t>): void;
+        divideUnsigned(arg0: long_t, arg1: long_t): longValue_t;
+        divideUnsignedP(arg0: long_t, arg1: long_t): Promise<longValue_t>;
         // public static java.lang.Long java.lang.Long.getLong(java.lang.String,java.lang.Long)
         getLongA(arg0: Java.String, arg1: Java.Long, cb: Callback<Java.Long>): void;
         getLong(arg0: Java.String, arg1: Java.Long): Java.Long;
@@ -1802,77 +1802,77 @@ export module Java {
         getLong(arg0: Java.String): Java.Long;
         getLongP(arg0: Java.String): Promise<Java.Long>;
         // public static int java.lang.Long.hashCode(long)
-        hashCodeA(arg0: long_t, cb: Callback<integer_t>): void;
-        hashCode(arg0: long_t): integer_t;
-        hashCodeP(arg0: long_t): Promise<integer_t>;
+        hashCodeA(arg0: long_t, cb: Callback<number>): void;
+        hashCode(arg0: long_t): number;
+        hashCodeP(arg0: long_t): Promise<number>;
         // public static long java.lang.Long.highestOneBit(long)
-        highestOneBitA(arg0: long_t, cb: Callback<long_t>): void;
-        highestOneBit(arg0: long_t): long_t;
-        highestOneBitP(arg0: long_t): Promise<long_t>;
+        highestOneBitA(arg0: long_t, cb: Callback<longValue_t>): void;
+        highestOneBit(arg0: long_t): longValue_t;
+        highestOneBitP(arg0: long_t): Promise<longValue_t>;
         // public static long java.lang.Long.lowestOneBit(long)
-        lowestOneBitA(arg0: long_t, cb: Callback<long_t>): void;
-        lowestOneBit(arg0: long_t): long_t;
-        lowestOneBitP(arg0: long_t): Promise<long_t>;
+        lowestOneBitA(arg0: long_t, cb: Callback<longValue_t>): void;
+        lowestOneBit(arg0: long_t): longValue_t;
+        lowestOneBitP(arg0: long_t): Promise<longValue_t>;
         // public static long java.lang.Long.max(long,long)
-        maxA(arg0: long_t, arg1: long_t, cb: Callback<long_t>): void;
-        max(arg0: long_t, arg1: long_t): long_t;
-        maxP(arg0: long_t, arg1: long_t): Promise<long_t>;
+        maxA(arg0: long_t, arg1: long_t, cb: Callback<longValue_t>): void;
+        max(arg0: long_t, arg1: long_t): longValue_t;
+        maxP(arg0: long_t, arg1: long_t): Promise<longValue_t>;
         // public static long java.lang.Long.min(long,long)
-        minA(arg0: long_t, arg1: long_t, cb: Callback<long_t>): void;
-        min(arg0: long_t, arg1: long_t): long_t;
-        minP(arg0: long_t, arg1: long_t): Promise<long_t>;
+        minA(arg0: long_t, arg1: long_t, cb: Callback<longValue_t>): void;
+        min(arg0: long_t, arg1: long_t): longValue_t;
+        minP(arg0: long_t, arg1: long_t): Promise<longValue_t>;
         // public static int java.lang.Long.numberOfLeadingZeros(long)
-        numberOfLeadingZerosA(arg0: long_t, cb: Callback<integer_t>): void;
-        numberOfLeadingZeros(arg0: long_t): integer_t;
-        numberOfLeadingZerosP(arg0: long_t): Promise<integer_t>;
+        numberOfLeadingZerosA(arg0: long_t, cb: Callback<number>): void;
+        numberOfLeadingZeros(arg0: long_t): number;
+        numberOfLeadingZerosP(arg0: long_t): Promise<number>;
         // public static int java.lang.Long.numberOfTrailingZeros(long)
-        numberOfTrailingZerosA(arg0: long_t, cb: Callback<integer_t>): void;
-        numberOfTrailingZeros(arg0: long_t): integer_t;
-        numberOfTrailingZerosP(arg0: long_t): Promise<integer_t>;
+        numberOfTrailingZerosA(arg0: long_t, cb: Callback<number>): void;
+        numberOfTrailingZeros(arg0: long_t): number;
+        numberOfTrailingZerosP(arg0: long_t): Promise<number>;
         // public static long java.lang.Long.parseLong(java.lang.String,int) throws java.lang.NumberFormatException
-        parseLongA(arg0: Java.String, arg1: integer_t, cb: Callback<long_t>): void;
-        parseLong(arg0: Java.String, arg1: integer_t): long_t;
-        parseLongP(arg0: Java.String, arg1: integer_t): Promise<long_t>;
+        parseLongA(arg0: Java.String, arg1: integer_t, cb: Callback<longValue_t>): void;
+        parseLong(arg0: Java.String, arg1: integer_t): longValue_t;
+        parseLongP(arg0: Java.String, arg1: integer_t): Promise<longValue_t>;
         // public static long java.lang.Long.parseLong(java.lang.String) throws java.lang.NumberFormatException
-        parseLongA(arg0: Java.String, cb: Callback<long_t>): void;
-        parseLong(arg0: Java.String): long_t;
-        parseLongP(arg0: Java.String): Promise<long_t>;
+        parseLongA(arg0: Java.String, cb: Callback<longValue_t>): void;
+        parseLong(arg0: Java.String): longValue_t;
+        parseLongP(arg0: Java.String): Promise<longValue_t>;
         // public static long java.lang.Long.parseUnsignedLong(java.lang.String,int) throws java.lang.NumberFormatException
-        parseUnsignedLongA(arg0: Java.String, arg1: integer_t, cb: Callback<long_t>): void;
-        parseUnsignedLong(arg0: Java.String, arg1: integer_t): long_t;
-        parseUnsignedLongP(arg0: Java.String, arg1: integer_t): Promise<long_t>;
+        parseUnsignedLongA(arg0: Java.String, arg1: integer_t, cb: Callback<longValue_t>): void;
+        parseUnsignedLong(arg0: Java.String, arg1: integer_t): longValue_t;
+        parseUnsignedLongP(arg0: Java.String, arg1: integer_t): Promise<longValue_t>;
         // public static long java.lang.Long.parseUnsignedLong(java.lang.String) throws java.lang.NumberFormatException
-        parseUnsignedLongA(arg0: Java.String, cb: Callback<long_t>): void;
-        parseUnsignedLong(arg0: Java.String): long_t;
-        parseUnsignedLongP(arg0: Java.String): Promise<long_t>;
+        parseUnsignedLongA(arg0: Java.String, cb: Callback<longValue_t>): void;
+        parseUnsignedLong(arg0: Java.String): longValue_t;
+        parseUnsignedLongP(arg0: Java.String): Promise<longValue_t>;
         // public static long java.lang.Long.remainderUnsigned(long,long)
-        remainderUnsignedA(arg0: long_t, arg1: long_t, cb: Callback<long_t>): void;
-        remainderUnsigned(arg0: long_t, arg1: long_t): long_t;
-        remainderUnsignedP(arg0: long_t, arg1: long_t): Promise<long_t>;
+        remainderUnsignedA(arg0: long_t, arg1: long_t, cb: Callback<longValue_t>): void;
+        remainderUnsigned(arg0: long_t, arg1: long_t): longValue_t;
+        remainderUnsignedP(arg0: long_t, arg1: long_t): Promise<longValue_t>;
         // public static long java.lang.Long.reverse(long)
-        reverseA(arg0: long_t, cb: Callback<long_t>): void;
-        reverse(arg0: long_t): long_t;
-        reverseP(arg0: long_t): Promise<long_t>;
+        reverseA(arg0: long_t, cb: Callback<longValue_t>): void;
+        reverse(arg0: long_t): longValue_t;
+        reverseP(arg0: long_t): Promise<longValue_t>;
         // public static long java.lang.Long.reverseBytes(long)
-        reverseBytesA(arg0: long_t, cb: Callback<long_t>): void;
-        reverseBytes(arg0: long_t): long_t;
-        reverseBytesP(arg0: long_t): Promise<long_t>;
+        reverseBytesA(arg0: long_t, cb: Callback<longValue_t>): void;
+        reverseBytes(arg0: long_t): longValue_t;
+        reverseBytesP(arg0: long_t): Promise<longValue_t>;
         // public static long java.lang.Long.rotateLeft(long,int)
-        rotateLeftA(arg0: long_t, arg1: integer_t, cb: Callback<long_t>): void;
-        rotateLeft(arg0: long_t, arg1: integer_t): long_t;
-        rotateLeftP(arg0: long_t, arg1: integer_t): Promise<long_t>;
+        rotateLeftA(arg0: long_t, arg1: integer_t, cb: Callback<longValue_t>): void;
+        rotateLeft(arg0: long_t, arg1: integer_t): longValue_t;
+        rotateLeftP(arg0: long_t, arg1: integer_t): Promise<longValue_t>;
         // public static long java.lang.Long.rotateRight(long,int)
-        rotateRightA(arg0: long_t, arg1: integer_t, cb: Callback<long_t>): void;
-        rotateRight(arg0: long_t, arg1: integer_t): long_t;
-        rotateRightP(arg0: long_t, arg1: integer_t): Promise<long_t>;
+        rotateRightA(arg0: long_t, arg1: integer_t, cb: Callback<longValue_t>): void;
+        rotateRight(arg0: long_t, arg1: integer_t): longValue_t;
+        rotateRightP(arg0: long_t, arg1: integer_t): Promise<longValue_t>;
         // public static int java.lang.Long.signum(long)
-        signumA(arg0: long_t, cb: Callback<integer_t>): void;
-        signum(arg0: long_t): integer_t;
-        signumP(arg0: long_t): Promise<integer_t>;
+        signumA(arg0: long_t, cb: Callback<number>): void;
+        signum(arg0: long_t): number;
+        signumP(arg0: long_t): Promise<number>;
         // public static long java.lang.Long.sum(long,long)
-        sumA(arg0: long_t, arg1: long_t, cb: Callback<long_t>): void;
-        sum(arg0: long_t, arg1: long_t): long_t;
-        sumP(arg0: long_t, arg1: long_t): Promise<long_t>;
+        sumA(arg0: long_t, arg1: long_t, cb: Callback<longValue_t>): void;
+        sum(arg0: long_t, arg1: long_t): longValue_t;
+        sumP(arg0: long_t, arg1: long_t): Promise<longValue_t>;
         // public static java.lang.String java.lang.Long.toBinaryString(long)
         toBinaryStringA(arg0: long_t, cb: Callback<Java.String>): void;
         toBinaryString(arg0: long_t): Java.String;
@@ -1924,33 +1924,33 @@ export module Java {
       byteValue(): object_t;
       byteValueP(): Promise<object_t>;
       // public abstract double java.lang.Number.doubleValue()
-      doubleValueA( cb: Callback<double_t>): void;
-      doubleValue(): double_t;
-      doubleValueP(): Promise<double_t>;
+      doubleValueA( cb: Callback<number>): void;
+      doubleValue(): number;
+      doubleValueP(): Promise<number>;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: Java.Object, cb: Callback<boolean_t>): void;
       equals(arg0: Java.Object): boolean_t;
       equalsP(arg0: Java.Object): Promise<boolean_t>;
       // public abstract float java.lang.Number.floatValue()
-      floatValueA( cb: Callback<float_t>): void;
-      floatValue(): float_t;
-      floatValueP(): Promise<float_t>;
+      floatValueA( cb: Callback<number>): void;
+      floatValue(): number;
+      floatValueP(): Promise<number>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClassA( cb: Callback<Java.Class<any>>): void;
       getClass(): Java.Class<any>;
       getClassP(): Promise<Java.Class<any>>;
       // public native int java.lang.Object.hashCode()
-      hashCodeA( cb: Callback<integer_t>): void;
-      hashCode(): integer_t;
-      hashCodeP(): Promise<integer_t>;
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
       // public abstract int java.lang.Number.intValue()
-      intValueA( cb: Callback<integer_t>): void;
-      intValue(): integer_t;
-      intValueP(): Promise<integer_t>;
+      intValueA( cb: Callback<number>): void;
+      intValue(): number;
+      intValueP(): Promise<number>;
       // public abstract long java.lang.Number.longValue()
-      longValueA( cb: Callback<long_t>): void;
-      longValue(): long_t;
-      longValueP(): Promise<long_t>;
+      longValueA( cb: Callback<longValue_t>): void;
+      longValue(): longValue_t;
+      longValueP(): Promise<longValue_t>;
       // public final native void java.lang.Object.notify()
       notifyA( cb: Callback<void>): void;
       notify(): void;
@@ -1960,9 +1960,9 @@ export module Java {
       notifyAll(): void;
       notifyAllP(): Promise<void>;
       // public short java.lang.Number.shortValue()
-      shortValueA( cb: Callback<short_t>): void;
-      shortValue(): short_t;
-      shortValueP(): Promise<short_t>;
+      shortValueA( cb: Callback<number>): void;
+      shortValue(): number;
+      shortValueP(): Promise<number>;
       // public java.lang.String java.lang.Object.toString()
       toStringA( cb: Callback<Java.String>): void;
       toString(): Java.String;
@@ -1999,9 +1999,9 @@ export module Java {
       getClass(): Java.Class<any>;
       getClassP(): Promise<Java.Class<any>>;
       // public native int java.lang.Object.hashCode()
-      hashCodeA( cb: Callback<integer_t>): void;
-      hashCode(): integer_t;
-      hashCodeP(): Promise<integer_t>;
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
       // public final native void java.lang.Object.notify()
       notifyA( cb: Callback<void>): void;
       notify(): void;
@@ -2042,41 +2042,41 @@ export module Java {
       byteValue(): object_t;
       byteValueP(): Promise<object_t>;
       // public int java.lang.Short.compareTo(java.lang.Object)
-      compareToA(arg0: Java.Object, cb: Callback<integer_t>): void;
-      compareTo(arg0: Java.Object): integer_t;
-      compareToP(arg0: Java.Object): Promise<integer_t>;
+      compareToA(arg0: Java.Object, cb: Callback<number>): void;
+      compareTo(arg0: Java.Object): number;
+      compareToP(arg0: Java.Object): Promise<number>;
       // public int java.lang.Short.compareTo(java.lang.Short)
-      compareToA(arg0: Java.Short, cb: Callback<integer_t>): void;
-      compareTo(arg0: Java.Short): integer_t;
-      compareToP(arg0: Java.Short): Promise<integer_t>;
+      compareToA(arg0: Java.Short, cb: Callback<number>): void;
+      compareTo(arg0: Java.Short): number;
+      compareToP(arg0: Java.Short): Promise<number>;
       // public abstract double java.lang.Number.doubleValue()
-      doubleValueA( cb: Callback<double_t>): void;
-      doubleValue(): double_t;
-      doubleValueP(): Promise<double_t>;
+      doubleValueA( cb: Callback<number>): void;
+      doubleValue(): number;
+      doubleValueP(): Promise<number>;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: Java.Object, cb: Callback<boolean_t>): void;
       equals(arg0: Java.Object): boolean_t;
       equalsP(arg0: Java.Object): Promise<boolean_t>;
       // public abstract float java.lang.Number.floatValue()
-      floatValueA( cb: Callback<float_t>): void;
-      floatValue(): float_t;
-      floatValueP(): Promise<float_t>;
+      floatValueA( cb: Callback<number>): void;
+      floatValue(): number;
+      floatValueP(): Promise<number>;
       // public final native java.lang.Class<?> java.lang.Object.getClass()
       getClassA( cb: Callback<Java.Class<any>>): void;
       getClass(): Java.Class<any>;
       getClassP(): Promise<Java.Class<any>>;
       // public native int java.lang.Object.hashCode()
-      hashCodeA( cb: Callback<integer_t>): void;
-      hashCode(): integer_t;
-      hashCodeP(): Promise<integer_t>;
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
       // public abstract int java.lang.Number.intValue()
-      intValueA( cb: Callback<integer_t>): void;
-      intValue(): integer_t;
-      intValueP(): Promise<integer_t>;
+      intValueA( cb: Callback<number>): void;
+      intValue(): number;
+      intValueP(): Promise<number>;
       // public abstract long java.lang.Number.longValue()
-      longValueA( cb: Callback<long_t>): void;
-      longValue(): long_t;
-      longValueP(): Promise<long_t>;
+      longValueA( cb: Callback<longValue_t>): void;
+      longValue(): longValue_t;
+      longValueP(): Promise<longValue_t>;
       // public final native void java.lang.Object.notify()
       notifyA( cb: Callback<void>): void;
       notify(): void;
@@ -2086,9 +2086,9 @@ export module Java {
       notifyAll(): void;
       notifyAllP(): Promise<void>;
       // public short java.lang.Number.shortValue()
-      shortValueA( cb: Callback<short_t>): void;
-      shortValue(): short_t;
-      shortValueP(): Promise<short_t>;
+      shortValueA( cb: Callback<number>): void;
+      shortValue(): number;
+      shortValueP(): Promise<number>;
       // public java.lang.String java.lang.Object.toString()
       toStringA( cb: Callback<Java.String>): void;
       toString(): Java.String;
@@ -2108,50 +2108,50 @@ export module Java {
     }
     export module Short {
       export interface Static {
-        MIN_VALUE: short_t;
-        MAX_VALUE: short_t;
+        MIN_VALUE: number;
+        MAX_VALUE: number;
         TYPE: Java.Class<Java.Short>;
-        SIZE: integer_t;
-        BYTES: integer_t;
+        SIZE: number;
+        BYTES: number;
         class: Java.Class<any>;
         new (arg0: Java.String): java.lang.Short;
         new (arg0: short_t): java.lang.Short;
         // public static int java.lang.Short.compare(short,short)
-        compareA(arg0: short_t, arg1: short_t, cb: Callback<integer_t>): void;
-        compare(arg0: short_t, arg1: short_t): integer_t;
-        compareP(arg0: short_t, arg1: short_t): Promise<integer_t>;
+        compareA(arg0: short_t, arg1: short_t, cb: Callback<number>): void;
+        compare(arg0: short_t, arg1: short_t): number;
+        compareP(arg0: short_t, arg1: short_t): Promise<number>;
         // public static java.lang.Short java.lang.Short.decode(java.lang.String) throws java.lang.NumberFormatException
         decodeA(arg0: Java.String, cb: Callback<Java.Short>): void;
         decode(arg0: Java.String): Java.Short;
         decodeP(arg0: Java.String): Promise<Java.Short>;
         // public static int java.lang.Short.hashCode(short)
-        hashCodeA(arg0: short_t, cb: Callback<integer_t>): void;
-        hashCode(arg0: short_t): integer_t;
-        hashCodeP(arg0: short_t): Promise<integer_t>;
+        hashCodeA(arg0: short_t, cb: Callback<number>): void;
+        hashCode(arg0: short_t): number;
+        hashCodeP(arg0: short_t): Promise<number>;
         // public static short java.lang.Short.parseShort(java.lang.String,int) throws java.lang.NumberFormatException
-        parseShortA(arg0: Java.String, arg1: integer_t, cb: Callback<short_t>): void;
-        parseShort(arg0: Java.String, arg1: integer_t): short_t;
-        parseShortP(arg0: Java.String, arg1: integer_t): Promise<short_t>;
+        parseShortA(arg0: Java.String, arg1: integer_t, cb: Callback<number>): void;
+        parseShort(arg0: Java.String, arg1: integer_t): number;
+        parseShortP(arg0: Java.String, arg1: integer_t): Promise<number>;
         // public static short java.lang.Short.parseShort(java.lang.String) throws java.lang.NumberFormatException
-        parseShortA(arg0: Java.String, cb: Callback<short_t>): void;
-        parseShort(arg0: Java.String): short_t;
-        parseShortP(arg0: Java.String): Promise<short_t>;
+        parseShortA(arg0: Java.String, cb: Callback<number>): void;
+        parseShort(arg0: Java.String): number;
+        parseShortP(arg0: Java.String): Promise<number>;
         // public static short java.lang.Short.reverseBytes(short)
-        reverseBytesA(arg0: short_t, cb: Callback<short_t>): void;
-        reverseBytes(arg0: short_t): short_t;
-        reverseBytesP(arg0: short_t): Promise<short_t>;
+        reverseBytesA(arg0: short_t, cb: Callback<number>): void;
+        reverseBytes(arg0: short_t): number;
+        reverseBytesP(arg0: short_t): Promise<number>;
         // public static java.lang.String java.lang.Short.toString(short)
         toStringA(arg0: short_t, cb: Callback<Java.String>): void;
         toString(arg0: short_t): Java.String;
         toStringP(arg0: short_t): Promise<Java.String>;
         // public static int java.lang.Short.toUnsignedInt(short)
-        toUnsignedIntA(arg0: short_t, cb: Callback<integer_t>): void;
-        toUnsignedInt(arg0: short_t): integer_t;
-        toUnsignedIntP(arg0: short_t): Promise<integer_t>;
+        toUnsignedIntA(arg0: short_t, cb: Callback<number>): void;
+        toUnsignedInt(arg0: short_t): number;
+        toUnsignedIntP(arg0: short_t): Promise<number>;
         // public static long java.lang.Short.toUnsignedLong(short)
-        toUnsignedLongA(arg0: short_t, cb: Callback<long_t>): void;
-        toUnsignedLong(arg0: short_t): long_t;
-        toUnsignedLongP(arg0: short_t): Promise<long_t>;
+        toUnsignedLongA(arg0: short_t, cb: Callback<longValue_t>): void;
+        toUnsignedLong(arg0: short_t): longValue_t;
+        toUnsignedLongP(arg0: short_t): Promise<longValue_t>;
         // public static java.lang.Short java.lang.Short.valueOf(java.lang.String,int) throws java.lang.NumberFormatException
         valueOfA(arg0: Java.String, arg1: integer_t, cb: Callback<Java.Short>): void;
         valueOf(arg0: Java.String, arg1: integer_t): Java.Short;
@@ -2179,33 +2179,33 @@ export module Java {
       chars(): Java.IntStream;
       charsP(): Promise<Java.IntStream>;
       // public int java.lang.String.codePointAt(int)
-      codePointAtA(arg0: integer_t, cb: Callback<integer_t>): void;
-      codePointAt(arg0: integer_t): integer_t;
-      codePointAtP(arg0: integer_t): Promise<integer_t>;
+      codePointAtA(arg0: integer_t, cb: Callback<number>): void;
+      codePointAt(arg0: integer_t): number;
+      codePointAtP(arg0: integer_t): Promise<number>;
       // public int java.lang.String.codePointBefore(int)
-      codePointBeforeA(arg0: integer_t, cb: Callback<integer_t>): void;
-      codePointBefore(arg0: integer_t): integer_t;
-      codePointBeforeP(arg0: integer_t): Promise<integer_t>;
+      codePointBeforeA(arg0: integer_t, cb: Callback<number>): void;
+      codePointBefore(arg0: integer_t): number;
+      codePointBeforeP(arg0: integer_t): Promise<number>;
       // public int java.lang.String.codePointCount(int,int)
-      codePointCountA(arg0: integer_t, arg1: integer_t, cb: Callback<integer_t>): void;
-      codePointCount(arg0: integer_t, arg1: integer_t): integer_t;
-      codePointCountP(arg0: integer_t, arg1: integer_t): Promise<integer_t>;
+      codePointCountA(arg0: integer_t, arg1: integer_t, cb: Callback<number>): void;
+      codePointCount(arg0: integer_t, arg1: integer_t): number;
+      codePointCountP(arg0: integer_t, arg1: integer_t): Promise<number>;
       // public default java.util.stream.IntStream java.lang.CharSequence.codePoints()
       codePointsA( cb: Callback<Java.IntStream>): void;
       codePoints(): Java.IntStream;
       codePointsP(): Promise<Java.IntStream>;
       // public int java.lang.String.compareTo(java.lang.String)
-      compareToA(arg0: Java.String, cb: Callback<integer_t>): void;
-      compareTo(arg0: Java.String): integer_t;
-      compareToP(arg0: Java.String): Promise<integer_t>;
+      compareToA(arg0: Java.String, cb: Callback<number>): void;
+      compareTo(arg0: Java.String): number;
+      compareToP(arg0: Java.String): Promise<number>;
       // public int java.lang.String.compareTo(java.lang.Object)
-      compareToA(arg0: Java.Object, cb: Callback<integer_t>): void;
-      compareTo(arg0: Java.Object): integer_t;
-      compareToP(arg0: Java.Object): Promise<integer_t>;
+      compareToA(arg0: Java.Object, cb: Callback<number>): void;
+      compareTo(arg0: Java.Object): number;
+      compareToP(arg0: Java.Object): Promise<number>;
       // public int java.lang.String.compareToIgnoreCase(java.lang.String)
-      compareToIgnoreCaseA(arg0: Java.String, cb: Callback<integer_t>): void;
-      compareToIgnoreCase(arg0: Java.String): integer_t;
-      compareToIgnoreCaseP(arg0: Java.String): Promise<integer_t>;
+      compareToIgnoreCaseA(arg0: Java.String, cb: Callback<number>): void;
+      compareToIgnoreCase(arg0: Java.String): number;
+      compareToIgnoreCaseP(arg0: Java.String): Promise<number>;
       // public java.lang.String java.lang.String.concat(java.lang.String)
       concatA(arg0: Java.String, cb: Callback<Java.String>): void;
       concat(arg0: Java.String): Java.String;
@@ -2259,25 +2259,25 @@ export module Java {
       getClass(): Java.Class<any>;
       getClassP(): Promise<Java.Class<any>>;
       // public native int java.lang.Object.hashCode()
-      hashCodeA( cb: Callback<integer_t>): void;
-      hashCode(): integer_t;
-      hashCodeP(): Promise<integer_t>;
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
       // public int java.lang.String.indexOf(java.lang.String,int)
-      indexOfA(arg0: Java.String, arg1: integer_t, cb: Callback<integer_t>): void;
-      indexOf(arg0: Java.String, arg1: integer_t): integer_t;
-      indexOfP(arg0: Java.String, arg1: integer_t): Promise<integer_t>;
+      indexOfA(arg0: Java.String, arg1: integer_t, cb: Callback<number>): void;
+      indexOf(arg0: Java.String, arg1: integer_t): number;
+      indexOfP(arg0: Java.String, arg1: integer_t): Promise<number>;
       // public int java.lang.String.indexOf(int,int)
-      indexOfA(arg0: integer_t, arg1: integer_t, cb: Callback<integer_t>): void;
-      indexOf(arg0: integer_t, arg1: integer_t): integer_t;
-      indexOfP(arg0: integer_t, arg1: integer_t): Promise<integer_t>;
+      indexOfA(arg0: integer_t, arg1: integer_t, cb: Callback<number>): void;
+      indexOf(arg0: integer_t, arg1: integer_t): number;
+      indexOfP(arg0: integer_t, arg1: integer_t): Promise<number>;
       // public int java.lang.String.indexOf(java.lang.String)
-      indexOfA(arg0: Java.String, cb: Callback<integer_t>): void;
-      indexOf(arg0: Java.String): integer_t;
-      indexOfP(arg0: Java.String): Promise<integer_t>;
+      indexOfA(arg0: Java.String, cb: Callback<number>): void;
+      indexOf(arg0: Java.String): number;
+      indexOfP(arg0: Java.String): Promise<number>;
       // public int java.lang.String.indexOf(int)
-      indexOfA(arg0: integer_t, cb: Callback<integer_t>): void;
-      indexOf(arg0: integer_t): integer_t;
-      indexOfP(arg0: integer_t): Promise<integer_t>;
+      indexOfA(arg0: integer_t, cb: Callback<number>): void;
+      indexOf(arg0: integer_t): number;
+      indexOfP(arg0: integer_t): Promise<number>;
       // public native java.lang.String java.lang.String.intern()
       internA( cb: Callback<Java.String>): void;
       intern(): Java.String;
@@ -2287,25 +2287,25 @@ export module Java {
       isEmpty(): boolean_t;
       isEmptyP(): Promise<boolean_t>;
       // public int java.lang.String.lastIndexOf(java.lang.String,int)
-      lastIndexOfA(arg0: Java.String, arg1: integer_t, cb: Callback<integer_t>): void;
-      lastIndexOf(arg0: Java.String, arg1: integer_t): integer_t;
-      lastIndexOfP(arg0: Java.String, arg1: integer_t): Promise<integer_t>;
+      lastIndexOfA(arg0: Java.String, arg1: integer_t, cb: Callback<number>): void;
+      lastIndexOf(arg0: Java.String, arg1: integer_t): number;
+      lastIndexOfP(arg0: Java.String, arg1: integer_t): Promise<number>;
       // public int java.lang.String.lastIndexOf(int,int)
-      lastIndexOfA(arg0: integer_t, arg1: integer_t, cb: Callback<integer_t>): void;
-      lastIndexOf(arg0: integer_t, arg1: integer_t): integer_t;
-      lastIndexOfP(arg0: integer_t, arg1: integer_t): Promise<integer_t>;
+      lastIndexOfA(arg0: integer_t, arg1: integer_t, cb: Callback<number>): void;
+      lastIndexOf(arg0: integer_t, arg1: integer_t): number;
+      lastIndexOfP(arg0: integer_t, arg1: integer_t): Promise<number>;
       // public int java.lang.String.lastIndexOf(java.lang.String)
-      lastIndexOfA(arg0: Java.String, cb: Callback<integer_t>): void;
-      lastIndexOf(arg0: Java.String): integer_t;
-      lastIndexOfP(arg0: Java.String): Promise<integer_t>;
+      lastIndexOfA(arg0: Java.String, cb: Callback<number>): void;
+      lastIndexOf(arg0: Java.String): number;
+      lastIndexOfP(arg0: Java.String): Promise<number>;
       // public int java.lang.String.lastIndexOf(int)
-      lastIndexOfA(arg0: integer_t, cb: Callback<integer_t>): void;
-      lastIndexOf(arg0: integer_t): integer_t;
-      lastIndexOfP(arg0: integer_t): Promise<integer_t>;
+      lastIndexOfA(arg0: integer_t, cb: Callback<number>): void;
+      lastIndexOf(arg0: integer_t): number;
+      lastIndexOfP(arg0: integer_t): Promise<number>;
       // public int java.lang.String.length()
-      lengthA( cb: Callback<integer_t>): void;
-      length(): integer_t;
-      lengthP(): Promise<integer_t>;
+      lengthA( cb: Callback<number>): void;
+      length(): number;
+      lengthP(): Promise<number>;
       // public boolean java.lang.String.matches(java.lang.String)
       matchesA(arg0: Java.String, cb: Callback<boolean_t>): void;
       matches(arg0: Java.String): boolean_t;
@@ -2319,9 +2319,9 @@ export module Java {
       notifyAll(): void;
       notifyAllP(): Promise<void>;
       // public int java.lang.String.offsetByCodePoints(int,int)
-      offsetByCodePointsA(arg0: integer_t, arg1: integer_t, cb: Callback<integer_t>): void;
-      offsetByCodePoints(arg0: integer_t, arg1: integer_t): integer_t;
-      offsetByCodePointsP(arg0: integer_t, arg1: integer_t): Promise<integer_t>;
+      offsetByCodePointsA(arg0: integer_t, arg1: integer_t, cb: Callback<number>): void;
+      offsetByCodePoints(arg0: integer_t, arg1: integer_t): number;
+      offsetByCodePointsP(arg0: integer_t, arg1: integer_t): Promise<number>;
       // public boolean java.lang.String.regionMatches(boolean,int,java.lang.String,int,int)
       regionMatchesA(arg0: boolean_t, arg1: integer_t, arg2: Java.String, arg3: integer_t, arg4: integer_t, cb: Callback<boolean_t>): void;
       regionMatches(arg0: boolean_t, arg1: integer_t, arg2: Java.String, arg3: integer_t, arg4: integer_t): boolean_t;
@@ -2535,9 +2535,9 @@ export module Java {
       forEach(arg0: Java.Consumer<any>): void;
       forEachP(arg0: Java.Consumer<any>): Promise<void>;
       // public native int java.lang.Object.hashCode()
-      hashCodeA( cb: Callback<integer_t>): void;
-      hashCode(): integer_t;
-      hashCodeP(): Promise<integer_t>;
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
       // public abstract boolean java.util.Collection.isEmpty()
       isEmptyA( cb: Callback<boolean_t>): void;
       isEmpty(): boolean_t;
@@ -2567,9 +2567,9 @@ export module Java {
       retainAll(arg0: Java.Collection<any>): boolean_t;
       retainAllP(arg0: Java.Collection<any>): Promise<boolean_t>;
       // public abstract int java.util.Collection.size()
-      sizeA( cb: Callback<integer_t>): void;
-      size(): integer_t;
-      sizeP(): Promise<integer_t>;
+      sizeA( cb: Callback<number>): void;
+      size(): number;
+      sizeP(): Promise<number>;
       // public default java.util.Spliterator<T> java.lang.Iterable.spliterator()
       spliteratorA( cb: Callback<any>): void;
       spliterator(): any;
@@ -2761,13 +2761,13 @@ export module Java {
       get(arg0: integer_t): E;
       getP(arg0: integer_t): Promise<E>;
       // public native int java.lang.Object.hashCode()
-      hashCodeA( cb: Callback<integer_t>): void;
-      hashCode(): integer_t;
-      hashCodeP(): Promise<integer_t>;
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
       // public abstract int java.util.List.indexOf(java.lang.Object)
-      indexOfA(arg0: Java.Object, cb: Callback<integer_t>): void;
-      indexOf(arg0: Java.Object): integer_t;
-      indexOfP(arg0: Java.Object): Promise<integer_t>;
+      indexOfA(arg0: Java.Object, cb: Callback<number>): void;
+      indexOf(arg0: Java.Object): number;
+      indexOfP(arg0: Java.Object): Promise<number>;
       // public abstract boolean java.util.Collection.isEmpty()
       isEmptyA( cb: Callback<boolean_t>): void;
       isEmpty(): boolean_t;
@@ -2777,9 +2777,9 @@ export module Java {
       iterator(): Java.Iterator<T>;
       iteratorP(): Promise<Java.Iterator<T>>;
       // public abstract int java.util.List.lastIndexOf(java.lang.Object)
-      lastIndexOfA(arg0: Java.Object, cb: Callback<integer_t>): void;
-      lastIndexOf(arg0: Java.Object): integer_t;
-      lastIndexOfP(arg0: Java.Object): Promise<integer_t>;
+      lastIndexOfA(arg0: Java.Object, cb: Callback<number>): void;
+      lastIndexOf(arg0: Java.Object): number;
+      lastIndexOfP(arg0: Java.Object): Promise<number>;
       // public abstract java.util.ListIterator<E> java.util.List.listIterator(int)
       listIteratorA(arg0: integer_t, cb: Callback<any>): void;
       listIterator(arg0: integer_t): any;
@@ -2821,9 +2821,9 @@ export module Java {
       set(arg0: integer_t, arg1: E): E;
       setP(arg0: integer_t, arg1: E): Promise<E>;
       // public abstract int java.util.Collection.size()
-      sizeA( cb: Callback<integer_t>): void;
-      size(): integer_t;
-      sizeP(): Promise<integer_t>;
+      sizeA( cb: Callback<number>): void;
+      size(): number;
+      sizeP(): Promise<number>;
       // public default void java.util.List.sort(java.util.Comparator<? super E>)
       sortA(arg0: any, cb: Callback<void>): void;
       sort(arg0: any): void;
@@ -2943,13 +2943,13 @@ export module Java {
   export module java.util.stream {
     export interface Collector$Characteristics  {
       // public int java.lang.Enum.compareTo(java.lang.Object)
-      compareToA(arg0: Java.Object, cb: Callback<integer_t>): void;
-      compareTo(arg0: Java.Object): integer_t;
-      compareToP(arg0: Java.Object): Promise<integer_t>;
+      compareToA(arg0: Java.Object, cb: Callback<number>): void;
+      compareTo(arg0: Java.Object): number;
+      compareToP(arg0: Java.Object): Promise<number>;
       // public final int java.lang.Enum.compareTo(E)
-      compareToA(arg0: E, cb: Callback<integer_t>): void;
-      compareTo(arg0: E): integer_t;
-      compareToP(arg0: E): Promise<integer_t>;
+      compareToA(arg0: E, cb: Callback<number>): void;
+      compareTo(arg0: E): number;
+      compareToP(arg0: E): Promise<number>;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: Java.Object, cb: Callback<boolean_t>): void;
       equals(arg0: Java.Object): boolean_t;
@@ -2963,9 +2963,9 @@ export module Java {
       getDeclaringClass(): Java.Class<E>;
       getDeclaringClassP(): Promise<Java.Class<E>>;
       // public native int java.lang.Object.hashCode()
-      hashCodeA( cb: Callback<integer_t>): void;
-      hashCode(): integer_t;
-      hashCodeP(): Promise<integer_t>;
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
       // public final java.lang.String java.lang.Enum.name()
       nameA( cb: Callback<Java.String>): void;
       name(): Java.String;
@@ -2979,9 +2979,9 @@ export module Java {
       notifyAll(): void;
       notifyAllP(): Promise<void>;
       // public final int java.lang.Enum.ordinal()
-      ordinalA( cb: Callback<integer_t>): void;
-      ordinal(): integer_t;
-      ordinalP(): Promise<integer_t>;
+      ordinalA( cb: Callback<number>): void;
+      ordinal(): number;
+      ordinalP(): Promise<number>;
       // public java.lang.String java.lang.Object.toString()
       toStringA( cb: Callback<Java.String>): void;
       toString(): Java.String;
@@ -3032,9 +3032,9 @@ export module Java {
       getClass(): Java.Class<any>;
       getClassP(): Promise<Java.Class<any>>;
       // public native int java.lang.Object.hashCode()
-      hashCodeA( cb: Callback<integer_t>): void;
-      hashCode(): integer_t;
-      hashCodeP(): Promise<integer_t>;
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
       // public final native void java.lang.Object.notify()
       notifyA( cb: Callback<void>): void;
       notify(): void;
@@ -3242,9 +3242,9 @@ export module Java {
       collect<R>(arg0: any, arg1: any, arg2: any): R;
       collectP<R>(arg0: any, arg1: any, arg2: any): Promise<R>;
       // public abstract long java.util.stream.DoubleStream.count()
-      countA( cb: Callback<long_t>): void;
-      count(): long_t;
-      countP(): Promise<long_t>;
+      countA( cb: Callback<longValue_t>): void;
+      count(): longValue_t;
+      countP(): Promise<longValue_t>;
       // public abstract java.util.stream.DoubleStream java.util.stream.DoubleStream.distinct()
       distinctA( cb: Callback<Java.DoubleStream>): void;
       distinct(): Java.DoubleStream;
@@ -3334,9 +3334,9 @@ export module Java {
       peek(arg0: Java.DoubleConsumer): Java.DoubleStream;
       peekP(arg0: Java.DoubleConsumer): Promise<Java.DoubleStream>;
       // public abstract double java.util.stream.DoubleStream.reduce(double,java.util.function.DoubleBinaryOperator)
-      reduceA(arg0: double_t, arg1: any, cb: Callback<double_t>): void;
-      reduce(arg0: double_t, arg1: any): double_t;
-      reduceP(arg0: double_t, arg1: any): Promise<double_t>;
+      reduceA(arg0: double_t, arg1: any, cb: Callback<number>): void;
+      reduce(arg0: double_t, arg1: any): number;
+      reduceP(arg0: double_t, arg1: any): Promise<number>;
       // public abstract java.util.OptionalDouble java.util.stream.DoubleStream.reduce(java.util.function.DoubleBinaryOperator)
       reduceA(arg0: any, cb: Callback<any>): void;
       reduce(arg0: any): any;
@@ -3366,9 +3366,9 @@ export module Java {
       spliterator(): any;
       spliteratorP(): Promise<any>;
       // public abstract double java.util.stream.DoubleStream.sum()
-      sumA( cb: Callback<double_t>): void;
-      sum(): double_t;
-      sumP(): Promise<double_t>;
+      sumA( cb: Callback<number>): void;
+      sum(): number;
+      sumP(): Promise<number>;
       // public abstract java.util.DoubleSummaryStatistics java.util.stream.DoubleStream.summaryStatistics()
       summaryStatisticsA( cb: Callback<any>): void;
       summaryStatistics(): any;
@@ -3480,9 +3480,9 @@ export module Java {
       collect<R>(arg0: any, arg1: any, arg2: any): R;
       collectP<R>(arg0: any, arg1: any, arg2: any): Promise<R>;
       // public abstract long java.util.stream.IntStream.count()
-      countA( cb: Callback<long_t>): void;
-      count(): long_t;
-      countP(): Promise<long_t>;
+      countA( cb: Callback<longValue_t>): void;
+      count(): longValue_t;
+      countP(): Promise<longValue_t>;
       // public abstract java.util.stream.IntStream java.util.stream.IntStream.distinct()
       distinctA( cb: Callback<Java.IntStream>): void;
       distinct(): Java.IntStream;
@@ -3572,9 +3572,9 @@ export module Java {
       peek(arg0: Java.IntConsumer): Java.IntStream;
       peekP(arg0: Java.IntConsumer): Promise<Java.IntStream>;
       // public abstract int java.util.stream.IntStream.reduce(int,java.util.function.IntBinaryOperator)
-      reduceA(arg0: integer_t, arg1: any, cb: Callback<integer_t>): void;
-      reduce(arg0: integer_t, arg1: any): integer_t;
-      reduceP(arg0: integer_t, arg1: any): Promise<integer_t>;
+      reduceA(arg0: integer_t, arg1: any, cb: Callback<number>): void;
+      reduce(arg0: integer_t, arg1: any): number;
+      reduceP(arg0: integer_t, arg1: any): Promise<number>;
       // public abstract java.util.OptionalInt java.util.stream.IntStream.reduce(java.util.function.IntBinaryOperator)
       reduceA(arg0: any, cb: Callback<any>): void;
       reduce(arg0: any): any;
@@ -3604,9 +3604,9 @@ export module Java {
       spliterator(): any;
       spliteratorP(): Promise<any>;
       // public abstract int java.util.stream.IntStream.sum()
-      sumA( cb: Callback<integer_t>): void;
-      sum(): integer_t;
-      sumP(): Promise<integer_t>;
+      sumA( cb: Callback<number>): void;
+      sum(): number;
+      sumP(): Promise<number>;
       // public abstract java.util.IntSummaryStatistics java.util.stream.IntStream.summaryStatistics()
       summaryStatisticsA( cb: Callback<any>): void;
       summaryStatistics(): any;
@@ -3722,9 +3722,9 @@ export module Java {
       collect<R>(arg0: any, arg1: any, arg2: any): R;
       collectP<R>(arg0: any, arg1: any, arg2: any): Promise<R>;
       // public abstract long java.util.stream.LongStream.count()
-      countA( cb: Callback<long_t>): void;
-      count(): long_t;
-      countP(): Promise<long_t>;
+      countA( cb: Callback<longValue_t>): void;
+      count(): longValue_t;
+      countP(): Promise<longValue_t>;
       // public abstract java.util.stream.LongStream java.util.stream.LongStream.distinct()
       distinctA( cb: Callback<Java.LongStream>): void;
       distinct(): Java.LongStream;
@@ -3814,9 +3814,9 @@ export module Java {
       peek(arg0: Java.LongConsumer): Java.LongStream;
       peekP(arg0: Java.LongConsumer): Promise<Java.LongStream>;
       // public abstract long java.util.stream.LongStream.reduce(long,java.util.function.LongBinaryOperator)
-      reduceA(arg0: long_t, arg1: any, cb: Callback<long_t>): void;
-      reduce(arg0: long_t, arg1: any): long_t;
-      reduceP(arg0: long_t, arg1: any): Promise<long_t>;
+      reduceA(arg0: long_t, arg1: any, cb: Callback<longValue_t>): void;
+      reduce(arg0: long_t, arg1: any): longValue_t;
+      reduceP(arg0: long_t, arg1: any): Promise<longValue_t>;
       // public abstract java.util.OptionalLong java.util.stream.LongStream.reduce(java.util.function.LongBinaryOperator)
       reduceA(arg0: any, cb: Callback<any>): void;
       reduce(arg0: any): any;
@@ -3846,9 +3846,9 @@ export module Java {
       spliterator(): any;
       spliteratorP(): Promise<any>;
       // public abstract long java.util.stream.LongStream.sum()
-      sumA( cb: Callback<long_t>): void;
-      sum(): long_t;
-      sumP(): Promise<long_t>;
+      sumA( cb: Callback<longValue_t>): void;
+      sum(): longValue_t;
+      sumP(): Promise<longValue_t>;
       // public abstract java.util.LongSummaryStatistics java.util.stream.LongStream.summaryStatistics()
       summaryStatisticsA( cb: Callback<any>): void;
       summaryStatistics(): any;
@@ -3956,9 +3956,9 @@ export module Java {
       collect<R, A>(arg0: Java.Collector<any, A, R>): R;
       collectP<R, A>(arg0: Java.Collector<any, A, R>): Promise<R>;
       // public abstract long java.util.stream.Stream.count()
-      countA( cb: Callback<long_t>): void;
-      count(): long_t;
-      countP(): Promise<long_t>;
+      countA( cb: Callback<longValue_t>): void;
+      count(): longValue_t;
+      countP(): Promise<longValue_t>;
       // public abstract java.util.stream.Stream<T> java.util.stream.Stream.distinct()
       distinctA( cb: Callback<Java.Stream<T>>): void;
       distinct(): Java.Stream<T>;
@@ -4170,9 +4170,9 @@ export module Java {
       getClass(): Java.Class<any>;
       getClassP(): Promise<Java.Class<any>>;
       // public native int java.lang.Object.hashCode()
-      hashCodeA( cb: Callback<integer_t>): void;
-      hashCode(): integer_t;
-      hashCodeP(): Promise<integer_t>;
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
       // public final native void java.lang.Object.notify()
       notifyA( cb: Callback<void>): void;
       notify(): void;
