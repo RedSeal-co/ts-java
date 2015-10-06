@@ -646,7 +646,10 @@ export class ClassesMap {
       }
     });
 
-    var genericInterfaces: Array<string> = _.map(clazz.getGenericInterfaces(), (genType: Java.Type) => genType.getTypeName());
+    var tsGenericInterfaces: Array<string> = _.map(clazz.getGenericInterfaces(), (genType: Java.Type) => {
+      return this.translateGenericType(genType.getTypeName());
+    });
+    tsGenericInterfaces = _.filter(tsGenericInterfaces, (intf: string) => intf !== 'any');
 
     var methods: Array<MethodDefinition> = this.mapClassMethods(className, clazz).sort(bySignature);
     var fields: Array<FieldDefinition> = this.mapClassFields(className, clazz);
@@ -670,15 +673,17 @@ export class ClassesMap {
       return a.signature.localeCompare(b.signature);
     }
 
-    var tsInterfaces = _.map(interfaces, (intf: string) => { return this.fixClassPath(intf); });
+    var tsRegularInterfaces = _.map(interfaces, (intf: string) => { return this.fixClassPath(intf); });
 
-    // tsInterfaces is used in the extends clause of an interface declaration.
+    // tsRegularInterfaces is used in the extends clause of an interface declaration.
     // Each intf is an interface name is a fully scoped java path, but in typescript
     // these paths are all relative paths under the output module Java.
     // In most cases it is not necessary to include the 'Java.' module in the interface
     // name, but in few cases leaving it out causes naming conflicts, most notably
     // between java.lang and groovy.lang.
-    tsInterfaces = _.map(tsInterfaces, (intf: string) => { return 'Java.' + intf; });
+    tsRegularInterfaces = _.map(tsRegularInterfaces, (intf: string) => { return 'Java.' + intf; });
+
+    var tsInterfaces = this.options.generics ? tsGenericInterfaces : tsRegularInterfaces;
 
     var variantsDict: MethodsByNameBySignature = this.groupMethods(methods);
 
@@ -703,8 +708,9 @@ export class ClassesMap {
       isPrimitive: isPrimitive,
       superclass: superclass === null ? null : superclass.getName(),
       interfaces: interfaces,
+      tsRegularInterfaces: tsRegularInterfaces,
+      tsGenericInterfaces: tsGenericInterfaces,
       tsInterfaces: tsInterfaces,
-      genericInterfaces: genericInterfaces,
       methods: methods,
       constructors: constructors.sort(this.compareVariants),
       variantsDict: variantsDict,
@@ -1301,8 +1307,9 @@ export module ClassesMap {
     isPrimitive: boolean;              // true for a primitive type, false otherwise.
     superclass: string;                // null if no superclass, otherwise class name
     interfaces: Array<string>;         // [ 'java.util.function.Function' ]
+    tsRegularInterfaces: Array<string>;       // [ 'java.util.function_.Function' ]
+    tsGenericInterfaces: Array<string>;       // [ 'java.util.function_.Function' ]
     tsInterfaces: Array<string>;       // [ 'java.util.function_.Function' ]
-    genericInterfaces: Array<string>;
     methods: Array<MethodDefinition>;  // definitions of all methods implemented by this class
     constructors: Array<MethodDefinition>; // definitions of all constructors for this class, may be empty.
     variantsDict: MethodsByNameBySignature;

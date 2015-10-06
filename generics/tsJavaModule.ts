@@ -628,7 +628,7 @@ export module Java {
   export import StreamSupport = java.util.stream.StreamSupport;
 
   export module java.lang {
-    export interface Boolean extends Java.java.lang.Object {
+    export interface Boolean  {
       // public boolean java.lang.Boolean.booleanValue()
       booleanValueA( cb: Callback<boolean_t>): void;
       booleanValue(): boolean_t;
@@ -731,7 +731,7 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Class<T> extends Java.java.lang.Object {
+    export interface Class<T>  {
       // public <U> java.lang.Class<? extends U> java.lang.Class.asSubclass(java.lang.Class<U>)
       asSubclassA<U>(arg0: Java.Class<U>, cb: Callback<Java.Class<U>>): void;
       asSubclass<U>(arg0: Java.Class<U>): Java.Class<U>;
@@ -1037,7 +1037,7 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Double extends Java.java.lang.Number {
+    export interface Double  {
       // public byte java.lang.Number.byteValue()
       byteValueA( cb: Callback<object_t>): void;
       byteValue(): object_t;
@@ -1200,7 +1200,7 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Enum<E> extends Java.java.lang.Object {
+    export interface Enum<E>  {
       // public int java.lang.Enum.compareTo(java.lang.Object)
       compareToA(arg0: Java.Object, cb: Callback<integer_t>): void;
       compareTo(arg0: Java.Object): integer_t;
@@ -1270,7 +1270,7 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Float extends Java.java.lang.Number {
+    export interface Float  {
       // public byte java.lang.Number.byteValue()
       byteValueA( cb: Callback<object_t>): void;
       byteValue(): object_t;
@@ -1434,7 +1434,7 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Integer extends Java.java.lang.Number {
+    export interface Integer  {
       // public byte java.lang.Number.byteValue()
       byteValueA( cb: Callback<object_t>): void;
       byteValue(): object_t;
@@ -1667,7 +1667,7 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Iterable<T> extends Java.java.lang.Object {
+    export interface Iterable<T>  {
       // public default void java.lang.Iterable.forEach(java.util.function.Consumer<? super T>)
       forEachA(arg0: Java.Consumer<any>, cb: Callback<void>): void;
       forEach(arg0: Java.Consumer<any>): void;
@@ -1689,7 +1689,7 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Long extends Java.java.lang.Number {
+    export interface Long  {
       // public byte java.lang.Number.byteValue()
       byteValueA( cb: Callback<object_t>): void;
       byteValue(): object_t;
@@ -1918,7 +1918,7 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Number extends Java.java.lang.Object {
+    export interface Number  {
       // public byte java.lang.Number.byteValue()
       byteValueA( cb: Callback<object_t>): void;
       byteValue(): object_t;
@@ -2036,7 +2036,7 @@ export module Java {
   }
 
   export module java.lang {
-    export interface Short extends Java.java.lang.Number {
+    export interface Short  {
       // public byte java.lang.Number.byteValue()
       byteValueA( cb: Callback<object_t>): void;
       byteValue(): object_t;
@@ -2169,7 +2169,7 @@ export module Java {
   }
 
   export module java.lang {
-    export interface String extends Java.java.lang.Object {
+    export interface String  {
       // public char java.lang.String.charAt(int)
       charAtA(arg0: integer_t, cb: Callback<object_t>): void;
       charAt(arg0: integer_t): object_t;
@@ -2505,7 +2505,7 @@ export module Java {
   }
 
   export module java.util {
-    export interface Collection<E> extends Java.java.lang.Iterable {
+    export interface Collection<E> extends Java.Iterable<E> {
       // public abstract boolean java.util.Collection.add(E)
       addA(arg0: E, cb: Callback<boolean_t>): void;
       add(arg0: E): boolean_t;
@@ -2595,7 +2595,7 @@ export module Java {
   }
 
   export module java.util.function_ {
-    export interface Consumer<T> extends Java.java.lang.Object {
+    export interface Consumer<T>  {
       // public abstract void java.util.function.Consumer.accept(T)
       acceptA(arg0: T, cb: Callback<void>): void;
       accept(arg0: T): void;
@@ -2613,7 +2613,7 @@ export module Java {
   }
 
   export module java.util.function_ {
-    export interface DoubleConsumer extends Java.java.lang.Object {
+    export interface DoubleConsumer  {
       // public abstract void java.util.function.DoubleConsumer.accept(double)
       acceptA(arg0: double_t, cb: Callback<void>): void;
       accept(arg0: double_t): void;
@@ -2631,7 +2631,7 @@ export module Java {
   }
 
   export module java.util.function_ {
-    export interface Function<T, R> extends Java.java.lang.Object {
+    export interface Function<T, R>  {
       // public default <V> java.util.function.Function<T, V> java.util.function.Function.andThen(java.util.function.Function<? super R, ? extends V>)
       andThenA<V>(arg0: Java.Function<any, V>, cb: Callback<Java.Function<T, V>>): void;
       andThen<V>(arg0: Java.Function<any, V>): Java.Function<T, V>;
@@ -2657,7 +2657,7 @@ export module Java {
   }
 
   export module java.util.function_ {
-    export interface IntConsumer extends Java.java.lang.Object {
+    export interface IntConsumer  {
       // public abstract void java.util.function.IntConsumer.accept(int)
       acceptA(arg0: integer_t, cb: Callback<void>): void;
       accept(arg0: integer_t): void;
@@ -2675,7 +2675,7 @@ export module Java {
   }
 
   export module java.util.function_ {
-    export interface LongConsumer extends Java.java.lang.Object {
+    export interface LongConsumer  {
       // public abstract void java.util.function.LongConsumer.accept(long)
       acceptA(arg0: long_t, cb: Callback<void>): void;
       accept(arg0: long_t): void;
@@ -2693,7 +2693,7 @@ export module Java {
   }
 
   export module java.util {
-    export interface Iterator<E> extends Java.java.lang.Object {
+    export interface Iterator<E>  {
       // public default void java.util.Iterator.forEachRemaining(java.util.function.Consumer<? super E>)
       forEachRemainingA(arg0: Java.Consumer<any>, cb: Callback<void>): void;
       forEachRemaining(arg0: Java.Consumer<any>): void;
@@ -2719,7 +2719,7 @@ export module Java {
   }
 
   export module java.util {
-    export interface List<E> extends Java.java.util.Collection {
+    export interface List<E> extends Java.Collection<E> {
       // public abstract void java.util.List.add(int,E)
       addA(arg0: integer_t, arg1: E, cb: Callback<void>): void;
       add(arg0: integer_t, arg1: E): void;
@@ -2857,7 +2857,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface BaseStream<T, S> extends Java.java.lang.Object {
+    export interface BaseStream<T, S>  {
       // public abstract void java.util.stream.BaseStream.close()
       closeA( cb: Callback<void>): void;
       close(): void;
@@ -2899,7 +2899,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface Collector<T, A, R> extends Java.java.lang.Object {
+    export interface Collector<T, A, R>  {
       // public abstract java.util.function.BiConsumer<A, T> java.util.stream.Collector.accumulator()
       accumulatorA( cb: Callback<any>): void;
       accumulator(): any;
@@ -2941,7 +2941,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface Collector$Characteristics extends Java.java.lang.Enum {
+    export interface Collector$Characteristics  {
       // public int java.lang.Enum.compareTo(java.lang.Object)
       compareToA(arg0: Java.Object, cb: Callback<integer_t>): void;
       compareTo(arg0: Java.Object): integer_t;
@@ -3022,7 +3022,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface Collectors extends Java.java.lang.Object {
+    export interface Collectors  {
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: Java.Object, cb: Callback<boolean_t>): void;
       equals(arg0: Java.Object): boolean_t;
@@ -3216,7 +3216,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface DoubleStream extends Java.java.util.stream.BaseStream {
+    export interface DoubleStream extends Java.BaseStream<Java.Double, Java.DoubleStream> {
       // public abstract boolean java.util.stream.DoubleStream.allMatch(java.util.function.DoublePredicate)
       allMatchA(arg0: any, cb: Callback<boolean_t>): void;
       allMatch(arg0: any): boolean_t;
@@ -3420,7 +3420,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface DoubleStream$Builder extends Java.java.util.function_.DoubleConsumer {
+    export interface DoubleStream$Builder extends Java.DoubleConsumer {
       // public abstract void java.util.function.DoubleConsumer.accept(double)
       acceptA(arg0: double_t, cb: Callback<void>): void;
       accept(arg0: double_t): void;
@@ -3446,7 +3446,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface IntStream extends Java.java.util.stream.BaseStream {
+    export interface IntStream extends Java.BaseStream<Java.Integer, Java.IntStream> {
       // public abstract boolean java.util.stream.IntStream.allMatch(java.util.function.IntPredicate)
       allMatchA(arg0: any, cb: Callback<boolean_t>): void;
       allMatch(arg0: any): boolean_t;
@@ -3666,7 +3666,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface IntStream$Builder extends Java.java.util.function_.IntConsumer {
+    export interface IntStream$Builder extends Java.IntConsumer {
       // public abstract void java.util.function.IntConsumer.accept(int)
       acceptA(arg0: integer_t, cb: Callback<void>): void;
       accept(arg0: integer_t): void;
@@ -3692,7 +3692,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface LongStream extends Java.java.util.stream.BaseStream {
+    export interface LongStream extends Java.BaseStream<Java.Long, Java.LongStream> {
       // public abstract boolean java.util.stream.LongStream.allMatch(java.util.function.LongPredicate)
       allMatchA(arg0: any, cb: Callback<boolean_t>): void;
       allMatch(arg0: any): boolean_t;
@@ -3908,7 +3908,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface LongStream$Builder extends Java.java.util.function_.LongConsumer {
+    export interface LongStream$Builder extends Java.LongConsumer {
       // public abstract void java.util.function.LongConsumer.accept(long)
       acceptA(arg0: long_t, cb: Callback<void>): void;
       accept(arg0: long_t): void;
@@ -3934,7 +3934,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface Stream<T> extends Java.java.util.stream.BaseStream {
+    export interface Stream<T> extends Java.BaseStream<T, Java.Stream<T>> {
       // public abstract boolean java.util.stream.Stream.allMatch(java.util.function.Predicate<? super T>)
       allMatchA(arg0: any, cb: Callback<boolean_t>): void;
       allMatch(arg0: any): boolean_t;
@@ -4134,7 +4134,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface Stream$Builder<T> extends Java.java.util.function_.Consumer {
+    export interface Stream$Builder<T> extends Java.Consumer<T> {
       // public abstract void java.util.function.Consumer.accept(T)
       acceptA(arg0: T, cb: Callback<void>): void;
       accept(arg0: T): void;
@@ -4160,7 +4160,7 @@ export module Java {
   }
 
   export module java.util.stream {
-    export interface StreamSupport extends Java.java.lang.Object {
+    export interface StreamSupport  {
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: Java.Object, cb: Callback<boolean_t>): void;
       equals(arg0: Java.Object): boolean_t;
