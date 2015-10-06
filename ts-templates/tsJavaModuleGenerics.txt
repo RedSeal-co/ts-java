@@ -269,7 +269,7 @@ export module Java {
 
   {{#each this}}
   export module {{quotedPkgName}} {
-    export interface {{shortName}}{{gentypes typeParms}} {{#if tsInterfaces}}extends {{#join tsInterfaces ', '}}{{this}}{{/join}}{{/if}} {
+    export interface {{shortName}}{{classgentypes typeParms}} {{#if tsInterfaces}}extends {{#join tsInterfaces ', '}}{{this}}{{/join}}{{/if}} {
       {{#each fields}}
       {{~#unless isStatic}}
       {{name}}: {{tsType}};
