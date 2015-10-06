@@ -349,8 +349,8 @@ export module Java {
   // *javaIterator* may be any type that implements java.util.Iterator, including a tinkerpop Traversal.
   // *consumer* is function that will do some work on a Java.Object asychronously, returning a Promise for its completion.
   // Returns a promise that is resolved when all objects have been consumed.
-  export function forEach(javaIterator: Java.Iterator, consumer: ConsumeObject): BluePromise<void> {
-    function _eachIterator(javaIterator: Java.Iterator, consumer: ConsumeObject): BluePromise<void> {
+  export function forEach(javaIterator: Java.Iterator<Java.object_t>, consumer: ConsumeObject): BluePromise<void> {
+    function _eachIterator(javaIterator: Java.Iterator<Java.object_t>, consumer: ConsumeObject): BluePromise<void> {
       return javaIterator.hasNextP()
         .then((hasNext: boolean): BluePromise<void> => {
           if (!hasNext) {
