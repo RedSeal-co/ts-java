@@ -19,6 +19,7 @@
       "java.lang.Number",
       "java.lang.reflect.Method",
       "java.lang.Short",
+      "java.lang.Enum",
       "java.util.function.Function",
       "java.util.Iterator"
     ],

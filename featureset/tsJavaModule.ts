@@ -20,6 +20,7 @@
 //   java.lang.Number
 //   java.lang.reflect.Method
 //   java.lang.Short
+//   java.lang.Enum
 //   java.util.function.Function
 //   java.util.Iterator
 // packages:
@@ -98,6 +99,7 @@ export module Java {
       'Boolean': 'java.lang.Boolean',
       'Class': 'java.lang.Class',
       'Double': 'java.lang.Double',
+      'Enum': 'java.lang.Enum',
       'Float': 'java.lang.Float',
       'Integer': 'java.lang.Integer',
       'Long': 'java.lang.Long',
@@ -252,6 +254,7 @@ export module Java {
   export function importClass(className: 'Boolean'): Java.java.lang.Boolean.Static;
   export function importClass(className: 'Class'): Java.java.lang.Class.Static;
   export function importClass(className: 'Double'): Java.java.lang.Double.Static;
+  export function importClass(className: 'Enum'): Java.java.lang.Enum.Static;
   export function importClass(className: 'Float'): Java.java.lang.Float.Static;
   export function importClass(className: 'Integer'): Java.java.lang.Integer.Static;
   export function importClass(className: 'Long'): Java.java.lang.Long.Static;
@@ -404,6 +407,7 @@ export module Java {
   export function importClass(className: 'java.lang.Boolean'): Java.java.lang.Boolean.Static;
   export function importClass(className: 'java.lang.Class'): Java.java.lang.Class.Static;
   export function importClass(className: 'java.lang.Double'): Java.java.lang.Double.Static;
+  export function importClass(className: 'java.lang.Enum'): Java.java.lang.Enum.Static;
   export function importClass(className: 'java.lang.Float'): Java.java.lang.Float.Static;
   export function importClass(className: 'java.lang.Integer'): Java.java.lang.Integer.Static;
   export function importClass(className: 'java.lang.Long'): Java.java.lang.Long.Static;
@@ -561,6 +565,7 @@ export module Java {
   export function asInstanceOf(obj: any, className: 'Boolean'): Java.java.lang.Boolean;
   export function asInstanceOf(obj: any, className: 'Class'): Java.java.lang.Class;
   export function asInstanceOf(obj: any, className: 'Double'): Java.java.lang.Double;
+  export function asInstanceOf(obj: any, className: 'Enum'): Java.java.lang.Enum;
   export function asInstanceOf(obj: any, className: 'Float'): Java.java.lang.Float;
   export function asInstanceOf(obj: any, className: 'Integer'): Java.java.lang.Integer;
   export function asInstanceOf(obj: any, className: 'Long'): Java.java.lang.Long;
@@ -713,6 +718,7 @@ export module Java {
   export function asInstanceOf(obj: any, className: 'java.lang.Boolean'): Java.java.lang.Boolean;
   export function asInstanceOf(obj: any, className: 'java.lang.Class'): Java.java.lang.Class;
   export function asInstanceOf(obj: any, className: 'java.lang.Double'): Java.java.lang.Double;
+  export function asInstanceOf(obj: any, className: 'java.lang.Enum'): Java.java.lang.Enum;
   export function asInstanceOf(obj: any, className: 'java.lang.Float'): Java.java.lang.Float;
   export function asInstanceOf(obj: any, className: 'java.lang.Integer'): Java.java.lang.Integer;
   export function asInstanceOf(obj: any, className: 'java.lang.Long'): Java.java.lang.Long;
@@ -2175,6 +2181,7 @@ export module Java {
   export function newArray(className: 'Boolean', arg: boolean_t[]): array_t<java.lang.Boolean>;
   export function newArray(className: 'Class', arg: Java.Class[]): array_t<java.lang.Class>;
   export function newArray(className: 'Double', arg: double_t[]): array_t<java.lang.Double>;
+  export function newArray(className: 'Enum', arg: Java.Enum[]): array_t<java.lang.Enum>;
   export function newArray(className: 'Float', arg: float_t[]): array_t<java.lang.Float>;
   export function newArray(className: 'Integer', arg: integer_t[]): array_t<java.lang.Integer>;
   export function newArray(className: 'Long', arg: long_t[]): array_t<java.lang.Long>;
@@ -2327,6 +2334,7 @@ export module Java {
   export function newArray(className: 'java.lang.Boolean', arg: boolean_t[]): array_t<java.lang.Boolean>;
   export function newArray(className: 'java.lang.Class', arg: Java.Class[]): array_t<java.lang.Class>;
   export function newArray(className: 'java.lang.Double', arg: double_t[]): array_t<java.lang.Double>;
+  export function newArray(className: 'java.lang.Enum', arg: Java.Enum[]): array_t<java.lang.Enum>;
   export function newArray(className: 'java.lang.Float', arg: float_t[]): array_t<java.lang.Float>;
   export function newArray(className: 'java.lang.Integer', arg: integer_t[]): array_t<java.lang.Integer>;
   export function newArray(className: 'java.lang.Long', arg: long_t[]): array_t<java.lang.Long>;
@@ -2522,6 +2530,7 @@ export module Java {
   export import Boolean = java.lang.Boolean;
   export import Class = java.lang.Class;
   export import Double = java.lang.Double;
+  export import Enum = java.lang.Enum;
   export import Float = java.lang.Float;
   export import Integer = java.lang.Integer;
   export import Long = java.lang.Long;
@@ -2761,15 +2770,15 @@ export module Java {
   }
 
   export module com.redseal.featureset {
-    export interface AnEnum extends Java.java.lang.Object {
+    export interface AnEnum extends Java.java.lang.Enum {
       // public int java.lang.Enum.compareTo(java.lang.Object)
       compareToA(arg0: object_t, cb: Callback<number>): void;
       compareTo(arg0: object_t): number;
       compareToP(arg0: object_t): Promise<number>;
       // public final int java.lang.Enum.compareTo(E)
-      compareToA(arg0: object_t, cb: Callback<number>): void;
-      compareTo(arg0: object_t): number;
-      compareToP(arg0: object_t): Promise<number>;
+      compareToA(arg0: Java.Enum, cb: Callback<number>): void;
+      compareTo(arg0: Java.Enum): number;
+      compareToP(arg0: Java.Enum): Promise<number>;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: object_t, cb: Callback<boolean>): void;
       equals(arg0: object_t): boolean;
@@ -2826,9 +2835,9 @@ export module Java {
         miles: Java.AnEnum;
         class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
-        valueOfA(arg0: Java.Class, arg1: string_t, cb: Callback<object_t>): void;
-        valueOf(arg0: Java.Class, arg1: string_t): object_t;
-        valueOfP(arg0: Java.Class, arg1: string_t): Promise<object_t>;
+        valueOfA(arg0: Java.Class, arg1: string_t, cb: Callback<Java.Enum>): void;
+        valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
+        valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
         // public static com.redseal.featureset.AnEnum com.redseal.featureset.AnEnum.valueOf(java.lang.String)
         valueOfA(arg0: string_t, cb: Callback<Java.AnEnum>): void;
         valueOf(arg0: string_t): Java.AnEnum;
@@ -4117,6 +4126,76 @@ export module Java {
         valueOfA(arg0: double_t, cb: Callback<number>): void;
         valueOf(arg0: double_t): number;
         valueOfP(arg0: double_t): Promise<number>;
+      }
+    }
+  }
+
+  export module java.lang {
+    export interface Enum extends Java.java.lang.Object {
+      // public int java.lang.Enum.compareTo(java.lang.Object)
+      compareToA(arg0: object_t, cb: Callback<number>): void;
+      compareTo(arg0: object_t): number;
+      compareToP(arg0: object_t): Promise<number>;
+      // public final int java.lang.Enum.compareTo(E)
+      compareToA(arg0: Java.Enum, cb: Callback<number>): void;
+      compareTo(arg0: Java.Enum): number;
+      compareToP(arg0: Java.Enum): Promise<number>;
+      // public boolean java.lang.Object.equals(java.lang.Object)
+      equalsA(arg0: object_t, cb: Callback<boolean>): void;
+      equals(arg0: object_t): boolean;
+      equalsP(arg0: object_t): Promise<boolean>;
+      // public final native java.lang.Class<?> java.lang.Object.getClass()
+      getClassA( cb: Callback<Java.Class>): void;
+      getClass(): Java.Class;
+      getClassP(): Promise<Java.Class>;
+      // public final java.lang.Class<E> java.lang.Enum.getDeclaringClass()
+      getDeclaringClassA( cb: Callback<Java.Class>): void;
+      getDeclaringClass(): Java.Class;
+      getDeclaringClassP(): Promise<Java.Class>;
+      // public native int java.lang.Object.hashCode()
+      hashCodeA( cb: Callback<number>): void;
+      hashCode(): number;
+      hashCodeP(): Promise<number>;
+      // public final java.lang.String java.lang.Enum.name()
+      nameA( cb: Callback<string>): void;
+      name(): string;
+      nameP(): Promise<string>;
+      // public final native void java.lang.Object.notify()
+      notifyA( cb: Callback<void>): void;
+      notify(): void;
+      notifyP(): Promise<void>;
+      // public final native void java.lang.Object.notifyAll()
+      notifyAllA( cb: Callback<void>): void;
+      notifyAll(): void;
+      notifyAllP(): Promise<void>;
+      // public final int java.lang.Enum.ordinal()
+      ordinalA( cb: Callback<number>): void;
+      ordinal(): number;
+      ordinalP(): Promise<number>;
+      // public java.lang.String java.lang.Object.toString()
+      toStringA( cb: Callback<string>): void;
+      toString(): string;
+      toStringP(): Promise<string>;
+      // public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+      waitA(arg0: long_t, arg1: integer_t, cb: Callback<void>): void;
+      wait(arg0: long_t, arg1: integer_t): void;
+      waitP(arg0: long_t, arg1: integer_t): Promise<void>;
+      // public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+      waitA(arg0: long_t, cb: Callback<void>): void;
+      wait(arg0: long_t): void;
+      waitP(arg0: long_t): Promise<void>;
+      // public final void java.lang.Object.wait() throws java.lang.InterruptedException
+      waitA( cb: Callback<void>): void;
+      wait(): void;
+      waitP(): Promise<void>;
+    }
+    export module Enum {
+      export interface Static {
+        class: Java.Class;
+        // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
+        valueOfA(arg0: Java.Class, arg1: string_t, cb: Callback<Java.Enum>): void;
+        valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
+        valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
       }
     }
   }
@@ -9791,9 +9870,9 @@ export module Java {
       put(arg0: object_t, arg1: object_t): object_t;
       putP(arg0: object_t, arg1: object_t): Promise<object_t>;
       // public V java.util.EnumMap.put(K,V)
-      putA(arg0: object_t, arg1: object_t, cb: Callback<object_t>): void;
-      put(arg0: object_t, arg1: object_t): object_t;
-      putP(arg0: object_t, arg1: object_t): Promise<object_t>;
+      putA(arg0: Java.Enum, arg1: object_t, cb: Callback<object_t>): void;
+      put(arg0: Java.Enum, arg1: object_t): object_t;
+      putP(arg0: Java.Enum, arg1: object_t): Promise<object_t>;
       // public abstract void java.util.Map.putAll(java.util.Map<? extends K, ? extends V>)
       putAllA(arg0: Java.Map, cb: Callback<void>): void;
       putAll(arg0: Java.Map): void;
@@ -10000,35 +10079,35 @@ export module Java {
         noneOf(arg0: Java.Class): Java.EnumSet;
         noneOfP(arg0: Java.Class): Promise<Java.EnumSet>;
         // public static <E> java.util.EnumSet<E> java.util.EnumSet.of(E,E,E,E,E)
-        ofA(arg0: object_t, arg1: object_t, arg2: object_t, arg3: object_t, arg4: object_t, cb: Callback<Java.EnumSet>): void;
-        of(arg0: object_t, arg1: object_t, arg2: object_t, arg3: object_t, arg4: object_t): Java.EnumSet;
-        ofP(arg0: object_t, arg1: object_t, arg2: object_t, arg3: object_t, arg4: object_t): Promise<Java.EnumSet>;
+        ofA(arg0: Java.Enum, arg1: Java.Enum, arg2: Java.Enum, arg3: Java.Enum, arg4: Java.Enum, cb: Callback<Java.EnumSet>): void;
+        of(arg0: Java.Enum, arg1: Java.Enum, arg2: Java.Enum, arg3: Java.Enum, arg4: Java.Enum): Java.EnumSet;
+        ofP(arg0: Java.Enum, arg1: Java.Enum, arg2: Java.Enum, arg3: Java.Enum, arg4: Java.Enum): Promise<Java.EnumSet>;
         // public static <E> java.util.EnumSet<E> java.util.EnumSet.of(E,E,E,E)
-        ofA(arg0: object_t, arg1: object_t, arg2: object_t, arg3: object_t, cb: Callback<Java.EnumSet>): void;
-        of(arg0: object_t, arg1: object_t, arg2: object_t, arg3: object_t): Java.EnumSet;
-        ofP(arg0: object_t, arg1: object_t, arg2: object_t, arg3: object_t): Promise<Java.EnumSet>;
+        ofA(arg0: Java.Enum, arg1: Java.Enum, arg2: Java.Enum, arg3: Java.Enum, cb: Callback<Java.EnumSet>): void;
+        of(arg0: Java.Enum, arg1: Java.Enum, arg2: Java.Enum, arg3: Java.Enum): Java.EnumSet;
+        ofP(arg0: Java.Enum, arg1: Java.Enum, arg2: Java.Enum, arg3: Java.Enum): Promise<Java.EnumSet>;
         // public static <E> java.util.EnumSet<E> java.util.EnumSet.of(E,E,E)
-        ofA(arg0: object_t, arg1: object_t, arg2: object_t, cb: Callback<Java.EnumSet>): void;
-        of(arg0: object_t, arg1: object_t, arg2: object_t): Java.EnumSet;
-        ofP(arg0: object_t, arg1: object_t, arg2: object_t): Promise<Java.EnumSet>;
+        ofA(arg0: Java.Enum, arg1: Java.Enum, arg2: Java.Enum, cb: Callback<Java.EnumSet>): void;
+        of(arg0: Java.Enum, arg1: Java.Enum, arg2: Java.Enum): Java.EnumSet;
+        ofP(arg0: Java.Enum, arg1: Java.Enum, arg2: Java.Enum): Promise<Java.EnumSet>;
         // public static <E> java.util.EnumSet<E> java.util.EnumSet.of(E,E...)
-        ofA(arg0: object_t, arg1: object_array_t, cb: Callback<Java.EnumSet>): void;
-        of(arg0: object_t, ...arg1: object_t[]): Java.EnumSet;
-        of(arg0: object_t, arg1: object_array_t): Java.EnumSet;
-        ofP(arg0: object_t, ...arg1: object_t[]): Promise<Java.EnumSet>;
-        ofP(arg0: object_t, arg1: object_array_t): Promise<Java.EnumSet>;
+        ofA(arg0: Java.Enum, arg1: array_t<Java.Enum>, cb: Callback<Java.EnumSet>): void;
+        of(arg0: Java.Enum, ...arg1: Java.Enum[]): Java.EnumSet;
+        of(arg0: Java.Enum, arg1: array_t<Java.Enum>): Java.EnumSet;
+        ofP(arg0: Java.Enum, ...arg1: Java.Enum[]): Promise<Java.EnumSet>;
+        ofP(arg0: Java.Enum, arg1: array_t<Java.Enum>): Promise<Java.EnumSet>;
         // public static <E> java.util.EnumSet<E> java.util.EnumSet.of(E,E)
-        ofA(arg0: object_t, arg1: object_t, cb: Callback<Java.EnumSet>): void;
-        of(arg0: object_t, arg1: object_t): Java.EnumSet;
-        ofP(arg0: object_t, arg1: object_t): Promise<Java.EnumSet>;
+        ofA(arg0: Java.Enum, arg1: Java.Enum, cb: Callback<Java.EnumSet>): void;
+        of(arg0: Java.Enum, arg1: Java.Enum): Java.EnumSet;
+        ofP(arg0: Java.Enum, arg1: Java.Enum): Promise<Java.EnumSet>;
         // public static <E> java.util.EnumSet<E> java.util.EnumSet.of(E)
-        ofA(arg0: object_t, cb: Callback<Java.EnumSet>): void;
-        of(arg0: object_t): Java.EnumSet;
-        ofP(arg0: object_t): Promise<Java.EnumSet>;
+        ofA(arg0: Java.Enum, cb: Callback<Java.EnumSet>): void;
+        of(arg0: Java.Enum): Java.EnumSet;
+        ofP(arg0: Java.Enum): Promise<Java.EnumSet>;
         // public static <E> java.util.EnumSet<E> java.util.EnumSet.range(E,E)
-        rangeA(arg0: object_t, arg1: object_t, cb: Callback<Java.EnumSet>): void;
-        range(arg0: object_t, arg1: object_t): Java.EnumSet;
-        rangeP(arg0: object_t, arg1: object_t): Promise<Java.EnumSet>;
+        rangeA(arg0: Java.Enum, arg1: Java.Enum, cb: Callback<Java.EnumSet>): void;
+        range(arg0: Java.Enum, arg1: Java.Enum): Java.EnumSet;
+        rangeP(arg0: Java.Enum, arg1: Java.Enum): Promise<Java.EnumSet>;
       }
     }
   }
@@ -10404,15 +10483,15 @@ export module Java {
   }
 
   export module java.util {
-    export interface Formatter$BigDecimalLayoutForm extends Java.java.lang.Object {
+    export interface Formatter$BigDecimalLayoutForm extends Java.java.lang.Enum {
       // public int java.lang.Enum.compareTo(java.lang.Object)
       compareToA(arg0: object_t, cb: Callback<number>): void;
       compareTo(arg0: object_t): number;
       compareToP(arg0: object_t): Promise<number>;
       // public final int java.lang.Enum.compareTo(E)
-      compareToA(arg0: object_t, cb: Callback<number>): void;
-      compareTo(arg0: object_t): number;
-      compareToP(arg0: object_t): Promise<number>;
+      compareToA(arg0: Java.Enum, cb: Callback<number>): void;
+      compareTo(arg0: Java.Enum): number;
+      compareToP(arg0: Java.Enum): Promise<number>;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: object_t, cb: Callback<boolean>): void;
       equals(arg0: object_t): boolean;
@@ -10468,9 +10547,9 @@ export module Java {
         DECIMAL_FLOAT: Java.Formatter$BigDecimalLayoutForm;
         class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
-        valueOfA(arg0: Java.Class, arg1: string_t, cb: Callback<object_t>): void;
-        valueOf(arg0: Java.Class, arg1: string_t): object_t;
-        valueOfP(arg0: Java.Class, arg1: string_t): Promise<object_t>;
+        valueOfA(arg0: Java.Class, arg1: string_t, cb: Callback<Java.Enum>): void;
+        valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
+        valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
         // public static java.util.Formatter$BigDecimalLayoutForm java.util.Formatter$BigDecimalLayoutForm.valueOf(java.lang.String)
         valueOfA(arg0: string_t, cb: Callback<Java.Formatter$BigDecimalLayoutForm>): void;
         valueOf(arg0: string_t): Java.Formatter$BigDecimalLayoutForm;
@@ -13652,15 +13731,15 @@ export module Java {
   }
 
   export module java.util {
-    export interface Locale$Category extends Java.java.lang.Object {
+    export interface Locale$Category extends Java.java.lang.Enum {
       // public int java.lang.Enum.compareTo(java.lang.Object)
       compareToA(arg0: object_t, cb: Callback<number>): void;
       compareTo(arg0: object_t): number;
       compareToP(arg0: object_t): Promise<number>;
       // public final int java.lang.Enum.compareTo(E)
-      compareToA(arg0: object_t, cb: Callback<number>): void;
-      compareTo(arg0: object_t): number;
-      compareToP(arg0: object_t): Promise<number>;
+      compareToA(arg0: Java.Enum, cb: Callback<number>): void;
+      compareTo(arg0: Java.Enum): number;
+      compareToP(arg0: Java.Enum): Promise<number>;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: object_t, cb: Callback<boolean>): void;
       equals(arg0: object_t): boolean;
@@ -13716,9 +13795,9 @@ export module Java {
         FORMAT: Java.Locale$Category;
         class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
-        valueOfA(arg0: Java.Class, arg1: string_t, cb: Callback<object_t>): void;
-        valueOf(arg0: Java.Class, arg1: string_t): object_t;
-        valueOfP(arg0: Java.Class, arg1: string_t): Promise<object_t>;
+        valueOfA(arg0: Java.Class, arg1: string_t, cb: Callback<Java.Enum>): void;
+        valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
+        valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
         // public static java.util.Locale$Category java.util.Locale$Category.valueOf(java.lang.String)
         valueOfA(arg0: string_t, cb: Callback<Java.Locale$Category>): void;
         valueOf(arg0: string_t): Java.Locale$Category;
@@ -13732,15 +13811,15 @@ export module Java {
   }
 
   export module java.util {
-    export interface Locale$FilteringMode extends Java.java.lang.Object {
+    export interface Locale$FilteringMode extends Java.java.lang.Enum {
       // public int java.lang.Enum.compareTo(java.lang.Object)
       compareToA(arg0: object_t, cb: Callback<number>): void;
       compareTo(arg0: object_t): number;
       compareToP(arg0: object_t): Promise<number>;
       // public final int java.lang.Enum.compareTo(E)
-      compareToA(arg0: object_t, cb: Callback<number>): void;
-      compareTo(arg0: object_t): number;
-      compareToP(arg0: object_t): Promise<number>;
+      compareToA(arg0: Java.Enum, cb: Callback<number>): void;
+      compareTo(arg0: Java.Enum): number;
+      compareToP(arg0: Java.Enum): Promise<number>;
       // public boolean java.lang.Object.equals(java.lang.Object)
       equalsA(arg0: object_t, cb: Callback<boolean>): void;
       equals(arg0: object_t): boolean;
@@ -13799,9 +13878,9 @@ export module Java {
         REJECT_EXTENDED_RANGES: Java.Locale$FilteringMode;
         class: Java.Class;
         // public static <T> T java.lang.Enum.valueOf(java.lang.Class<T>,java.lang.String)
-        valueOfA(arg0: Java.Class, arg1: string_t, cb: Callback<object_t>): void;
-        valueOf(arg0: Java.Class, arg1: string_t): object_t;
-        valueOfP(arg0: Java.Class, arg1: string_t): Promise<object_t>;
+        valueOfA(arg0: Java.Class, arg1: string_t, cb: Callback<Java.Enum>): void;
+        valueOf(arg0: Java.Class, arg1: string_t): Java.Enum;
+        valueOfP(arg0: Java.Class, arg1: string_t): Promise<Java.Enum>;
         // public static java.util.Locale$FilteringMode java.util.Locale$FilteringMode.valueOf(java.lang.String)
         valueOfA(arg0: string_t, cb: Callback<Java.Locale$FilteringMode>): void;
         valueOf(arg0: string_t): Java.Locale$FilteringMode;
