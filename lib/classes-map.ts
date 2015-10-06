@@ -421,8 +421,19 @@ export class ClassesMap {
     return typeName;
   }
 
+  // *isSimpleName()*: Returns true if the string s is a simple name, i.e. one word composed of
+  // alphanumeric characters plus $
   public isSimpleName(s: string): boolean {
     return s.match(/^\w+$/) !== null;
+  }
+
+  // *translateIfPrimitiveType()*: If s is a Java primitive type, return the corresponding Typescript type.
+  public translateIfPrimitiveType(s: string, context: ParamContext = ParamContext.eInput): string {
+    var translated = this.boxIfJavaPrimitive(s);
+    if (translated !== s) {
+      translated = this.mapJavaPrimitivesToTypescript(translated, context);
+    }
+    return translated;
   }
 
   // *translateFullClassPathsToShortAlias()*: Given a string which may be a java generic type string,
@@ -433,21 +444,20 @@ export class ClassesMap {
     var translated: string = javaGenericType;
     var re: RegExp = /[\w\$\.]+/g;
     var m: Array<string>;
-    while ((m = re.exec(translated)) != null) {
+    while ((m = re.exec(translated)) !== null) {
       var name: string = m[0];
-      name = this.fixGenericNestedTypeName(name);
-      if (this.isSimpleName(name)) {
+      var tname = this.fixGenericNestedTypeName(name);
+      if (this.isSimpleName(tname)) {
         // This should catch generic free variables (T, E) as well as primitive types (int, long, ...)
-        translated = name;
-      } else if (this.isIncludedClass(name)) {
-        var aliasName: string = this.getJavaAliasName(name);
-        translated = translated.replace(name, aliasName);
-        re.lastIndex -= name.length - aliasName.length;
+        tname = this.translateIfPrimitiveType(tname);
+      } else if (this.isIncludedClass(tname)) {
+        tname = this.getJavaAliasName(tname);
       } else {
-        assert(this.isExcludedClass(name));
-        translated = 'any';
-        break;
+        assert(this.isExcludedClass(tname));
+        tname = 'any';
       }
+      translated = translated.replace(name, tname);
+      re.lastIndex -= name.length - tname.length;
     }
 
     return translated;
@@ -470,11 +480,12 @@ export class ClassesMap {
 
     while (!done) {
       done = true;
-      var re: RegExp = /<([^<>]+)>/g;
+      // The regexp re finds generic type expressions foo<...>.
+      var re: RegExp = /([\w\$\.]+)<([^<>]+)>/g;
       var m: Array<string>;
       while ((m = re.exec(translated)) != null) {
         done = false;
-        var parts: string[] = m[1].split(',');
+        var parts: string[] = m[2].split(',');
         parts = _.map(parts, (s: string) => {
           s = s.trim();
 
@@ -490,7 +501,17 @@ export class ClassesMap {
           if (s[0] === '?') { s = 'any'; }
           return s;
         });
-        var reconstructed: string = '«' + parts.join('‡') + '»';
+
+        // The generic type expression original matched above might be of the form any<...>.
+        // This happens when a Java generic class is excluded by configuration.
+        // In that case we have to omit the match generic types <...>, and just return 'any'.
+        var reconstructed: string;
+        if (m[1] === 'any') {
+          reconstructed = 'any';
+        } else {
+          reconstructed = m[1] + '«' + parts.join('‡') + '»';
+        }
+
         translated = translated.replace(m[0], reconstructed);
         re.lastIndex -= m[0].length - reconstructed.length;
       }
@@ -511,8 +532,8 @@ export class ClassesMap {
       tsGenericType = m[1];
     }
 
-    tsGenericType = this.translateGenericTypeLists(tsGenericType);
     tsGenericType = this.translateFullClassPathsToShortAlias(tsGenericType);
+    tsGenericType = this.translateGenericTypeLists(tsGenericType);
 
     if (m) {
       tsGenericType = tsGenericType + m[2];
@@ -551,6 +572,10 @@ export class ClassesMap {
     var tsGenericReturns = this.translateGenericType(genericReturnType);
     var tsReturns = this.options.generics ? tsGenericReturns : tsReturnsRegular;
 
+    var tsGenericParamTypes: Array<string> = _.map(method.getGenericParameterTypes(), (p: Java.Type) => {
+      return this.translateGenericType(p.getTypeName());
+    });
+
     var methodMap: MethodDefinition = {
       name: method.getName(),
       declared: method.getDeclaringClass().getName(),
@@ -563,7 +588,7 @@ export class ClassesMap {
       paramTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return p.getName(); }),
       tsParamTypes: _.map(method.getParameterTypes(), (p: Java.Class) => { return this.tsTypeNameInputEncoded(p.getName()); }),
       genericParamTypes: _.map(method.getGenericParameterTypes(), (p: Java.Type) => p.getTypeName()),
-      tsGenericParamTypes: _.map(method.getGenericParameterTypes(), (p: Java.Type) => this.translateGenericType(p.getTypeName())),
+      tsGenericParamTypes: tsGenericParamTypes,
       tsTypeParameters: _.map(method.getTypeParameters(), (p: Java.TypeVariable) => { return p.getName(); }),
       isStatic: isStatic,
       isVarArgs: method.isVarArgs(),
