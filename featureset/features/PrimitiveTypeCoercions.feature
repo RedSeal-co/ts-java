@@ -7,9 +7,8 @@ So I can understand how to primitive types and be aware of some limitations.
   Background:
     Given this boilerplate to intialize node-java:
     """
-    /// <reference path='../../typings/power-assert/power-assert.d.ts' />
 
-    import assert = require('power-assert');
+    import assert = require('assert');
     import java = require('../tsJavaModule');
     import util = require('util');
 

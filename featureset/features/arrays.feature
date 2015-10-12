@@ -19,11 +19,10 @@ It is currently not possible to pass a 2d (or higher dimension) array from Javas
   Background:
     Given this boilerplate to intialize node-java:
     """
-    /// <reference path='../../typings/power-assert/power-assert.d.ts' />
     /// <reference path='../../typings/lodash/lodash.d.ts' />
 
     import _ = require('lodash');
-    import assert = require('power-assert');
+    import assert = require('assert');
     import java = require('../tsJavaModule');
     import Java = java.Java;
 
