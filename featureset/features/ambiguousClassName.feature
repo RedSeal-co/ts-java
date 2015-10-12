@@ -6,10 +6,9 @@ I need to understand when ts-java declares short aliases for class paths.
   Background:
     Given this boilerplate to intialize node-java:
     """
-    /// <reference path='../../typings/power-assert/power-assert.d.ts' />
     /// <reference path='../../typings/node/node.d.ts' />
 
-    import assert = require('power-assert');
+    import assert = require('assert');
     import BluePromise = require('bluebird');
     import java = require('../tsJavaModule');
 

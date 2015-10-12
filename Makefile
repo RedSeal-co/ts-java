@@ -84,7 +84,7 @@ ALL_CUCUMBER_FEATURES_RAN=$(patsubst %.feature,o/%.lastran,$(ALL_CUCUMBER_FEATUR
 
 # A rule to make sure that every feature file is run
 $(ALL_CUCUMBER_FEATURES_RAN): o/%.lastran : %.feature $(STEPS_OBJS) $(LIBS_OBJS) $(JAVAPKGS_MODULE_TS) $(UNIT_TEST_RAN)
-	./node_modules/.bin/cucumber-js --format summary --tags '~@todo' --require features/step_definitions $<
+	./node_modules/.bin/cucumber-js --format summary --tags '~@todo' --require features/step_definitions --require features/support $<
 	mkdir -p $(dir $@) && touch  $@
 
 # A convenience target

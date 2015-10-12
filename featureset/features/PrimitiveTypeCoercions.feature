@@ -7,9 +7,8 @@ So I can understand how to primitive types and be aware of some limitations.
   Background:
     Given this boilerplate to intialize node-java:
     """
-    /// <reference path='../../typings/power-assert/power-assert.d.ts' />
 
-    import assert = require('power-assert');
+    import assert = require('assert');
     import java = require('../tsJavaModule');
     import util = require('util');
 
@@ -158,18 +157,8 @@ So I can understand how to primitive types and be aware of some limitations.
     Given the above boilerplate with following scenario snippet:
     """
     var arr: Java.array_t<Java.java.lang.String> = Java.newArray('java.lang.String', ['hello', 'world']);
-    console.log(typeof arr, arr);
-
-    // TODO: ts-java needs generics to support something like the following:
-    // var Arrays = java.importClass('java.util.Arrays');
-    // var list: Java.java.util.List = Arrays.asList(arr);
-    // console.log(list.toString());
-
+    assert.ok(Java.isJavaObject(arr));
     """
     Then it compiles and lints cleanly
-    And it runs and produces output:
-    """
-    object {}
-
-    """
+    And it runs and produces no output
 

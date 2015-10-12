@@ -12,9 +12,8 @@ Ts-java only exposes public classes. Non-public classes include
   Background:
     Given this boilerplate to intialize node-java:
     """
-    /// <reference path='../../typings/power-assert/power-assert.d.ts' />
 
-    import assert = require('power-assert');
+    import assert = require('assert');
     import java = require('../tsJavaModule');
     import Java = java.Java;
 

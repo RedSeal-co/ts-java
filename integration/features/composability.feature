@@ -6,9 +6,8 @@ Feature: Composability
   Background:
     Given this boilerplate to intialize node-java:
     """
-    /// <reference path='../../typings/power-assert/power-assert.d.ts' />
 
-    import assert = require('power-assert');
+    import assert = require('assert');
     import hellojava = require('../../hellojava/tsJavaModule');
     import reflection = require('../../reflection/tsJavaModule');
     import featureset = require('../../featureset/tsJavaModule');
